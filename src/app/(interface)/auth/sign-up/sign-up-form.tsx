@@ -1,10 +1,10 @@
 'use client'
 
 import { authApi } from '@/auth/client/auth-api'
-import { authClient, signUp } from '@/auth/lib/auth-client'
+import { authClient } from '@/auth/lib/auth-client'
 
 export const SignUpForm = () => {
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget);
 
@@ -12,7 +12,8 @@ export const SignUpForm = () => {
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
     
-    authApi.signUpWithEmailAndPassword({ name, email, password })
+    const result = await authApi.signUpEmail({ name, email, password })
+    console.log('result', result)
   }
 
   return (

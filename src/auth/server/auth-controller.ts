@@ -3,7 +3,7 @@ import { NextRequest } from 'next/server'
 import { AuthUser, SignUpError, SignUpInfo } from '@/auth/domain/auth-entities'
 import { SignUpRequestBodySchema } from '@/auth/domain/auth-schema'
 import { AuthService } from '@/auth/server/auth-service'
-import { badRequestResult, ControllerResult, internalServerErrorResult, okResult } from '@/helpers/controllers'
+import { badRequestResult, ControllerResult, createdResult, internalServerErrorResult } from '@/helpers/controller-result'
 
 const signUpEmail = async (request: NextRequest): Promise<ControllerResult<SignUpError, AuthUser>> => {
   const body = await request.json()
@@ -18,11 +18,11 @@ const signUpEmail = async (request: NextRequest): Promise<ControllerResult<SignU
   
   const signUpResult = await AuthService.signUpEmail(signUpInfo)
 
-  if (signUpResult.status === 'error') {
+  if (signUpResult.status === 'ERROR') {
     return internalServerErrorResult(signUpResult.errors)
   }
 
-  return okResult(signUpResult.data)
+  return createdResult(signUpResult.data)
 }
 
 export const AuthController = {
