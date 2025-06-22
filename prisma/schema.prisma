@@ -106,7 +106,7 @@ enum Role {
 
 model CartItem {
   id        String  @id @default(cuid())
-  user              User              @relation(fields: [userId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
   userId    String
   product   Product @relation(fields: [productId], references: [id])
   productId String
@@ -139,7 +139,7 @@ enum OrderStatus {
 
 model Order {
   id              String      @id @default(cuid())
-  user              User            @relation(fields: [userId], references: [id])
+  user            User        @relation(fields: [userId], references: [id])
   userId          String
   items           OrderItem[]
   totalPrice      Float
@@ -152,18 +152,20 @@ model Order {
 }
 
 model User {
-  id            String    @id
+  id            String  @id
   name          String
   email         String
   emailVerified Boolean
   image         String?
-  createdAt     DateTime
-  updatedAt     DateTime
-  sessions      Session[]
-  accounts      Account[]
+  role          Role    @default(USER)
 
-  cartItems         CartItem[]
-  orders            Order[]
+  createdAt DateTime
+  updatedAt DateTime
+  sessions  Session[]
+  accounts  Account[]
+
+  cartItems CartItem[]
+  orders    Order[]
 
   @@unique([email])
   @@map("user")
