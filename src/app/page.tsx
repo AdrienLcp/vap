@@ -1,7 +1,7 @@
 const HomePage: React.FC = () => {
   return (
     <main>
-      Hello Worlds
+      Hello World
     </main>
   )
 }

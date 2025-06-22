@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 
+import '@/styles/base.sass'
+
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin']
@@ -17,7 +19,7 @@ export const metadata: Metadata = {
 }
 
 const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => (
-  <html lang='en'>
+  <html lang='fr'>
     <body className={`${geistSans.variable} ${geistMono.variable}`}>
       {children}
     </body>
