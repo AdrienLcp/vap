@@ -1,5 +1,8 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
+import Link from 'next/link'
+
+import { ROUTES } from '@/router/navigation'
 
 import '@/styles/base.sass'
 
@@ -21,6 +24,10 @@ export const metadata: Metadata = {
 const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => (
   <html lang='fr'>
     <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <Link href={ROUTES.signUp}>
+        Sign Up
+      </Link>
+
       {children}
     </body>
   </html>
