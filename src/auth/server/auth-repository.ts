@@ -1,4 +1,6 @@
-import { AuthUser, AuthUserError, SignInInfo, SignUpError, SignUpInfo } from '@/auth/domain/auth-entities'
+import { User } from 'better-auth'
+
+import { AuthUser, AuthUserError, SignInError, SignInInfo, SignUpError, SignUpInfo } from '@/auth/domain/auth-entities'
 import { failure, Result, success } from '@/helpers/result'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
@@ -27,16 +29,23 @@ const findAuthUserById = async (userId: string): Promise<Result<AuthUserError, A
   }
 }
 
-const emailSignIn = async (signInInfo: SignInInfo): Promise<Result<SignUpError, AuthUser>> => {
+const emailSignIn = async (signInInfo: SignInInfo): Promise<Result<SignInError, AuthUser>> => {
   try  {
-    const signUpResult = await auth.api.signInEmail({
+    const signUpResponse = await auth.api.signInEmail({
       body: {
         email: signInInfo.email,
         password: signInInfo.password
-      }
+      },
+      asResponse: true
     })
 
-    const userResult = await findAuthUserById(signUpResult.user.id)
+    if (!signUpResponse.ok) {
+      return failure()
+    }
+
+    const user: User = await signUpResponse.json()
+
+    const userResult = await findAuthUserById(user.id)
 
     if (userResult.status === 'ERROR') {
       return userResult
@@ -44,23 +53,29 @@ const emailSignIn = async (signInInfo: SignInInfo): Promise<Result<SignUpError, 
 
     return success(userResult.data)
   } catch (error) {
-    console.error('Error in auth repository during sign up:', error)
-    // Handle better-auth errors
+    console.error('Error in auth repository during sign in:', error)
     return failure()
   }
 }
 
 const emailSignUp = async (signUpInfo: SignUpInfo): Promise<Result<SignUpError, AuthUser>> => {
   try  {
-    const signUpResult = await auth.api.signUpEmail({
+    const signUpResponse = await auth.api.signUpEmail({
       body: {
         email: signUpInfo.email,
         name: signUpInfo.name,
         password: signUpInfo.password
-      }
+      },
+      asResponse: true
     })
 
-    const userResult = await findAuthUserById(signUpResult.user.id)
+    if (!signUpResponse.ok) {
+      return failure()
+    }
+
+    const user: User = await signUpResponse.json()
+
+    const userResult = await findAuthUserById(user.id)
 
     if (userResult.status === 'ERROR') {
       return userResult
@@ -69,7 +84,6 @@ const emailSignUp = async (signUpInfo: SignUpInfo): Promise<Result<SignUpError, 
     return success(userResult.data)
   } catch (error) {
     console.error('Error in auth repository during sign up:', error)
-    // Handle better-auth errors
     return failure()
   }
 }

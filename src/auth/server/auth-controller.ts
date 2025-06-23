@@ -1,9 +1,29 @@
 import { NextRequest } from 'next/server'
 
-import { AuthUser, SignUpError, SignUpInfo } from '@/auth/domain/auth-entities'
-import { SignUpRequestBodySchema } from '@/auth/domain/auth-schema'
+import { AuthUser, SignInError, SignInInfo, SignUpError, SignUpInfo } from '@/auth/domain/auth-entities'
+import { SignInRequestBodySchema, SignUpRequestBodySchema } from '@/auth/domain/auth-schema'
 import { AuthService } from '@/auth/server/auth-service'
-import { badRequestResult, ControllerResult, createdResult, internalServerErrorResult } from '@/helpers/controller-result'
+import { badRequestResult, ControllerResult, createdResult, internalServerErrorResult, okResult } from '@/helpers/controller-result'
+
+const emailSignIn = async (request: NextRequest): Promise<ControllerResult<SignInError, AuthUser>> => {
+  const body = await request.json()
+
+  const signInBodyResult = SignInRequestBodySchema.safeParse(body)
+
+  if (signInBodyResult.error) {
+    return badRequestResult('UNEXPECTED_ERROR')
+  }
+
+  const signInInfo: SignInInfo = signInBodyResult.data
+  
+  const signInResult = await AuthService.emailSignIn(signInInfo)
+
+  if (signInResult.status === 'ERROR') {
+    return internalServerErrorResult(signInResult.errors)
+  }
+
+  return okResult(signInResult.data)
+}
 
 const emailSignUp = async (request: NextRequest): Promise<ControllerResult<SignUpError, AuthUser>> => {
   const body = await request.json()
@@ -26,5 +46,6 @@ const emailSignUp = async (request: NextRequest): Promise<ControllerResult<SignU
 }
 
 export const AuthController = {
+  emailSignIn,
   emailSignUp
 }
