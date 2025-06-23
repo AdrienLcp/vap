@@ -1,4 +1,9 @@
-import { UnexpectedError } from '@/domain/entities'
+export type NotFound = 'NOT_FOUND'
+export type Unauthorized = 'UNAUTHORIZED'
+export type BadRequest = 'BAD_REQUEST'
+export type Forbidden = 'FORBIDDEN'
+export type InternalServerError = 'INTERNAL_SERVER_ERROR'
+export type UnexpectedError = 'UNEXPECTED_ERROR'
 
 export const STATUS_ERROR = 'ERROR'
 export const STATUS_SUCCESS = 'SUCCESS'

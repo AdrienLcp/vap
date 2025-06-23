@@ -5,7 +5,7 @@ import { SignUpRequestBodySchema } from '@/auth/domain/auth-schema'
 import { AuthService } from '@/auth/server/auth-service'
 import { badRequestResult, ControllerResult, createdResult, internalServerErrorResult } from '@/helpers/controller-result'
 
-const signUpEmail = async (request: NextRequest): Promise<ControllerResult<SignUpError, AuthUser>> => {
+const emailSignUp = async (request: NextRequest): Promise<ControllerResult<SignUpError, AuthUser>> => {
   const body = await request.json()
 
   const signUpBodyResult = SignUpRequestBodySchema.safeParse(body)
@@ -16,7 +16,7 @@ const signUpEmail = async (request: NextRequest): Promise<ControllerResult<SignU
 
   const signUpInfo: SignUpInfo = signUpBodyResult.data
   
-  const signUpResult = await AuthService.signUpEmail(signUpInfo)
+  const signUpResult = await AuthService.emailSignUp(signUpInfo)
 
   if (signUpResult.status === 'ERROR') {
     return internalServerErrorResult(signUpResult.errors)
@@ -26,5 +26,5 @@ const signUpEmail = async (request: NextRequest): Promise<ControllerResult<SignU
 }
 
 export const AuthController = {
-  signUpEmail
+  emailSignUp
 }

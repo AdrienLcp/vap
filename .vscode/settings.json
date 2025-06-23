@@ -19,6 +19,12 @@
     "titleBar.inactiveForeground": "#15202b99"
   },
   "peacock.color": "#bad4bd",
+  "cSpell.overrides": [
+    {
+      "filename": "src/i18n/fr.json",
+      "language": "en,fr"
+    }
+  ],
   "cSpell.words": [
     "cuid",
     "turbopack"
