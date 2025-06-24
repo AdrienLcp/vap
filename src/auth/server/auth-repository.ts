@@ -1,6 +1,4 @@
-import { User } from 'better-auth'
-
-import { AuthUser, AuthUserError, SignInError, SignInInfo, SignUpError, SignUpInfo } from '@/auth/domain/auth-entities'
+import { AuthInfo, AuthUser, AuthUserError, SignInError, SignInInfo, SignUpError, SignUpInfo } from '@/auth/domain/auth-entities'
 import { failure, Result, success } from '@/helpers/result'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
@@ -31,7 +29,7 @@ const findAuthUserById = async (userId: string): Promise<Result<AuthUserError, A
 
 const emailSignIn = async (signInInfo: SignInInfo): Promise<Result<SignInError, AuthUser>> => {
   try  {
-    const signUpResponse = await auth.api.signInEmail({
+    const signInResponse = await auth.api.signInEmail({
       body: {
         email: signInInfo.email,
         password: signInInfo.password
@@ -39,13 +37,13 @@ const emailSignIn = async (signInInfo: SignInInfo): Promise<Result<SignInError, 
       asResponse: true
     })
 
-    if (!signUpResponse.ok) {
+    if (!signInResponse.ok) {
       return failure()
     }
 
-    const user: User = await signUpResponse.json()
+    const authInfo: AuthInfo = await signInResponse.json()
 
-    const userResult = await findAuthUserById(user.id)
+    const userResult = await findAuthUserById(authInfo.user.id)
 
     if (userResult.status === 'ERROR') {
       return userResult
@@ -73,9 +71,9 @@ const emailSignUp = async (signUpInfo: SignUpInfo): Promise<Result<SignUpError, 
       return failure()
     }
 
-    const user: User = await signUpResponse.json()
+    const authInfo: AuthInfo = await signUpResponse.json()
 
-    const userResult = await findAuthUserById(user.id)
+    const userResult = await findAuthUserById(authInfo.user.id)
 
     if (userResult.status === 'ERROR') {
       return userResult

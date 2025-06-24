@@ -1,7 +1,12 @@
+import { User } from 'better-auth'
 import { z } from 'zod'
 
 import { SignInRequestBodySchema, SignUpRequestBodySchema } from '@/auth/domain/auth-schema'
 import { NotFound, UnexpectedError } from '@/helpers/result'
+
+export type AuthInfo = {
+  user: User
+}
 
 export type AuthUserError = NotFound | UnexpectedError
 

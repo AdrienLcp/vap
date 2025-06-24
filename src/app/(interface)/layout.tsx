@@ -28,6 +28,10 @@ const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => (
         Sign Up
       </Link>
 
+      <Link href={ROUTES.signIn}>
+        Sign In
+      </Link>
+
       {children}
     </body>
   </html>
