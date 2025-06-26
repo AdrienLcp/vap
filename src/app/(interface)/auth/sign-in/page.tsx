@@ -1,4 +1,4 @@
-import { SignInForm } from '@/auth/client/sign-in-form'
+import { SignInForm } from '@/auth/client/components/sign-in-form'
 
 const SignInPage: React.FC = () => {
   return (

@@ -1,7 +1,9 @@
 'use client'
 
 import { authApi } from '@/auth/client/auth-api'
+import type { SignUpInfo } from '@/auth/domain/auth-entities'
 import { authClient } from '@/auth/lib/auth-client'
+import { Form } from '@/presentation/components/forms/form'
 
 const signUpFields = {
   email: 'email',
@@ -10,15 +12,8 @@ const signUpFields = {
 }
 
 export const SignUpForm: React.FC = () => {
-  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const formData = new FormData(event.currentTarget);
-
-    const email = formData.get(signUpFields.email) as string;
-    const name = formData.get(signUpFields.name) as string;
-    const password = formData.get(signUpFields.password) as string;
-    
-    const signUpResult = await authApi.emailSignUp({ name, email, password })
+  const onSubmit = async (signUpInfo: SignUpInfo) => {
+    const signUpResult = await authApi.emailSignUp(signUpInfo)
 
     if (signUpResult.status === 'ERROR') {
       console.error('Sign up error:', signUpResult.errors)
@@ -31,7 +26,7 @@ export const SignUpForm: React.FC = () => {
   return (
     <>
       <div>
-        <form onSubmit={onSubmit}>
+        <Form onSubmit={onSubmit}>
           <label htmlFor={signUpFields.email}>
             Email:
             <input
@@ -65,7 +60,7 @@ export const SignUpForm: React.FC = () => {
           <button type='submit'>
             Submit
           </button>
-        </form>
+        </Form>
       </div>
 
       <br />

@@ -1,7 +1,9 @@
 'use client'
 
 import { authApi } from '@/auth/client/auth-api'
+import type { SignInInfo } from '@/auth/domain/auth-entities'
 import { authClient } from '@/auth/lib/auth-client'
+import { Form } from '@/presentation/components/forms/form'
 
 const signInFields = {
   email: 'email',
@@ -9,14 +11,8 @@ const signInFields = {
 }
 
 export const SignInForm: React.FC = () => {
-  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const formData = new FormData(event.currentTarget);
-
-    const email = formData.get(signInFields.email) as string;
-    const password = formData.get(signInFields.password) as string;
-    
-    const signInResult = await authApi.emailSignIn({ email, password })
+  const onSubmit = async (signInInfo: SignInInfo) => {
+    const signInResult = await authApi.emailSignIn(signInInfo)
 
     if (signInResult.status === 'ERROR') {
       console.error('Sign in error:', signInResult.errors)
@@ -29,7 +25,7 @@ export const SignInForm: React.FC = () => {
   return (
     <>
       <div>
-        <form onSubmit={onSubmit}>
+        <Form onSubmit={onSubmit}>
           <label htmlFor={signInFields.email}>
             Email:
             <input
@@ -53,7 +49,7 @@ export const SignInForm: React.FC = () => {
           <button type='submit'>
             Submit
           </button>
-        </form>
+        </Form>
       </div>
 
       <br />
