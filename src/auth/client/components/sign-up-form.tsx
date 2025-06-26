@@ -1,7 +1,7 @@
 'use client'
 
 import { authApi } from '@/auth/client/auth-api'
-import type { SignUpInfo } from '@/auth/domain/auth-entities'
+import { SignUpInfoSchema } from '@/auth/domain/auth-schema'
 import { authClient } from '@/auth/lib/auth-client'
 import { Form } from '@/presentation/components/forms/form'
 
@@ -12,8 +12,19 @@ const signUpFields = {
 }
 
 export const SignUpForm: React.FC = () => {
-  const onSubmit = async (signUpInfo: SignUpInfo) => {
-    const signUpResult = await authApi.emailSignUp(signUpInfo)
+  const onSubmit = async (formData: FormData) => {
+    const email = formData.get(signUpFields.email)
+    const name = formData.get(signUpFields.name)
+    const password = formData.get(signUpFields.password)
+
+    const signUpValidation = SignUpInfoSchema.safeParse({ email, name, password })
+
+    if (signUpValidation.error) {
+      console.error('Sign up validation error:', signUpValidation.error)
+      return
+    }
+
+    const signUpResult = await authApi.emailSignUp(signUpValidation.data)
 
     if (signUpResult.status === 'ERROR') {
       console.error('Sign up error:', signUpResult.errors)
@@ -27,30 +38,27 @@ export const SignUpForm: React.FC = () => {
     <>
       <div>
         <Form onSubmit={onSubmit}>
-          <label htmlFor={signUpFields.email}>
+          <label>
             Email:
             <input
-              id={signUpFields.email}
               name={signUpFields.email}
               placeholder='jean-neige@gmail.com'
               type='text'
             />
           </label>
 
-          <label htmlFor={signUpFields.name}>
+          <label>
             Name:
             <input
-              id={signUpFields.name}
               name={signUpFields.name}
               placeholder='Jean Neige'
               type='text'
             />
           </label>
 
-          <label htmlFor={signUpFields.password}>
+          <label>
             Password:
             <input
-              id={signUpFields.password}
               name={signUpFields.password}
               placeholder='Password'
               type='password'

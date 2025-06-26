@@ -1,7 +1,7 @@
 import { User } from 'better-auth'
 import { z } from 'zod'
 
-import { SignInRequestBodySchema, SignUpRequestBodySchema } from '@/auth/domain/auth-schema'
+import { SignInInfoSchema, SignUpInfoSchema } from '@/auth/domain/auth-schema'
 import { NotFound, UnexpectedError } from '@/helpers/result'
 
 export type AuthInfo = {
@@ -10,13 +10,13 @@ export type AuthInfo = {
 
 export type AuthUserError = NotFound | UnexpectedError
 
-export type SignInInfo = z.infer<typeof SignInRequestBodySchema>
+export type SignInInfo = z.infer<typeof SignInInfoSchema>
 
 export type SignInError =
   | AuthUserError
   | 'INVALID_CREDENTIALS'
 
-export type SignUpInfo = z.infer<typeof SignUpRequestBodySchema>
+export type SignUpInfo = z.infer<typeof SignUpInfoSchema>
 
 export type SignUpError =
   | AuthUserError
