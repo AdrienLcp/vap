@@ -7,7 +7,7 @@ const findUserById = async (userId: string): Promise<Result<AuthUserError, AuthU
   const userResult = await PrismaAuthAdapter.findUserById(userId)
 
   if (userResult.status === 'ERROR') {
-    return failure('NOT_FOUND')
+    return userResult
   }
 
   const user = userResult.data

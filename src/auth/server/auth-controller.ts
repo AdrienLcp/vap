@@ -1,5 +1,5 @@
 import type { SignInResponse, SignUpResponse } from '@/auth/domain/auth-entities'
-import { SignInInfoSchema, SignUpInfoSchema } from '@/auth/domain/auth-schema'
+import { SignInInfoSchema, SignUpInfoSchema, SocialProviderSchema } from '@/auth/domain/auth-schema'
 import { AuthService } from '@/auth/server/auth-service'
 import { HttpResponse } from '@/api/server'
 
@@ -62,7 +62,35 @@ const emailSignUp = async (request: Request): Promise<SignUpResponse> => {
   }
 }
 
+const socialSignIn = async (request: Request): Promise<SignInResponse> => {
+  try {
+    const requestBody = await request.json()
+    const socialProviderValidation = SocialProviderSchema.safeParse(requestBody)
+
+    if (socialProviderValidation.error) {
+      return HttpResponse.badRequest(socialProviderValidation.error.issues)
+    }
+
+    const signInResult = await AuthService.socialSignIn(socialProviderValidation.data)
+
+    if (signInResult.status === 'ERROR') {
+      switch (signInResult.errors) {
+        case 'NOT_FOUND':
+          return HttpResponse.notFound()
+        default:
+          return HttpResponse.internalServerError(signInResult.errors)
+      }
+    }
+
+    return HttpResponse.ok(signInResult.data)
+  } catch (error) {
+    console.error('Error in social sign in controller:', error)
+    return HttpResponse.internalServerError()
+  }
+}
+
 export const AuthController = {
   emailSignIn,
-  emailSignUp
+  emailSignUp,
+  socialSignIn
 }

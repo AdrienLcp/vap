@@ -1,6 +1,6 @@
-import { AuthUser, SignInError, SignInInfo, SignUpError, SignUpInfo } from '@/auth/domain/auth-entities'
+import type { AuthUser, AuthUserError, SignInError, SignInInfo, SignUpError, SignUpInfo, SocialProvider } from '@/auth/domain/auth-entities'
 import { AuthRepository } from '@/auth/server/auth-repository'
-import { Result } from '@/helpers/result'
+import type { Result } from '@/helpers/result'
 
 const emailSignIn = async (signInInfo: SignInInfo): Promise<Result<SignInError, AuthUser>> => {
   return await AuthRepository.emailSignIn(signInInfo)
@@ -10,7 +10,12 @@ const emailSignUp = async (signUpInfo: SignUpInfo): Promise<Result<SignUpError, 
   return await AuthRepository.emailSignUp(signUpInfo)
 }
 
+const socialSignIn = async (socialProvider: SocialProvider): Promise<Result<AuthUserError, AuthUser>> => {
+  return await AuthRepository.socialSignIn(socialProvider)
+}
+
 export const AuthService = {
   emailSignIn,
-  emailSignUp
+  emailSignUp,
+  socialSignIn
 }
