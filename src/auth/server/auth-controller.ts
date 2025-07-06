@@ -1,10 +1,10 @@
-import type { SignInResult, SignUpResult } from '@/auth/domain/auth-entities'
+import type { SignInResponse, SignUpResponse } from '@/auth/domain/auth-entities'
 import { SignInInfoSchema, SignUpInfoSchema } from '@/auth/domain/auth-schema'
 import { AuthService } from '@/auth/server/auth-service'
-import { HttpResponse } from '@/helpers/controller-result'
+import { HttpResponse } from '@/api/server'
 
 
-const emailSignIn = async (request: Request): Promise<SignInResult> => {
+const emailSignIn = async (request: Request): Promise<SignInResponse> => {
   try {
     const requestBody = await request.json()
     const signInInfoValidation = SignInInfoSchema.safeParse(requestBody)
@@ -16,7 +16,14 @@ const emailSignIn = async (request: Request): Promise<SignInResult> => {
     const signInResult = await AuthService.emailSignIn(signInInfoValidation.data)
 
     if (signInResult.status === 'ERROR') {
-      return HttpResponse.internalServerError(signInResult.errors)
+      switch (signInResult.errors) {
+        case 'INVALID_CREDENTIALS':
+          return HttpResponse.unauthorized('INVALID_CREDENTIALS')
+        case 'NOT_FOUND':
+          return HttpResponse.notFound()
+        default:
+          return HttpResponse.internalServerError(signInResult.errors)
+      }
     }
 
     return HttpResponse.ok(signInResult.data)
@@ -26,7 +33,7 @@ const emailSignIn = async (request: Request): Promise<SignInResult> => {
   }
 }
 
-const emailSignUp = async (request: Request): Promise<SignUpResult> => {
+const emailSignUp = async (request: Request): Promise<SignUpResponse> => {
   try {
     const requestBody = await request.json()
     const signUpInfoValidation = SignUpInfoSchema.safeParse(requestBody)

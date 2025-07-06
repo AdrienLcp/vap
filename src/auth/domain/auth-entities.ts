@@ -1,8 +1,8 @@
 import type { Role } from '@prisma/client'
 import { z } from 'zod'
 
+import type { ResponseWithValidationIssues } from '@/api/server'
 import { SignInInfoSchema, SignUpInfoSchema, SocialProviderSchema } from '@/auth/domain/auth-schema'
-import type { ControllerResultWithValidationIssues } from '@/helpers/controller-result'
 import type { NotFound, UnexpectedError } from '@/helpers/result'
 
 export type AuthUserError = NotFound | UnexpectedError
@@ -27,5 +27,5 @@ export type AuthUser = {
 
 export type SocialProvider = z.infer<typeof SocialProviderSchema>
 
-export type SignInResult = ControllerResultWithValidationIssues<SignInError, AuthUser>
-export type SignUpResult = ControllerResultWithValidationIssues<SignUpError, AuthUser>
+export type SignInResponse = ResponseWithValidationIssues<SignInError, AuthUser>
+export type SignUpResponse = ResponseWithValidationIssues<SignUpError, AuthUser>

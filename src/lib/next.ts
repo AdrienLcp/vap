@@ -1,14 +1,8 @@
 import { NextResponse } from 'next/server'
 
-import { ControllerResult } from '@/helpers/controller-result'
+import type { Response } from '@/api/server'
 
-type Data<T> = Omit<ControllerResult<T>, 'statusCode'> & {
-  statusCode?: number
-}
-
-export const nextResponse = <T> (controllerResult: ControllerResult<T>) => {
-  const response: Data<T> = { ...controllerResult }
-  delete response.statusCode
-
-  return NextResponse.json(response, { status: controllerResult.statusCode  })
+export const nextResponse = async <T>(promise: Promise<Response<T>>) => {
+  const response = await promise
+  return NextResponse.json(response, { status: response.statusCode })
 }

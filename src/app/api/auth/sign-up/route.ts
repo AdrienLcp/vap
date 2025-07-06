@@ -3,7 +3,6 @@ import type { NextRequest } from 'next/server'
 import { AuthController } from '@/auth/server/auth-controller'
 import { nextResponse } from '@/lib/next'
 
-export const POST = async (request: NextRequest) => {
-  const result = await AuthController.emailSignUp(request)
-  return nextResponse(result)
+export const POST = (request: NextRequest) => {
+  return nextResponse(AuthController.emailSignUp(request))
 }

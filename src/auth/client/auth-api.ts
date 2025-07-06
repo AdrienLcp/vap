@@ -1,12 +1,12 @@
-import type { SignInInfo, SignInResult, SignUpInfo, SignUpResult } from '@/auth/domain/auth-entities'
-import { fetchApi } from '@/helpers/api'
+import { fetchApi } from '@/api/client'
+import type { SignInInfo, SignInResponse, SignUpInfo, SignUpResponse } from '@/auth/domain/auth-entities'
 
 const emailSignIn = async (signInInfo: SignInInfo) => {
-  return await fetchApi<SignInResult>('/auth/sign-in', 'POST', signInInfo)
+  return await fetchApi<SignInResponse>('/auth/sign-in', 'POST', signInInfo)
 }
 
 const emailSignUp = async (signUpInfo: SignUpInfo) => {
-  return await fetchApi<SignUpResult>('/auth/sign-up', 'POST', signUpInfo)
+  return await fetchApi<SignUpResponse>('/auth/sign-up', 'POST', signUpInfo)
 }
 
 export const authApi = {
