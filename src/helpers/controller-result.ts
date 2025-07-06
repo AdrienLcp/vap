@@ -1,4 +1,6 @@
-import { STATUS_ERROR, STATUS_SUCCESS } from '@/helpers/result'
+import type { ZodIssue } from 'zod'
+
+import { type NotFound, STATUS_ERROR, STATUS_SUCCESS, type UnexpectedError } from '@/helpers/result'
 
 export type ControllerErrorResult<E> = {
   errors: E,
@@ -14,9 +16,11 @@ export type ControllerResult<E, T = undefined> =
   | ControllerErrorResult<E>
   | ControllerSuccessResult<T>
 
-export function okResult(): { status: typeof STATUS_SUCCESS, statusCode: 200 }
-export function okResult<T>(data: T): { data: T, status: typeof STATUS_SUCCESS, statusCode: 200 }
-export function okResult<T>(data?: T) {
+export type ControllerResultWithValidationIssues<E, T = undefined> = ControllerResult<E | ZodIssue[], T>
+
+function ok(): { status: typeof STATUS_SUCCESS, statusCode: 200 }
+function ok<T>(data: T): { data: T, status: typeof STATUS_SUCCESS, statusCode: 200 }
+function ok<T>(data?: T) {
   if (data == null) {
     return { status: STATUS_SUCCESS, statusCode: 200 }
   }
@@ -24,9 +28,9 @@ export function okResult<T>(data?: T) {
   return { data, status: STATUS_SUCCESS, statusCode: 200 }
 }
 
-export function createdResult(): { status: typeof STATUS_SUCCESS, statusCode: 201 }
-export function createdResult<T>(data: T): { data: T, status: typeof STATUS_SUCCESS, statusCode: 201 }
-export function createdResult<T>(data?: T) {
+function created(): { status: typeof STATUS_SUCCESS, statusCode: 201 }
+function created<T>(data: T): { data: T, status: typeof STATUS_SUCCESS, statusCode: 201 }
+function created<T>(data?: T) {
   if (data == null) {
     return { status: STATUS_SUCCESS, statusCode: 201 }
   }
@@ -34,32 +38,49 @@ export function createdResult<T>(data?: T) {
   return { data, status: STATUS_SUCCESS, statusCode: 201 }
 }
 
-export const badRequestResult = <E>(errors: E): ControllerErrorResult<E> => ({
+const badRequest = <E extends ZodIssue[]>(errors: E): ControllerErrorResult<E> => ({
   errors,
   status: STATUS_ERROR,
   statusCode: 400
 })
 
-export const unauthorizedResult = <E>(errors: E): ControllerErrorResult<E> => ({
+const unauthorized = <E>(errors: E): ControllerErrorResult<E> => ({
   errors,
   status: STATUS_ERROR,
   statusCode: 401
 })
 
-export const forbiddenResult = <E>(errors: E): ControllerErrorResult<E> => ({
+const forbidden = <E>(errors: E): ControllerErrorResult<E> => ({
   errors,
   status: STATUS_ERROR,
   statusCode: 403
 })
 
-export const notFoundResult = <E>(errors: E): ControllerErrorResult<E> => ({
-  errors,
+const notFound = <E>(errors?: E): ControllerErrorResult<E | NotFound> => ({
+  errors: errors ?? 'NOT_FOUND',
   status: STATUS_ERROR,
   statusCode: 404
 })
 
-export const internalServerErrorResult = <E>(errors: E): ControllerErrorResult<E> => ({
+const conflict = <E>(errors: E): ControllerErrorResult<E> => ({
   errors,
+  status: STATUS_ERROR,
+  statusCode: 409
+})
+
+const internalServerError = <E>(errors?: E): ControllerErrorResult<E | UnexpectedError> => ({
+  errors: errors ?? 'UNEXPECTED_ERROR',
   status: STATUS_ERROR,
   statusCode: 500
 })
+
+export const HttpResponse = {
+  ok,
+  created,
+  badRequest,
+  unauthorized,
+  forbidden,
+  notFound,
+  conflict,
+  internalServerError
+}

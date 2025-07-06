@@ -1,10 +1,8 @@
 import { z } from 'zod'
 
-export const INVALID_EMAIL = 'INVALID_EMAIL'
-export const USER_NAME_REQUIRED = 'NAME_REQUIRED'
-export const PASSWORD_TOO_SHORT = 'PASSWORD_TOO_SHORT'
+import { AUTH_CONSTANTS } from './auth-constants'
 
-export const userEmailSchema = z.string().email(INVALID_EMAIL)
+export const userEmailSchema = z.string().email(AUTH_CONSTANTS.INVALID_EMAIL)
 
 export const SignInInfoSchema = z.object({
   email: userEmailSchema,
@@ -13,6 +11,10 @@ export const SignInInfoSchema = z.object({
 
 export const SignUpInfoSchema = z.object({
   email: userEmailSchema,
-  name: z.string().min(1, USER_NAME_REQUIRED),
-  password: z.string().min(6, PASSWORD_TOO_SHORT)
+  name: z.string().min(1, AUTH_CONSTANTS.USER_NAME_REQUIRED),
+  password: z.string().min(AUTH_CONSTANTS.PASSWORD_MIN_LENGTH, AUTH_CONSTANTS.PASSWORD_TOO_SHORT)
+})
+
+export const SocialProviderSchema = z.enum(AUTH_CONSTANTS.SOCIAL_PROVIDERS, {
+  message: AUTH_CONSTANTS.INVALID_SOCIAL_PROVIDER
 })

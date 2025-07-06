@@ -10,8 +10,8 @@ export const STATUS_SUCCESS = 'SUCCESS'
 export const UNEXPECTED_ERROR: UnexpectedError = 'UNEXPECTED_ERROR'
 
 export function failure(): { errors: UnexpectedError, status: typeof STATUS_ERROR }
-export function failure<Error>(errors: Error): { errors: Error, status: typeof STATUS_ERROR }
-export function failure<Error>(errors?: Error) {
+export function failure<Errors>(errors: Errors): { errors: Errors, status: typeof STATUS_ERROR }
+export function failure<Errors>(errors?: Errors) {
   if (errors == null) {
     return { errors: UNEXPECTED_ERROR, status: STATUS_ERROR }
   }
@@ -29,14 +29,14 @@ export function success<Data>(data?: Data) {
   return { data, status: STATUS_SUCCESS }
 }
 
-export type ErrorResult<Error = undefined> = Error extends undefined | null
+export type ErrorResult<Errors = undefined> = Errors extends undefined | null
   ? { errors: UnexpectedError, status: typeof STATUS_ERROR }
-  : { errors: Error, status: typeof STATUS_ERROR }
+  : { errors: Errors | UnexpectedError, status: typeof STATUS_ERROR }
 
 export type SuccessResult<Data = undefined> = Data extends undefined | null
   ? { status: typeof STATUS_SUCCESS }
   : { data: Data, status: typeof STATUS_SUCCESS }
 
-export type Result<Error = undefined, Data = undefined> =
-  | ErrorResult<Error>
+export type Result<Errors = undefined, Data = undefined> =
+  | ErrorResult<Errors>
   | SuccessResult<Data>

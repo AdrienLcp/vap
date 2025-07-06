@@ -1,40 +1,58 @@
-import { AuthUser, SignInError, SignUpError } from '@/auth/domain/auth-entities'
+import type { SignInResult, SignUpResult } from '@/auth/domain/auth-entities'
 import { SignInInfoSchema, SignUpInfoSchema } from '@/auth/domain/auth-schema'
 import { AuthService } from '@/auth/server/auth-service'
-import { badRequestResult, ControllerResult, createdResult, internalServerErrorResult, okResult } from '@/helpers/controller-result'
+import { HttpResponse } from '@/helpers/controller-result'
 
-const emailSignIn = async (request: Request): Promise<ControllerResult<SignInError, AuthUser>> => {
-  const requestBody = await request.json()
-  const signInInfoResult = SignInInfoSchema.safeParse(requestBody)
 
-  if (signInInfoResult.error) {
-    return badRequestResult('UNEXPECTED_ERROR')
+const emailSignIn = async (request: Request): Promise<SignInResult> => {
+  try {
+    const requestBody = await request.json()
+    const signInInfoValidation = SignInInfoSchema.safeParse(requestBody)
+
+    if (signInInfoValidation.error) {
+      return HttpResponse.badRequest(signInInfoValidation.error.issues)
+    }
+    
+    const signInResult = await AuthService.emailSignIn(signInInfoValidation.data)
+
+    if (signInResult.status === 'ERROR') {
+      return HttpResponse.internalServerError(signInResult.errors)
+    }
+
+    return HttpResponse.ok(signInResult.data)
+  } catch (error) {
+    console.error('Error in email sign in controller:', error)
+    return HttpResponse.internalServerError()
   }
-  
-  const signInResult = await AuthService.emailSignIn(signInInfoResult.data)
-
-  if (signInResult.status === 'ERROR') {
-    return internalServerErrorResult(signInResult.errors)
-  }
-
-  return okResult(signInResult.data)
 }
 
-const emailSignUp = async (request: Request): Promise<ControllerResult<SignUpError, AuthUser>> => {
-  const requestBody = await request.json()
-  const signUpInfoResult = SignUpInfoSchema.safeParse(requestBody)
+const emailSignUp = async (request: Request): Promise<SignUpResult> => {
+  try {
+    const requestBody = await request.json()
+    const signUpInfoValidation = SignUpInfoSchema.safeParse(requestBody)
 
-  if (signUpInfoResult.error) {
-    return badRequestResult('INVALID_EMAIL')
+    if (signUpInfoValidation.error) {
+      return HttpResponse.badRequest(signUpInfoValidation.error.issues)
+    }
+    
+    const signUpResult = await AuthService.emailSignUp(signUpInfoValidation.data)
+
+    if (signUpResult.status === 'ERROR') {
+      switch (signUpResult.errors) {
+        case 'EMAIL_ALREADY_EXISTS':
+          return HttpResponse.conflict('EMAIL_ALREADY_EXISTS')
+        case 'NOT_FOUND':
+          return HttpResponse.notFound()
+        default:
+          return HttpResponse.internalServerError(signUpResult.errors)
+      }
+    }
+
+    return HttpResponse.created(signUpResult.data)
+  } catch (error) {
+    console.error('Error in email sign up controller:', error)
+    return HttpResponse.internalServerError()
   }
-  
-  const signUpResult = await AuthService.emailSignUp(signUpInfoResult.data)
-
-  if (signUpResult.status === 'ERROR') {
-    return internalServerErrorResult(signUpResult.errors)
-  }
-
-  return createdResult(signUpResult.data)
 }
 
 export const AuthController = {
