@@ -1,12 +1,12 @@
 import type { AuthUser } from '@/auth/domain/auth-entities'
 import { failure, type Result, success } from '@/helpers/result'
-import { prisma } from '@/lib/prisma'
+import { database } from '@/lib/database'
 
-type PrismaUserError = 'NOT_FOUND'
+type DatabaseUserError = 'NOT_FOUND'
 
-const findUserById = async (userId: string): Promise<Result<PrismaUserError, AuthUser>> => {
+const findUserById = async (userId: string): Promise<Result<DatabaseUserError, AuthUser>> => {
   try {
-    const user = await prisma.user.findUnique({ where: { id: userId } })
+    const user = await database.user.findUnique({ where: { id: userId } })
 
     if (!user) {
       return failure('NOT_FOUND')
@@ -19,6 +19,6 @@ const findUserById = async (userId: string): Promise<Result<PrismaUserError, Aut
   }
 }
 
-export const PrismaAuthAdapter = {
+export const DatabaseAuthAdapter = {
   findUserById
 }

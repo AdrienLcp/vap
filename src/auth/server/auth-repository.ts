@@ -1,10 +1,10 @@
 import type { AuthUser, AuthUserError, SignInError, SignInInfo, SignUpError, SignUpInfo, SocialProvider } from '@/auth/domain/auth-entities'
-import { BetterAuthAdapter } from '@/auth/infrastructure/better-auth-adapter'
-import { PrismaAuthAdapter } from '@/auth/infrastructure/prisma-auth-adapter'
+import { DatabaseAuthAdapter } from '@/auth/infrastructure/database-auth-adapter'
+import { ExternalAuthAdapter } from '@/auth/infrastructure/external-auth-adapter'
 import { failure, type Result, success } from '@/helpers/result'
 
 const findUserById = async (userId: string): Promise<Result<AuthUserError, AuthUser>> => {
-  const userResult = await PrismaAuthAdapter.findUserById(userId)
+  const userResult = await DatabaseAuthAdapter.findUserById(userId)
 
   if (userResult.status === 'ERROR') {
     return userResult
@@ -22,7 +22,7 @@ const findUserById = async (userId: string): Promise<Result<AuthUserError, AuthU
 }
 
 const emailSignIn = async (signInInfo: SignInInfo): Promise<Result<SignInError, AuthUser>> => {
-  const authInfoResult = await BetterAuthAdapter.emailSignIn(signInInfo)
+  const authInfoResult = await ExternalAuthAdapter.emailSignIn(signInInfo)
 
   if (authInfoResult.status === 'ERROR') {
     switch (authInfoResult.errors) {
@@ -37,7 +37,7 @@ const emailSignIn = async (signInInfo: SignInInfo): Promise<Result<SignInError, 
 }
 
 const emailSignUp = async (signUpInfo: SignUpInfo): Promise<Result<SignUpError, AuthUser>> => {
-  const authInfoResult = await BetterAuthAdapter.emailSignUp(signUpInfo)
+  const authInfoResult = await ExternalAuthAdapter.emailSignUp(signUpInfo)
 
   if (authInfoResult.status === 'ERROR') {
     switch (authInfoResult.errors) {
@@ -52,7 +52,7 @@ const emailSignUp = async (signUpInfo: SignUpInfo): Promise<Result<SignUpError, 
 }
 
 const socialSignIn = async (socialProvider: SocialProvider): Promise<Result<AuthUserError, AuthUser>> => {
-  const authInfoResult = await BetterAuthAdapter.socialSignIn(socialProvider)
+  const authInfoResult = await ExternalAuthAdapter.socialSignIn(socialProvider)
 
   if (authInfoResult.status === 'ERROR') {
     return failure()

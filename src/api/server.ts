@@ -1,3 +1,4 @@
+import { NextResponse } from 'next/server'
 import type { ZodIssue } from 'zod'
 
 import { type NotFound, STATUS_ERROR, STATUS_SUCCESS, type UnexpectedError } from '@/helpers/result'
@@ -83,4 +84,9 @@ export const HttpResponse = {
   notFound,
   conflict,
   internalServerError
+}
+
+export const nextResponse = async <T>(promise: Promise<Response<T>>) => {
+  const response = await promise
+  return NextResponse.json(response, { status: response.statusCode })
 }

@@ -1,16 +1,17 @@
+import { HttpResponse } from '@/api/server'
 import type { SignInResponse, SignUpResponse } from '@/auth/domain/auth-entities'
 import { SignInInfoSchema, SignUpInfoSchema, SocialProviderSchema } from '@/auth/domain/auth-schema'
 import { AuthService } from '@/auth/server/auth-service'
-import { HttpResponse } from '@/api/server'
-
+import { validate } from '@/helpers/validation'
 
 const emailSignIn = async (request: Request): Promise<SignInResponse> => {
   try {
     const requestBody = await request.json()
-    const signInInfoValidation = SignInInfoSchema.safeParse(requestBody)
 
-    if (signInInfoValidation.error) {
-      return HttpResponse.badRequest(signInInfoValidation.error.issues)
+    const signInInfoValidation = validate({ data: requestBody, schema: SignInInfoSchema })
+
+    if (signInInfoValidation.status === 'ERROR') {
+      return HttpResponse.badRequest(signInInfoValidation.errors.issues)
     }
     
     const signInResult = await AuthService.emailSignIn(signInInfoValidation.data)

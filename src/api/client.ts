@@ -15,8 +15,7 @@ export const fetchApi = async <T> (route: string, method?: Method, body?: object
       method: method ?? 'GET'
     })
 
-    const data: T = await response.json()
-    return data
+    return await response.json()
   } catch (error) {
     console.error('Fetch API error:', error)
     return failure()

@@ -6,13 +6,13 @@ import type { SignInInfo, SignUpInfo } from '@/auth/domain/auth-entities'
 import { failure, type Result, success } from '@/helpers/result'
 import { auth } from '@/lib/auth'
 
-type BetterAuthInfo = {
+type ExternalAuthInfo = {
   user: User
 }
 
-type BetterAuthSignInErrorCode = 'INVALID_EMAIL_OR_PASSWORD'
+type ExternalAuthSignInErrorCode = 'INVALID_EMAIL_OR_PASSWORD'
 
-const emailSignIn = async (signInInfo: SignInInfo): Promise<Result<BetterAuthSignInErrorCode, BetterAuthInfo>> => {
+const emailSignIn = async (signInInfo: SignInInfo): Promise<Result<ExternalAuthSignInErrorCode, ExternalAuthInfo>> => {
   try {
     const authInfo = await auth.api.signInEmail({
       body: {
@@ -38,9 +38,9 @@ const emailSignIn = async (signInInfo: SignInInfo): Promise<Result<BetterAuthSig
   }
 }
 
-type BetterAuthSignUpErrorCode = 'USER_ALREADY_EXISTS'
+type ExternalAuthSignUpErrorCode = 'USER_ALREADY_EXISTS'
 
-const emailSignUp = async (signUpInfo: SignUpInfo): Promise<Result<BetterAuthSignUpErrorCode, BetterAuthInfo>> => {
+const emailSignUp = async (signUpInfo: SignUpInfo): Promise<Result<ExternalAuthSignUpErrorCode, ExternalAuthInfo>> => {
   try  {
     const authInfo = await auth.api.signUpEmail({
       body: {
@@ -67,7 +67,7 @@ const emailSignUp = async (signUpInfo: SignUpInfo): Promise<Result<BetterAuthSig
   }
 }
 
-const socialSignIn = async (socialProvider: SocialProvider): Promise<Result<undefined, BetterAuthInfo>> => {
+const socialSignIn = async (socialProvider: SocialProvider): Promise<Result<undefined, ExternalAuthInfo>> => {
   try {
     const authInfo = await auth.api.signInSocial({
       body: {
@@ -95,7 +95,7 @@ const socialSignIn = async (socialProvider: SocialProvider): Promise<Result<unde
   }
 }
 
-export const BetterAuthAdapter = {
+export const ExternalAuthAdapter = {
   emailSignIn,
   emailSignUp,
   socialSignIn
