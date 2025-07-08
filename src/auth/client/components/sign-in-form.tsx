@@ -1,7 +1,7 @@
 'use client'
 
 import { authApi } from '@/auth/client/auth-api'
-import { SignInInfoSchema } from '@/auth/domain/auth-schema'
+import { SignInRequestSchema } from '@/auth/domain/auth-schema'
 import { authClient } from '@/auth/lib/auth-client'
 import { Form } from '@/presentation/components/forms/form'
 
@@ -15,7 +15,7 @@ export const SignInForm: React.FC = () => {
     const email = formData.get(signInFields.email)
     const password = formData.get(signInFields.password)
 
-    const signInValidation = SignInInfoSchema.safeParse({ email, password })
+    const signInValidation = SignInRequestSchema.safeParse({ email, password })
 
     if (signInValidation.error) {
       console.error('Sign in validation error:', signInValidation.error)

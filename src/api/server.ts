@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import type { ZodIssue } from 'zod'
 
-import { type NotFound, STATUS_ERROR, STATUS_SUCCESS, type UnexpectedError } from '@/helpers/result'
+import { STATUS_ERROR, STATUS_SUCCESS, type UnexpectedError } from '@/helpers/result'
 
 type ErrorResponse<E> = {
   errors: E,
@@ -19,24 +19,27 @@ export type Response<E, T = undefined> =
 
 export type ResponseWithValidationIssues<E, T = undefined> = Response<E | ZodIssue[], T>
 
-function ok(): { status: typeof STATUS_SUCCESS, statusCode: 200 }
-function ok<T>(data: T): { data: T, status: typeof STATUS_SUCCESS, statusCode: 200 }
+const OK_STATUS_CODE = 200
+const CREATED_STATUS_CODE = 201
+
+function ok(): { status: typeof STATUS_SUCCESS, statusCode: typeof OK_STATUS_CODE }
+function ok<T>(data: T): { data: T, status: typeof STATUS_SUCCESS, statusCode: typeof OK_STATUS_CODE }
 function ok<T>(data?: T) {
   if (data == null) {
-    return { status: STATUS_SUCCESS, statusCode: 200 }
+    return { status: STATUS_SUCCESS, statusCode: OK_STATUS_CODE }
   }
 
-  return { data, status: STATUS_SUCCESS, statusCode: 200 }
+  return { data, status: STATUS_SUCCESS, statusCode: OK_STATUS_CODE }
 }
 
-function created(): { status: typeof STATUS_SUCCESS, statusCode: 201 }
-function created<T>(data: T): { data: T, status: typeof STATUS_SUCCESS, statusCode: 201 }
+function created(): { status: typeof STATUS_SUCCESS, statusCode: typeof CREATED_STATUS_CODE }
+function created<T>(data: T): { data: T, status: typeof STATUS_SUCCESS, statusCode: typeof CREATED_STATUS_CODE }
 function created<T>(data?: T) {
   if (data == null) {
-    return { status: STATUS_SUCCESS, statusCode: 201 }
+    return { status: STATUS_SUCCESS, statusCode: CREATED_STATUS_CODE }
   }
 
-  return { data, status: STATUS_SUCCESS, statusCode: 201 }
+  return { data, status: STATUS_SUCCESS, statusCode: CREATED_STATUS_CODE }
 }
 
 const badRequest = <E extends ZodIssue[]>(errors: E): ErrorResponse<E> => ({
@@ -57,8 +60,8 @@ const forbidden = <E>(errors: E): ErrorResponse<E> => ({
   statusCode: 403
 })
 
-const notFound = <E>(errors?: E): ErrorResponse<E | NotFound> => ({
-  errors: errors ?? 'NOT_FOUND',
+const notFound = <E>(errors: E): ErrorResponse<E> => ({
+  errors: errors,
   status: STATUS_ERROR,
   statusCode: 404
 })

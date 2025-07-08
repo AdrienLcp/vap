@@ -1,14 +1,13 @@
 import { HttpResponse } from '@/api/server'
 import type { SignInResponse, SignUpResponse } from '@/auth/domain/auth-entities'
-import { SignInInfoSchema, SignUpInfoSchema, SocialProviderSchema } from '@/auth/domain/auth-schema'
+import { SignInRequestSchema, SignUpRequestSchema, SocialProviderRequestSchema } from '@/auth/domain/auth-schema'
 import { AuthService } from '@/auth/server/auth-service'
 import { validate } from '@/helpers/validation'
 
 const emailSignIn = async (request: Request): Promise<SignInResponse> => {
   try {
     const requestBody = await request.json()
-
-    const signInInfoValidation = validate({ data: requestBody, schema: SignInInfoSchema })
+    const signInInfoValidation = validate({ data: requestBody, schema: SignInRequestSchema })
 
     if (signInInfoValidation.status === 'ERROR') {
       return HttpResponse.badRequest(signInInfoValidation.errors.issues)
@@ -21,7 +20,7 @@ const emailSignIn = async (request: Request): Promise<SignInResponse> => {
         case 'INVALID_CREDENTIALS':
           return HttpResponse.unauthorized('INVALID_CREDENTIALS')
         case 'NOT_FOUND':
-          return HttpResponse.notFound()
+          return HttpResponse.notFound('NOT_FOUND')
         default:
           return HttpResponse.internalServerError(signInResult.errors)
       }
@@ -37,10 +36,10 @@ const emailSignIn = async (request: Request): Promise<SignInResponse> => {
 const emailSignUp = async (request: Request): Promise<SignUpResponse> => {
   try {
     const requestBody = await request.json()
-    const signUpInfoValidation = SignUpInfoSchema.safeParse(requestBody)
+    const signUpInfoValidation = validate({ data: requestBody, schema: SignUpRequestSchema })
 
-    if (signUpInfoValidation.error) {
-      return HttpResponse.badRequest(signUpInfoValidation.error.issues)
+    if (signUpInfoValidation.status === 'ERROR') {
+      return HttpResponse.badRequest(signUpInfoValidation.errors.issues)
     }
     
     const signUpResult = await AuthService.emailSignUp(signUpInfoValidation.data)
@@ -50,7 +49,7 @@ const emailSignUp = async (request: Request): Promise<SignUpResponse> => {
         case 'EMAIL_ALREADY_EXISTS':
           return HttpResponse.conflict('EMAIL_ALREADY_EXISTS')
         case 'NOT_FOUND':
-          return HttpResponse.notFound()
+          return HttpResponse.notFound('NOT_FOUND')
         default:
           return HttpResponse.internalServerError(signUpResult.errors)
       }
@@ -66,18 +65,18 @@ const emailSignUp = async (request: Request): Promise<SignUpResponse> => {
 const socialSignIn = async (request: Request): Promise<SignInResponse> => {
   try {
     const requestBody = await request.json()
-    const socialProviderValidation = SocialProviderSchema.safeParse(requestBody)
+    const socialProviderValidation = validate({ data: requestBody, schema: SocialProviderRequestSchema })
 
-    if (socialProviderValidation.error) {
-      return HttpResponse.badRequest(socialProviderValidation.error.issues)
+    if (socialProviderValidation.status === 'ERROR') {
+      return HttpResponse.badRequest(socialProviderValidation.errors.issues)
     }
 
-    const signInResult = await AuthService.socialSignIn(socialProviderValidation.data)
+    const signInResult = await AuthService.socialSignIn(socialProviderValidation.data.provider)
 
     if (signInResult.status === 'ERROR') {
       switch (signInResult.errors) {
         case 'NOT_FOUND':
-          return HttpResponse.notFound()
+          return HttpResponse.notFound('NOT_FOUND')
         default:
           return HttpResponse.internalServerError(signInResult.errors)
       }

@@ -1,19 +1,20 @@
 import type { Role } from '@prisma/client'
 import { z } from 'zod'
 
+import type { NotFound } from '@/api'
 import type { ResponseWithValidationIssues } from '@/api/server'
-import { SignInInfoSchema, SignUpInfoSchema, SocialProviderSchema } from '@/auth/domain/auth-schema'
-import type { NotFound, UnexpectedError } from '@/helpers/result'
+import { SignInRequestSchema, SignUpRequestSchema, SocialProviderSchema } from '@/auth/domain/auth-schema'
+import type { UnexpectedError } from '@/helpers/result'
 
 export type AuthUserError = NotFound | UnexpectedError
 
-export type SignInInfo = z.infer<typeof SignInInfoSchema>
+export type SignInInfo = z.infer<typeof SignInRequestSchema>
 
 export type SignInError =
   | AuthUserError
   | 'INVALID_CREDENTIALS'
 
-export type SignUpInfo = z.infer<typeof SignUpInfoSchema>
+export type SignUpInfo = z.infer<typeof SignUpRequestSchema>
 
 export type SignUpError =
   | AuthUserError
