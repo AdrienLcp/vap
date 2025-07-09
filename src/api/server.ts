@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import type { ZodIssue } from 'zod'
+import type { ZodError, ZodIssue } from 'zod'
 
 import { STATUS_ERROR, STATUS_SUCCESS, type UnexpectedError } from '@/helpers/result'
 
@@ -17,7 +17,7 @@ export type Response<E, T = undefined> =
   | ErrorResponse<E>
   | SuccessResponse<T>
 
-export type ResponseWithValidationIssues<E, T = undefined> = Response<E | ZodIssue[], T>
+export type ResponseWithValidationIssues<BaseError, T = undefined> = Response<BaseError | ZodError, T>
 
 const OK_STATUS_CODE = 200
 const CREATED_STATUS_CODE = 201
@@ -42,7 +42,7 @@ function created<T>(data?: T) {
   return { data, status: STATUS_SUCCESS, statusCode: CREATED_STATUS_CODE }
 }
 
-const badRequest = <E extends ZodIssue[]>(errors: E): ErrorResponse<E> => ({
+const badRequest = <E extends ZodError>(errors: E): ErrorResponse<E> => ({
   errors,
   status: STATUS_ERROR,
   statusCode: 400

@@ -1,7 +1,7 @@
 import { HttpResponse } from '@/api/server'
 import type { SignInResponse, SignUpResponse } from '@/auth/domain/auth-entities'
-import { SignInRequestSchema, SignUpRequestSchema, SocialProviderRequestSchema } from '@/auth/domain/auth-schema'
-import { AuthService } from '@/auth/server/auth-service'
+import { AuthUserDTOSchema, SignInRequestSchema, SignUpRequestSchema, SocialProviderRequestSchema } from '@/auth/domain/auth-schema'
+import { AuthService } from '@/auth/auth-service'
 import { validate } from '@/helpers/validation'
 
 const emailSignIn = async (request: Request): Promise<SignInResponse> => {
@@ -10,7 +10,7 @@ const emailSignIn = async (request: Request): Promise<SignInResponse> => {
     const signInInfoValidation = validate({ data: requestBody, schema: SignInRequestSchema })
 
     if (signInInfoValidation.status === 'ERROR') {
-      return HttpResponse.badRequest(signInInfoValidation.errors.issues)
+      return HttpResponse.badRequest(signInInfoValidation.errors)
     }
     
     const signInResult = await AuthService.emailSignIn(signInInfoValidation.data)
@@ -24,6 +24,13 @@ const emailSignIn = async (request: Request): Promise<SignInResponse> => {
         default:
           return HttpResponse.internalServerError(signInResult.errors)
       }
+    }
+    
+    const authenticatedUserValidation = validate({ data: signInResult.data, schema: AuthUserDTOSchema })
+
+    if (authenticatedUserValidation.status === 'ERROR') {
+      console.error('Validation error for authenticated user data in email sign in controller:', authenticatedUserValidation.errors)
+      return HttpResponse.internalServerError(authenticatedUserValidation.errors)
     }
 
     return HttpResponse.ok(signInResult.data)
@@ -39,7 +46,7 @@ const emailSignUp = async (request: Request): Promise<SignUpResponse> => {
     const signUpInfoValidation = validate({ data: requestBody, schema: SignUpRequestSchema })
 
     if (signUpInfoValidation.status === 'ERROR') {
-      return HttpResponse.badRequest(signUpInfoValidation.errors.issues)
+      return HttpResponse.badRequest(signUpInfoValidation.errors)
     }
     
     const signUpResult = await AuthService.emailSignUp(signUpInfoValidation.data)
@@ -54,8 +61,15 @@ const emailSignUp = async (request: Request): Promise<SignUpResponse> => {
           return HttpResponse.internalServerError(signUpResult.errors)
       }
     }
+    
+    const authenticatedUserValidation = validate({ data: signUpResult.data, schema: AuthUserDTOSchema })
 
-    return HttpResponse.created(signUpResult.data)
+    if (authenticatedUserValidation.status === 'ERROR') {
+      console.error('Validation error for authenticated user data in email sign up controller:', authenticatedUserValidation.errors)
+      return HttpResponse.internalServerError(authenticatedUserValidation.errors)
+    }
+
+    return HttpResponse.created(authenticatedUserValidation.data)
   } catch (error) {
     console.error('Error in email sign up controller:', error)
     return HttpResponse.internalServerError()
@@ -68,7 +82,7 @@ const socialSignIn = async (request: Request): Promise<SignInResponse> => {
     const socialProviderValidation = validate({ data: requestBody, schema: SocialProviderRequestSchema })
 
     if (socialProviderValidation.status === 'ERROR') {
-      return HttpResponse.badRequest(socialProviderValidation.errors.issues)
+      return HttpResponse.badRequest(socialProviderValidation.errors)
     }
 
     const signInResult = await AuthService.socialSignIn(socialProviderValidation.data.provider)
@@ -80,6 +94,13 @@ const socialSignIn = async (request: Request): Promise<SignInResponse> => {
         default:
           return HttpResponse.internalServerError(signInResult.errors)
       }
+    }
+    
+    const authenticatedUserValidation = validate({ data: signInResult.data, schema: AuthUserDTOSchema })
+
+    if (authenticatedUserValidation.status === 'ERROR') {
+      console.error('Validation error for authenticated user data in social sign in controller:', authenticatedUserValidation.errors)
+      return HttpResponse.internalServerError(authenticatedUserValidation.errors)
     }
 
     return HttpResponse.ok(signInResult.data)

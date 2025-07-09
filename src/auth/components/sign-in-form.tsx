@@ -1,8 +1,9 @@
 'use client'
 
-import { authApi } from '@/auth/client/auth-api'
+import { authApi } from '@/auth/auth-api'
 import { SignInRequestSchema } from '@/auth/domain/auth-schema'
-import { authClient } from '@/auth/lib/auth-client'
+import { authClient } from '@/lib/auth-client'
+import { validate } from '@/helpers/validation'
 import { Form } from '@/presentation/components/forms/form'
 
 const signInFields = {
@@ -12,13 +13,15 @@ const signInFields = {
 
 export const SignInForm: React.FC = () => {
   const onSubmit = async (formData: FormData) => {
-    const email = formData.get(signInFields.email)
-    const password = formData.get(signInFields.password)
+    const credentials = {
+      email: formData.get(signInFields.email),
+      password: formData.get(signInFields.password)
+    }
 
-    const signInValidation = SignInRequestSchema.safeParse({ email, password })
+    const signInValidation = validate({ data: credentials, schema: SignInRequestSchema })
 
-    if (signInValidation.error) {
-      console.error('Sign in validation error:', signInValidation.error)
+    if (signInValidation.status === 'ERROR') {
+      console.error('Sign in validation error:', signInValidation.errors)
       return
     }
 
@@ -36,20 +39,18 @@ export const SignInForm: React.FC = () => {
     <>
       <div>
         <Form onSubmit={onSubmit}>
-          <label htmlFor={signInFields.email}>
+          <label>
             Email:
             <input
-              id={signInFields.email}
               name={signInFields.email}
               placeholder='jean-neige@gmail.com'
               type='text'
             />
           </label>
 
-          <label htmlFor={signInFields.password}>
+          <label>
             Password:
             <input
-              id={signInFields.password}
               name={signInFields.password}
               placeholder='Password'
               type='password'

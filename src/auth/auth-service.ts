@@ -1,5 +1,5 @@
 import type { AuthUser, AuthUserError, SignInError, SignInInfo, SignUpError, SignUpInfo, SocialProvider } from '@/auth/domain/auth-entities'
-import { AuthRepository } from '@/auth/server/auth-repository'
+import { AuthRepository } from '@/auth/auth-repository'
 import type { Result } from '@/helpers/result'
 
 const emailSignIn = async (signInInfo: SignInInfo): Promise<Result<SignInError, AuthUser>> => {

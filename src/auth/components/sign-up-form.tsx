@@ -1,8 +1,9 @@
 'use client'
 
-import { authApi } from '@/auth/client/auth-api'
+import { authApi } from '@/auth/auth-api'
 import { SignUpRequestSchema } from '@/auth/domain/auth-schema'
-import { authClient } from '@/auth/lib/auth-client'
+import { validate } from '@/helpers/validation'
+import { authClient } from '@/lib/auth-client'
 import { Form } from '@/presentation/components/forms/form'
 
 const signUpFields = {
@@ -13,14 +14,16 @@ const signUpFields = {
 
 export const SignUpForm: React.FC = () => {
   const onSubmit = async (formData: FormData) => {
-    const email = formData.get(signUpFields.email)
-    const name = formData.get(signUpFields.name)
-    const password = formData.get(signUpFields.password)
+    const credentials = {
+      email: formData.get(signUpFields.email),
+      name: formData.get(signUpFields.name),
+      password: formData.get(signUpFields.password)
+    }
 
-    const signUpValidation = SignUpRequestSchema.safeParse({ email, name, password })
+    const signUpValidation = validate({ data: credentials, schema: SignUpRequestSchema })
 
-    if (signUpValidation.error) {
-      console.error('Sign up validation error:', signUpValidation.error)
+    if (signUpValidation.status === 'ERROR') {
+      console.error('Sign up validation error:', signUpValidation.errors)
       return
     }
 
