@@ -1,6 +1,6 @@
 import type { AuthUser, AuthUserError, SignInError, SignInInfo, SignUpError, SignUpInfo, SocialProvider } from '@/auth/domain/auth-entities'
-import { DatabaseAuthAdapter } from '@/auth/infrastructure/database-auth-adapter'
-import { ExternalAuthAdapter } from '@/auth/infrastructure/external-auth-adapter'
+import { DatabaseAuthAdapter } from '@/auth/adapters/database-auth-adapter'
+import { ExternalAuthAdapter } from '@/auth/adapters/external-auth-adapter'
 import { failure, type Result, success } from '@/helpers/result'
 
 const findUserById = async (userId: string): Promise<Result<AuthUserError, AuthUser>> => {

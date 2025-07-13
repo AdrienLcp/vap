@@ -1,13 +1,11 @@
-import type { Dictionary } from './index'
-
 declare type IPolyglotOptions = {
-  phrases: Dictionary
+  phrases: object
   locale?: string
 }
 
 declare class Polyglot {
   constructor (options: IPolyglotOptions)
-  t (key: string, options?: Record<string, unknown>): string
+  t (key: string, options?: Record<string, string | number> | number): string
 }
 
 export = Polyglot

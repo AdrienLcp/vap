@@ -2,9 +2,10 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import Link from 'next/link'
 
-import { ROUTES } from '@/router/navigation'
+import { ROUTES } from '@/domain/navigation'
+import { i18n, lang } from '@/i18n'
 
-import '@/styles/base.sass'
+import '@/presentation/styles/base.sass'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
 }
 
 const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => (
-  <html lang='fr'>
+  <html lang={lang}>
     <body className={`${geistSans.variable} ${geistMono.variable}`}>
       <Link href={ROUTES.signUp}>
         Sign Up
@@ -31,6 +32,8 @@ const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => (
       <Link href={ROUTES.signIn}>
         Sign In
       </Link>
+
+      {i18n('appName')}
 
       {children}
     </body>

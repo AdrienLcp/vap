@@ -1,4 +1,5 @@
 export type UnexpectedError = 'UNEXPECTED_ERROR'
+export type NotFound = 'NOT_FOUND'
 
 export const STATUS_ERROR = 'ERROR'
 export const STATUS_SUCCESS = 'SUCCESS'

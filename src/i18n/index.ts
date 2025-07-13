@@ -1,23 +1,8 @@
-import Polyglot from './polyglot.js'
-import strings from './fr.json'
+import { I18nController } from '@/i18n/i18n-controller'
+import type { I18nKey, I18nOptions  } from '@/i18n/i18n-domain'
 
-type DotPrefix<T extends string> = T extends '' ? '' : `.${T}`
+export const lang = 'fr'
 
-type DotNestedKeys<T> = (
-  T extends object ? {
-    [K in Exclude<keyof T, symbol>]: `${K}${DotPrefix<DotNestedKeys<T[K]>>}`
-  }[Exclude<keyof T, symbol>] : ''
-) extends infer D
-  ? Extract<D, string>
-  : never
+const polyglot = I18nController.getPolyglotByLocale(lang)
 
-const currentPolyglot = new Polyglot({ phrases: strings, locale: 'fr' })
-
-type I18NStringPaths = DotNestedKeys<typeof strings>
-
-export const i18n = (
-  key: I18NStringPaths,
-  options?: Record<string, unknown>
-) => currentPolyglot.t(key, options)
-
-export type I18n = typeof i18n
+export const i18n = (key: I18nKey, options?: I18nOptions) => polyglot.t(key, options)

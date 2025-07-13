@@ -2,7 +2,6 @@ import type { ZodError } from 'zod'
 
 import type { ErrorResult, SuccessResult } from '@/helpers/result'
 
-export type NotFound = 'NOT_FOUND'
 export type Unauthorized = 'UNAUTHORIZED'
 export type BadRequest = 'BAD_REQUEST'
 export type Forbidden = 'FORBIDDEN'
