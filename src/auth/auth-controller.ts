@@ -7,13 +7,13 @@ import { validate } from '@/helpers/validation'
 const emailSignIn = async (request: Request): Promise<EmailSignInResponse> => {
   try {
     const requestBody = await request.json()
-    const signInInfoValidation = validate({ data: requestBody, schema: SignInRequestSchema })
+    const signInInfoValidationResult = validate({ data: requestBody, schema: SignInRequestSchema })
 
-    if (signInInfoValidation.status === 'ERROR') {
-      return HttpResponse.badRequest(signInInfoValidation.errors)
+    if (signInInfoValidationResult.status === 'ERROR') {
+      return HttpResponse.badRequest(signInInfoValidationResult.errors)
     }
     
-    const signInResult = await AuthService.emailSignIn(signInInfoValidation.data)
+    const signInResult = await AuthService.emailSignIn(signInInfoValidationResult.data)
 
     if (signInResult.status === 'ERROR') {
       switch (signInResult.errors) {
@@ -26,16 +26,15 @@ const emailSignIn = async (request: Request): Promise<EmailSignInResponse> => {
       }
     }
     
-    const authenticatedUserValidation = validate({ data: signInResult.data, schema: AuthUserDTOSchema })
+    const emailSignInResponseValidationResult = validate({ data: signInResult.data, schema: AuthUserDTOSchema })
 
-    if (authenticatedUserValidation.status === 'ERROR') {
-      console.error('Validation error for authenticated user data in email sign in controller:', authenticatedUserValidation.errors)
+    if (emailSignInResponseValidationResult.status === 'ERROR') {
       return HttpResponse.internalServerError()
     }
 
-    return HttpResponse.ok(signInResult.data)
+    return HttpResponse.ok(emailSignInResponseValidationResult.data)
   } catch (error) {
-    console.error('Error in email sign in controller:', error)
+    console.error('Email sign in error in controller:', error)
     return HttpResponse.internalServerError()
   }
 }
@@ -43,13 +42,13 @@ const emailSignIn = async (request: Request): Promise<EmailSignInResponse> => {
 const emailSignUp = async (request: Request): Promise<EmailSignUpResponse> => {
   try {
     const requestBody = await request.json()
-    const signUpInfoValidation = validate({ data: requestBody, schema: SignUpRequestSchema })
+    const signUpInfoValidationResult = validate({ data: requestBody, schema: SignUpRequestSchema })
 
-    if (signUpInfoValidation.status === 'ERROR') {
-      return HttpResponse.badRequest(signUpInfoValidation.errors)
+    if (signUpInfoValidationResult.status === 'ERROR') {
+      return HttpResponse.badRequest(signUpInfoValidationResult.errors)
     }
     
-    const signUpResult = await AuthService.emailSignUp(signUpInfoValidation.data)
+    const signUpResult = await AuthService.emailSignUp(signUpInfoValidationResult.data)
 
     if (signUpResult.status === 'ERROR') {
       switch (signUpResult.errors) {
@@ -62,16 +61,15 @@ const emailSignUp = async (request: Request): Promise<EmailSignUpResponse> => {
       }
     }
 
-    const authenticatedUserValidation = validate({ data: signUpResult.data, schema: AuthUserDTOSchema })
+    const emailSignUpResponseValidationResult = validate({ data: signUpResult.data, schema: AuthUserDTOSchema })
 
-    if (authenticatedUserValidation.status === 'ERROR') {
-      console.error('Validation error for authenticated user data in email sign up controller:', authenticatedUserValidation.errors)
+    if (emailSignUpResponseValidationResult.status === 'ERROR') {
       return HttpResponse.internalServerError()
     }
 
-    return HttpResponse.created(authenticatedUserValidation.data)
+    return HttpResponse.created(emailSignUpResponseValidationResult.data)
   } catch (error) {
-    console.error('Error in email sign up controller:', error)
+    console.error('Email sign up error in controller:', error)
     return HttpResponse.internalServerError()
   }
 }
@@ -79,13 +77,13 @@ const emailSignUp = async (request: Request): Promise<EmailSignUpResponse> => {
 const socialSignIn = async (request: Request): Promise<SocialSignInResponse> => {
   try {
     const requestBody = await request.json()
-    const socialProviderValidation = validate({ data: requestBody, schema: SocialProviderRequestSchema })
+    const socialProviderValidationResult = validate({ data: requestBody, schema: SocialProviderRequestSchema })
 
-    if (socialProviderValidation.status === 'ERROR') {
-      return HttpResponse.badRequest(socialProviderValidation.errors)
+    if (socialProviderValidationResult.status === 'ERROR') {
+      return HttpResponse.badRequest(socialProviderValidationResult.errors)
     }
 
-    const signInResult = await AuthService.socialSignIn(socialProviderValidation.data.provider)
+    const signInResult = await AuthService.socialSignIn(socialProviderValidationResult.data.provider)
 
     if (signInResult.status === 'ERROR') {
       switch (signInResult.errors) {
@@ -96,16 +94,15 @@ const socialSignIn = async (request: Request): Promise<SocialSignInResponse> => 
       }
     }
     
-    const authenticatedUserValidation = validate({ data: signInResult.data, schema: AuthUserDTOSchema })
+    const authenticatedUserValidationResult = validate({ data: signInResult.data, schema: AuthUserDTOSchema })
 
-    if (authenticatedUserValidation.status === 'ERROR') {
-      console.error('Validation error for authenticated user data in social sign in controller:', authenticatedUserValidation.errors)
+    if (authenticatedUserValidationResult.status === 'ERROR') {
       return HttpResponse.internalServerError()
     }
 
-    return HttpResponse.ok(signInResult.data)
+    return HttpResponse.ok(authenticatedUserValidationResult.data)
   } catch (error) {
-    console.error('Error in social sign in controller:', error)
+    console.error('Social sign in error in controller:', error)
     return HttpResponse.internalServerError()
   }
 }

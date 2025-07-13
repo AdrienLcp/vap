@@ -5,7 +5,7 @@ type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 const headers = new Headers()
 headers.set('Content-Type', 'application/json')
 
-const fetchApi = async <T>(route: string, method: Method = 'GET', body?: object): Promise<T> => {
+const request = async <T>(route: string, method: Method = 'GET', body?: object): Promise<T> => {
   try {
     const response = await fetch(`/api/${route}`, {
       body: body ? JSON.stringify(body) : undefined,
@@ -21,23 +21,23 @@ const fetchApi = async <T>(route: string, method: Method = 'GET', body?: object)
 }
 
 const GET = async <T>(route: string) => {
-  return await fetchApi<T>(route)
+  return await request<T>(route)
 }
 
-const POST = async <T>(route: string, body: object) => {
-  return await fetchApi<T>(route, 'POST', body)
+const POST = async <T>(route: string, body?: object) => {
+  return await request<T>(route, 'POST', body)
 }
 
-const PUT = async <T>(route: string, body: object) => {
-  return await fetchApi<T>(route, 'PUT', body)
+const PUT = async <T>(route: string, body?: object) => {
+  return await request<T>(route, 'PUT', body)
 }
 
 const DELETE = async <T>(route: string) => {
-  return await fetchApi<T>(route, 'DELETE')
+  return await request<T>(route, 'DELETE')
 }
 
-const PATCH = async <T>(route: string, body: object) => {
-  return await fetchApi<T>(route, 'PATCH', body)
+const PATCH = async <T>(route: string, body?: object) => {
+  return await request<T>(route, 'PATCH', body)
 }
 
 export const ApiClient = {

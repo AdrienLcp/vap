@@ -1,23 +1,8 @@
 import { NextResponse } from 'next/server'
 import type { ZodError } from 'zod'
 
-import { ErrorResult, failure, STATUS_SUCCESS, success, SuccessResult, type UnexpectedError } from '@/helpers/result'
-
-type StatusCode = 200 | 201 | 400 | 401 | 403 | 404 | 409 | 500
-
-type BaseResponse = { statusCode: StatusCode }
-
-export type ErrorResponse<Errors = undefined> = BaseResponse & ErrorResult<Errors>
-export type SuccessResponse<Data = undefined> = BaseResponse & SuccessResult<Data>
-
-export type ApiResponse<Errors = undefined, Data = undefined> =
-  | ErrorResponse<Errors>
-  | SuccessResponse<Data>
-
-export type ResponseWithValidationIssues<Errors, RequestBody = unknown, Data = undefined> = ApiResponse<Errors | ZodError<RequestBody>, Data>
-
-const OK_STATUS_CODE = 200
-const CREATED_STATUS_CODE = 201
+import { type BaseResponse, CREATED_STATUS_CODE, type ErrorResponse, OK_STATUS_CODE } from '@/api/api-domain'
+import { failure, STATUS_SUCCESS, success, type UnexpectedError } from '@/helpers/result'
 
 function ok(): { status: typeof STATUS_SUCCESS, statusCode: typeof OK_STATUS_CODE }
 function ok<Data>(data: Data): { data: Data, status: typeof STATUS_SUCCESS, statusCode: typeof OK_STATUS_CODE }

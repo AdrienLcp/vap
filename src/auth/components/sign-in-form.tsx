@@ -11,67 +11,65 @@ const signInFields = {
   password: 'password'
 }
 
-export const SignInForm: React.FC = () => {
-  const onSubmit = async (formData: FormData) => {
-    const credentials = {
-      email: formData.get(signInFields.email),
-      password: formData.get(signInFields.password)
-    }
-
-    const signInValidation = validate({ data: credentials, schema: SignInRequestSchema })
-
-    if (signInValidation.status === 'ERROR') {
-      console.error('Sign in validation error:', signInValidation.errors)
-      return
-    }
-
-    const signInResult = await authApi.emailSignIn(signInValidation.data)
-
-    if (signInResult.status === 'ERROR') {
-      console.error('Sign in error:', signInResult.errors)
-      return
-    }
-
-    console.log('Sign in success:', signInResult.data)
+const onSubmit = async (formData: FormData) => {
+  const credentials = {
+    email: formData.get(signInFields.email),
+    password: formData.get(signInFields.password)
   }
 
-  return (
-    <>
-      <div>
-        <Form onSubmit={onSubmit}>
-          <label>
-            Email:
-            <input
-              name={signInFields.email}
-              placeholder='jean-neige@gmail.com'
-              type='text'
-            />
-          </label>
+  const signInValidation = validate({ data: credentials, schema: SignInRequestSchema })
 
-          <label>
-            Password:
-            <input
-              name={signInFields.password}
-              placeholder='Password'
-              type='password'
-            />
-          </label>
+  if (signInValidation.status === 'ERROR') {
+    console.error('Sign in validation error:', signInValidation.errors)
+    return
+  }
 
-          <button type='submit'>
-            Submit
-          </button>
-        </Form>
-      </div>
+  const signInResult = await authApi.emailSignIn(signInValidation.data)
 
-      <br />
-      <br />
-      <br />
+  if (signInResult.status === 'ERROR') {
+    console.error('Sign in error:', signInResult.errors)
+    return
+  }
 
-      <div>
-        <button onClick={() => authClient.signOut()}>
-          logout
-        </button>
-      </div>
-    </>
-  )
+  console.log('Sign in success:', signInResult.data)
 }
+
+export const SignInForm: React.FC = () => (
+  <>
+    <div>
+      <Form onSubmit={onSubmit}>
+        <label>
+          Email:
+          <input
+            name={signInFields.email}
+            placeholder='jean-neige@gmail.com'
+            type='text'
+          />
+        </label>
+
+        <label>
+          Password:
+          <input
+            name={signInFields.password}
+            placeholder='Password'
+            type='password'
+          />
+        </label>
+
+        <button type='submit'>
+          Submit
+        </button>
+      </Form>
+    </div>
+
+    <br />
+    <br />
+    <br />
+
+    <div>
+      <button onClick={() => authClient.signOut()}>
+        logout
+      </button>
+    </div>
+  </>
+)

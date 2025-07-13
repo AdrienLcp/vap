@@ -1,7 +1,7 @@
 import type { Role } from '@prisma/client'
 import { z } from 'zod'
 
-import type { NotFound } from '@/api'
+import type { NotFound } from '@/api/api-domain'
 import type { ResponseWithValidationIssues } from '@/api/server'
 import { AuthUserDTOSchema, SignInRequestSchema, SignUpRequestSchema, SocialProviderRequestSchema, SocialProviderSchema } from '@/auth/domain/auth-schema'
 import type { UnexpectedError } from '@/helpers/result'
