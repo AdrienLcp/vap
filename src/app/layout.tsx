@@ -40,4 +40,4 @@ const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => (
   </html>
 )
 
-export default RootLayout;
+export default RootLayout

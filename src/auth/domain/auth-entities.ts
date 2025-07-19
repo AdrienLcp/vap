@@ -1,11 +1,12 @@
 import type { Role } from '@prisma/client'
 import { z } from 'zod'
 
-import type { ApiResponse, ResponseWithValidation, Unauthorized } from '@/api/api-domain'
-import { AuthUserDTOSchema, SignInRequestSchema, SignUpRequestSchema, SocialProviderRequestSchema, SocialProviderSchema } from '@/auth/domain/auth-schema'
+import type { ApiResponse, Unauthorized } from '@/api/api-domain'
+import { AuthUserDTOSchema, SignInRequestSchema, SignUpRequestSchema } from '@/auth/domain/auth-schema'
 import type { NotFound, UnexpectedError } from '@/helpers/result'
+import { AUTH_CONSTANTS } from './auth-constants'
 
-export type AuthUserError = NotFound | UnexpectedError
+export type AuthUserError = NotFound | Unauthorized | UnexpectedError
 
 export type SignInInfo = z.infer<typeof SignInRequestSchema>
 
@@ -28,14 +29,8 @@ export type AuthUser = {
   role: Role
 }
 
-export type SocialProvider = z.infer<typeof SocialProviderSchema>
+export type SocialProvider = typeof AUTH_CONSTANTS.SOCIAL_PROVIDERS[number]
 
 export type AuthUserDTO = z.infer<typeof AuthUserDTOSchema>
 
-export type SocialSignInRequest = z.infer<typeof SocialProviderRequestSchema>
-
 export type AuthUserResponse = ApiResponse<Unauthorized, AuthUserDTO>
-export type EmailSignInResponse = ResponseWithValidation<SignInError, SignInInfo, AuthUserDTO>
-export type EmailSignUpResponse = ResponseWithValidation<SignUpError, SignUpInfo, AuthUserDTO>
-export type SignOutResponse = ApiResponse<Unauthorized>
-export type SocialSignInResponse = ResponseWithValidation<AuthUserError, SocialSignInRequest, AuthUserDTO>

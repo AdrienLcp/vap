@@ -15,14 +15,6 @@ export const SignUpRequestSchema = SignInRequestSchema.extend({
   password: z.string().min(AUTH_CONSTANTS.PASSWORD_MIN_LENGTH, AUTH_CONSTANTS.PASSWORD_TOO_SHORT)
 })
 
-export const SocialProviderSchema = z.enum(AUTH_CONSTANTS.SOCIAL_PROVIDERS, {
-  message: AUTH_CONSTANTS.INVALID_SOCIAL_PROVIDER
-})
-
-export const SocialProviderRequestSchema = z.object({
-  provider: SocialProviderSchema
-})
-
 export const AuthUserDTOSchema = z.object({
   name: UserNameSchema
 })

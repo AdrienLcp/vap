@@ -1,40 +1,16 @@
+import { createAuthClient } from 'better-auth/react'
+
 import { ApiClient } from '@/api/client'
-import type { AuthUserResponse, EmailSignInResponse, EmailSignUpResponse, SignInInfo, SignOutResponse, SignUpInfo, SocialProvider, SocialSignInResponse } from '@/auth/domain/auth-entities'
-import { failure, success } from '@/helpers/result'
+import type { AuthUserDTO, AuthUserResponse, SignInInfo, SignUpError, SignUpInfo, SocialProvider } from '@/auth/domain/auth-entities'
+import { failure, type Result, success } from '@/helpers/result'
 
-const emailSignIn = async (signInInfo: SignInInfo) => {
-  try {
-    const emailSignInResponse = await ApiClient.POST<EmailSignInResponse>('/auth/email-sign-in', signInInfo)
+export const betterAuthClient = createAuthClient()
 
-    if (emailSignInResponse.status === 'SUCCESS') {
-      return success(emailSignInResponse.data)
-    }
-
-    return failure(emailSignInResponse.errors)
-  } catch (error) {
-    console.error('Email sign-in error:', error)
-    return failure()
-  }
-}
-
-const emailSignUp = async (signUpInfo: SignUpInfo) => {
-  try {
-    const emailSignUpResponse = await ApiClient.POST<EmailSignUpResponse>('/auth/email-sign-up', signUpInfo)
-
-    if (emailSignUpResponse.status === 'SUCCESS') {
-      return success(emailSignUpResponse.data)
-    }
-
-    return failure(emailSignUpResponse.errors)
-  } catch (error) {
-    console.error('Email sign-up error:', error)
-    return failure()
-  }
-}
+const { signIn, signOut: betterAuthSignOut, signUp } = betterAuthClient
 
 const findUser = async () => {
   try {
-    const userResponse = await ApiClient.POST<AuthUserResponse>('/auth/user')
+    const userResponse = await ApiClient.GET<AuthUserResponse>('/auth/user')
 
     if (userResponse.status === 'SUCCESS') {
       return success(userResponse.data)
@@ -47,15 +23,58 @@ const findUser = async () => {
   }
 }
 
+const emailSignIn = async (signInInfo: SignInInfo) => {
+  try {
+    const emailSignInResponse = await signIn.email({
+      email: signInInfo.email,
+      password: signInInfo.password
+    })
+
+    if (emailSignInResponse.error) {
+      console.error('Email sign-in error:', emailSignInResponse.error)
+      // handle errors
+      return failure()
+    }
+
+    return await findUser()
+  } catch (error) {
+    console.error('Email sign-in error:', error)
+    return failure()
+  }
+}
+
+const emailSignUp = async (signUpInfo: SignUpInfo): Promise<Result<SignUpError, AuthUserDTO>> => {
+  try {
+    const emailSignUpResponse = await signUp.email({
+      email: signUpInfo.email,
+      name: signUpInfo.name,
+      password: signUpInfo.password
+    })
+
+    if (emailSignUpResponse.error) {
+      console.log('Email sign-up error:', emailSignUpResponse.error)
+      // handle errors
+      return failure()
+    }
+
+    return await findUser()
+  } catch (error) {
+    console.error('Email sign-up error:', error)
+    return failure()
+  }
+}
+
 const signOut = async () => {
   try {
-    const signOutResponse = await ApiClient.POST<SignOutResponse>('/auth/sign-out')
+    const signOutResponse = await betterAuthSignOut()
 
-    if (signOutResponse.status === 'SUCCESS') {
+    if (signOutResponse.data?.success) {
       return success()
     }
 
-    return failure(signOutResponse.errors)
+    console.log('Sign out error:', signOutResponse.error)
+    // handle errors
+    return failure()
   } catch (error) {
     console.error('Sign out error:', error)
     return failure()
@@ -64,13 +83,15 @@ const signOut = async () => {
 
 const socialSignIn = async (provider: SocialProvider) => {
   try {
-    const signInResponse = await ApiClient.POST<SocialSignInResponse>('/auth/social-sign-in', { provider })
+    const signInResponse = await signIn.social({ provider })
 
-    if (signInResponse.status === 'SUCCESS') {
-      return success(signInResponse.data)
+    if (signInResponse.error) {
+      console.error('Social sign-in error:', signInResponse.error)
+      // handle errors
+      return failure()
     }
 
-    return failure(signInResponse.errors)
+    return await findUser()
   } catch (error) {
     console.error('Social sign-in error:', error)
     return failure()

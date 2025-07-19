@@ -1,78 +1,8 @@
 import { HttpResponse } from '@/api/server'
-import type { AuthUserResponse, EmailSignInResponse, EmailSignUpResponse, SignOutResponse, SocialSignInResponse } from '@/auth/domain/auth-entities'
-import { AuthUserDTOSchema, SignInRequestSchema, SignUpRequestSchema, SocialProviderRequestSchema } from '@/auth/domain/auth-schema'
+import type { AuthUserResponse } from '@/auth/domain/auth-entities'
+import { AuthUserDTOSchema } from '@/auth/domain/auth-schema'
 import { AuthService } from '@/auth/auth-service'
 import { validate } from '@/helpers/validation'
-
-const emailSignIn = async (request: Request): EmailSignInResponse => {
-  try {
-    const requestBody = await request.json()
-    const signInInfoValidationResult = validate({ data: requestBody, schema: SignInRequestSchema })
-
-    if (signInInfoValidationResult.status === 'ERROR') {
-      return HttpResponse.badRequest(signInInfoValidationResult.errors)
-    }
-    
-    const signInResult = await AuthService.emailSignIn(signInInfoValidationResult.data)
-
-    if (signInResult.status === 'ERROR') {
-      switch (signInResult.errors) {
-        case 'INVALID_CREDENTIALS':
-          return HttpResponse.unauthorized('INVALID_CREDENTIALS')
-        case 'NOT_FOUND':
-          return HttpResponse.notFound('NOT_FOUND')
-        default:
-          return HttpResponse.internalServerError(signInResult.errors)
-      }
-    }
-    
-    const emailSignInResponseValidationResult = validate({ data: signInResult.data, schema: AuthUserDTOSchema })
-
-    if (emailSignInResponseValidationResult.status === 'ERROR') {
-      return HttpResponse.internalServerError()
-    }
-
-    return HttpResponse.ok(emailSignInResponseValidationResult.data)
-  } catch (error) {
-    console.error('Email sign in error in controller:', error)
-    return HttpResponse.internalServerError()
-  }
-}
-
-const emailSignUp = async (request: Request): EmailSignUpResponse => {
-  try {
-    const requestBody = await request.json()
-    const signUpInfoValidationResult = validate({ data: requestBody, schema: SignUpRequestSchema })
-
-    if (signUpInfoValidationResult.status === 'ERROR') {
-      return HttpResponse.badRequest(signUpInfoValidationResult.errors)
-    }
-    
-    const signUpResult = await AuthService.emailSignUp(signUpInfoValidationResult.data)
-
-    if (signUpResult.status === 'ERROR') {
-      switch (signUpResult.errors) {
-        case 'USER_ALREADY_EXISTS':
-          return HttpResponse.conflict('USER_ALREADY_EXISTS')
-        case 'NOT_FOUND':
-          return HttpResponse.notFound('NOT_FOUND')
-        default:
-          return HttpResponse.internalServerError(signUpResult.errors)
-      }
-    }
-
-    const emailSignUpResponseValidationResult = validate({ data: signUpResult.data, schema: AuthUserDTOSchema })
-
-    if (emailSignUpResponseValidationResult.status === 'ERROR') {
-      return HttpResponse.internalServerError()
-    }
-
-    return HttpResponse.created(emailSignUpResponseValidationResult.data)
-  } catch (error) {
-    console.error('Email sign up error in controller:', error)
-    return HttpResponse.internalServerError()
-  }
-}
 
 const findUser = async (): AuthUserResponse => {
   try {
@@ -100,63 +30,6 @@ const findUser = async (): AuthUserResponse => {
   }
 }
 
-const signOut = async (): SignOutResponse => {
-  try {
-    const signOutResult = await AuthService.signOut()
-
-    if (signOutResult.status === 'ERROR') {
-      switch (signOutResult.errors) {
-        case 'UNAUTHORIZED':
-          return HttpResponse.unauthorized('UNAUTHORIZED')
-        default:
-          return HttpResponse.internalServerError(signOutResult.errors)
-      }
-    }
-
-    return HttpResponse.ok()
-  } catch (error) {
-    console.error('Sign out error in controller:', error)
-    return HttpResponse.internalServerError()
-  }
-}
-
-const socialSignIn = async (request: Request): SocialSignInResponse => {
-  try {
-    const requestBody = await request.json()
-    const socialProviderValidationResult = validate({ data: requestBody, schema: SocialProviderRequestSchema })
-
-    if (socialProviderValidationResult.status === 'ERROR') {
-      return HttpResponse.badRequest(socialProviderValidationResult.errors)
-    }
-
-    const signInResult = await AuthService.socialSignIn(socialProviderValidationResult.data.provider)
-
-    if (signInResult.status === 'ERROR') {
-      switch (signInResult.errors) {
-        case 'NOT_FOUND':
-          return HttpResponse.notFound('NOT_FOUND')
-        default:
-          return HttpResponse.internalServerError(signInResult.errors)
-      }
-    }
-    
-    const authenticatedUserValidationResult = validate({ data: signInResult.data, schema: AuthUserDTOSchema })
-
-    if (authenticatedUserValidationResult.status === 'ERROR') {
-      return HttpResponse.internalServerError()
-    }
-
-    return HttpResponse.ok(authenticatedUserValidationResult.data)
-  } catch (error) {
-    console.error('Social sign in error in controller:', error)
-    return HttpResponse.internalServerError()
-  }
-}
-
 export const AuthController = {
-  emailSignIn,
-  emailSignUp,
-  findUser,
-  signOut,
-  socialSignIn
+  findUser
 }

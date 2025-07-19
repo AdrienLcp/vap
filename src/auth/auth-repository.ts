@@ -1,76 +1,35 @@
 import type { Unauthorized } from '@/api/api-domain'
-import type { AuthUser, AuthUserError, SignInError, SignInInfo, SignUpError, SignUpInfo, SocialProvider } from '@/auth/domain/auth-entities'
-import { DatabaseAuthAdapter } from '@/auth/adapters/database-auth-adapter'
-import { ExternalAuthAdapter } from '@/auth/adapters/external-auth-adapter'
+import type { AuthUser } from '@/auth/domain/auth-entities'
 import { failure, type Result, success } from '@/helpers/result'
+import { database } from '@/infrastructure/database'
+import { auth } from '@/lib/auth'
+import { headers as getHeaders } from 'next/headers'
 
-const findUserById = async (userId: string): Promise<Result<AuthUserError, AuthUser>> => {
-  const userResult = await DatabaseAuthAdapter.findUserById(userId)
+const findUser = async (): Promise<Result<Unauthorized, AuthUser>> => {
+  const headers = await getHeaders()
 
-  if (userResult.status === 'ERROR') {
-    return userResult
+  const session = await auth.api.getSession({ headers })
+
+  if (!session) {
+    return failure('UNAUTHORIZED')
   }
 
-  const user = userResult.data
+  const user = await database.user.findUnique({
+    where: { id: session.user.id },
+    select: {
+      email: true,
+      name: true,
+      role: true
+    }
+  })
 
-  const authUser: AuthUser = {
-    email: user.email,
-    name: user.name,
-    role: user.role
+  if (!user) {
+    return failure('UNAUTHORIZED')
   }
 
-  return success(authUser)
-}
-
-const emailSignIn = async (signInInfo: SignInInfo): Promise<Result<SignInError, AuthUser>> => {
-  const authInfoResult = await ExternalAuthAdapter.emailSignIn(signInInfo)
-
-  if (authInfoResult.status === 'ERROR') {
-    return authInfoResult
-  }
-
-  return await findUserById(authInfoResult.data.user.id)
-}
-
-const emailSignUp = async (signUpInfo: SignUpInfo): Promise<Result<SignUpError, AuthUser>> => {
-  const authInfoResult = await ExternalAuthAdapter.emailSignUp(signUpInfo)
-
-  if (authInfoResult.status === 'ERROR') {
-    return authInfoResult
-  }
-
-  return await findUserById(authInfoResult.data.user.id)
-}
-
-const findUser = async () => {
-  const externalUserResult = await ExternalAuthAdapter.findUser()
-
-  if (externalUserResult.status === 'ERROR') {
-    return externalUserResult
-  }
-
-  return await findUserById(externalUserResult.data.id)
-}
-
-const signOut = async (): Promise<Result<Unauthorized>> => {
-  return await ExternalAuthAdapter.signOut()
-}
-
-const socialSignIn = async (socialProvider: SocialProvider): Promise<Result<AuthUserError, AuthUser>> => {
-  const authInfoResult = await ExternalAuthAdapter.socialSignIn(socialProvider)
-
-  if (authInfoResult.status === 'ERROR') {
-    return failure()
-  }
-
-  return await findUserById(authInfoResult.data.user.id)
+  return success(user)
 }
 
 export const AuthRepository = {
-  emailSignIn,
-  emailSignUp,
-  findUser,
-  findUserById,
-  signOut,
-  socialSignIn
+  findUser
 }

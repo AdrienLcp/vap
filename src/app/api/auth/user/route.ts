@@ -1,6 +1,6 @@
 import { nextResponse } from '@/api/server'
 import { AuthController } from '@/auth/auth-controller'
 
-export const POST = () => {
+export const GET = () => {
   return nextResponse(AuthController.findUser())
 }
