@@ -17,7 +17,6 @@ const findUser = async (): Promise<Result<Unauthorized, AuthUser>> => {
   const user = await database.user.findUnique({
     where: { id: session.user.id },
     select: {
-      email: true,
       name: true,
       role: true
     }

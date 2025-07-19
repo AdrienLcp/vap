@@ -1,8 +1,6 @@
 'use client'
 
 import { AuthClient } from '@/auth/auth-client'
-import { SignUpRequestSchema } from '@/auth/domain/auth-schema'
-import { validate } from '@/helpers/validation'
 import { Form } from '@/presentation/components/forms/form'
 
 const signUpFields = {
@@ -13,18 +11,12 @@ const signUpFields = {
 
 const onSubmit = async (formData: FormData) => {
   const credentials = {
-    email: formData.get(signUpFields.email),
-    name: formData.get(signUpFields.name),
-    password: formData.get(signUpFields.password)
+    email: formData.get(signUpFields.email) as string,
+    name: formData.get(signUpFields.name) as string,
+    password: formData.get(signUpFields.password) as string
   }
 
-  const signUpValidation = validate({ data: credentials, schema: SignUpRequestSchema })
-
-  if (signUpValidation.status === 'ERROR') {
-    return
-  }
-
-  const signUpResult = await AuthClient.emailSignUp(signUpValidation.data)
+  const signUpResult = await AuthClient.emailSignUp(credentials)
 
   if (signUpResult.status === 'ERROR') {
     console.error('Sign up error:', signUpResult.errors)

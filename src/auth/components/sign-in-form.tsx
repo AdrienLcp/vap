@@ -1,8 +1,6 @@
 'use client'
 
 import { AuthClient } from '@/auth/auth-client'
-import { SignInRequestSchema } from '@/auth/domain/auth-schema'
-import { validate } from '@/helpers/validation'
 import { Form } from '@/presentation/components/forms/form'
 
 const signInFields = {
@@ -12,18 +10,11 @@ const signInFields = {
 
 const onSubmit = async (formData: FormData) => {
   const credentials = {
-    email: formData.get(signInFields.email),
-    password: formData.get(signInFields.password)
+    email: formData.get(signInFields.email) as string,
+    password: formData.get(signInFields.password) as string
   }
 
-  const signInValidation = validate({ data: credentials, schema: SignInRequestSchema })
-
-  if (signInValidation.status === 'ERROR') {
-    console.error('Sign in validation error:', signInValidation.errors)
-    return
-  }
-
-  const signInResult = await AuthClient.emailSignIn(signInValidation.data)
+  const signInResult = await AuthClient.emailSignIn(credentials)
 
   if (signInResult.status === 'ERROR') {
     console.error('Sign in error:', signInResult.errors)

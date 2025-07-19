@@ -24,7 +24,6 @@ export type SignUpError =
   | UserAlreadyExists
 
 export type AuthUser = {
-  email: string
   name: string
   role: Role
 }
