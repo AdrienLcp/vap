@@ -1,8 +1,10 @@
 import type { User } from 'better-auth'
 import { APIError } from 'better-auth/api'
 import type { SocialProvider } from 'better-auth/social-providers'
+import { headers as getHeaders } from 'next/headers'
 
-import type { SignInInfo, SignUpInfo } from '@/auth/domain/auth-entities'
+import type { Unauthorized } from '@/api/api-domain'
+import type { InvalidCredentials, SignInInfo, SignUpInfo, UserAlreadyExists } from '@/auth/domain/auth-entities'
 import { failure, type Result, success } from '@/helpers/result'
 import { auth } from '@/lib/auth'
 
@@ -10,9 +12,7 @@ type ExternalAuthInfo = {
   user: User
 }
 
-type ExternalAuthSignInErrorCode = 'INVALID_EMAIL_OR_PASSWORD'
-
-const emailSignIn = async (signInInfo: SignInInfo): Promise<Result<ExternalAuthSignInErrorCode, ExternalAuthInfo>> => {
+const emailSignIn = async (signInInfo: SignInInfo): Promise<Result<InvalidCredentials, ExternalAuthInfo>> => {
   try {
     const authInfo = await auth.api.signInEmail({
       body: {
@@ -26,7 +26,7 @@ const emailSignIn = async (signInInfo: SignInInfo): Promise<Result<ExternalAuthS
     if (error instanceof APIError && error.body?.code) {
       switch (error.body.code) {
         case 'INVALID_EMAIL_OR_PASSWORD':
-          return failure('INVALID_EMAIL_OR_PASSWORD')
+          return failure('INVALID_CREDENTIALS')
         default:
           console.error('Unknown better-auth error code in email sign in adapter:', error.body.code)
           return failure()
@@ -38,9 +38,7 @@ const emailSignIn = async (signInInfo: SignInInfo): Promise<Result<ExternalAuthS
   }
 }
 
-type ExternalAuthSignUpErrorCode = 'USER_ALREADY_EXISTS'
-
-const emailSignUp = async (signUpInfo: SignUpInfo): Promise<Result<ExternalAuthSignUpErrorCode, ExternalAuthInfo>> => {
+const emailSignUp = async (signUpInfo: SignUpInfo): Promise<Result<UserAlreadyExists, ExternalAuthInfo>> => {
   try  {
     const authInfo = await auth.api.signUpEmail({
       body: {
@@ -63,6 +61,44 @@ const emailSignUp = async (signUpInfo: SignUpInfo): Promise<Result<ExternalAuthS
     }
 
     console.error('Error in better auth adapter during email sign up:', error)
+    return failure()
+  }
+}
+
+const getUser = async (): Promise<Result<Unauthorized, User>> => {
+  const headers = await getHeaders()
+
+  const session = await auth.api.getSession({ headers })
+
+  if (!session) {
+    return failure('UNAUTHORIZED')
+  }
+
+  return success(session.user)
+}
+
+const signOut = async (): Promise<Result<Unauthorized>> => {
+  try {
+    const headers = await getHeaders()
+    const signOutResult = await auth.api.signOut({ headers })
+
+    if (signOutResult.success) {
+      return success()
+    }
+
+    return failure()
+  } catch (error) {
+    if (error instanceof APIError && error.body?.code) {
+      switch (error.body.code) {
+        case 'FAILED_TO_GET_SESSION':
+          return failure('UNAUTHORIZED')
+        default:
+          console.error('Unknown better-auth error code in email sign up adapter:', error.body.code)
+          return failure()
+      }
+    }
+
+    console.error('Error in better auth adapter during sign out:', error)
     return failure()
   }
 }
@@ -96,7 +132,9 @@ const socialSignIn = async (socialProvider: SocialProvider): Promise<Result<unde
 }
 
 export const ExternalAuthAdapter = {
+  getUser,
   emailSignIn,
   emailSignUp,
+  signOut,
   socialSignIn
 }

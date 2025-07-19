@@ -24,9 +24,9 @@ function created<Data>(data?: Data) {
   return { ...success(data), statusCode: CREATED_STATUS_CODE }
 }
 
-export function errorResponse(statusCode: number): ErrorResponse
-export function errorResponse<Errors>(statusCode: number, errors: Errors): ErrorResponse<Errors>
-export function errorResponse<Errors>(statusCode: number, errors?: Errors) {
+function errorResponse(statusCode: number): ErrorResponse
+function errorResponse<Errors>(statusCode: number, errors: Errors): ErrorResponse<Errors>
+function errorResponse<Errors>(statusCode: number, errors?: Errors) {
   if (errors == null) {
     return { ...failure(), statusCode }
   }
@@ -36,15 +36,15 @@ export function errorResponse<Errors>(statusCode: number, errors?: Errors) {
 
 const badRequest = <RequestBody, Errors extends ZodError<RequestBody>>(errors: Errors): ErrorResponse<Errors> => errorResponse(400, errors)
 
-const unauthorized = <Errors>(errors: Errors): ErrorResponse<Errors> => errorResponse(401, errors)
+const unauthorized = <Errors = undefined>(errors: Errors): ErrorResponse<Errors> => errorResponse(401, errors)
 
-const forbidden = <Errors>(errors: Errors): ErrorResponse<Errors> => errorResponse(403, errors)
+const forbidden = <Errors = undefined>(errors: Errors): ErrorResponse<Errors> => errorResponse(403, errors)
 
-const notFound = <Errors>(errors: Errors): ErrorResponse<Errors> => errorResponse(404, errors)
+const notFound = <Errors = undefined>(errors: Errors): ErrorResponse<Errors> => errorResponse(404, errors)
 
-const conflict = <Errors>(errors: Errors): ErrorResponse<Errors> => errorResponse(409, errors)
+const conflict = <Errors = undefined>(errors: Errors): ErrorResponse<Errors> => errorResponse(409, errors)
 
-const internalServerError = <Errors>(errors?: Errors): ErrorResponse<Errors | UnexpectedError> => errorResponse(500, errors)
+const internalServerError = <Errors = undefined>(errors?: Errors): ErrorResponse<Errors | UnexpectedError> => errorResponse(500, errors)
 
 export const HttpResponse = {
   ok,

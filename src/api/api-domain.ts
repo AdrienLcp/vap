@@ -15,11 +15,9 @@ export type BaseResponse = { statusCode: StatusCode }
 export type ErrorResponse<Errors = undefined> = BaseResponse & ErrorResult<Errors>
 export type SuccessResponse<Data = undefined> = BaseResponse & SuccessResult<Data>
 
-export type ApiResponse<Errors = undefined, Data = undefined> =
-  | ErrorResponse<Errors>
-  | SuccessResponse<Data>
+export type ApiResponse<Errors = undefined, Data = undefined> = Promise<ErrorResponse<Errors> | SuccessResponse<Data>>
 
-export type ResponseWithValidationIssues<Errors, RequestBody = unknown, Data = undefined> = ApiResponse<Errors | ZodError<RequestBody>, Data>
+export type ResponseWithValidation<Errors, RequestBody = unknown, Data = undefined> = ApiResponse<Errors | ZodError<RequestBody>, Data>
 
 export const OK_STATUS_CODE = 200
 export const CREATED_STATUS_CODE = 201

@@ -1,6 +1,6 @@
 import type { AuthUser } from '@/auth/domain/auth-entities'
 import { failure, type Result, success } from '@/helpers/result'
-import { database } from '@/lib/database'
+import { database } from '@/infrastructure/database'
 
 type DatabaseUserError = 'NOT_FOUND'
 

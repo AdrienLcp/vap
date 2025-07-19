@@ -1,3 +1,4 @@
+import type { Unauthorized } from '@/api/api-domain'
 import type { AuthUser, AuthUserError, SignInError, SignInInfo, SignUpError, SignUpInfo, SocialProvider } from '@/auth/domain/auth-entities'
 import { DatabaseAuthAdapter } from '@/auth/adapters/database-auth-adapter'
 import { ExternalAuthAdapter } from '@/auth/adapters/external-auth-adapter'
@@ -25,12 +26,7 @@ const emailSignIn = async (signInInfo: SignInInfo): Promise<Result<SignInError, 
   const authInfoResult = await ExternalAuthAdapter.emailSignIn(signInInfo)
 
   if (authInfoResult.status === 'ERROR') {
-    switch (authInfoResult.errors) {
-      case 'INVALID_EMAIL_OR_PASSWORD':
-        return failure('INVALID_CREDENTIALS')
-      default:
-        return failure()
-    }
+    return authInfoResult
   }
 
   return await findUserById(authInfoResult.data.user.id)
@@ -40,15 +36,18 @@ const emailSignUp = async (signUpInfo: SignUpInfo): Promise<Result<SignUpError, 
   const authInfoResult = await ExternalAuthAdapter.emailSignUp(signUpInfo)
 
   if (authInfoResult.status === 'ERROR') {
-    switch (authInfoResult.errors) {
-      case 'USER_ALREADY_EXISTS':
-        return failure('EMAIL_ALREADY_EXISTS')
-      default:
-        return failure()
-    }
+    return authInfoResult
   }
 
   return await findUserById(authInfoResult.data.user.id)
+}
+
+const getUser = async () => {
+  return await ExternalAuthAdapter.getUser()
+}
+
+const signOut = async (): Promise<Result<Unauthorized>> => {
+  return await ExternalAuthAdapter.signOut()
 }
 
 const socialSignIn = async (socialProvider: SocialProvider): Promise<Result<AuthUserError, AuthUser>> => {
@@ -64,5 +63,7 @@ const socialSignIn = async (socialProvider: SocialProvider): Promise<Result<Auth
 export const AuthRepository = {
   emailSignIn,
   emailSignUp,
+  getUser,
+  signOut,
   socialSignIn
 }

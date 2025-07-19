@@ -1,5 +1,5 @@
 import { HttpResponse } from '@/api/server'
-import type { EmailSignInResponse, EmailSignUpResponse, SocialSignInResponse } from '@/auth/domain/auth-entities'
+import type { EmailSignInResponse, EmailSignUpResponse, SignOutResponse, SocialSignInResponse } from '@/auth/domain/auth-entities'
 import { AuthUserDTOSchema, SignInRequestSchema, SignUpRequestSchema, SocialProviderRequestSchema } from '@/auth/domain/auth-schema'
 import { AuthService } from '@/auth/auth-service'
 import { validate } from '@/helpers/validation'
@@ -39,7 +39,7 @@ const emailSignIn = async (request: Request): Promise<EmailSignInResponse> => {
   }
 }
 
-const emailSignUp = async (request: Request): Promise<EmailSignUpResponse> => {
+const emailSignUp = async (request: Request): EmailSignUpResponse => {
   try {
     const requestBody = await request.json()
     const signUpInfoValidationResult = validate({ data: requestBody, schema: SignUpRequestSchema })
@@ -52,8 +52,8 @@ const emailSignUp = async (request: Request): Promise<EmailSignUpResponse> => {
 
     if (signUpResult.status === 'ERROR') {
       switch (signUpResult.errors) {
-        case 'EMAIL_ALREADY_EXISTS':
-          return HttpResponse.conflict('EMAIL_ALREADY_EXISTS')
+        case 'USER_ALREADY_EXISTS':
+          return HttpResponse.conflict('USER_ALREADY_EXISTS')
         case 'NOT_FOUND':
           return HttpResponse.notFound('NOT_FOUND')
         default:
@@ -74,7 +74,27 @@ const emailSignUp = async (request: Request): Promise<EmailSignUpResponse> => {
   }
 }
 
-const socialSignIn = async (request: Request): Promise<SocialSignInResponse> => {
+const signOut = async (): SignOutResponse => {
+  try {
+    const signOutResult = await AuthService.signOut()
+
+    if (signOutResult.status === 'ERROR') {
+      switch (signOutResult.errors) {
+        case 'UNAUTHORIZED':
+          return HttpResponse.unauthorized('UNAUTHORIZED')
+        default:
+          return HttpResponse.internalServerError(signOutResult.errors)
+      }
+    }
+
+    return HttpResponse.ok()
+  } catch (error) {
+    console.error('Sign out error in controller:', error)
+    return HttpResponse.internalServerError()
+  }
+}
+
+const socialSignIn = async (request: Request): SocialSignInResponse => {
   try {
     const requestBody = await request.json()
     const socialProviderValidationResult = validate({ data: requestBody, schema: SocialProviderRequestSchema })
@@ -110,5 +130,6 @@ const socialSignIn = async (request: Request): Promise<SocialSignInResponse> => 
 export const AuthController = {
   emailSignIn,
   emailSignUp,
+  signOut,
   socialSignIn
 }
