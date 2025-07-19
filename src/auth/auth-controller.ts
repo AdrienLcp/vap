@@ -1,10 +1,10 @@
 import { HttpResponse } from '@/api/server'
-import type { EmailSignInResponse, EmailSignUpResponse, SignOutResponse, SocialSignInResponse } from '@/auth/domain/auth-entities'
+import type { AuthUserResponse, EmailSignInResponse, EmailSignUpResponse, SignOutResponse, SocialSignInResponse } from '@/auth/domain/auth-entities'
 import { AuthUserDTOSchema, SignInRequestSchema, SignUpRequestSchema, SocialProviderRequestSchema } from '@/auth/domain/auth-schema'
 import { AuthService } from '@/auth/auth-service'
 import { validate } from '@/helpers/validation'
 
-const emailSignIn = async (request: Request): Promise<EmailSignInResponse> => {
+const emailSignIn = async (request: Request): EmailSignInResponse => {
   try {
     const requestBody = await request.json()
     const signInInfoValidationResult = validate({ data: requestBody, schema: SignInRequestSchema })
@@ -74,6 +74,32 @@ const emailSignUp = async (request: Request): EmailSignUpResponse => {
   }
 }
 
+const findUser = async (): AuthUserResponse => {
+  try {
+    const userResult = await AuthService.findUser()
+
+    if (userResult.status === 'ERROR') {
+      switch (userResult.errors) {
+        case 'UNAUTHORIZED':
+          return HttpResponse.unauthorized('UNAUTHORIZED')
+        default:
+          return HttpResponse.internalServerError(userResult.errors)
+      }
+    }
+
+    const userValidationResult = validate({ data: userResult.data, schema: AuthUserDTOSchema })
+
+    if (userValidationResult.status === 'ERROR') {
+      return HttpResponse.internalServerError()
+    }
+
+    return HttpResponse.ok(userValidationResult.data)
+  } catch (error) {
+    console.error('Find user error in controller:', error)
+    return HttpResponse.internalServerError()
+  }
+}
+
 const signOut = async (): SignOutResponse => {
   try {
     const signOutResult = await AuthService.signOut()
@@ -130,6 +156,7 @@ const socialSignIn = async (request: Request): SocialSignInResponse => {
 export const AuthController = {
   emailSignIn,
   emailSignUp,
+  findUser,
   signOut,
   socialSignIn
 }

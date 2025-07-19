@@ -42,8 +42,14 @@ const emailSignUp = async (signUpInfo: SignUpInfo): Promise<Result<SignUpError, 
   return await findUserById(authInfoResult.data.user.id)
 }
 
-const getUser = async () => {
-  return await ExternalAuthAdapter.getUser()
+const findUser = async () => {
+  const externalUserResult = await ExternalAuthAdapter.findUser()
+
+  if (externalUserResult.status === 'ERROR') {
+    return externalUserResult
+  }
+
+  return await findUserById(externalUserResult.data.id)
 }
 
 const signOut = async (): Promise<Result<Unauthorized>> => {
@@ -63,7 +69,8 @@ const socialSignIn = async (socialProvider: SocialProvider): Promise<Result<Auth
 export const AuthRepository = {
   emailSignIn,
   emailSignUp,
-  getUser,
+  findUser,
+  findUserById,
   signOut,
   socialSignIn
 }

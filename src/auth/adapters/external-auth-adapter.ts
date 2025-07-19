@@ -65,7 +65,7 @@ const emailSignUp = async (signUpInfo: SignUpInfo): Promise<Result<UserAlreadyEx
   }
 }
 
-const getUser = async (): Promise<Result<Unauthorized, User>> => {
+const findUser = async (): Promise<Result<Unauthorized, User>> => {
   const headers = await getHeaders()
 
   const session = await auth.api.getSession({ headers })
@@ -132,7 +132,7 @@ const socialSignIn = async (socialProvider: SocialProvider): Promise<Result<unde
 }
 
 export const ExternalAuthAdapter = {
-  getUser,
+  findUser,
   emailSignIn,
   emailSignUp,
   signOut,

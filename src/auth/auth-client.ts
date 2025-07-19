@@ -1,5 +1,5 @@
 import { ApiClient } from '@/api/client'
-import type { EmailSignInResponse, EmailSignUpResponse, SignInInfo, SignOutResponse, SignUpInfo, SocialProvider, SocialSignInResponse } from '@/auth/domain/auth-entities'
+import type { AuthUserResponse, EmailSignInResponse, EmailSignUpResponse, SignInInfo, SignOutResponse, SignUpInfo, SocialProvider, SocialSignInResponse } from '@/auth/domain/auth-entities'
 import { failure, success } from '@/helpers/result'
 
 const emailSignIn = async (signInInfo: SignInInfo) => {
@@ -10,16 +10,7 @@ const emailSignIn = async (signInInfo: SignInInfo) => {
       return success(emailSignInResponse.data)
     }
 
-    switch (emailSignInResponse.errors) {
-      case 'INVALID_CREDENTIALS':
-        return failure('INVALID_CREDENTIALS')
-      case 'NOT_FOUND':
-        return failure('NOT_FOUND')
-      case 'UNEXPECTED_ERROR':
-        return failure()
-      default:
-        return failure(emailSignInResponse.errors)
-    }
+    return failure(emailSignInResponse.errors)
   } catch (error) {
     console.error('Email sign-in error:', error)
     return failure()
@@ -34,18 +25,24 @@ const emailSignUp = async (signUpInfo: SignUpInfo) => {
       return success(emailSignUpResponse.data)
     }
 
-    switch (emailSignUpResponse.errors) {
-      case 'USER_ALREADY_EXISTS':
-        return failure('USER_ALREADY_EXISTS')
-      case 'NOT_FOUND':
-        return failure('NOT_FOUND')
-      case 'UNEXPECTED_ERROR':
-        return failure()
-      default:
-        return failure(emailSignUpResponse.errors)
-    }
+    return failure(emailSignUpResponse.errors)
   } catch (error) {
     console.error('Email sign-up error:', error)
+    return failure()
+  }
+}
+
+const findUser = async () => {
+  try {
+    const userResponse = await ApiClient.POST<AuthUserResponse>('/auth/user')
+
+    if (userResponse.status === 'SUCCESS') {
+      return success(userResponse.data)
+    }
+
+    return failure(userResponse.errors)
+  } catch (error) {
+    console.error('Sign out error:', error)
     return failure()
   }
 }
@@ -73,14 +70,7 @@ const socialSignIn = async (provider: SocialProvider) => {
       return success(signInResponse.data)
     }
 
-    switch (signInResponse.errors) {
-      case 'NOT_FOUND':
-        return failure('NOT_FOUND')
-      case 'UNEXPECTED_ERROR':
-        return failure()
-      default:
-        return failure(signInResponse.errors)
-    }
+    return failure(signInResponse.errors)
   } catch (error) {
     console.error('Social sign-in error:', error)
     return failure()
@@ -90,6 +80,7 @@ const socialSignIn = async (provider: SocialProvider) => {
 export const AuthClient = {
   emailSignIn,
   emailSignUp,
+  findUser,
   signOut,
   socialSignIn
 }

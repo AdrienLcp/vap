@@ -34,6 +34,7 @@ export type AuthUserDTO = z.infer<typeof AuthUserDTOSchema>
 
 export type SocialSignInRequest = z.infer<typeof SocialProviderRequestSchema>
 
+export type AuthUserResponse = ApiResponse<Unauthorized, AuthUserDTO>
 export type EmailSignInResponse = ResponseWithValidation<SignInError, SignInInfo, AuthUserDTO>
 export type EmailSignUpResponse = ResponseWithValidation<SignUpError, SignUpInfo, AuthUserDTO>
 export type SignOutResponse = ApiResponse<Unauthorized>
