@@ -1,6 +1,6 @@
 import { HttpResponse } from '@/api/server'
 import type { AuthUserResponse } from '@/auth/domain/auth-entities'
-import { AuthUserDTOSchema } from '@/auth/domain/auth-schema'
+import { AuthUserDTOSchema } from '@/auth/domain/auth-schemas'
 import { AuthService } from '@/auth/auth-service'
 import { validate } from '@/helpers/validation'
 

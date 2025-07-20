@@ -1,39 +1,42 @@
 import { createAuthClient } from 'better-auth/react'
 
+import type { Unauthorized } from '@/api/api-domain'
 import { ApiClient } from '@/api/client'
-import type { AuthUserDTO, AuthUserResponse, SignInInfo, SignUpError, SignUpInfo, SocialProvider } from '@/auth/domain/auth-entities'
+import type { AuthUserDTO, AuthUserError, AuthUserResponse, SignInError, SignInInfo, SignUpError, SignUpInfo, SocialProvider } from '@/auth/domain/auth-entities'
 import { failure, type Result, success } from '@/helpers/result'
 
 export const betterAuthClient = createAuthClient()
 
-const { signIn, signOut: betterAuthSignOut, signUp } = betterAuthClient
-
-const findUser = async () => {
+const findUser = async (): Promise<Result<AuthUserError, AuthUserDTO>> => {
   try {
     const userResponse = await ApiClient.GET<AuthUserResponse>('/auth/user')
 
-    if (userResponse.status === 'SUCCESS') {
-      return success(userResponse.data)
+    if (userResponse.status === 'ERROR') {
+      return failure(userResponse.errors)
     }
 
-    return failure(userResponse.errors)
+    return success(userResponse.data)
   } catch (error) {
     console.error('Sign out error:', error)
     return failure()
   }
 }
 
-const emailSignIn = async (signInInfo: SignInInfo) => {
+const emailSignIn = async (signInInfo: SignInInfo): Promise<Result<SignInError, AuthUserDTO>> => {
   try {
-    const emailSignInResponse = await signIn.email({
+    const emailSignInResponse = await betterAuthClient.signIn.email({
       email: signInInfo.email,
       password: signInInfo.password
     })
 
     if (emailSignInResponse.error) {
-      console.error('Email sign-in error:', emailSignInResponse.error)
-      // handle errors
-      return failure()
+      switch (emailSignInResponse.error.code) {
+        case 'INVALID_EMAIL_OR_PASSWORD':
+          return failure('INVALID_CREDENTIALS')
+        default:
+          console.error('Unexpected error during email sign-in:', emailSignInResponse.error)
+          return failure()
+      }
     }
 
     return await findUser()
@@ -45,16 +48,22 @@ const emailSignIn = async (signInInfo: SignInInfo) => {
 
 const emailSignUp = async (signUpInfo: SignUpInfo): Promise<Result<SignUpError, AuthUserDTO>> => {
   try {
-    const emailSignUpResponse = await signUp.email({
+    const emailSignUpResponse = await betterAuthClient.signUp.email({
       email: signUpInfo.email,
       name: signUpInfo.name,
       password: signUpInfo.password
     })
 
     if (emailSignUpResponse.error) {
-      console.log('Email sign-up error:', emailSignUpResponse.error)
-      // handle errors
-      return failure()
+      switch (emailSignUpResponse.error.code) {
+        case 'PASSWORD_TOO_SHORT':
+          return failure('PASSWORD_TOO_SHORT')
+        case 'USER_ALREADY_EXISTS':
+          return failure('USER_ALREADY_EXISTS')
+        default:
+          console.error('Unexpected error during email sign-up:', emailSignUpResponse.error)
+          return failure()
+      }
     }
 
     return await findUser()
@@ -64,17 +73,16 @@ const emailSignUp = async (signUpInfo: SignUpInfo): Promise<Result<SignUpError, 
   }
 }
 
-const signOut = async () => {
+const signOut = async (): Promise<Result<Unauthorized>> => {
   try {
-    const signOutResponse = await betterAuthSignOut()
+    const signOutResponse = await betterAuthClient.signOut()
 
-    if (signOutResponse.data?.success) {
-      return success()
+    if (signOutResponse.error) {
+      console.error('Sign out error:', signOutResponse.error)
+      return failure('UNAUTHORIZED')
     }
 
-    console.log('Sign out error:', signOutResponse.error)
-    // handle errors
-    return failure()
+    return success()
   } catch (error) {
     console.error('Sign out error:', error)
     return failure()
@@ -83,11 +91,10 @@ const signOut = async () => {
 
 const socialSignIn = async (provider: SocialProvider) => {
   try {
-    const signInResponse = await signIn.social({ provider })
+    const signInResponse = await betterAuthClient.signIn.social({ provider })
 
     if (signInResponse.error) {
       console.error('Social sign-in error:', signInResponse.error)
-      // handle errors
       return failure()
     }
 

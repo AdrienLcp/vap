@@ -1,0 +1,14 @@
+@keyframes spin
+  to
+    transform: rotate(360deg)
+
+:root
+  --transition-150: 150ms
+  --transition-1000: 1s
+
+  @media (prefers-reduced-motion: reduce)
+    --transition-150: 0
+    --transition-1000: 0
+
+@mixin spin
+  animation: spin var(--transition-1000) linear infinite
