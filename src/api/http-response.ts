@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import type { ZodError } from 'zod'
 
 import { type BaseResponse, CREATED_STATUS_CODE, type ErrorResponse, OK_STATUS_CODE } from '@/api/api-domain'
-import { failure, STATUS_SUCCESS, success, type UnexpectedError } from '@/helpers/result'
+import { failure, type STATUS_SUCCESS, success, type UnexpectedError } from '@/helpers/result'
 
 function ok(): { status: typeof STATUS_SUCCESS, statusCode: typeof OK_STATUS_CODE }
 function ok<Data>(data: Data): { data: Data, status: typeof STATUS_SUCCESS, statusCode: typeof OK_STATUS_CODE }

@@ -1,6 +1,6 @@
 import { type LinkRenderProps, Link as ReactAriaLink, type LinkProps as ReactAriaLinkProps } from 'react-aria-components'
 
-import { type DefaultChildrenProps, reactAriaPressableClassNames, type PressableProps } from './pressable'
+import { type DefaultChildrenProps, type PressableProps, reactAriaPressableClassNames } from './pressable'
 
 type LinkProps = PressableProps & ReactAriaLinkProps
 

@@ -6,8 +6,8 @@ export type RenderPropsValues <T extends ReactAriaComponentRenderProps> = T & {
   defaultClassName: string | undefined
 }
 
-export type ReactAriaClassName <T extends ReactAriaComponentRenderProps>
-  = string
+export type ReactAriaClassName <T extends ReactAriaComponentRenderProps> =
+  | string
   | ((values: RenderPropsValues<T>) => string)
   | undefined
 

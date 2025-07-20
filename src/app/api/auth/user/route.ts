@@ -1,4 +1,4 @@
-import { nextResponse } from '@/api/server'
+import { nextResponse } from '@/api/http-response'
 import { AuthController } from '@/auth/auth-controller'
 
 export const GET = () => {

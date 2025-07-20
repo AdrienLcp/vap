@@ -1,7 +1,7 @@
-import { HttpResponse } from '@/api/server'
+import { HttpResponse } from '@/api/http-response'
+import { AuthService } from '@/auth/auth-service'
 import type { AuthUserResponse } from '@/auth/domain/auth-entities'
 import { AuthUserDTOSchema } from '@/auth/domain/auth-schemas'
-import { AuthService } from '@/auth/auth-service'
 import { validate } from '@/helpers/validation'
 
 const findUser = async (): AuthUserResponse => {

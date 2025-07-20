@@ -3,7 +3,7 @@ import { type ButtonRenderProps, Button as ReactAriaButton, type ButtonProps as 
 
 import { Spinner } from '@/presentation/components/ui/loaders/spinner'
 
-import { reactAriaPressableClassNames, type PressableProps } from './pressable'
+import { type PressableProps, reactAriaPressableClassNames } from './pressable'
 
 export type ButtonProps = PressableProps & ReactAriaButtonProps
 

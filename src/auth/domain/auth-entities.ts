@@ -1,9 +1,9 @@
 import type { Role } from '@prisma/client'
-import { z } from 'zod'
+import type { z } from 'zod'
 
 import type { ApiResponse, Unauthorized } from '@/api/api-domain'
-import { AUTH_CONSTANTS } from '@/auth/domain/auth-constants'
-import { AuthUserDTOSchema, SignInRequestSchema, SignUpRequestSchema } from '@/auth/domain/auth-schemas'
+import type { AUTH_CONSTANTS } from '@/auth/domain/auth-constants'
+import type { AuthUserDTOSchema, SignInRequestSchema, SignUpRequestSchema } from '@/auth/domain/auth-schemas'
 import type { NotFound, UnexpectedError } from '@/helpers/result'
 
 export type AuthUserError = NotFound | Unauthorized | UnexpectedError

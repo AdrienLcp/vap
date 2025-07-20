@@ -50,8 +50,8 @@ type PressableWithoutVariantProps = {
 
 export type PressableProps = PressableWithVariantProps | PressableWithoutVariantProps
 
-type PressableRenderProps
-  = ButtonRenderProps
+type PressableRenderProps =
+  | ButtonRenderProps
   | LinkRenderProps
 
 type PressableChildren <T extends PressableRenderProps> =

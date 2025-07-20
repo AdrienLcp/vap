@@ -1,7 +1,7 @@
 import { createAuthClient } from 'better-auth/react'
 
 import type { Unauthorized } from '@/api/api-domain'
-import { ApiClient } from '@/api/client'
+import { ApiClient } from '@/api/api-client'
 import type { AuthUserDTO, AuthUserError, AuthUserResponse, SignInError, SignInInfo, SignUpError, SignUpInfo, SocialProvider } from '@/auth/domain/auth-entities'
 import { failure, type Result, success } from '@/helpers/result'
 
@@ -89,7 +89,7 @@ const signOut = async (): Promise<Result<Unauthorized>> => {
   }
 }
 
-const socialSignIn = async (provider: SocialProvider) => {
+const socialSignIn = async (provider: SocialProvider): Promise<Result<AuthUserError, AuthUserDTO>> => {
   try {
     const signInResponse = await betterAuthClient.signIn.social({ provider })
 
