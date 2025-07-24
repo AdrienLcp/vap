@@ -9,25 +9,28 @@ const getInitialLocale = (): Locale => {
 const getPolyglotByLocale = (locale: Locale) => {
   const supportedLocale = findSupportedLocale(locale)
 
-  if (!supportedLocale) {
+  if (supportedLocale.status === 'ERROR') {
     return I18nService.getPolyglotByLocale(DEFAULT_LOCALE)
   }
 
   return I18nService.getPolyglotByLocale(locale)
 }
 
+const setInitialLocale = () => {
+  I18nService.setInitialLocale()
+}
+
 const updateLocale = (locale: Locale) => {
   const supportedLocale = findSupportedLocale(locale)
 
-  if (!supportedLocale) {
-    return
+  if (supportedLocale.status === 'SUCCESS') {
+    I18nService.updateLocale(supportedLocale.data)
   }
-
-  I18nService.updateLocale(supportedLocale)
 }
 
 export const I18nController = {
   getInitialLocale,
   getPolyglotByLocale,
+  setInitialLocale,
   updateLocale
 }

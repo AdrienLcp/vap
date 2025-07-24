@@ -12,14 +12,12 @@ type DotNestedKeys<T> = (
 
 export const dictionaries = { fr } as const
 
-export type Locale = keyof typeof dictionaries
+type Dictionaries = typeof dictionaries
+
+export type Locale = keyof Dictionaries
+export type Dictionary = Dictionaries[Locale]
+export type I18nKey = DotNestedKeys<Dictionary>
+export type I18nOptions = Record<string, string | number> | number
 
 export const SUPPORTED_LOCALES: Locale[] = ['fr']
 export const DEFAULT_LOCALE: Locale = 'fr'
-
-export type InvalidLocale = 'INVALID_LOCALE'
-
-export type Dictionary = typeof dictionaries[Locale]
-
-export type I18nKey = DotNestedKeys<Dictionary>
-export type I18nOptions = Record<string, string | number> | number

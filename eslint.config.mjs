@@ -10,8 +10,8 @@ const compat = new FlatCompat({
 })
 
 const eslintConfig = [
-  ...compat.extends('next/core-web-vitals', 'next/typescript'),
   ...compat.config({
+    extends: ['next/core-web-vitals', 'next/typescript'],
     plugins: ['@stylistic/eslint-plugin'],
     rules: {
       '@stylistic/comma-dangle': ['error', 'never'],

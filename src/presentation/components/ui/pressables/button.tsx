@@ -1,4 +1,3 @@
-import type { FC, ReactNode } from 'react'
 import { type ButtonRenderProps, Button as ReactAriaButton, type ButtonProps as ReactAriaButtonProps } from 'react-aria-components'
 
 import { Spinner } from '@/presentation/components/ui/loaders/spinner'
@@ -7,7 +6,7 @@ import { type PressableProps, reactAriaPressableClassNames } from './pressable'
 
 export type ButtonProps = PressableProps & ReactAriaButtonProps
 
-type ButtonRenderPropsValues = ButtonRenderProps & { defaultChildren: ReactNode | undefined }
+type ButtonRenderPropsValues = ButtonRenderProps & { defaultChildren: React.ReactNode | undefined }
 
 const renderButtonChildren = (children: ButtonProps['children'], renderValues: ButtonRenderPropsValues) => {
   return typeof children === 'function' ? children(renderValues) : children
@@ -25,7 +24,7 @@ const renderButtonIcon = (Icon: ButtonProps['Icon'], variant: ButtonProps['varia
   )
 }
 
-export const Button: FC<ButtonProps> = ({
+export const Button: React.FC<ButtonProps> = ({
   children,
   className,
   Icon,

@@ -1,10 +1,13 @@
-import type { Role } from '@prisma/client'
 import type { z } from 'zod'
 
 import type { ApiResponse, Unauthorized } from '@/api/api-domain'
 import type { AUTH_CONSTANTS } from '@/auth/domain/auth-constants'
-import type { AuthUserDTOSchema, SignInRequestSchema, SignUpRequestSchema } from '@/auth/domain/auth-schemas'
+import type { AuthUserDTOSchema, AuthUserSchema, SignInRequestSchema, SignUpRequestSchema, UserRoleSchema } from '@/auth/domain/auth-schemas'
 import type { NotFound, UnexpectedError } from '@/helpers/result'
+
+export type UserRole = z.infer<typeof UserRoleSchema>
+export type AuthUser = z.infer<typeof AuthUserSchema>
+export type AuthUserDTO = z.infer<typeof AuthUserDTOSchema>
 
 export type AuthUserError = NotFound | Unauthorized | UnexpectedError
 
@@ -25,13 +28,6 @@ export type SignUpError =
   | PasswordTooShort
   | UserAlreadyExists
 
-export type AuthUser = {
-  name: string
-  role: Role
-}
-
 export type SocialProvider = typeof AUTH_CONSTANTS.SOCIAL_PROVIDERS[number]
-
-export type AuthUserDTO = z.infer<typeof AuthUserDTOSchema>
 
 export type AuthUserResponse = ApiResponse<Unauthorized, AuthUserDTO>

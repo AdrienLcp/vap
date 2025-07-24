@@ -1,9 +1,11 @@
+import { headers as getHeaders } from 'next/headers'
+
 import type { Unauthorized } from '@/api/api-domain'
 import type { AuthUser } from '@/auth/domain/auth-entities'
+import { AuthUserSchema } from '@/auth/domain/auth-schemas'
 import { failure, type Result, success } from '@/helpers/result'
-import { database } from '@/infrastructure/database'
+import { validate } from '@/helpers/validation'
 import { auth } from '@/lib/auth'
-import { headers as getHeaders } from 'next/headers'
 
 const findUser = async (): Promise<Result<Unauthorized, AuthUser>> => {
   const headers = await getHeaders()
@@ -14,19 +16,13 @@ const findUser = async (): Promise<Result<Unauthorized, AuthUser>> => {
     return failure('UNAUTHORIZED')
   }
 
-  const user = await database.user.findUnique({
-    where: { id: session.user.id },
-    select: {
-      name: true,
-      role: true
-    }
-  })
+  const userValidationResult = validate({ data: session.user, schema: AuthUserSchema })
 
-  if (!user) {
+  if (userValidationResult.status === 'ERROR') {
     return failure('UNAUTHORIZED')
   }
 
-  return success(user)
+  return success(userValidationResult.data)
 }
 
 export const AuthRepository = {

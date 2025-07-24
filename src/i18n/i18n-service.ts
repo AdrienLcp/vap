@@ -5,8 +5,8 @@ import Polyglot from '@/i18n/lib/polyglot'
 
 const getLocaleFromLanguage = (language: string) => language.slice(0, 2)
 
-const updateDocumentLanguageAttribute = (locale: Locale) => {
-  document.documentElement.setAttribute('lang', locale)
+const updateDocumentLangAttribute = (locale: Locale) => {
+  document.documentElement.setAttribute('lang', locale.slice(0, 2))
 }
 
 const getInitialLocale = (): Locale => {
@@ -15,18 +15,16 @@ const getInitialLocale = (): Locale => {
   if (favoriteLocaleResult.status === 'SUCCESS') {
     const supportedLocale = findSupportedLocale(favoriteLocaleResult.data)
 
-    if (supportedLocale) {
-      updateDocumentLanguageAttribute(supportedLocale)
-      return supportedLocale
+    if (supportedLocale.status === 'SUCCESS') {
+      return supportedLocale.data
     }
   }
 
   const primaryNavigatorLocale = getLocaleFromLanguage(navigator.language)
   const supportedLocale = findSupportedLocale(primaryNavigatorLocale)
 
-  if (supportedLocale) {
-    updateDocumentLanguageAttribute(supportedLocale)
-    return supportedLocale
+  if (supportedLocale.status === 'SUCCESS') {
+    return supportedLocale.data
   }
 
   const secondaryNavigatorLanguages = navigator.languages.map(getLocaleFromLanguage)
@@ -34,28 +32,32 @@ const getInitialLocale = (): Locale => {
   for (const language of secondaryNavigatorLanguages) {
     const supportedLocale = findSupportedLocale(language)
 
-    if (supportedLocale) {
-      updateDocumentLanguageAttribute(supportedLocale)
-      return supportedLocale
+    if (supportedLocale.status === 'SUCCESS') {
+      return supportedLocale.data
     }
   }
 
-  updateDocumentLanguageAttribute(DEFAULT_LOCALE)
   return DEFAULT_LOCALE
 }
 
-const getPolyglotByLocale = (locale: Locale) => {
+const setInitialLocale = () => {
+  const initialLocale = getInitialLocale()
+  updateDocumentLangAttribute(initialLocale)
+}
+
+const getPolyglotByLocale = (locale: Locale): Polyglot => {
   const dictionary = I18nRepository.getDictionaryByLocale(locale)
   return new Polyglot({ phrases: dictionary, locale })
 }
 
 const updateLocale = (newLocale: Locale) => {
-  updateDocumentLanguageAttribute(newLocale)
+  updateDocumentLangAttribute(newLocale)
   I18nRepository.storeFavoriteLocale(newLocale)
 }
 
 export const I18nService = {
   getInitialLocale,
   getPolyglotByLocale,
+  setInitialLocale,
   updateLocale
 }

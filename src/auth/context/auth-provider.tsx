@@ -1,17 +1,17 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import React from 'react'
 
 import { AuthClient } from '@/auth/auth-client'
 import { type Auth, AuthContext } from '@/auth/context/auth-context'
 import { useSession } from '@/auth/hooks/use-session'
 
 export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const [auth, setAuth] = useState<Auth>({ status: 'loading' })
+  const [auth, setAuth] = React.useState<Auth>({ status: 'loading' })
 
   const session = useSession()
 
-  const loadUser = useCallback(async () => {
+  const loadUser = React.useCallback(async () => {
     const userResult = await AuthClient.findUser()
 
     if (userResult.status === 'ERROR') {
@@ -22,10 +22,13 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     setAuth({ status: 'authenticated', user: userResult.data })
   }, [])
 
-  useEffect(() => {
-    if (session.data) {
-      loadUser()
+  React.useEffect(() => {
+    if (!session.data && !session.isPending) {
+      setAuth({ status: 'unauthenticated' })
+      return
     }
+
+    loadUser()
   }, [loadUser, session])
 
   return (

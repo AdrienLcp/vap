@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext } from 'react'
+import React from 'react'
 
 import type { AuthUserDTO } from '@/auth/domain/auth-entities'
 
@@ -19,4 +19,4 @@ type AuthContextValue = {
   setAuth: React.Dispatch<React.SetStateAction<Auth>>
 }
 
-export const AuthContext = createContext<AuthContextValue | null>(null)
+export const AuthContext = React.createContext<AuthContextValue | null>(null)

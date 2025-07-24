@@ -1,7 +1,8 @@
 import { betterAuth } from 'better-auth'
 import { prismaAdapter } from 'better-auth/adapters/prisma'
 
-import { database } from '@/infrastructure/database'
+import { prisma } from '@/infrastructure/database'
+import { AuthUserSchema } from '@/auth/domain/auth-schemas'
 
 const { AUTH_GOOGLE_CLIENT_ID, AUTH_GOOGLE_CLIENT_SECRET } = process.env
 
@@ -10,7 +11,7 @@ if (!AUTH_GOOGLE_CLIENT_ID || !AUTH_GOOGLE_CLIENT_SECRET) {
 }
 
 export const auth = betterAuth({
-  database: prismaAdapter(database, {
+  database: prismaAdapter(prisma, {
     provider: 'postgresql'
   }),
   emailAndPassword: {
@@ -20,6 +21,18 @@ export const auth = betterAuth({
     google: {
       clientId: AUTH_GOOGLE_CLIENT_ID,
       clientSecret: AUTH_GOOGLE_CLIENT_SECRET
+    }
+  },
+  user: {
+    additionalFields: {
+      role: {
+        defaultValue: 'USER',
+        type: 'string',
+        validator: {
+          input: AuthUserSchema,
+          output: AuthUserSchema
+        }
+      }
     }
   }
 })
