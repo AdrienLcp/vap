@@ -1,7 +1,6 @@
-import { NextResponse } from 'next/server'
 import type { ZodError } from 'zod'
 
-import { type BaseResponse, CREATED_STATUS_CODE, type ErrorResponse, OK_STATUS_CODE } from '@/api/api-domain'
+import { CREATED_STATUS_CODE, type ErrorResponse, OK_STATUS_CODE } from '@/api/api-domain'
 import { failure, type STATUS_SUCCESS, success, type UnexpectedError } from '@/helpers/result'
 
 function ok(): { status: typeof STATUS_SUCCESS, statusCode: typeof OK_STATUS_CODE }
@@ -55,9 +54,4 @@ export const HttpResponse = {
   notFound,
   conflict,
   internalServerError
-}
-
-export const nextResponse = async <T extends BaseResponse> (promise: Promise<T>) => {
-  const response = await promise
-  return NextResponse.json(response, { status: response.statusCode })
 }

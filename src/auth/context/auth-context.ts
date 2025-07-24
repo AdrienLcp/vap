@@ -4,13 +4,8 @@ import React from 'react'
 
 import type { AuthUserDTO } from '@/auth/domain/auth-entities'
 
-type AuthenticatedUser = {
-  status: 'authenticated'
-  user: AuthUserDTO
-}
-
 export type Auth =
-  | AuthenticatedUser
+  | { status: 'authenticated', user: AuthUserDTO }
   | { status: 'loading' }
   | { status: 'unauthenticated' }
 

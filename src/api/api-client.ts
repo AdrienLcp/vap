@@ -1,49 +1,36 @@
-import { failure } from '@/helpers/result'
+import { HttpResponse } from '@/api/http-response'
 
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 
-const headers = new Headers()
-headers.set('Content-Type', 'application/json')
-
-const request = async <T>(route: string, method: Method = 'GET', body?: object): Promise<T> => {
+const request = async <Response, RequestBody = undefined>(route: string, method: Method, body?: RequestBody): Promise<Response> => {
   try {
     const response = await fetch(`/api/${route}`, {
       body: body ? JSON.stringify(body) : undefined,
-      headers,
+      headers: body ? { 'Content-Type': 'application/json' } : undefined,
       method
     })
 
     return await response.json()
   } catch (error) {
     console.error('Fetch API error:', error)
-    return failure() as T
+    return HttpResponse.internalServerError() as Response
   }
 }
 
-const GET = async <T>(route: string) => {
-  return await request<T>(route)
-}
+const DELETE = async <Response>(route: string) => await request<Response>(route, 'DELETE')
 
-const POST = async <T>(route: string, body?: object) => {
-  return await request<T>(route, 'POST', body)
-}
+const GET = async <Response>(route: string) => await request<Response>(route, 'GET')
 
-const PUT = async <T>(route: string, body?: object) => {
-  return await request<T>(route, 'PUT', body)
-}
+const PATCH = async <Response, RequestBody>(route: string, body?: RequestBody) => await request<Response, RequestBody>(route, 'PATCH', body)
 
-const DELETE = async <T>(route: string) => {
-  return await request<T>(route, 'DELETE')
-}
+const POST = async <Response, RequestBody>(route: string, body?: RequestBody) => await request<Response, RequestBody>(route, 'POST', body)
 
-const PATCH = async <T>(route: string, body?: object) => {
-  return await request<T>(route, 'PATCH', body)
-}
+const PUT = async <Response, RequestBody>(route: string, body?: RequestBody) => await request<Response, RequestBody>(route, 'PUT', body)
 
 export const ApiClient = {
-  GET,
-  POST,
-  PUT,
   DELETE,
-  PATCH
+  GET,
+  PATCH,
+  POST,
+  PUT
 }
