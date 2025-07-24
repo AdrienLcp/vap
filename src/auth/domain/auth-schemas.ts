@@ -5,7 +5,7 @@ import { AUTH_CONSTANTS } from '@/auth/domain/auth-constants'
 export const UserEmailSchema = z.email(AUTH_CONSTANTS.INVALID_EMAIL)
 export const UserNameSchema = z.string().min(1, AUTH_CONSTANTS.USER_NAME_REQUIRED)
 export const UserPasswordSchema = z.string().min(AUTH_CONSTANTS.PASSWORD_MIN_LENGTH, AUTH_CONSTANTS.PASSWORD_TOO_SHORT)
-export const UserRoleSchema = z.enum(['USER', 'ADMIN', 'SUPER_ADMIN']).catch('USER')
+export const UserRoleSchema = z.enum(AUTH_CONSTANTS.USER_ROLES).catch(AUTH_CONSTANTS.DEFAULT_USER_ROLE)
 
 export const AuthUserDTOSchema = z.object({
   name: UserNameSchema

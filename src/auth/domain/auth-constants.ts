@@ -7,5 +7,8 @@ export const AUTH_CONSTANTS = {
   PASSWORD_MIN_LENGTH: 8,
   PASSWORD_MAX_LENGTH: 64,
 
-  SOCIAL_PROVIDERS: ['google']
+  SOCIAL_PROVIDERS: ['google'],
+
+  USER_ROLES: ['USER', 'ADMIN', 'SUPER_ADMIN'],
+  DEFAULT_USER_ROLE: 'USER'
 } as const

@@ -16,13 +16,7 @@ const findUser = async (): Promise<Result<Unauthorized, AuthUser>> => {
     return failure('UNAUTHORIZED')
   }
 
-  const userValidationResult = validate({ data: session.user, schema: AuthUserSchema })
-
-  if (userValidationResult.status === 'ERROR') {
-    return failure('UNAUTHORIZED')
-  }
-
-  return success(userValidationResult.data)
+  return success(session.user)
 }
 
 export const AuthRepository = {

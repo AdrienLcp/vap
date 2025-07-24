@@ -34,6 +34,9 @@ const eslintConfig = [
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-extraneous-class': 'off',
       '@typescript-eslint/no-unused-vars': ['error', { 'argsIgnorePattern': '^_', 'varsIgnorePattern': '^_' }],
+
+      'jsx-a11y/anchor-is-valid': ['error', { aspects: ['invalidHref', 'preferButton'] }],
+      'jsx-a11y/no-autofocus': ['error', { ignoreNonDOM: true }],
       
       'no-console': ['warn', { allow: ['error', 'info', 'warn'] }],
       'no-debugger': 'error',
@@ -46,10 +49,7 @@ const eslintConfig = [
         'ignoreMemberSort': false,
         'memberSyntaxSortOrder': ['all', 'multiple', 'single', 'none'],
         'allowSeparatedGroups': true
-      }],
-
-      'jsx-a11y/anchor-is-valid': ['error', { aspects: ['invalidHref', 'preferButton'] }],
-      'jsx-a11y/no-autofocus': ['error', { ignoreNonDOM: true }],
+      }]
     }
   })
 ]
