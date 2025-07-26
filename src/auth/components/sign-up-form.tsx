@@ -26,39 +26,37 @@ const onSubmit = async (formData: FormData) => {
   console.log('Sign up success:', signUpResult.data)
 }
 
-export const SignUpForm: React.FC = () => {
-  return (
-    <Form onSubmit={onSubmit}>
-      <label>
-        Email:
-        <input
-          name={signUpFields.email}
-          placeholder='jean-neige@gmail.com'
-          type='text'
-        />
-      </label>
+export const SignUpForm: React.FC = () => (
+  <Form onSubmit={onSubmit}>
+    <label>
+      Email:
+      <input
+        name={signUpFields.email}
+        placeholder='jean-neige@gmail.com'
+        type='text'
+      />
+    </label>
 
-      <label>
-        Name:
-        <input
-          name={signUpFields.name}
-          placeholder='Jean Neige'
-          type='text'
-        />
-      </label>
+    <label>
+      Name:
+      <input
+        name={signUpFields.name}
+        placeholder='Jean Neige'
+        type='text'
+      />
+    </label>
 
-      <label>
-        Password:
-        <input
-          name={signUpFields.password}
-          placeholder='Password'
-          type='password'
-        />
-      </label>
+    <label>
+      Password:
+      <input
+        name={signUpFields.password}
+        placeholder='Password'
+        type='password'
+      />
+    </label>
 
-      <button type='submit'>
-        Submit
-      </button>
-    </Form>
-  )
-}
+    <button type='submit'>
+      Submit
+    </button>
+  </Form>
+)

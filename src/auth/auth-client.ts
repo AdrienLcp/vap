@@ -11,13 +11,21 @@ const findUser = async (): Promise<Result<AuthUserError, AuthUserDTO>> => {
   try {
     const userResponse = await ApiClient.GET<AuthUserResponse>('/auth/user')
 
-    if (userResponse.status === 'ERROR') {
-      return failure(userResponse.errors)
+    if (userResponse.status === 'SUCCESS') {
+      return success(userResponse.data)
     }
 
-    return success(userResponse.data)
+    switch (userResponse.errors) {
+      case 'UNAUTHORIZED':
+        return failure('UNAUTHORIZED')
+      case 'INTERNAL_SERVER_ERROR':
+      case 'UNEXPECTED_ERROR':
+      default:
+        console.error('User fetch error:', userResponse.errors)
+        return failure()
+    }
   } catch (error) {
-    console.error('Sign out error:', error)
+    console.error('User fetch error:', error)
     return failure()
   }
 }

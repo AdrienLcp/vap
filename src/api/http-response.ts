@@ -1,10 +1,19 @@
 import type { ZodError } from 'zod'
 
-import { CREATED_STATUS_CODE, type ErrorResponse, OK_STATUS_CODE } from '@/api/api-domain'
-import { failure, type STATUS_SUCCESS, success, type UnexpectedError } from '@/helpers/result'
+import type { BadRequest, Conflict, ErrorResponse, Forbidden, InternalServerError, SuccessResponse, Unauthorized } from '@/api/api-domain'
+import { failure, type NotFound, success } from '@/helpers/result'
 
-function ok(): { status: typeof STATUS_SUCCESS, statusCode: typeof OK_STATUS_CODE }
-function ok<Data>(data: Data): { data: Data, status: typeof STATUS_SUCCESS, statusCode: typeof OK_STATUS_CODE }
+const OK_STATUS_CODE = 200
+const CREATED_STATUS_CODE = 201
+const BAD_REQUEST_STATUS_CODE = 400
+const UNAUTHORIZED_STATUS_CODE = 401
+const FORBIDDEN_STATUS_CODE = 403
+const NOT_FOUND_STATUS_CODE = 404
+const CONFLICT_STATUS_CODE = 409
+const INTERNAL_SERVER_ERROR_STATUS_CODE = 500
+
+function ok(): SuccessResponse
+function ok<Data>(data: Data): SuccessResponse<Data>
 function ok<Data>(data?: Data) {
   if (data == null) {
     return { ...success(), statusCode: OK_STATUS_CODE }
@@ -13,8 +22,8 @@ function ok<Data>(data?: Data) {
   return { ...success(data), statusCode: OK_STATUS_CODE }
 }
 
-function created(): { status: typeof STATUS_SUCCESS, statusCode: typeof CREATED_STATUS_CODE }
-function created<Data>(data: Data): { data: Data, status: typeof STATUS_SUCCESS, statusCode: typeof CREATED_STATUS_CODE }
+function created(): SuccessResponse
+function created<Data>(data: Data): SuccessResponse<Data>
 function created<Data>(data?: Data) {
   if (data == null) {
     return { ...success(), statusCode: CREATED_STATUS_CODE }
@@ -23,27 +32,65 @@ function created<Data>(data?: Data) {
   return { ...success(data), statusCode: CREATED_STATUS_CODE }
 }
 
-function errorResponse(statusCode: number): ErrorResponse
-function errorResponse<Errors>(statusCode: number, errors: Errors): ErrorResponse<Errors>
-function errorResponse<Errors>(statusCode: number, errors?: Errors) {
+function badRequest(): ErrorResponse<BadRequest>
+function badRequest<RequestBody, Errors extends ZodError<RequestBody>>(errors: Errors): ErrorResponse<Errors>
+function badRequest<RequestBody, Errors extends ZodError<RequestBody>>(errors?: Errors) {
   if (errors == null) {
-    return { ...failure(), statusCode }
+    return { ...failure('BAD_REQUEST'), statusCode: BAD_REQUEST_STATUS_CODE }
   }
 
-  return { ...failure(errors), statusCode }
+  return { ...failure(errors), statusCode: BAD_REQUEST_STATUS_CODE }
 }
 
-const badRequest = <RequestBody, Errors extends ZodError<RequestBody>>(errors: Errors): ErrorResponse<Errors> => errorResponse(400, errors)
+function unauthorized(): ErrorResponse<Unauthorized>
+function unauthorized<Errors>(errors: Errors): ErrorResponse<Errors>
+function unauthorized<Errors>(errors?: Errors) {
+  if (errors == null) {
+    return { ...failure('UNAUTHORIZED'), statusCode: UNAUTHORIZED_STATUS_CODE }
+  }
 
-const unauthorized = <Errors = undefined>(errors: Errors): ErrorResponse<Errors> => errorResponse(401, errors)
+  return { ...failure(errors), statusCode: UNAUTHORIZED_STATUS_CODE }
+}
 
-const forbidden = <Errors = undefined>(errors: Errors): ErrorResponse<Errors> => errorResponse(403, errors)
+function forbidden(): ErrorResponse<Forbidden>
+function forbidden<Errors>(errors: Errors): ErrorResponse<Errors>
+function forbidden<Errors>(errors?: Errors) {
+  if (errors == null) {
+    return { ...failure('FORBIDDEN'), statusCode: FORBIDDEN_STATUS_CODE }
+  }
 
-const notFound = <Errors = undefined>(errors: Errors): ErrorResponse<Errors> => errorResponse(404, errors)
+  return { ...failure(errors), statusCode: FORBIDDEN_STATUS_CODE }
+}
 
-const conflict = <Errors = undefined>(errors: Errors): ErrorResponse<Errors> => errorResponse(409, errors)
+function notFound(): ErrorResponse<NotFound>
+function notFound<Errors>(errors: Errors): ErrorResponse<Errors>
+function notFound<Errors>(errors?: Errors) {
+  if (errors == null) {
+    return { ...failure('NOT_FOUND'), statusCode: NOT_FOUND_STATUS_CODE }
+  }
 
-const internalServerError = <Errors = undefined>(errors?: Errors): ErrorResponse<Errors | UnexpectedError> => errorResponse(500, errors)
+  return { ...failure(errors), statusCode: NOT_FOUND_STATUS_CODE }
+}
+
+function conflict(): ErrorResponse<Conflict>
+function conflict<Errors>(errors: Errors): ErrorResponse<Errors>
+function conflict<Errors>(errors?: Errors) {
+  if (errors == null) {
+    return { ...failure('CONFLICT'), statusCode: CONFLICT_STATUS_CODE }
+  }
+
+  return { ...failure(errors), statusCode: CONFLICT_STATUS_CODE }
+}
+
+function internalServerError(): ErrorResponse<InternalServerError>
+function internalServerError<Errors>(errors: Errors): ErrorResponse<Errors>
+function internalServerError<Errors>(errors?: Errors) {
+  if (errors == null) {
+    return { ...failure('INTERNAL_SERVER_ERROR'), statusCode: INTERNAL_SERVER_ERROR_STATUS_CODE }
+  }
+
+  return { ...failure(errors), statusCode: INTERNAL_SERVER_ERROR_STATUS_CODE }
+}
 
 export const HttpResponse = {
   ok,
