@@ -17,7 +17,7 @@ export const Link: React.FC<LinkProps> = ({
   iconSide,
   size,
   variant,
-  ...linkProps
+  ...linkRestProps
 }) => (
   <ReactAriaLink
     className={(values) => reactAriaPressableClassNames(
@@ -29,7 +29,7 @@ export const Link: React.FC<LinkProps> = ({
       size,
       children
     )}
-    {...linkProps}
+    {...linkRestProps}
   >
     {(values) => variant == null
       ? renderLinkChildren(children, values)

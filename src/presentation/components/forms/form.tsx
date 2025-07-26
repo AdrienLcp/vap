@@ -1,21 +1,29 @@
-type FormProps = Omit<React.ComponentProps<'form'>, 'onSubmit'> & {
-  onSubmit?: (data: FormData) => void
+import { Form as ReactAriaForm, type FormProps as ReactAriaFormProps } from 'react-aria-components'
+
+export type FormTarget = EventTarget & HTMLFormElement
+
+export type FormProps = Omit<ReactAriaFormProps, 'onSubmit'> & {
+  hasResetAfterSubmit?: boolean
+  onSubmit?: (data: FormData, currentTarget: FormTarget) => void
 }
 
-export const Form: React.FC<FormProps> = ({ children, onSubmit, ...formProps }) => {
+export const Form: React.FC<FormProps> = ({ children, onSubmit, ...formRestProps }) => {
   const onSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     if (!onSubmit) {
       return
     }
 
     event.preventDefault()
-    const formData = new FormData(event.currentTarget)
-    onSubmit(formData)
+
+    const currentTarget = event.currentTarget
+    const formData = new FormData(currentTarget)
+
+    onSubmit(formData, currentTarget)
   }
 
   return (
-    <form onSubmit={onSubmitHandler} {...formProps}>
+    <ReactAriaForm onSubmit={onSubmitHandler} {...formRestProps}>
       {children}
-    </form>
+    </ReactAriaForm>
   )
 }

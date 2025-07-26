@@ -2,7 +2,6 @@ import { HttpResponse } from '@/api/http-response'
 import { AuthService } from '@/auth/auth-service'
 import type { AuthUserResponse } from '@/auth/domain/auth-entities'
 import { AuthUserDTOSchema } from '@/auth/domain/auth-schemas'
-import { validate } from '@/helpers/validation'
 
 const findUser = async (): AuthUserResponse => {
   try {
@@ -17,9 +16,9 @@ const findUser = async (): AuthUserResponse => {
       }
     }
 
-    const userValidationResult = validate({ data: userResult.data, schema: AuthUserDTOSchema })
+    const userValidationResult = AuthUserDTOSchema.safeParse(userResult.data)
 
-    if (userValidationResult.status === 'ERROR') {
+    if (userValidationResult.error) {
       return HttpResponse.internalServerError()
     }
 

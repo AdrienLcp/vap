@@ -31,7 +31,7 @@ export const Button: React.FC<ButtonProps> = ({
   iconSide,
   size,
   variant,
-  ...buttonProps
+  ...buttonRestProps
 }) => (
   <ReactAriaButton
     className={(values) => reactAriaPressableClassNames(
@@ -43,7 +43,7 @@ export const Button: React.FC<ButtonProps> = ({
       size,
       children
     )}
-    {...buttonProps}
+    {...buttonRestProps}
   >
     {(values) => variant == null
       ? renderButtonChildren(children, values)

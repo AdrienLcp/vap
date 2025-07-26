@@ -1,4 +1,19 @@
 {
+  "cSpell.overrides": [
+    {
+      "filename": "src/i18n/dictionaries/fr.json",
+      "language": "en,fr"
+    }
+  ],
+  "cSpell.words": [
+    "cuid",
+    "pressables",
+    "turbopack"
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always"
+  },
+  "peacock.color": "#bad4bd",
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#d9e8db",
     "activityBar.background": "#d9e8db",
@@ -17,17 +32,5 @@
     "titleBar.activeForeground": "#15202b",
     "titleBar.inactiveBackground": "#bad4bd99",
     "titleBar.inactiveForeground": "#15202b99"
-  },
-  "peacock.color": "#bad4bd",
-  "cSpell.overrides": [
-    {
-      "filename": "src/i18n/fr.json",
-      "language": "en,fr"
-    }
-  ],
-  "cSpell.words": [
-    "cuid",
-    "pressables",
-    "turbopack"
-  ]
+  }
 }

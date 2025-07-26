@@ -16,8 +16,10 @@ type Dictionaries = typeof dictionaries
 
 export type Locale = keyof Dictionaries
 export type Dictionary = Dictionaries[Locale]
+
 export type I18nKey = DotNestedKeys<Dictionary>
 export type I18nOptions = Record<string, string | number> | number
+export type I18n = (key: I18nKey, options?: I18nOptions) => string
 
 export const SUPPORTED_LOCALES: Locale[] = ['fr']
 export const DEFAULT_LOCALE: Locale = 'fr'
