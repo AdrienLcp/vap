@@ -16,13 +16,13 @@ const findUser = async (): AuthUserResponse => {
       }
     }
 
-    const userValidationResult = AuthUserDTOSchema.safeParse(userResult.data)
+    const authUserDTOValidation = AuthUserDTOSchema.safeParse(userResult.data)
 
-    if (userValidationResult.error) {
+    if (authUserDTOValidation.error) {
       return HttpResponse.internalServerError()
     }
 
-    return HttpResponse.ok(userValidationResult.data)
+    return HttpResponse.ok(authUserDTOValidation.data)
   } catch (error) {
     console.error('Find user error in controller:', error)
     return HttpResponse.internalServerError()

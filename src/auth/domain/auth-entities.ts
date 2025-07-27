@@ -2,11 +2,18 @@ import type { z } from 'zod'
 
 import type { ApiResponse, Unauthorized } from '@/api/api-domain'
 import type { AUTH_CONSTANTS } from '@/auth/domain/auth-constants'
-import type { AuthUserDTOSchema, AuthUserSchema, SignInRequestSchema, SignUpRequestSchema, UserRoleSchema } from '@/auth/domain/auth-schemas'
+import type { AuthPermissionsSchema, AuthUserDTOSchema, AuthUserSchema, SignInRequestSchema, SignUpRequestSchema } from '@/auth/domain/auth-schemas'
+import type { UserRoleSchema } from '@/user/user-schemas'
 
+export type AuthPermissions = z.infer<typeof AuthPermissionsSchema>
 export type UserRole = z.infer<typeof UserRoleSchema>
 export type AuthUser = z.infer<typeof AuthUserSchema>
 export type AuthUserDTO = z.infer<typeof AuthUserDTOSchema>
+
+export type BaseAuthUser = {
+  name: string
+  role: UserRole
+}
 
 export type AuthUserError = Unauthorized
 

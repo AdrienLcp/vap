@@ -1,8 +1,8 @@
 import { betterAuth } from 'better-auth'
 import { prismaAdapter } from 'better-auth/adapters/prisma'
 
-import { AUTH_CONSTANTS } from '@/auth/domain/auth-constants'
 import { prisma } from '@/infrastructure/database'
+import { USER_CONSTANTS } from '@/user/user-constants'
 
 const { AUTH_GOOGLE_CLIENT_ID, AUTH_GOOGLE_CLIENT_SECRET } = process.env
 
@@ -26,8 +26,8 @@ export const auth = betterAuth({
   user: {
     additionalFields: {
       role: {
-        defaultValue: AUTH_CONSTANTS.DEFAULT_USER_ROLE,
-        type: [...AUTH_CONSTANTS.USER_ROLES]
+        defaultValue: USER_CONSTANTS.DEFAULT_ROLE,
+        type: [...USER_CONSTANTS.ROLES]
       }
     }
   }

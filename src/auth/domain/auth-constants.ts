@@ -1,5 +1,3 @@
-import type { Role } from '@prisma/client'
-
 export const AUTH_CONSTANTS = {
   INVALID_EMAIL: 'INVALID_EMAIL',
   INVALID_SOCIAL_PROVIDER: 'INVALID_SOCIAL_PROVIDER',
@@ -9,8 +7,5 @@ export const AUTH_CONSTANTS = {
   PASSWORD_MIN_LENGTH: 8,
   PASSWORD_MAX_LENGTH: 64,
 
-  SOCIAL_PROVIDERS: ['google'],
-
-  USER_ROLES: ['USER', 'ADMIN', 'SUPER_ADMIN'] satisfies Role[],
-  DEFAULT_USER_ROLE: 'USER' satisfies Role
+  SOCIAL_PROVIDERS: ['google']
 } as const
