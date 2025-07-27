@@ -11,9 +11,9 @@ const signUpFields = {
 
 const onSubmit = async (formData: FormData) => {
   const credentials = {
-    email: formData.get(signUpFields.email) as string,
-    name: formData.get(signUpFields.name) as string,
-    password: formData.get(signUpFields.password) as string
+    email: String(formData.get(signUpFields.email)),
+    name: String(formData.get(signUpFields.name)),
+    password: String(formData.get(signUpFields.password))
   }
 
   const signUpResult = await AuthClient.emailSignUp(credentials)

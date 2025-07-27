@@ -10,8 +10,8 @@ const signInFields = {
 
 const onSubmit = async (formData: FormData) => {
   const credentials = {
-    email: formData.get(signInFields.email) as string,
-    password: formData.get(signInFields.password) as string
+    email: String(formData.get(signInFields.email)),
+    password: String(formData.get(signInFields.password))
   }
 
   const signInResult = await AuthClient.emailSignIn(credentials)
