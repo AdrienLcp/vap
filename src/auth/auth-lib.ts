@@ -29,6 +29,12 @@ export const auth = betterAuth({
         defaultValue: USER_CONSTANTS.DEFAULT_ROLE,
         type: [...USER_CONSTANTS.ROLES]
       }
+    },
+    changeEmail: {
+      enabled: true
+    },
+    deleteUser: {
+      enabled: true
     }
   }
 })

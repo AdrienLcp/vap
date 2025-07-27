@@ -1,3 +1,5 @@
+'server-only'
+
 import { NextResponse } from 'next/server'
 
 import type { BaseResponse } from '@/api/api-domain'

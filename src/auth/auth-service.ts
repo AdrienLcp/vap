@@ -1,3 +1,5 @@
+'server-only'
+
 import { AuthRepository } from '@/auth/auth-repository'
 import type { AuthUserDTO, AuthUserError } from '@/auth/domain/auth-entities'
 import { ROLE_PERMISSIONS } from '@/auth/domain/auth-permissions'

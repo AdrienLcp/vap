@@ -1,3 +1,5 @@
+'use client'
+
 import { useContext } from 'react'
 
 export const useRequiredContext = <T>(context: React.Context<T | null>, name?: string): T => {

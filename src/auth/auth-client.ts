@@ -1,9 +1,11 @@
+'use client'
+
 import { createAuthClient } from 'better-auth/react'
 
 import type { Unauthorized } from '@/api/api-domain'
 import { ApiClient } from '@/api/api-client'
 import { AUTH_API_ROUTES } from '@/auth/auth-api-routes'
-import type { AuthUserDTO, AuthUserError, AuthUserResponse, SignInError, SignInInfo, SignUpError, SignUpInfo, SocialProvider } from '@/auth/domain/auth-entities'
+import type { AuthUserDTO, AuthUserError, AuthUserResponse, ChangePasswordInfo, SignInError, SignInInfo, SignUpError, SignUpInfo, SocialProvider } from '@/auth/domain/auth-entities'
 import { failure, type Result, success, unknownError } from '@/helpers/result'
 
 export const betterAuthClient = createAuthClient()
@@ -26,6 +28,44 @@ const findUser = async (): Promise<Result<AuthUserError, AuthUserDTO>> => {
     }
   } catch (error) {
     return unknownError('User fetch error:', error)
+  }
+}
+
+const changeEmail = async (newEmail: string): Promise<Result<Unauthorized>> => {
+  try {
+    const changeEmailResponse = await betterAuthClient.changeEmail({ newEmail })
+
+    if (changeEmailResponse.error) {
+      switch (changeEmailResponse.error.code) {
+        default:
+          return unknownError('Change email error:', changeEmailResponse.error)
+      }
+    }
+
+    return success()
+  } catch (error) {
+    return unknownError('Change email error:', error)
+  }
+}
+
+const changePassword = async (changePasswordInfo: ChangePasswordInfo): Promise<Result<Unauthorized>> => {
+  try {
+    const changeEmailResponse = await betterAuthClient.changePassword({
+      currentPassword: changePasswordInfo.currentPassword,
+      newPassword: changePasswordInfo.newPassword,
+      revokeOtherSessions: true
+    })
+
+    if (changeEmailResponse.error) {
+      switch (changeEmailResponse.error.code) {
+        default:
+          return unknownError('Change password error:', changeEmailResponse.error)
+      }
+    }
+
+    return success()
+  } catch (error) {
+    return unknownError('Change password error:', error)
   }
 }
 
@@ -76,6 +116,24 @@ const emailSignUp = async (signUpInfo: SignUpInfo): Promise<Result<SignUpError, 
   }
 }
 
+const deleteUser = async (password: string): Promise<Result<Unauthorized>> => {
+  try {
+    const deleteUserResponse = await betterAuthClient.deleteUser({ password })
+
+    if (deleteUserResponse.error) {
+      switch (deleteUserResponse.error.code) {
+        default:
+          console.error('Delete user error:', deleteUserResponse.error)
+          return failure('UNAUTHORIZED')
+      }
+    }
+
+    return success()
+  } catch (error) {
+    return unknownError('Delete user error:', error)
+  }
+}
+
 const signOut = async (): Promise<Result<Unauthorized>> => {
   try {
     const signOutResponse = await betterAuthClient.signOut()
@@ -106,8 +164,11 @@ const socialSignIn = async (provider: SocialProvider): Promise<Result<AuthUserEr
 }
 
 export const AuthClient = {
+  changeEmail,
+  changePassword,
   emailSignIn,
   emailSignUp,
+  deleteUser,
   findUser,
   signOut,
   socialSignIn

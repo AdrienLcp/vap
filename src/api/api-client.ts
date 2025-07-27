@@ -1,3 +1,5 @@
+'use client'
+
 import { HttpResponse } from '@/api/http-response'
 
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'

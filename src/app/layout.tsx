@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 
 const RootLayout: React.FC<React.PropsWithChildren> = async ({ children }) => (
   <Providers>
-    <html lang={lang}>
+    <html data-scroll-behavior='smooth' lang={lang}>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Header />
 

@@ -1,3 +1,5 @@
+'server-only'
+
 import { HttpResponse } from '@/api/http-response'
 import { AuthService } from '@/auth/auth-service'
 import type { AuthUserResponse } from '@/auth/domain/auth-entities'

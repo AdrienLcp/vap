@@ -1,3 +1,5 @@
+'server-only'
+
 import { headers as getHeaders } from 'next/headers'
 
 import type { Unauthorized } from '@/api/api-domain'

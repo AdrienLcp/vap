@@ -18,6 +18,7 @@ const eslintConfig = [
       '@stylistic/comma-spacing': ['error', { 'before': false, 'after': true }],
       '@stylistic/eol-last': ['error', 'always'],
       '@stylistic/indent': ['error', 2, { 'offsetTernaryExpressions': true, 'SwitchCase': 1 }],
+      '@stylistic/jsx-quotes': ['error', 'prefer-single'],
       '@stylistic/multiline-ternary': ['error', 'always-multiline'],
       '@stylistic/no-mixed-operators': 'error',
       '@stylistic/no-multiple-empty-lines': ['error', { 'max': 1, 'maxEOF': 0 }],
@@ -37,7 +38,7 @@ const eslintConfig = [
 
       'jsx-a11y/anchor-is-valid': ['error', { aspects: ['invalidHref', 'preferButton'] }],
       'jsx-a11y/no-autofocus': ['error', { ignoreNonDOM: true }],
-      
+
       'no-console': ['warn', { allow: ['error', 'info', 'warn'] }],
       'no-debugger': 'error',
       'no-unused-private-class-members': 'error',

@@ -10,9 +10,6 @@
     "pressables",
     "turbopack"
   ],
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "always"
-  },
   "peacock.color": "#bad4bd",
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#d9e8db",

@@ -23,7 +23,12 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
   }, [])
 
   React.useEffect(() => {
-    if (!session.data && !session.isPending) {
+    if (session.isPending) {
+      setAuth({ status: 'loading' })
+      return
+    }
+
+    if (!session.data) {
       setAuth({ status: 'unauthenticated' })
       return
     }
