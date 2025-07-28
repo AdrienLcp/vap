@@ -1,7 +1,7 @@
-import { DEFAULT_LOCALE, type Locale } from '@/i18n/i18n-domain'
-import { I18nRepository } from '@/i18n/i18n-repository'
-import { findSupportedLocale } from '@/i18n/i18n-utils'
-import Polyglot from '@/i18n/lib/polyglot'
+import { DEFAULT_LOCALE, type Locale } from '@/infrastructure/i18n/i18n-domain'
+import { I18nRepository } from '@/infrastructure/i18n/i18n-repository'
+import { findSupportedLocale } from '@/infrastructure/i18n/i18n-utils'
+import Polyglot from '@/infrastructure/i18n/lib/polyglot'
 
 const getLocaleFromLanguage = (language: string) => language.slice(0, 2)
 

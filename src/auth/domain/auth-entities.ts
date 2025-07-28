@@ -1,6 +1,6 @@
 import type { z } from 'zod'
 
-import type { ApiResponse, Unauthorized } from '@/api/api-domain'
+import type { ApiResponse, Unauthorized } from '@/infrastructure/api/api-domain'
 import type { AuthPermissionsSchema, AuthUserDTOSchema } from '@/auth/domain/auth-schemas'
 import type { UserRole } from '@/user/user-entities'
 import type { AUTH_CONSTANTS } from './auth-constants'

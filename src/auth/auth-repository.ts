@@ -2,7 +2,7 @@
 
 import { headers as getHeaders } from 'next/headers'
 
-import type { Unauthorized } from '@/api/api-domain'
+import type { Unauthorized } from '@/infrastructure/api/api-domain'
 import type { AuthUser } from '@/auth/domain/auth-entities'
 import { failure, type Result, success } from '@/helpers/result'
 import { auth } from './auth-lib'

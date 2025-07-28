@@ -1,6 +1,6 @@
 import type { ZodError } from 'zod'
 
-import type { BadRequest, Conflict, ErrorResponse, Forbidden, InternalServerError, SuccessResponse, Unauthorized } from '@/api/api-domain'
+import type { BadRequest, Conflict, ErrorResponse, Forbidden, InternalServerError, SuccessResponse, Unauthorized } from '@/infrastructure/api/api-domain'
 import { failure, type NotFound, success } from '@/helpers/result'
 
 const OK_STATUS_CODE = 200

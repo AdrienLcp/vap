@@ -2,7 +2,7 @@
 
 import { NextResponse } from 'next/server'
 
-import type { BaseResponse } from '@/api/api-domain'
+import type { BaseResponse } from '@/infrastructure/api/api-domain'
 
 export const nextResponse = async <Response extends BaseResponse> (promise: Promise<Response>) => {
   const response = await promise

@@ -1,1 +1,29 @@
 @use '@/presentation/styles/normalize'
+@use '@/presentation/styles/sizes'
+@use '@/presentation/styles/colors'
+@use '@/presentation/styles/animations'
+@use '@/presentation/styles/typography'
+@use '@/presentation/styles/shadows'
+@use '@/presentation/styles/scrollbar'
+
+html
+  -moz-osx-font-smoothing: grayscale
+  -webkit-font-smoothing: antialiased
+  -webkit-tap-highlight-color: transparent
+  accent-color: var(--brand-foreground-accent)
+  caret-color: var(--brand-foreground-accent)
+  color-scheme: dark light
+  overflow-x: hidden
+  scroll-behavior: smooth
+
+  ::selection
+    background-color: var(--brand-background-primary)
+    color: var(--brand-foreground-on-brand)
+
+body
+  @include typography.body-medium
+  background-color: var(--neutral-background)
+  color: var(--neutral-foreground)
+
+h1, h2, h3, h4, h5, h6
+  @include typography.title-medium

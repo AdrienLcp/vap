@@ -1,0 +1,38 @@
+@use '@/presentation/styles/selectors'
+
+@mixin hidden
+  border: 0
+  clip: rect(0, 0, 0, 0)
+  clip-path: inset(50%)
+  height: 1px
+  margin: -1px
+  overflow: hidden
+  padding: 0
+  position: absolute
+  white-space: nowrap
+  width: 1px
+
+// Override react-aria-components focus styles
+// rac = react aria components
+
+@mixin no-rac-focus-outline
+  &[data-rac]:not([data-focus-visible])
+    outline: none
+
+@mixin focus-border
+  @include no-rac-focus-outline
+
+  &
+    border: var(--element-stroke, 0.125rem) solid transparent
+
+  @include selectors.focus-visible
+    border-color: var(--ring)
+
+@mixin focus-outline
+  @include no-rac-focus-outline
+
+  &
+    outline-offset: var(--size-20, 0.125rem)
+
+  @include selectors.focus-visible
+    outline: var(--element-stroke, 0.125rem) solid var(--ring)

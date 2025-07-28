@@ -1,6 +1,9 @@
 'use client'
 
+import { redirect } from 'next/navigation'
+
 import { AuthClient } from '@/auth/auth-client'
+import { DEFAULT_ROUTE } from '@/domain/navigation'
 import { Form } from '@/presentation/components/forms/form'
 
 const signUpFields = {
@@ -24,6 +27,7 @@ const onSubmit = async (formData: FormData) => {
   }
 
   console.log('Sign up success:', signUpResult.data)
+  redirect(DEFAULT_ROUTE)
 }
 
 export const SignUpForm: React.FC = () => (

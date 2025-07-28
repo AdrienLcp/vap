@@ -1,5 +1,5 @@
-import { I18nController } from '@/i18n/i18n-controller'
-import type { I18nKey, I18nOptions } from '@/i18n/i18n-domain'
+import { I18nController } from '@/infrastructure/i18n/i18n-controller'
+import type { I18nKey, I18nOptions } from '@/infrastructure/i18n/i18n-domain'
 
 export const lang = 'fr'
 

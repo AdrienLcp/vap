@@ -1,4 +1,4 @@
-import fr from '@/i18n/dictionaries/fr.json'
+import fr from '@/infrastructure/i18n/dictionaries/fr.json'
 
 type DotPrefix<T extends string> = T extends '' ? '' : `.${T}`
 

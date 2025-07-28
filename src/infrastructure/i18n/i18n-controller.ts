@@ -1,6 +1,6 @@
-import { DEFAULT_LOCALE, type Locale } from '@/i18n/i18n-domain'
-import { I18nService } from '@/i18n/i18n-service'
-import { findSupportedLocale } from '@/i18n/i18n-utils'
+import { DEFAULT_LOCALE, type Locale } from '@/infrastructure/i18n/i18n-domain'
+import { I18nService } from '@/infrastructure/i18n/i18n-service'
+import { findSupportedLocale } from '@/infrastructure/i18n/i18n-utils'
 
 const getInitialLocale = (): Locale => {
   return I18nService.getInitialLocale()

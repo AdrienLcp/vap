@@ -1,5 +1,5 @@
 import { failure, type NotFound, type Result, success } from '@/helpers/result'
-import { DEFAULT_LOCALE, dictionaries, type Locale } from '@/i18n/i18n-domain'
+import { DEFAULT_LOCALE, dictionaries, type Locale } from '@/infrastructure/i18n/i18n-domain'
 import { LocaleStorage } from '@/infrastructure/local-storage'
 
 const getDictionaryByLocale = (locale: Locale) => {

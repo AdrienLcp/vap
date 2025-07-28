@@ -1,7 +1,8 @@
+import classNames from 'classnames'
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 
-import { lang } from '@/i18n'
+import { lang } from '@/infrastructure/i18n'
 import { Header } from '@/presentation/components/header'
 import { Providers } from '@/presentation/components/providers'
 
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
 const RootLayout: React.FC<React.PropsWithChildren> = async ({ children }) => (
   <Providers>
     <html data-scroll-behavior='smooth' lang={lang}>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={classNames(geistSans.variable, geistMono.variable)}>
         <Header />
 
         {children}

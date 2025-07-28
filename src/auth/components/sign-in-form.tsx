@@ -1,6 +1,9 @@
 'use client'
 
+import { redirect } from 'next/navigation'
+
 import { AuthClient } from '@/auth/auth-client'
+import { DEFAULT_ROUTE } from '@/domain/navigation'
 import { Form } from '@/presentation/components/forms/form'
 
 const signInFields = {
@@ -22,6 +25,7 @@ const onSubmit = async (formData: FormData) => {
   }
 
   console.log('Sign in success:', signInResult.data)
+  redirect(DEFAULT_ROUTE)
 }
 
 export const SignInForm: React.FC = () => (

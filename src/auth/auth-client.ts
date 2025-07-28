@@ -2,34 +2,13 @@
 
 import { createAuthClient } from 'better-auth/react'
 
-import type { Unauthorized } from '@/api/api-domain'
-import { ApiClient } from '@/api/api-client'
+import type { Unauthorized } from '@/infrastructure/api/api-domain'
+import { ApiClient } from '@/infrastructure/api/api-client'
 import { AUTH_API_ROUTES } from '@/auth/auth-api-routes'
 import type { AuthUserDTO, AuthUserError, AuthUserResponse, ChangePasswordInfo, SignInError, SignInInfo, SignUpError, SignUpInfo, SocialProvider } from '@/auth/domain/auth-entities'
 import { failure, type Result, success, unknownError } from '@/helpers/result'
 
 export const betterAuthClient = createAuthClient()
-
-const findUser = async (): Promise<Result<AuthUserError, AuthUserDTO>> => {
-  try {
-    const userResponse = await ApiClient.GET<AuthUserResponse>(AUTH_API_ROUTES.user)
-
-    if (userResponse.status === 'SUCCESS') {
-      return success(userResponse.data)
-    }
-
-    switch (userResponse.errors) {
-      case 'UNAUTHORIZED':
-        return failure('UNAUTHORIZED')
-      case 'INTERNAL_SERVER_ERROR':
-      case 'UNEXPECTED_ERROR':
-      default:
-        return unknownError('User fetch error:', userResponse.errors)
-    }
-  } catch (error) {
-    return unknownError('User fetch error:', error)
-  }
-}
 
 const changeEmail = async (newEmail: string): Promise<Result<Unauthorized>> => {
   try {
@@ -131,6 +110,27 @@ const deleteUser = async (password: string): Promise<Result<Unauthorized>> => {
     return success()
   } catch (error) {
     return unknownError('Delete user error:', error)
+  }
+}
+
+const findUser = async (): Promise<Result<AuthUserError, AuthUserDTO>> => {
+  try {
+    const userResponse = await ApiClient.GET<AuthUserResponse>(AUTH_API_ROUTES.user)
+
+    if (userResponse.status === 'SUCCESS') {
+      return success(userResponse.data)
+    }
+
+    switch (userResponse.errors) {
+      case 'UNAUTHORIZED':
+        return failure('UNAUTHORIZED')
+      case 'INTERNAL_SERVER_ERROR':
+      case 'UNEXPECTED_ERROR':
+      default:
+        return unknownError('User fetch error:', userResponse.errors)
+    }
+  } catch (error) {
+    return unknownError('User fetch error:', error)
   }
 }
 

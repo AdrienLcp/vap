@@ -1,6 +1,6 @@
 'use client'
 
-import { HttpResponse } from '@/api/http-response'
+import { HttpResponse } from '@/infrastructure/api/http-response'
 
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 
