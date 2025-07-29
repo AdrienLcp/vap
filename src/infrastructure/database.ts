@@ -1,4 +1,4 @@
-'server-only'
+import 'server-only'
 
 import { PrismaClient } from '@prisma/client'
 
@@ -10,4 +10,8 @@ if (process.env.NODE_ENV !== 'production') {
   globalForPrisma.prisma = prisma
 }
 
+export type Select<T> = Record<keyof T, true>
+
+export const CategoryDatabase = prisma.category
+export const ProductDatabase = prisma.product
 export const UserDatabase = prisma.user

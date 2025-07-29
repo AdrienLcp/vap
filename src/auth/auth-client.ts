@@ -2,11 +2,11 @@
 
 import { createAuthClient } from 'better-auth/react'
 
-import type { Unauthorized } from '@/infrastructure/api/api-domain'
-import { ApiClient } from '@/infrastructure/api/api-client'
 import { AUTH_API_ROUTES } from '@/auth/auth-api-routes'
 import type { AuthUserDTO, AuthUserError, AuthUserResponse, ChangePasswordInfo, SignInError, SignInInfo, SignUpError, SignUpInfo, SocialProvider } from '@/auth/domain/auth-entities'
 import { failure, type Result, success, unknownError } from '@/helpers/result'
+import { ApiClient } from '@/infrastructure/api/api-client'
+import type { Unauthorized } from '@/infrastructure/api/api-domain'
 
 export const betterAuthClient = createAuthClient()
 

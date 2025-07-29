@@ -10,9 +10,9 @@ export type InternalServerError = 'INTERNAL_SERVER_ERROR'
 
 export type BaseResponse = { statusCode: number }
 
-export type ErrorResponse<Errors = undefined> = BaseResponse & ErrorResult<Errors>
-export type SuccessResponse<Data = undefined> = BaseResponse & SuccessResult<Data>
+export type ErrorResponse<Errors = null> = BaseResponse & ErrorResult<Errors>
+export type SuccessResponse<Data = null> = BaseResponse & SuccessResult<Data>
 
-export type ApiResponse<Errors = undefined, Data = undefined> = Promise<ErrorResponse<Errors | InternalServerError> | SuccessResponse<Data>>
+export type ApiResponse<Errors = null, Data = null> = Promise<ErrorResponse<Errors | InternalServerError> | SuccessResponse<Data>>
 
-export type ResponseWithValidation<Errors, RequestBody = unknown, Data = undefined> = ApiResponse<Errors | ZodError<RequestBody>, Data>
+export type ResponseWithValidation<Errors, RequestParams = null, RequestBody = unknown, Data = null> = ApiResponse<Errors | ZodError<RequestBody | RequestParams>, Data>

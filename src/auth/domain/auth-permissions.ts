@@ -3,12 +3,18 @@ import type { UserRole } from '@/user/user-entities'
 
 export const ROLE_PERMISSIONS: Record<UserRole, AuthPermissions> = {
   USER: {
-    canAccessAdmin: false
+    canAccessAdmin: false,
+
+    canUpdateCategory: false
   },
   ADMIN: {
-    canAccessAdmin: true
+    canAccessAdmin: true,
+
+    canUpdateCategory: true
   },
   SUPER_ADMIN: {
-    canAccessAdmin: true
+    canAccessAdmin: true,
+
+    canUpdateCategory: true
   }
 }

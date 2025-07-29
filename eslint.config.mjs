@@ -1,5 +1,6 @@
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
+
 import { FlatCompat } from '@eslint/eslintrc'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -36,21 +37,37 @@ const eslintConfig = [
       '@typescript-eslint/no-extraneous-class': 'off',
       '@typescript-eslint/no-unused-vars': ['error', { 'argsIgnorePattern': '^_', 'varsIgnorePattern': '^_' }],
 
+      'import/order': ['error', {
+        'alphabetize': {
+          'caseInsensitive': true,
+          'order': 'asc'
+        },
+        'groups': [
+          'builtin',
+          'external',
+          'internal',
+          'parent',
+          'sibling',
+          'index'
+        ],
+        'newlines-between': 'always',
+        'pathGroups': [
+          {
+            'pattern': '@/**',
+            'group': 'internal'
+          }
+        ],
+        'pathGroupsExcludedImportTypes': ['builtin'],
+        'warnOnUnassignedImports': false
+      }],
+
       'jsx-a11y/anchor-is-valid': ['error', { aspects: ['invalidHref', 'preferButton'] }],
       'jsx-a11y/no-autofocus': ['error', { ignoreNonDOM: true }],
 
       'no-console': ['warn', { allow: ['error', 'info', 'warn'] }],
       'no-debugger': 'error',
       'no-unused-private-class-members': 'error',
-      'no-useless-return': 'error',
-
-      'sort-imports': ['error', {
-        'ignoreCase': true,
-        'ignoreDeclarationSort': true,
-        'ignoreMemberSort': false,
-        'memberSyntaxSortOrder': ['all', 'multiple', 'single', 'none'],
-        'allowSeparatedGroups': true
-      }]
+      'no-useless-return': 'error'
     }
   })
 ]

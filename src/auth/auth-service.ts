@@ -1,4 +1,4 @@
-'server-only'
+import 'server-only'
 
 import { AuthRepository } from '@/auth/auth-repository'
 import type { AuthUserDTO, AuthUserError } from '@/auth/domain/auth-entities'

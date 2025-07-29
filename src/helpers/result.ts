@@ -25,15 +25,15 @@ export function success<Data>(data?: Data) {
   return { data, status: STATUS_SUCCESS }
 }
 
-export type ErrorResult<Errors = undefined> = Errors extends undefined | null
+export type ErrorResult<Errors = null> = Errors extends undefined | null
   ? { errors: UnexpectedError, status: typeof STATUS_ERROR }
   : { errors: Errors | UnexpectedError, status: typeof STATUS_ERROR }
 
-export type SuccessResult<Data = undefined> = Data extends undefined | null
+export type SuccessResult<Data = null> = Data extends undefined | null
   ? { status: typeof STATUS_SUCCESS }
   : { data: Data, status: typeof STATUS_SUCCESS }
 
-export type Result<Errors = undefined, Data = undefined> =
+export type Result<Errors = null, Data = null> =
   | ErrorResult<Errors>
   | SuccessResult<Data>
 

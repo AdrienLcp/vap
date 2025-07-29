@@ -1,7 +1,7 @@
 import type { ZodError } from 'zod'
 
-import type { BadRequest, Conflict, ErrorResponse, Forbidden, InternalServerError, SuccessResponse, Unauthorized } from '@/infrastructure/api/api-domain'
 import { failure, type NotFound, success } from '@/helpers/result'
+import type { BadRequest, Conflict, ErrorResponse, Forbidden, InternalServerError, SuccessResponse, Unauthorized } from '@/infrastructure/api/api-domain'
 
 const OK_STATUS_CODE = 200
 const CREATED_STATUS_CODE = 201
@@ -82,14 +82,9 @@ function conflict<Errors>(errors?: Errors) {
   return { ...failure(errors), statusCode: CONFLICT_STATUS_CODE }
 }
 
-function internalServerError(): ErrorResponse<InternalServerError>
-function internalServerError<Errors>(errors: Errors): ErrorResponse<Errors>
-function internalServerError<Errors>(errors?: Errors) {
-  if (errors == null) {
-    return { ...failure('INTERNAL_SERVER_ERROR'), statusCode: INTERNAL_SERVER_ERROR_STATUS_CODE }
-  }
-
-  return { ...failure(errors), statusCode: INTERNAL_SERVER_ERROR_STATUS_CODE }
+const internalServerError = (...logs: Parameters<typeof console.error>): ErrorResponse<InternalServerError> => {
+  console.error(...logs)
+  return { ...failure('INTERNAL_SERVER_ERROR'), statusCode: INTERNAL_SERVER_ERROR_STATUS_CODE }
 }
 
 export const HttpResponse = {

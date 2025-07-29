@@ -1,9 +1,9 @@
 import type { z } from 'zod'
 
-import type { ApiResponse, Unauthorized } from '@/infrastructure/api/api-domain'
+import type { AUTH_CONSTANTS } from '@/auth/domain/auth-constants'
 import type { AuthPermissionsSchema, AuthUserDTOSchema } from '@/auth/domain/auth-schemas'
+import type { ApiResponse, Unauthorized } from '@/infrastructure/api/api-domain'
 import type { UserRole } from '@/user/user-entities'
-import type { AUTH_CONSTANTS } from './auth-constants'
 
 export type AuthPermissions = z.infer<typeof AuthPermissionsSchema>
 
