@@ -67,7 +67,15 @@ const eslintConfig = [
       'no-console': ['warn', { allow: ['error', 'info', 'warn'] }],
       'no-debugger': 'error',
       'no-unused-private-class-members': 'error',
-      'no-useless-return': 'error'
+      'no-useless-return': 'error',
+
+      'sort-imports': ['error', {
+        'ignoreCase': true,
+        'ignoreDeclarationSort': true,
+        'ignoreMemberSort': false,
+        'memberSyntaxSortOrder': ['all', 'multiple', 'single', 'none'],
+        'allowSeparatedGroups': true
+      }]
     }
   })
 ]

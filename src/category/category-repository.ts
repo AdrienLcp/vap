@@ -2,9 +2,9 @@ import 'server-only'
 
 import type { CategoryCreationData, CategoryDTO, CategoryNameAlreadyExists, CategoryUpdateData } from '@/category/domain/category-entities'
 import { type Result, success, unknownError } from '@/helpers/result'
-import { CategoryDatabase, type Select } from '@/infrastructure/database'
+import { CategoryDatabase } from '@/infrastructure/database'
 
-const categorySelectedFields: Select<CategoryDTO> = {
+const categorySelect = {
   id: true,
   name: true,
   description: true,
@@ -19,7 +19,7 @@ const createCategory = async (categoryCreationData: CategoryCreationData): Promi
         description: categoryCreationData.description,
         imageUrl: categoryCreationData.imageUrl
       },
-      select: categorySelectedFields
+      select: categorySelect
     })
 
     return success(createdCategory)
@@ -30,7 +30,7 @@ const createCategory = async (categoryCreationData: CategoryCreationData): Promi
 
 const findCategories = async (): Promise<Result<null, CategoryDTO[]>> => {
   try {
-    const categories = await CategoryDatabase.findMany({ select: categorySelectedFields })
+    const categories = await CategoryDatabase.findMany({ select: categorySelect })
 
     return success(categories)
   } catch (error) {
@@ -42,8 +42,12 @@ const updateCategory = async (categoryId: string, categoryData: CategoryUpdateDa
   try {
     const updatedCategory = await CategoryDatabase.update({
       where: { id: categoryId },
-      data: categoryData,
-      select: categorySelectedFields
+      data: {
+        name: categoryData.name,
+        description: categoryData.description,
+        imageUrl: categoryData.imageUrl
+      },
+      select: categorySelect
     })
 
     return success(updatedCategory)

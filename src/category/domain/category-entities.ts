@@ -22,7 +22,5 @@ export type CategoryUpdateError =
   | Unauthorized
 
 export type CategoryListResponse = ApiResponse<undefined, CategoryDTO[]>
-export type CategoryCreationResponse = ResponseWithValidation<CategoryCreationError, null, CategoryCreationData, CategoryDTO>
-
-type CategoryUpdateParams = { categoryId: string }
-export type CategoryUpdateResponse = ResponseWithValidation<CategoryUpdateError, CategoryUpdateParams, CategoryCreationData, CategoryDTO>
+export type CategoryCreationResponse = ResponseWithValidation<CategoryCreationError, CategoryCreationData, CategoryDTO>
+export type CategoryUpdateResponse = ResponseWithValidation<CategoryUpdateError, CategoryUpdateData, CategoryDTO>

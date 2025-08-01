@@ -81,15 +81,15 @@ model Product {
   name            String
   description     String?
   price           Float
-  discountedPrice Float?        @default(0)
+  discountedPrice Float?
   stock           Int           @default(0)
   salesCount      Int           @default(0)
-  sku             String?       @unique
+  sku             String        @unique
   imageUrl        String?
   status          ProductStatus @default(ACTIVE)
 
-  category   Category @relation(fields: [categoryId], references: [id])
-  categoryId String
+  category   Category? @relation(fields: [categoryId], references: [id])
+  categoryId String?
 
   orderItems OrderItem[]
   cartItems  CartItem[]

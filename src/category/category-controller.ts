@@ -1,7 +1,7 @@
 import 'server-only'
 
 import { CategoryService } from '@/category/category-service'
-import type { CategoryCreationResponse, CategoryListResponse } from '@/category/domain/category-entities'
+import type { CategoryCreationResponse, CategoryListResponse, CategoryUpdateResponse } from '@/category/domain/category-entities'
 import { CategoryCreationSchema, CategoryDTOSchema, CategoryIdSchema, CategoryUpdateSchema } from '@/category/domain/category-schemas'
 import { HttpResponse } from '@/infrastructure/api/http-response'
 
@@ -61,7 +61,7 @@ const findCategories = async (): CategoryListResponse => {
   }
 }
 
-const updateCategory = async (categoryId: unknown, categoryUpdateRequest: Request) => {
+const updateCategory = async (categoryId: unknown, categoryUpdateRequest: Request): CategoryUpdateResponse => {
   try {
     const categoryIdValidation = CategoryIdSchema.safeParse(categoryId)
 

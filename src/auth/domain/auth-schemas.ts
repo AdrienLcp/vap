@@ -8,7 +8,13 @@ export const UserPasswordSchema = z.string().min(AUTH_CONSTANTS.PASSWORD_MIN_LEN
 
 export const AuthPermissionsSchema = z.object({
   canAccessAdmin: z.boolean(),
-  canUpdateCategory: z.boolean()
+
+  canCreateCategory: z.boolean(),
+  canUpdateCategory: z.boolean(),
+
+  canCreateProduct: z.boolean(),
+  canReadProduct: z.boolean(),
+  canUpdateProduct: z.boolean()
 })
 
 export const AuthUserDTOSchema = z.object({

@@ -15,4 +15,4 @@ export type SuccessResponse<Data = null> = BaseResponse & SuccessResult<Data>
 
 export type ApiResponse<Errors = null, Data = null> = Promise<ErrorResponse<Errors | InternalServerError> | SuccessResponse<Data>>
 
-export type ResponseWithValidation<Errors, RequestParams = null, RequestBody = unknown, Data = null> = ApiResponse<Errors | ZodError<RequestBody | RequestParams>, Data>
+export type ResponseWithValidation<Errors, RequestBody = unknown, Data = null> = ApiResponse<Errors | ZodError<RequestBody | string>, Data>
