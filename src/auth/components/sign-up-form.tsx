@@ -37,6 +37,7 @@ export const SignUpForm: React.FC = () => (
       <input
         name={signUpFields.email}
         placeholder='jean-neige@gmail.com'
+        required
         type='text'
       />
     </label>
@@ -46,6 +47,7 @@ export const SignUpForm: React.FC = () => (
       <input
         name={signUpFields.name}
         placeholder='Jean Neige'
+        required
         type='text'
       />
     </label>
@@ -55,6 +57,7 @@ export const SignUpForm: React.FC = () => (
       <input
         name={signUpFields.password}
         placeholder='Password'
+        required
         type='password'
       />
     </label>

@@ -27,7 +27,9 @@ const changeEmail = async (newEmail: string): Promise<Result<Unauthorized>> => {
   }
 }
 
-const changePassword = async (changePasswordInfo: ChangePasswordInfo): Promise<Result<Unauthorized>> => {
+type ChangePasswordError = 'INVALID_PASSWORD' | 'PASSWORD_TOO_SHORT'
+
+const changePassword = async (changePasswordInfo: ChangePasswordInfo): Promise<Result<ChangePasswordError>> => {
   try {
     const changeEmailResponse = await betterAuthClient.changePassword({
       currentPassword: changePasswordInfo.currentPassword,
@@ -37,6 +39,10 @@ const changePassword = async (changePasswordInfo: ChangePasswordInfo): Promise<R
 
     if (changeEmailResponse.error) {
       switch (changeEmailResponse.error.code) {
+        case 'INVALID_PASSWORD':
+          return failure('INVALID_PASSWORD')
+        case 'PASSWORD_TOO_SHORT':
+          return failure('PASSWORD_TOO_SHORT')
         default:
           return unknownError('Change password error:', changeEmailResponse.error)
       }

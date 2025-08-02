@@ -21,9 +21,9 @@ const createCategory = async (categoryCreationRequest: Request): CategoryCreatio
         case 'CATEGORY_NAME_ALREADY_EXISTS':
           return HttpResponse.conflict('CATEGORY_NAME_ALREADY_EXISTS')
         case 'FORBIDDEN':
-          return HttpResponse.forbidden('FORBIDDEN')
+          return HttpResponse.forbidden()
         case 'UNAUTHORIZED':
-          return HttpResponse.unauthorized('UNAUTHORIZED')
+          return HttpResponse.unauthorized()
         default:
           return HttpResponse.internalServerError('Unknown error in CategoryController.createCategory:', createdCategoryResult.errors)
       }
@@ -83,9 +83,9 @@ const updateCategory = async (categoryId: unknown, categoryUpdateRequest: Reques
         case 'CATEGORY_NAME_ALREADY_EXISTS':
           return HttpResponse.conflict('CATEGORY_NAME_ALREADY_EXISTS')
         case 'FORBIDDEN':
-          return HttpResponse.forbidden('FORBIDDEN')
+          return HttpResponse.forbidden()
         case 'UNAUTHORIZED':
-          return HttpResponse.unauthorized('UNAUTHORIZED')
+          return HttpResponse.unauthorized()
         default:
           return HttpResponse.internalServerError('Unknown error in CategoryController.updateCategory:', updatedCategoryResult.errors)
       }

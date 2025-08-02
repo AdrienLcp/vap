@@ -1,3 +1,5 @@
+import type { ZodError } from 'zod'
+
 export type UnexpectedError = 'UNEXPECTED_ERROR'
 export type NotFound = 'NOT_FOUND'
 
@@ -41,3 +43,7 @@ export const unknownError = (...logs: Parameters<typeof console.error>): ErrorRe
   console.error('Unknown error:', ...logs)
   return failure()
 }
+
+export type ValidationResult<Errors = null, Body = null, Data = null> =
+  | ErrorResult<Errors | ZodError<Body extends null | undefined ? string : Body | string>>
+  | SuccessResult<Data>

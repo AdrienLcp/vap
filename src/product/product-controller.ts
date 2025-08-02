@@ -1,5 +1,7 @@
+import 'server-only'
+
 import { HttpResponse } from '@/infrastructure/api/http-response'
-import type { ProductCreationResponse, ProductListResponse, ProductPublicListResponse, ProductUpdateResponse } from '@/product/domain/product-entities'
+import type { ProductCreationResponse, ProductDeleteResponse, ProductListResponse, ProductPublicListResponse, ProductUpdateResponse } from '@/product/domain/product-entities'
 import { ProductCreationSchema, ProductDTOSchema, ProductIdSchema, ProductUpdateSchema } from '@/product/domain/product-schemas'
 import { ProductService } from '@/product/product-service'
 
@@ -35,6 +37,33 @@ const createProduct = async (productCreationRequest: Request): ProductCreationRe
     return HttpResponse.created(productDTOValidation.data)
   } catch (error) {
     return HttpResponse.internalServerError('Unknown error in ProductController.createProduct:', error)
+  }
+}
+
+const deleteProduct = async (productId: string): ProductDeleteResponse => {
+  try {
+    const productIdValidation = ProductIdSchema.safeParse(productId)
+
+    if (productIdValidation.error) {
+      return HttpResponse.badRequest(productIdValidation.error)
+    }
+
+    const deleteResult = await ProductService.deleteProduct(productIdValidation.data)
+
+    if (deleteResult.status === 'ERROR') {
+      switch (deleteResult.errors) {
+        case 'FORBIDDEN':
+          return HttpResponse.forbidden()
+        case 'UNAUTHORIZED':
+          return HttpResponse.unauthorized()
+        default:
+          return HttpResponse.internalServerError('Unknown error in ProductController.deleteProduct:', deleteResult.errors)
+      }
+    }
+
+    return HttpResponse.ok()
+  } catch (error) {
+    return HttpResponse.internalServerError('Unknown error in ProductController.deleteProduct:', error)
   }
 }
 
@@ -128,6 +157,7 @@ const updateProduct = async (productId: string, productUpdateRequest: Request): 
 
 export const ProductController = {
   createProduct,
+  deleteProduct,
   findProducts,
   findPublicProducts,
   updateProduct

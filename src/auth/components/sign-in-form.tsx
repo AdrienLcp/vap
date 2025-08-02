@@ -35,6 +35,7 @@ export const SignInForm: React.FC = () => (
       <input
         name={signInFields.email}
         placeholder='jean-neige@gmail.com'
+        required
         type='text'
       />
     </label>
@@ -44,6 +45,7 @@ export const SignInForm: React.FC = () => (
       <input
         name={signInFields.password}
         placeholder='Password'
+        required
         type='password'
       />
     </label>

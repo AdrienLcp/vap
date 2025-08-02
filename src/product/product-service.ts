@@ -1,3 +1,5 @@
+import 'server-only'
+
 import { AuthService } from '@/auth/auth-service'
 import { failure, type Result, success } from '@/helpers/result'
 import type { ProductCreationData, ProductDTO, ProductError, ProductPublicDTO, ProductUpdateData } from '@/product/domain/product-entities'
@@ -21,6 +23,26 @@ const createProduct = async (productCreationData: ProductCreationData): Promise<
   }
 
   return success(productCreationResult.data)
+}
+
+const deleteProduct = async (productId: string): Promise<Result<ProductError>> => {
+  const userResult = await AuthService.findUser()
+
+  if (userResult.status === 'ERROR') {
+    return userResult
+  }
+
+  if (!userResult.data.permissions.canDeleteProduct) {
+    return failure('FORBIDDEN')
+  }
+
+  const deleteResult = await ProductRepository.deleteProduct(productId)
+
+  if (deleteResult.status === 'ERROR') {
+    return deleteResult
+  }
+
+  return success()
 }
 
 const findProducts = async (): Promise<Result<ProductError, ProductDTO[]>> => {
@@ -86,6 +108,7 @@ const updateProduct = async (productId: string, productUpdateData: ProductUpdate
 
 export const ProductService = {
   createProduct,
+  deleteProduct,
   findProducts,
   findPublicProducts,
   updateProduct

@@ -46,6 +46,15 @@ const createProduct = async (productCreationData: ProductCreationData): Promise<
   }
 }
 
+const deleteProduct = async (productId: string): Promise<Result> => {
+  try {
+    await ProductDatabase.delete({ where: { id: productId } })
+    return success()
+  } catch (error) {
+    return unknownError('Unknown error in ProductRepository.deleteProduct:', error)
+  }
+}
+
 const findProducts = async (): Promise<Result<null, ProductDTO[]>> => {
   try {
     const products = await ProductDatabase.findMany({ select: productSelect })
@@ -83,6 +92,7 @@ const updateProduct = async (productId: string, productData: ProductUpdateData):
 
 export const ProductRepository = {
   createProduct,
+  deleteProduct,
   findProducts,
   updateProduct
 }
