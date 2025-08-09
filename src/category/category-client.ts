@@ -1,3 +1,5 @@
+'use client'
+
 import type { CategoryCreationData, CategoryCreationError, CategoryCreationResponse, CategoryDTO, CategoryListResponse, CategoryUpdateData, CategoryUpdateError, CategoryUpdateResponse } from '@/category/domain/category-entities'
 import { failure, type Result, success, unknownError, type ValidationResult } from '@/helpers/result'
 import { ApiClient } from '@/infrastructure/api/api-client'

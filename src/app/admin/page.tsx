@@ -1,7 +1,9 @@
 import { redirect } from 'next/navigation'
 
 import { AuthController } from '@/auth/auth-controller'
+import { CreateCategoryForm } from '@/category/components/create-category-form'
 import { ROUTES } from '@/domain/navigation'
+import { CreateProductForm } from '@/product/components/create-product-form'
 
 const AdminPage: React.FC = async () => {
   const authUserResult = await AuthController.findUser()
@@ -15,7 +17,10 @@ const AdminPage: React.FC = async () => {
   }
 
   return (
-    <>Admin</>
+    <>
+      <CreateCategoryForm />
+      <CreateProductForm />
+    </>
   )
 }
 

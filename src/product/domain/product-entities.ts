@@ -17,7 +17,7 @@ export type ProductError = Forbidden | Unauthorized
 
 export type ProductListResponse = ApiResponse<ProductError, ProductDTO[]>
 
-export type ProductPublicListResponse = ApiResponse<ProductError, ProductPublicDTO[]>
+export type ProductPublicListResponse = ApiResponse<null, ProductPublicDTO[]>
 export type ProductCreationResponse = ResponseWithValidation<ProductError, ProductCreationData, ProductDTO>
 export type ProductUpdateResponse = ResponseWithValidation<ProductError, ProductUpdateData, ProductDTO>
 export type ProductDeleteResponse = ResponseWithValidation<ProductError>

@@ -1,22 +1,15 @@
 'use client'
 
-import { HttpResponse } from '@/infrastructure/api/http-response'
-
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 
 const request = async <Response, RequestBody = undefined>(route: string, method: Method, body?: RequestBody): Promise<Response> => {
-  try {
-    const response = await fetch(`/api/${route}`, {
-      body: body ? JSON.stringify(body) : undefined,
-      headers: body ? { 'Content-Type': 'application/json' } : undefined,
-      method
-    })
+  const response = await fetch(`/api/${route}`, {
+    body: body ? JSON.stringify(body) : undefined,
+    headers: body ? { 'Content-Type': 'application/json' } : undefined,
+    method
+  })
 
-    return await response.json()
-  } catch (error) {
-    console.error('Fetch API error:', error)
-    return HttpResponse.internalServerError() as Response
-  }
+  return await response.json()
 }
 
 const DELETE = async <Response>(route: string) => await request<Response>(route, 'DELETE')

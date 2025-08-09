@@ -1,6 +1,11 @@
 import classNames from 'classnames'
+import type { ButtonRenderProps, FieldErrorRenderProps, LinkRenderProps, TextFieldRenderProps } from 'react-aria-components'
 
-export type ReactAriaComponentRenderProps = unknown
+export type ReactAriaComponentRenderProps =
+  | ButtonRenderProps
+  | FieldErrorRenderProps
+  | LinkRenderProps
+  | TextFieldRenderProps
 
 export type RenderPropsValues <T extends ReactAriaComponentRenderProps> = T & {
   defaultClassName: string | undefined

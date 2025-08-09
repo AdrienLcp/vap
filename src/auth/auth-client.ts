@@ -2,7 +2,6 @@
 
 import { createAuthClient } from 'better-auth/react'
 
-import { AUTH_API_ROUTES } from '@/auth/auth-api-routes'
 import type { AuthUserDTO, AuthUserError, AuthUserResponse, ChangePasswordInfo, SignInError, SignInInfo, SignUpError, SignUpInfo, SocialProvider } from '@/auth/domain/auth-entities'
 import { failure, type Result, success, unknownError } from '@/helpers/result'
 import { ApiClient } from '@/infrastructure/api/api-client'
@@ -121,7 +120,7 @@ const deleteUser = async (password: string): Promise<Result<Unauthorized>> => {
 
 const findUser = async (): Promise<Result<AuthUserError, AuthUserDTO>> => {
   try {
-    const userResponse = await ApiClient.GET<AuthUserResponse>(AUTH_API_ROUTES.user)
+    const userResponse = await ApiClient.GET<AuthUserResponse>('/auth/user')
 
     if (userResponse.status === 'SUCCESS') {
       return success(userResponse.data)

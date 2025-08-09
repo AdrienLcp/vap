@@ -14,7 +14,7 @@ const createCategory = async (categoryCreationRequest: Request): CategoryCreatio
       return HttpResponse.badRequest(categoryCreationValidation.error)
     }
 
-    const createdCategoryResult = await CategoryService.createCategory(categoryCreationData)
+    const createdCategoryResult = await CategoryService.createCategory(categoryCreationValidation.data)
 
     if (createdCategoryResult.status === 'ERROR') {
       switch (createdCategoryResult.errors) {
