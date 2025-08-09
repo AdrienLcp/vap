@@ -1,8 +1,10 @@
-import { I18nController } from '@/infrastructure/i18n/i18n-controller'
-import type { I18nKey, I18nOptions } from '@/infrastructure/i18n/i18n-domain'
+import { fr } from '@/infrastructure/i18n/dictionaries/fr'
+import { initI18n } from '@/infrastructure/i18n/lib'
 
 export const lang = 'fr'
 
-const polyglot = I18nController.getPolyglotByLocale(lang)
-
-export const i18n = (key: I18nKey, options?: I18nOptions) => polyglot.t(key, options)
+export const i18n = initI18n({
+  locale: 'fr',
+  fallbackLocale: 'fr',
+  translations: { fr }
+})

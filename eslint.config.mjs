@@ -76,7 +76,16 @@ const eslintConfig = [
         'memberSyntaxSortOrder': ['all', 'multiple', 'single', 'none'],
         'allowSeparatedGroups': true
       }]
-    }
+    },
+    overrides: [
+      {
+        files: ['**/*.d.ts'],
+        rules: {
+          '@typescript-eslint/consistent-type-definitions': 'off',
+          '@typescript-eslint/no-empty-object-type': 'off'
+        }
+      }
+    ]
   })
 ]
 

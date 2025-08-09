@@ -26,11 +26,10 @@ export const CreateCategoryForm: React.FC = () => {
       imageUrl: formData.get(createCategoryFormFields.imageUrl) as string
     }
 
-    console.log('Category creation data:', categoryCreationData)
-
     const createdCategoryResult = await CategoryClient.createCategory(categoryCreationData)
 
     console.log(createdCategoryResult)
+    setIsCategoryCreationLoading(false)
   }
 
   return (
