@@ -5,6 +5,7 @@
 @use '@/presentation/styles/typography'
 @use '@/presentation/styles/shadows'
 @use '@/presentation/styles/scrollbar'
+@use '@/presentation/styles/accessibility'
 
 html
   -moz-osx-font-smoothing: grayscale
@@ -27,3 +28,6 @@ body
 
 h1, h2, h3, h4, h5, h6
   @include typography.title-medium
+
+a, button, input, textarea, select
+  @include accessibility.focus-outline

@@ -4,18 +4,25 @@ import React from 'react'
 
 import { CategoryClient } from '@/category/category-client'
 import type { CategoryCreationData } from '@/category/domain/category-entities'
+import { t } from '@/infrastructure/i18n'
 import { Form } from '@/presentation/components/forms/form'
 import { TextField } from '@/presentation/components/forms/text-field'
 import { Button } from '@/presentation/components/ui/pressables/button'
+import type { ValidationErrors } from '@/presentation/utils/react-aria-utils'
+import type { ValueOf } from '@/utils/object-utils'
 
 const createCategoryFormFields = {
   name: 'name',
   description: 'description',
   imageUrl: 'image-url'
-}
+} as const
+
+type CreateCategoryFormFieldName = ValueOf<typeof createCategoryFormFields>
+type CreateCategoryValidationErrors = ValidationErrors<CreateCategoryFormFieldName>
 
 export const CreateCategoryForm: React.FC = () => {
   const [isCategoryCreationLoading, setIsCategoryCreationLoading] = React.useState(false)
+  const [createCategoryFormErrors, setCreateCategoryFormErrors] = React.useState<CreateCategoryValidationErrors>()
 
   const onCategoryCreationFormSubmit = async (formData: FormData) => {
     setIsCategoryCreationLoading(true)
@@ -28,36 +35,43 @@ export const CreateCategoryForm: React.FC = () => {
 
     const createdCategoryResult = await CategoryClient.createCategory(categoryCreationData)
 
+    if (createdCategoryResult.status === 'ERROR') {
+      console.log(createdCategoryResult.errors)
+    }
+
     console.log(createdCategoryResult)
     setIsCategoryCreationLoading(false)
   }
 
   return (
-    <Form onSubmit={onCategoryCreationFormSubmit}>
+    <Form onSubmit={onCategoryCreationFormSubmit} validationErrors={createCategoryFormErrors}>
       <TextField
         isRequired
-        label='Category Name'
+        label={t('category.create.form.name.label')}
         name={createCategoryFormFields.name}
-        placeholder='Category Name'
+        placeholder={t('category.create.form.name.placeholder')}
         type='text'
       />
 
       <TextField
-        label='Description'
+        label={t('category.create.form.description.label')}
         name={createCategoryFormFields.description}
-        placeholder='Description'
+        placeholder={t('category.create.form.description.placeholder')}
         type='text'
       />
 
       <TextField
-        label='Image URL'
+        label={t('category.create.form.image.label')}
         name={createCategoryFormFields.imageUrl}
-        placeholder='Image URL'
+        placeholder={t('category.create.form.image.placeholder')}
         type='url'
       />
 
       <Button isPending={isCategoryCreationLoading} type='submit'>
-        {isCategoryCreationLoading ? 'Creating...' : 'Create Category'}
+        {t(isCategoryCreationLoading
+          ? 'category.create.form.submit.creating'
+          : 'category.create.form.submit.label'
+        )}
       </Button>
     </Form>
   )

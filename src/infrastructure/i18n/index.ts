@@ -3,8 +3,8 @@ import { initI18n } from '@/infrastructure/i18n/lib'
 
 export const lang = 'fr'
 
-export const i18n = initI18n({
-  locale: 'fr',
-  fallbackLocale: 'fr',
+export const { t } = initI18n({
+  fallbackLocale: lang,
+  locale: lang,
   translations: { fr }
 })

@@ -1,8 +1,8 @@
-@keyframes spin
-  to
-    transform: rotate(360deg)
-
 :root
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275)
+  --ease-gentle: cubic-bezier(0.25, 0.46, 0.45, 0.94)
+  --ease-bouncy: cubic-bezier(0.68, -0.55, 0.265, 1.55)
+
   --transition-150: 150ms
   --transition-1000: 1s
 
@@ -10,5 +10,9 @@
     --transition-150: 0
     --transition-1000: 0
 
+@keyframes spin
+  to
+    transform: rotate(360deg)
+
 @mixin spin
-  animation: spin var(--transition-1000) linear infinite
+  animation: spin var(--transition-1000) var(--ease-gentle) infinite

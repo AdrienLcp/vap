@@ -29,7 +29,7 @@ export const reactAriaClassNames = <T extends ReactAriaComponentRenderProps> (
 }
 
 export type GlobalFormErrors = 'form'
-export type ValidationErrors <T extends string = string> = Partial<Record<T | GlobalFormErrors, string | string[]>>
+export type ValidationErrors <T extends string = string> = Partial<Record<T, string | string[]>>
 
 type ReactAriaComponentChildrenValues <T extends ReactAriaComponentRenderProps> = T & { defaultChildren: React.ReactNode | undefined }
 

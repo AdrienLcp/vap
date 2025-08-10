@@ -4,6 +4,11 @@
   &[data-disabled]
     @content
 
+@mixin focused
+  &:focus:not([data-rac]),
+  &[data-focused]
+    @content
+
 @mixin focus-visible
   &:focus-visible:not([data-rac]),
   &[data-focus-visible]

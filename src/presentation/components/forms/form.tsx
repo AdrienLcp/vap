@@ -22,7 +22,7 @@ export const Form: React.FC<FormProps> = ({ children, onSubmit, ...formRestProps
   }
 
   return (
-    <ReactAriaForm onSubmit={onSubmitHandler} {...formRestProps}>
+    <ReactAriaForm onSubmit={onSubmit && onSubmitHandler} {...formRestProps}>
       {children}
     </ReactAriaForm>
   )

@@ -34,7 +34,7 @@ export const Button: React.FC<ButtonProps> = ({
   ...buttonRestProps
 }) => (
   <ReactAriaButton
-    className={(values) => reactAriaPressableClassNames(
+    className={values => reactAriaPressableClassNames(
       values,
       className,
       variant,
@@ -45,7 +45,7 @@ export const Button: React.FC<ButtonProps> = ({
     )}
     {...buttonRestProps}
   >
-    {(values) => variant == null
+    {values => variant == null
       ? renderButtonChildren(children, values)
       : <>
           {renderButtonIcon(Icon, variant, values.isPending)}

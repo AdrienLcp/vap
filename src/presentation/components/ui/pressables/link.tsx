@@ -31,7 +31,7 @@ export const Link: React.FC<LinkProps> = ({
     )}
     {...linkRestProps}
   >
-    {(values) => variant == null
+    {values => variant == null
       ? renderLinkChildren(children, values)
       : <>
           {Icon && (
