@@ -43,8 +43,6 @@ const createProduct = async (productCreationRequest: Request): ProductCreationRe
   }
 }
 
-// test
-
 const deleteProduct = async (productId: string): ProductDeleteResponse => {
   try {
     const productIdValidation = ProductIdSchema.safeParse(productId)
