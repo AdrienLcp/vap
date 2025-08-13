@@ -1,7 +1,7 @@
 import type { ZodError } from 'zod'
 
 import { failure, type NotFound, success } from '@/helpers/result'
-import type { BadRequest, Conflict, ErrorResponse, Forbidden, InternalServerError, SuccessResponse, Unauthorized } from '@/infrastructure/api/api-domain'
+import type { Conflict, ErrorResponse, Forbidden, InternalServerError, SuccessResponse, Unauthorized } from '@/infrastructure/api/api-domain'
 
 const OK_STATUS_CODE = 200
 const CREATED_STATUS_CODE = 201
@@ -32,13 +32,7 @@ function created<Data>(data?: Data) {
   return { ...success(data), statusCode: CREATED_STATUS_CODE }
 }
 
-function badRequest(): ErrorResponse<BadRequest>
-function badRequest<RequestBody, Errors extends ZodError<RequestBody>>(errors: Errors): ErrorResponse<Errors>
-function badRequest<RequestBody, Errors extends ZodError<RequestBody>>(errors?: Errors) {
-  if (errors == null) {
-    return { ...failure('BAD_REQUEST'), statusCode: BAD_REQUEST_STATUS_CODE }
-  }
-
+const badRequest = <Request>(errors: ZodError<Request>) => {
   return { ...failure(errors), statusCode: BAD_REQUEST_STATUS_CODE }
 }
 

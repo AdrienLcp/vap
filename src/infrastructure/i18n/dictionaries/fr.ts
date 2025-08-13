@@ -1,7 +1,18 @@
-import type { LanguageMessages } from '@/infrastructure/i18n/lib'
+import { dt, type LanguageMessages } from '@/infrastructure/i18n/lib'
 
 export const fr = {
   appName: 'VAP',
+  test: {
+    messageCount: dt('{messages:plural}', {
+      plural: {
+        messages: {
+          zero: 'Vous n\'avez aucun message',
+          one: 'Vous avez {?} message',
+          other: 'Vous avez {?} messages'
+        }
+      }
+    })
+  },
   category: {
     create: {
       form: {

@@ -7,7 +7,7 @@ export const CategoryImageUrlSchema = z.url()
 
 export const CategoryNameSchema = z
   .string()
-  .min(1)
+  .min(10)
   .max(CATEGORY_CONSTANTS.NAME_MAX_LENGTH)
 
 export const CategoryDescriptionSchema = z

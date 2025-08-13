@@ -3,7 +3,7 @@
 import { createAuthClient } from 'better-auth/react'
 
 import type { AuthUserDTO, AuthUserError, AuthUserResponse, ChangePasswordInfo, SignInError, SignInInfo, SignUpError, SignUpInfo, SocialProvider } from '@/auth/domain/auth-entities'
-import { failure, type Result, success, unknownError } from '@/helpers/result'
+import { failure, type Result, success, unexpectedError } from '@/helpers/result'
 import { ApiClient } from '@/infrastructure/api/api-client'
 import type { Unauthorized } from '@/infrastructure/api/api-domain'
 
@@ -16,13 +16,13 @@ const changeEmail = async (newEmail: string): Promise<Result<Unauthorized>> => {
     if (changeEmailResponse.error) {
       switch (changeEmailResponse.error.code) {
         default:
-          return unknownError('Change email error:', changeEmailResponse.error)
+          return unexpectedError('Change email error:', changeEmailResponse.error)
       }
     }
 
     return success()
   } catch (error) {
-    return unknownError('Change email error:', error)
+    return unexpectedError('Change email error:', error)
   }
 }
 
@@ -43,13 +43,13 @@ const changePassword = async (changePasswordInfo: ChangePasswordInfo): Promise<R
         case 'PASSWORD_TOO_SHORT':
           return failure('PASSWORD_TOO_SHORT')
         default:
-          return unknownError('Change password error:', changeEmailResponse.error)
+          return unexpectedError('Change password error:', changeEmailResponse.error)
       }
     }
 
     return success()
   } catch (error) {
-    return unknownError('Change password error:', error)
+    return unexpectedError('Change password error:', error)
   }
 }
 
@@ -65,13 +65,13 @@ const emailSignIn = async (signInInfo: SignInInfo): Promise<Result<SignInError, 
         case 'INVALID_EMAIL_OR_PASSWORD':
           return failure('INVALID_CREDENTIALS')
         default:
-          return unknownError('Email sign-in error:', emailSignInResponse.error)
+          return unexpectedError('Email sign-in error:', emailSignInResponse.error)
       }
     }
 
     return await findUser()
   } catch (error) {
-    return unknownError('Email sign-in error:', error)
+    return unexpectedError('Email sign-in error:', error)
   }
 }
 
@@ -90,13 +90,13 @@ const emailSignUp = async (signUpInfo: SignUpInfo): Promise<Result<SignUpError, 
         case 'USER_ALREADY_EXISTS':
           return failure('USER_ALREADY_EXISTS')
         default:
-          return unknownError('Email sign-up error:', emailSignUpResponse.error)
+          return unexpectedError('Email sign-up error:', emailSignUpResponse.error)
       }
     }
 
     return await findUser()
   } catch (error) {
-    return unknownError('Email sign-up error:', error)
+    return unexpectedError('Email sign-up error:', error)
   }
 }
 
@@ -114,7 +114,7 @@ const deleteUser = async (password: string): Promise<Result<Unauthorized>> => {
 
     return success()
   } catch (error) {
-    return unknownError('Delete user error:', error)
+    return unexpectedError('Delete user error:', error)
   }
 }
 
@@ -132,10 +132,10 @@ const findUser = async (): Promise<Result<AuthUserError, AuthUserDTO>> => {
       case 'INTERNAL_SERVER_ERROR':
       case 'UNEXPECTED_ERROR':
       default:
-        return unknownError('User fetch error:', userResponse.errors)
+        return unexpectedError('User fetch error:', userResponse.errors)
     }
   } catch (error) {
-    return unknownError('User fetch error:', error)
+    return unexpectedError('User fetch error:', error)
   }
 }
 
@@ -150,7 +150,7 @@ const signOut = async (): Promise<Result<Unauthorized>> => {
 
     return success()
   } catch (error) {
-    return unknownError('Sign out error:', error)
+    return unexpectedError('Sign out error:', error)
   }
 }
 
@@ -159,12 +159,12 @@ const socialSignIn = async (provider: SocialProvider): Promise<Result<AuthUserEr
     const signInResponse = await betterAuthClient.signIn.social({ provider })
 
     if (signInResponse.error) {
-      return unknownError('Social sign-in error:', signInResponse.error)
+      return unexpectedError('Social sign-in error:', signInResponse.error)
     }
 
     return await findUser()
   } catch (error) {
-    return unknownError('Social sign-in error:', error)
+    return unexpectedError('Social sign-in error:', error)
   }
 }
 

@@ -1,7 +1,7 @@
 import 'server-only'
 
 import type { CategoryCreationData, CategoryDTO, CategoryNameAlreadyExists, CategoryUpdateData } from '@/category/domain/category-entities'
-import { type Result, success, unknownError } from '@/helpers/result'
+import { type Result, success, unexpectedError } from '@/helpers/result'
 import { CategoryDatabase } from '@/infrastructure/database'
 
 const categorySelect = {
@@ -24,7 +24,7 @@ const createCategory = async (categoryCreationData: CategoryCreationData): Promi
 
     return success(createdCategory)
   } catch (error) {
-    return unknownError('Unknown error in CategoryRepository.createCategory:', error)
+    return unexpectedError('Unknown error in CategoryRepository.createCategory:', error)
   }
 }
 
@@ -34,7 +34,7 @@ const findCategories = async (): Promise<Result<null, CategoryDTO[]>> => {
 
     return success(categories)
   } catch (error) {
-    return unknownError('Unknown error in CategoryRepository.findCategories:', error)
+    return unexpectedError('Unknown error in CategoryRepository.findCategories:', error)
   }
 }
 
@@ -52,7 +52,7 @@ const updateCategory = async (categoryId: string, categoryData: CategoryUpdateDa
 
     return success(updatedCategory)
   } catch (error) {
-    return unknownError('Unknown error in CategoryRepository.updateCategory:', error)
+    return unexpectedError('Unknown error in CategoryRepository.updateCategory:', error)
   }
 }
 

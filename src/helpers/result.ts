@@ -39,11 +39,11 @@ export type Result<Errors = null, Data = null> =
   | ErrorResult<Errors>
   | SuccessResult<Data>
 
-export const unknownError = (...logs: Parameters<typeof console.error>): ErrorResult<UnexpectedError> => {
+export const unexpectedError = (...logs: Parameters<typeof console.error>): ErrorResult<UnexpectedError> => {
   console.error('Unknown error:', ...logs)
   return failure()
 }
 
-export type ValidationResult<Errors = null, Body = null, Data = null> =
-  | ErrorResult<Errors | ZodError<Body extends null | undefined ? string : Body | string>>
+export type ValidationResult<Errors = null, Request = null, Data = null> =
+  | ErrorResult<Errors | ZodError<Request>>
   | SuccessResult<Data>

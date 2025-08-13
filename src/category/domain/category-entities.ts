@@ -23,4 +23,4 @@ export type CategoryUpdateError =
 
 export type CategoryListResponse = ApiResponse<null, CategoryDTO[]>
 export type CategoryCreationResponse = ResponseWithValidation<CategoryCreationError, CategoryCreationData, CategoryDTO>
-export type CategoryUpdateResponse = ResponseWithValidation<CategoryUpdateError, CategoryUpdateData, CategoryDTO>
+export type CategoryUpdateResponse = ResponseWithValidation<CategoryUpdateError, CategoryUpdateData | string, CategoryDTO>

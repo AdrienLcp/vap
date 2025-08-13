@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { ZodError } from 'zod'
 
 import { CategoryClient } from '@/category/category-client'
 import type { CategoryCreationData } from '@/category/domain/category-entities'
@@ -34,17 +35,24 @@ export const CreateCategoryForm: React.FC = () => {
     }
 
     const createdCategoryResult = await CategoryClient.createCategory(categoryCreationData)
+    setIsCategoryCreationLoading(false)
 
     if (createdCategoryResult.status === 'ERROR') {
+      if (createdCategoryResult.errors instanceof ZodError) {
+        console.log(createdCategoryResult.errors)
+      }
       console.log(createdCategoryResult.errors)
     }
 
     console.log(createdCategoryResult)
-    setIsCategoryCreationLoading(false)
   }
 
   return (
     <Form onSubmit={onCategoryCreationFormSubmit} validationErrors={createCategoryFormErrors}>
+      {t('test.messageCount', { messages: 0 })}
+      {t('test.messageCount', { messages: 1 })}
+      {t('test.messageCount', { messages: 2 })}
+      {t('test.messageCount', { messages: 1454 })}
       <TextField
         isRequired
         label={t('category.create.form.name.label')}

@@ -1,14 +1,26 @@
 'use client'
 
+import { ZodError } from 'zod'
+
 import type { CategoryCreationData, CategoryCreationError, CategoryCreationResponse, CategoryDTO, CategoryListResponse, CategoryUpdateData, CategoryUpdateError, CategoryUpdateResponse } from '@/category/domain/category-entities'
-import { failure, type Result, success, unknownError, type ValidationResult } from '@/helpers/result'
+import { failure, type Result, success, unexpectedError, type ValidationResult } from '@/helpers/result'
 import { ApiClient } from '@/infrastructure/api/api-client'
 
-const createCategory = async (categoryCreationData: CategoryCreationData): Promise<Result<CategoryCreationError, CategoryDTO>> => {
+type CreateCategoryResult = ValidationResult<CategoryCreationError, CategoryCreationData, CategoryDTO>
+
+const createCategory = async (categoryCreationData: CategoryCreationData): Promise<CreateCategoryResult> => {
   try {
     const createCategoryResponse = await ApiClient.POST<CategoryCreationResponse, CategoryCreationData>('/categories', categoryCreationData)
 
     if (createCategoryResponse.status === 'ERROR') {
+      console.log('ici > ', createCategoryResponse.errors)
+
+      // Je ne reçois pas ce que je veux ici, donc je ne suis pas "instanceof"
+      // Il faut vraiment créer un objet "response" plus précis avec un "type: 'validation'" ou truc du genre
+      if (createCategoryResponse.errors instanceof ZodError) {
+        return failure(createCategoryResponse.errors)
+      }
+
       switch (createCategoryResponse.errors) {
         case 'CATEGORY_NAME_ALREADY_EXISTS':
           return failure('CATEGORY_NAME_ALREADY_EXISTS')
@@ -17,13 +29,13 @@ const createCategory = async (categoryCreationData: CategoryCreationData): Promi
         case 'UNAUTHORIZED':
           return failure('UNAUTHORIZED')
         default:
-          return unknownError('Create category error:', createCategoryResponse.errors)
+          return unexpectedError('Create category error:', createCategoryResponse.errors)
       }
     }
 
     return success(createCategoryResponse.data)
   } catch (error) {
-    return unknownError('Create category error:', error)
+    return unexpectedError('Create category error:', error)
   }
 }
 
@@ -32,16 +44,18 @@ const findCategories = async (): Promise<Result<null, CategoryDTO[]>> => {
     const categoryListResponse = await ApiClient.GET<CategoryListResponse>('/categories')
 
     if (categoryListResponse.status === 'ERROR') {
-      return unknownError('Find categories error:', categoryListResponse.errors)
+      return unexpectedError('Find categories error:', categoryListResponse.errors)
     }
 
     return success(categoryListResponse.data)
   } catch (error) {
-    return unknownError('Find categories error:', error)
+    return unexpectedError('Find categories error:', error)
   }
 }
 
-const updateCategory = async (categoryId: string, categoryUpdateData: CategoryUpdateData): Promise<ValidationResult<CategoryUpdateError, CategoryUpdateData, CategoryDTO>> => {
+type UpdateCategoryResult = ValidationResult<CategoryUpdateError, CategoryUpdateData | string, CategoryDTO>
+
+const updateCategory = async (categoryId: string, categoryUpdateData: CategoryUpdateData): Promise<UpdateCategoryResult> => {
   try {
     const updateCategoryResponse = await ApiClient.PUT<CategoryUpdateResponse, CategoryUpdateData>(`/categories/${categoryId}`, categoryUpdateData)
 
@@ -55,7 +69,7 @@ const updateCategory = async (categoryId: string, categoryUpdateData: CategoryUp
           return failure('UNAUTHORIZED')
         case 'INTERNAL_SERVER_ERROR':
         case 'UNEXPECTED_ERROR':
-          return unknownError('Update category error:', updateCategoryResponse.errors)
+          return unexpectedError('Update category error:', updateCategoryResponse.errors)
       }
 
       return failure(updateCategoryResponse.errors)
@@ -63,7 +77,7 @@ const updateCategory = async (categoryId: string, categoryUpdateData: CategoryUp
 
     return success(updateCategoryResponse.data)
   } catch (error) {
-    return unknownError('Update category error:', error)
+    return unexpectedError('Update category error:', error)
   }
 }
 

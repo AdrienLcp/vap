@@ -1,6 +1,6 @@
 'use client'
 
-import { failure, type Result, success, unknownError } from '@/helpers/result'
+import { failure, type Result, success, unexpectedError } from '@/helpers/result'
 import { ApiClient } from '@/infrastructure/api/api-client'
 import type { ProductCreationData, ProductCreationResponse, ProductDTO, ProductError, ProductListResponse, ProductPublicDTO, ProductPublicListResponse, ProductUpdateData, ProductUpdateResponse } from '@/product/domain/product-entities'
 
@@ -15,13 +15,13 @@ const createProduct = async (productData: ProductCreationData): Promise<Result<P
         case 'UNAUTHORIZED':
           return failure('UNAUTHORIZED')
         default:
-          return unknownError(createdProductResult.errors)
+          return unexpectedError(createdProductResult.errors)
       }
     }
 
     return success(createdProductResult.data)
   } catch (error) {
-    return unknownError(error)
+    return unexpectedError(error)
   }
 }
 
@@ -36,13 +36,13 @@ const deleteProduct = async (productId: string): Promise<Result<ProductError>> =
         case 'UNAUTHORIZED':
           return failure('UNAUTHORIZED')
         default:
-          return unknownError(deleteResult.errors)
+          return unexpectedError(deleteResult.errors)
       }
     }
 
     return success()
   } catch (error) {
-    return unknownError(error)
+    return unexpectedError(error)
   }
 }
 
@@ -57,13 +57,13 @@ const findProducts = async (): Promise<Result<ProductError, ProductDTO[]>> => {
         case 'UNAUTHORIZED':
           return failure('UNAUTHORIZED')
         default:
-          return unknownError(productsResult.errors)
+          return unexpectedError(productsResult.errors)
       }
     }
 
     return success(productsResult.data)
   } catch (error) {
-    return unknownError(error)
+    return unexpectedError(error)
   }
 }
 
@@ -72,12 +72,12 @@ const findPublicProducts = async (): Promise<Result<null, ProductPublicDTO[]>> =
     const productsResult = await ApiClient.GET<ProductPublicListResponse>('/products/public')
 
     if (productsResult.status === 'ERROR') {
-      return unknownError(productsResult.errors)
+      return unexpectedError(productsResult.errors)
     }
 
     return success(productsResult.data)
   } catch (error) {
-    return unknownError(error)
+    return unexpectedError(error)
   }
 }
 
@@ -92,13 +92,13 @@ const updateProduct = async (productId: string, productUpdateData: ProductUpdate
         case 'UNAUTHORIZED':
           return failure('UNAUTHORIZED')
         default:
-          return unknownError(updatedProductResult.errors)
+          return unexpectedError(updatedProductResult.errors)
       }
     }
 
     return success(updatedProductResult.data)
   } catch (error) {
-    return unknownError(error)
+    return unexpectedError(error)
   }
 }
 
