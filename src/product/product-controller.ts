@@ -5,7 +5,7 @@ import type { ProductCreationResponse, ProductDeleteResponse, ProductListRespons
 import { ProductCreationSchema, ProductDTOSchema, ProductIdSchema, ProductUpdateSchema } from '@/product/domain/product-schemas'
 import { ProductService } from '@/product/product-service'
 
-const createProduct = async (productCreationRequest: Request): ProductCreationResponse => {
+const createProduct = async (productCreationRequest: Request): Promise<ProductCreationResponse> => {
   try {
     const productCreationData = await productCreationRequest.json()
 
@@ -43,7 +43,7 @@ const createProduct = async (productCreationRequest: Request): ProductCreationRe
   }
 }
 
-const deleteProduct = async (productId: string): ProductDeleteResponse => {
+const deleteProduct = async (productId: string): Promise<ProductDeleteResponse> => {
   try {
     const productIdValidation = ProductIdSchema.safeParse(productId)
 
@@ -65,14 +65,14 @@ const deleteProduct = async (productId: string): ProductDeleteResponse => {
       }
     }
 
-    return HttpResponse.ok()
+    return HttpResponse.noContent()
   } catch (error) {
     console.error('Unknown error in ProductController.deleteProduct:', error)
     return HttpResponse.internalServerError()
   }
 }
 
-const findProducts = async (): ProductListResponse => {
+const findProducts = async (): Promise<ProductListResponse> => {
   try {
     const productsResult = await ProductService.findProducts()
 
@@ -102,7 +102,7 @@ const findProducts = async (): ProductListResponse => {
   }
 }
 
-const findPublicProducts = async (): ProductPublicListResponse => {
+const findPublicProducts = async (): Promise<ProductPublicListResponse> => {
   try {
     const productsResult = await ProductService.findPublicProducts()
 
@@ -125,7 +125,7 @@ const findPublicProducts = async (): ProductPublicListResponse => {
   }
 }
 
-const updateProduct = async (productId: string, productUpdateRequest: Request): ProductUpdateResponse => {
+const updateProduct = async (productId: string, productUpdateRequest: Request): Promise<ProductUpdateResponse> => {
   try {
     const productIdValidation = ProductIdSchema.safeParse(productId)
 

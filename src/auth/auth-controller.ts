@@ -5,7 +5,7 @@ import type { AuthUserResponse } from '@/auth/domain/auth-entities'
 import { AuthUserDTOSchema } from '@/auth/domain/auth-schemas'
 import { HttpResponse } from '@/infrastructure/api/http-response'
 
-const findUser = async (): AuthUserResponse => {
+const findUser = async (): Promise<AuthUserResponse> => {
   try {
     const userResult = await AuthService.findUser()
 

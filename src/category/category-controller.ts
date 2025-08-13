@@ -5,7 +5,7 @@ import type { CategoryCreationResponse, CategoryListResponse, CategoryUpdateResp
 import { CategoryCreationSchema, CategoryDTOSchema, CategoryIdSchema, CategoryUpdateSchema } from '@/category/domain/category-schemas'
 import { HttpResponse } from '@/infrastructure/api/http-response'
 
-const createCategory = async (categoryCreationRequest: Request): CategoryCreationResponse => {
+const createCategory = async (categoryCreationRequest: Request): Promise<CategoryCreationResponse> => {
   try {
     const categoryCreationData = await categoryCreationRequest.json()
     const categoryCreationValidation = CategoryCreationSchema.safeParse(categoryCreationData)
@@ -44,7 +44,7 @@ const createCategory = async (categoryCreationRequest: Request): CategoryCreatio
   }
 }
 
-const findCategories = async (): CategoryListResponse => {
+const findCategories = async (): Promise<CategoryListResponse> => {
   try {
     const categoriesResult = await CategoryService.findCategories()
 
@@ -67,7 +67,7 @@ const findCategories = async (): CategoryListResponse => {
   }
 }
 
-const updateCategory = async (categoryId: unknown, categoryUpdateRequest: Request): CategoryUpdateResponse => {
+const updateCategory = async (categoryId: unknown, categoryUpdateRequest: Request): Promise<CategoryUpdateResponse> => {
   try {
     const categoryIdValidation = CategoryIdSchema.safeParse(categoryId)
 
