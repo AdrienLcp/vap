@@ -12,9 +12,10 @@ const findUser = async (): AuthUserResponse => {
     if (userResult.status === 'ERROR') {
       switch (userResult.errors) {
         case 'UNAUTHORIZED':
-          return HttpResponse.unauthorized('UNAUTHORIZED')
+          return HttpResponse.unauthorized()
         default:
-          return HttpResponse.internalServerError('Unknown error in AuthController.findUser:', userResult.errors)
+          console.error('Unknown error in AuthController.findUser:', userResult.errors)
+          return HttpResponse.internalServerError()
       }
     }
 
@@ -26,7 +27,8 @@ const findUser = async (): AuthUserResponse => {
 
     return HttpResponse.ok(authUserDTOValidation.data)
   } catch (error) {
-    return HttpResponse.internalServerError('Unknown error in AuthController.findUser:', error)
+    console.error('Error in AuthController.findUser:', error)
+    return HttpResponse.internalServerError()
   }
 }
 

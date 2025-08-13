@@ -25,19 +25,22 @@ const createCategory = async (categoryCreationRequest: Request): CategoryCreatio
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
         default:
-          return HttpResponse.internalServerError('Unknown error in CategoryController.createCategory:', createdCategoryResult.errors)
+          console.error('Unknown error in CategoryController.createCategory:', createdCategoryResult.errors)
+          return HttpResponse.internalServerError()
       }
     }
 
     const categoryDTOValidation = CategoryDTOSchema.safeParse(createdCategoryResult.data)
 
     if (categoryDTOValidation.error) {
-      return HttpResponse.internalServerError('Validation error in CategoryController.createCategory:', categoryDTOValidation.error)
+      console.error('Validation error in CategoryController.createCategory:', categoryDTOValidation.error)
+      return HttpResponse.internalServerError()
     }
 
     return HttpResponse.created(categoryDTOValidation.data)
   } catch (error) {
-    return HttpResponse.internalServerError('Unknown error in CategoryController.createCategory:', error)
+    console.error('Unknown error in CategoryController.createCategory:', error)
+    return HttpResponse.internalServerError()
   }
 }
 
@@ -46,18 +49,21 @@ const findCategories = async (): CategoryListResponse => {
     const categoriesResult = await CategoryService.findCategories()
 
     if (categoriesResult.status === 'ERROR') {
-      return HttpResponse.internalServerError('Unknown error in CategoryController.findCategories:', categoriesResult.errors)
+      console.error('Unknown error in CategoryController.findCategories:', categoriesResult.errors)
+      return HttpResponse.internalServerError()
     }
 
     const categoriesDTOValidation = CategoryDTOSchema.array().safeParse(categoriesResult.data)
 
     if (categoriesDTOValidation.error) {
-      return HttpResponse.internalServerError('Validation error in CategoryController.findCategories:', categoriesDTOValidation.error)
+      console.error('Validation error in CategoryController.findCategories:', categoriesDTOValidation.error)
+      return HttpResponse.internalServerError()
     }
 
     return HttpResponse.ok(categoriesResult.data)
   } catch (error) {
-    return HttpResponse.internalServerError('Unknown error in CategoryController.findCategories:', error)
+    console.error('Unknown error in CategoryController.findCategories:', error)
+    return HttpResponse.internalServerError()
   }
 }
 
@@ -87,19 +93,22 @@ const updateCategory = async (categoryId: unknown, categoryUpdateRequest: Reques
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
         default:
-          return HttpResponse.internalServerError('Unknown error in CategoryController.updateCategory:', updatedCategoryResult.errors)
+          console.error('Unknown error in CategoryController.updateCategory:', updatedCategoryResult.errors)
+          return HttpResponse.internalServerError()
       }
     }
 
     const categoryDTOValidation = CategoryDTOSchema.safeParse(updatedCategoryResult.data)
 
     if (categoryDTOValidation.error) {
-      return HttpResponse.internalServerError('Validation error in CategoryController.updateCategory:', categoryDTOValidation.error)
+      console.error('Validation error in CategoryController.updateCategory:', categoryDTOValidation.error)
+      return HttpResponse.internalServerError()
     }
 
     return HttpResponse.ok(categoryDTOValidation.data)
   } catch (error) {
-    return HttpResponse.internalServerError('Unknown error in CategoryController.updateCategory:', error)
+    console.error('Unknown error in CategoryController.updateCategory:', error)
+    return HttpResponse.internalServerError()
   }
 }
 

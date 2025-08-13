@@ -2,7 +2,8 @@ import type { z } from 'zod'
 
 import type { AUTH_CONSTANTS } from '@/auth/domain/auth-constants'
 import type { AuthPermissionsSchema, AuthUserDTOSchema } from '@/auth/domain/auth-schemas'
-import type { ApiResponse, Unauthorized } from '@/infrastructure/api/api-domain'
+import type { Unauthorized } from '@/helpers/result'
+import type { OkResponse, Response, UnauthorizedResponse } from '@/infrastructure/api/http-response'
 import type { UserRole } from '@/user/user-entities'
 
 export type AuthPermissions = z.infer<typeof AuthPermissionsSchema>
@@ -16,7 +17,7 @@ export type AuthUserDTO = z.infer<typeof AuthUserDTOSchema>
 
 export type AuthUserError = Unauthorized
 
-export type AuthUserResponse = ApiResponse<AuthUserError, AuthUserDTO>
+export type AuthUserResponse = Response<OkResponse<AuthUserDTO> | UnauthorizedResponse>
 
 export type InvalidCredentials = 'INVALID_CREDENTIALS'
 export type PasswordTooShort = typeof AUTH_CONSTANTS.PASSWORD_TOO_SHORT

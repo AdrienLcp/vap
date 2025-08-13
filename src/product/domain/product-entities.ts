@@ -1,6 +1,7 @@
 import type z from 'zod'
 
-import type { ApiResponse, Forbidden, ResponseWithValidation, Unauthorized } from '@/infrastructure/api/api-domain'
+import type { Forbidden, Unauthorized } from '@/helpers/result'
+import type { BadRequestResponse, CreatedResponse, ForbiddenResponse, OkResponse, Response, UnauthorizedResponse } from '@/infrastructure/api/http-response'
 import type { ProductCreationSchema, ProductDTOSchema, ProductPublicDTOSchema, ProductStatusSchema, ProductUpdateSchema } from '@/product/domain/product-schemas'
 
 export type ProductStatus = z.infer<typeof ProductStatusSchema>
@@ -15,9 +16,31 @@ export type ProductPublicDTO = z.infer<typeof ProductPublicDTOSchema>
 
 export type ProductError = Forbidden | Unauthorized
 
-export type ProductListResponse = ApiResponse<ProductError, ProductDTO[]>
+export type ProductListResponse = Response<
+  | OkResponse<ProductDTO[]>
+  | UnauthorizedResponse
+  | ForbiddenResponse
+>
 
-export type ProductPublicListResponse = ApiResponse<null, ProductPublicDTO[]>
-export type ProductCreationResponse = ResponseWithValidation<ProductError, ProductCreationData, ProductDTO>
-export type ProductUpdateResponse = ResponseWithValidation<ProductError, ProductUpdateData, ProductDTO>
-export type ProductDeleteResponse = ResponseWithValidation<ProductError>
+export type ProductPublicListResponse = Response<OkResponse<ProductDTO[]>>
+
+export type ProductCreationResponse = Response<
+  | CreatedResponse<ProductDTO>
+  | BadRequestResponse<ProductCreationData>
+  | UnauthorizedResponse
+  | ForbiddenResponse
+>
+
+export type ProductUpdateResponse = Response<
+  | OkResponse<ProductDTO>
+  | BadRequestResponse<ProductUpdateData | string>
+  | UnauthorizedResponse
+  | ForbiddenResponse
+>
+
+export type ProductDeleteResponse = Response<
+  | OkResponse
+  | BadRequestResponse<string>
+  | UnauthorizedResponse
+  | ForbiddenResponse
+>

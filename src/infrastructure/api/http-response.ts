@@ -1,29 +1,36 @@
 import type { ZodError } from 'zod'
 
-import type { Conflict, ErrorResponse } from '@/infrastructure/api/api-domain'
+export const OK_STATUS_CODE = 200
+export const CREATED_STATUS_CODE = 201
+export const BAD_REQUEST_STATUS_CODE = 400
+export const UNAUTHORIZED_STATUS_CODE = 401
+export const FORBIDDEN_STATUS_CODE = 403
+export const NOT_FOUND_STATUS_CODE = 404
+export const CONFLICT_STATUS_CODE = 409
+export const UNPROCESSABLE_ENTITY_STATUS_CODE = 422
+export const INTERNAL_SERVER_ERROR_STATUS_CODE = 500
 
-const OK_STATUS_CODE = 200
-const CREATED_STATUS_CODE = 201
-const BAD_REQUEST_STATUS_CODE = 400
-const UNAUTHORIZED_STATUS_CODE = 401
-const FORBIDDEN_STATUS_CODE = 403
-const NOT_FOUND_STATUS_CODE = 404
-const CONFLICT_STATUS_CODE = 409
-const INTERNAL_SERVER_ERROR_STATUS_CODE = 500
-
-type OkResponse<Data = null> = Data extends null | undefined
+export type OkResponse<Data = null> = Data extends null | undefined
   ? { statusCode: typeof OK_STATUS_CODE }
   : { data: Data; statusCode: typeof OK_STATUS_CODE }
 
-type CreatedResponse<Data = null> = Data extends null | undefined
+export type CreatedResponse<Data = null> = Data extends null | undefined
   ? { statusCode: typeof CREATED_STATUS_CODE }
   : { data: Data; statusCode: typeof CREATED_STATUS_CODE }
 
-type BadRequestResponse<Request> = { error: ZodError<Request>; statusCode: typeof BAD_REQUEST_STATUS_CODE }
-type NotFoundResponse = { statusCode: typeof NOT_FOUND_STATUS_CODE }
-type UnauthorizedResponse = { statusCode: typeof UNAUTHORIZED_STATUS_CODE }
-type ForbiddenResponse = { statusCode: typeof FORBIDDEN_STATUS_CODE }
-type InternalServerErrorResponse = { statusCode: typeof INTERNAL_SERVER_ERROR_STATUS_CODE }
+export type BaseResponse<StatusCode = number, T = null> = T extends null | undefined
+  ? { statusCode: StatusCode }
+  : { statusCode: StatusCode } & T
+
+export type BadRequestResponse<Request> = BaseResponse<typeof BAD_REQUEST_STATUS_CODE, { error: ZodError<Request> }>
+export type NotFoundResponse = BaseResponse<typeof NOT_FOUND_STATUS_CODE>
+export type UnauthorizedResponse = BaseResponse<typeof UNAUTHORIZED_STATUS_CODE>
+export type ForbiddenResponse = BaseResponse<typeof FORBIDDEN_STATUS_CODE>
+export type ConflictResponse<ErrorCode> = BaseResponse<typeof CONFLICT_STATUS_CODE, { errorCode: ErrorCode }>
+export type UnprocessableEntityResponse<ErrorCode> = BaseResponse<typeof UNPROCESSABLE_ENTITY_STATUS_CODE, { errorCode: ErrorCode }>
+export type InternalServerErrorResponse = BaseResponse<typeof INTERNAL_SERVER_ERROR_STATUS_CODE>
+
+export type Response<T> = Promise<T | InternalServerErrorResponse>
 
 function ok(): OkResponse
 function ok<Data>(data: Data): OkResponse<Data>
@@ -49,10 +56,6 @@ const badRequest = <Request>(error: ZodError<Request>): BadRequestResponse<Reque
   return { error, statusCode: BAD_REQUEST_STATUS_CODE }
 }
 
-const notFound = (): NotFoundResponse => {
-  return { statusCode: NOT_FOUND_STATUS_CODE }
-}
-
 const unauthorized = (): UnauthorizedResponse => {
   return { statusCode: UNAUTHORIZED_STATUS_CODE }
 }
@@ -61,14 +64,16 @@ const forbidden = (): ForbiddenResponse => {
   return { statusCode: FORBIDDEN_STATUS_CODE }
 }
 
-function conflict(): ErrorResponse<Conflict>
-function conflict<Errors>(errors: Errors): ErrorResponse<Errors>
-function conflict<Errors>(errors?: Errors) {
-  if (errors == null) {
-    return { ...failure('CONFLICT'), statusCode: CONFLICT_STATUS_CODE }
-  }
+const conflict = <ErrorCode>(errorCode: ErrorCode): ConflictResponse<ErrorCode> => {
+  return { errorCode, statusCode: CONFLICT_STATUS_CODE }
+}
 
-  return { ...failure(errors), statusCode: CONFLICT_STATUS_CODE }
+const notFound = (): NotFoundResponse => {
+  return { statusCode: NOT_FOUND_STATUS_CODE }
+}
+
+const unprocessableEntity = <ErrorCode>(errorCode: ErrorCode): UnprocessableEntityResponse<ErrorCode> => {
+  return { errorCode, statusCode: UNPROCESSABLE_ENTITY_STATUS_CODE }
 }
 
 const internalServerError = (): InternalServerErrorResponse => {
@@ -83,5 +88,6 @@ export const HttpResponse = {
   forbidden,
   notFound,
   conflict,
+  unprocessableEntity,
   internalServerError
 }

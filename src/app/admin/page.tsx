@@ -8,7 +8,7 @@ import { CreateProductForm } from '@/product/components/create-product-form'
 const AdminPage: React.FC = async () => {
   const authUserResult = await AuthController.findUser()
 
-  if (authUserResult.status !== 'SUCCESS') {
+  if (authUserResult.statusCode !== 200) {
     redirect(ROUTES.unauthorized)
   }
 

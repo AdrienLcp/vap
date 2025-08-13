@@ -1,7 +1,8 @@
 import type z from 'zod'
 
 import type { CategoryCreationSchema, CategoryDTOSchema, CategoryUpdateSchema } from '@/category/domain/category-schemas'
-import type { ApiResponse, Forbidden, ResponseWithValidation, Unauthorized } from '@/infrastructure/api/api-domain'
+import type { Forbidden, Unauthorized } from '@/helpers/result'
+import type { BadRequestResponse, ConflictResponse, CreatedResponse, ForbiddenResponse, OkResponse, Response, UnauthorizedResponse } from '@/infrastructure/api/http-response'
 
 export type CategoryCreationData = z.infer<typeof CategoryCreationSchema>
 
@@ -21,6 +22,20 @@ export type CategoryUpdateError =
   | Forbidden
   | Unauthorized
 
-export type CategoryListResponse = ApiResponse<null, CategoryDTO[]>
-export type CategoryCreationResponse = ResponseWithValidation<CategoryCreationError, CategoryCreationData, CategoryDTO>
-export type CategoryUpdateResponse = ResponseWithValidation<CategoryUpdateError, CategoryUpdateData | string, CategoryDTO>
+export type CategoryListResponse = Response<OkResponse<CategoryDTO[]>>
+
+export type CategoryCreationResponse = Response<
+  | CreatedResponse<CategoryDTO>
+  | BadRequestResponse<CategoryCreationData>
+  | ConflictResponse<CategoryNameAlreadyExists>
+  | UnauthorizedResponse
+  | ForbiddenResponse
+>
+
+export type CategoryUpdateResponse = Response<
+  | OkResponse<CategoryDTO>
+  | BadRequestResponse<CategoryUpdateData | string>
+  | ConflictResponse<CategoryNameAlreadyExists>
+  | UnauthorizedResponse
+  | ForbiddenResponse
+>

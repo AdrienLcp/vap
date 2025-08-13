@@ -24,19 +24,22 @@ const createProduct = async (productCreationRequest: Request): ProductCreationRe
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
         default:
-          return HttpResponse.internalServerError('Unknown error in ProductController.createProduct:', createdProductResult.errors)
+          console.error('Unknown error in ProductController.createProduct:', createdProductResult.errors)
+          return HttpResponse.internalServerError()
       }
     }
 
     const productDTOValidation = ProductDTOSchema.safeParse(createdProductResult.data)
 
     if (productDTOValidation.error) {
-      return HttpResponse.internalServerError('Validation error in ProductController.createProduct:', productDTOValidation.error)
+      console.error('Validation error in ProductController.createProduct:', productDTOValidation.error)
+      return HttpResponse.internalServerError()
     }
 
     return HttpResponse.created(productDTOValidation.data)
   } catch (error) {
-    return HttpResponse.internalServerError('Unknown error in ProductController.createProduct:', error)
+    console.error('Unknown error in ProductController.createProduct:', error)
+    return HttpResponse.internalServerError()
   }
 }
 
@@ -57,13 +60,15 @@ const deleteProduct = async (productId: string): ProductDeleteResponse => {
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
         default:
-          return HttpResponse.internalServerError('Unknown error in ProductController.deleteProduct:', deleteResult.errors)
+          console.error('Unknown error in ProductController.deleteProduct:', deleteResult.errors)
+          return HttpResponse.internalServerError()
       }
     }
 
     return HttpResponse.ok()
   } catch (error) {
-    return HttpResponse.internalServerError('Unknown error in ProductController.deleteProduct:', error)
+    console.error('Unknown error in ProductController.deleteProduct:', error)
+    return HttpResponse.internalServerError()
   }
 }
 
@@ -78,19 +83,22 @@ const findProducts = async (): ProductListResponse => {
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
         default:
-          return HttpResponse.internalServerError('Unknown error in ProductController.findPublicProducts:', productsResult.errors)
+          console.error('Unknown error in ProductController.findPublicProducts:', productsResult.errors)
+          return HttpResponse.internalServerError()
       }
     }
 
     const productsDTOValidation = ProductDTOSchema.array().safeParse(productsResult.data)
 
     if (productsDTOValidation.error) {
-      return HttpResponse.internalServerError('Validation error in ProductController.findProducts:', productsDTOValidation.error)
+      console.error('Validation error in ProductController.findProducts:', productsDTOValidation.error)
+      return HttpResponse.internalServerError()
     }
 
     return HttpResponse.ok(productsDTOValidation.data)
   } catch (error) {
-    return HttpResponse.internalServerError('Unknown error in ProductController.findProducts:', error)
+    console.error('Unknown error in ProductController.findProducts:', error)
+    return HttpResponse.internalServerError()
   }
 }
 
@@ -99,18 +107,21 @@ const findPublicProducts = async (): ProductPublicListResponse => {
     const productsResult = await ProductService.findPublicProducts()
 
     if (productsResult.status === 'ERROR') {
-      return HttpResponse.internalServerError('Unknown error in ProductController.findPublicProducts:', productsResult.errors)
+      console.error('Unknown error in ProductController.findPublicProducts:', productsResult.errors)
+      return HttpResponse.internalServerError()
     }
 
     const productsDTOValidation = ProductDTOSchema.array().safeParse(productsResult.data)
 
     if (productsDTOValidation.error) {
-      return HttpResponse.internalServerError('Validation error in ProductController.findPublicProducts:', productsDTOValidation.error)
+      console.error('Validation error in ProductController.findPublicProducts:', productsDTOValidation.error)
+      return HttpResponse.internalServerError()
     }
 
     return HttpResponse.ok(productsDTOValidation.data)
   } catch (error) {
-    return HttpResponse.internalServerError('Unknown error in ProductController.findPublicProducts:', error)
+    console.error('Unknown error in ProductController.findPublicProducts:', error)
+    return HttpResponse.internalServerError()
   }
 }
 
@@ -139,19 +150,22 @@ const updateProduct = async (productId: string, productUpdateRequest: Request): 
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
         default:
-          return HttpResponse.internalServerError('Unknown error in ProductController.updateProduct:', updatedProductResult.errors)
+          console.error('Unknown error in ProductController.updateProduct:', updatedProductResult.errors)
+          return HttpResponse.internalServerError()
       }
     }
 
     const productDTOValidation = ProductDTOSchema.safeParse(updatedProductResult.data)
 
     if (productDTOValidation.error) {
-      return HttpResponse.internalServerError('Validation error in ProductController.updateProduct:', productDTOValidation.error)
+      console.error('Validation error in ProductController.updateProduct:', productDTOValidation.error)
+      return HttpResponse.internalServerError()
     }
 
     return HttpResponse.ok(productDTOValidation.data)
   } catch (error) {
-    return HttpResponse.internalServerError('Unknown error in ProductController.updateProduct:', error)
+    console.error('Unknown error in ProductController.updateProduct:', error)
+    return HttpResponse.internalServerError()
   }
 }
 
