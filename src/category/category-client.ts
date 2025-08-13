@@ -1,83 +1,32 @@
 'use client'
 
-import { ZodError } from 'zod'
+import type { CategoryCreationData, CategoryCreationResponse, CategoryListResponse, CategoryUpdateData, CategoryUpdateResponse } from '@/category/domain/category-entities'
+import { ApiClient, type ClientResponse, unknownError } from '@/infrastructure/api/api-client'
 
-import type { CategoryCreationData, CategoryCreationError, CategoryCreationResponse, CategoryDTO, CategoryListResponse, CategoryUpdateData, CategoryUpdateError, CategoryUpdateResponse } from '@/category/domain/category-entities'
-import { failure, type Result, success, unexpectedError, type ValidationResult } from '@/helpers/result'
-import { ApiClient } from '@/infrastructure/api/api-client'
-
-type CreateCategoryResult = ValidationResult<CategoryCreationError, CategoryCreationData, CategoryDTO>
-
-const createCategory = async (categoryCreationData: CategoryCreationData): Promise<CreateCategoryResult> => {
+const createCategory = async (categoryCreationData: CategoryCreationData): ClientResponse<CategoryCreationResponse> => {
   try {
-    const createCategoryResponse = await ApiClient.POST<CategoryCreationResponse, CategoryCreationData>('/categories', categoryCreationData)
-
-    if (createCategoryResponse.status === 'ERROR') {
-      console.log('ici > ', createCategoryResponse.errors)
-
-      // Je ne reçois pas ce que je veux ici, donc je ne suis pas "instanceof"
-      // Il faut vraiment créer un objet "response" plus précis avec un "type: 'validation'" ou truc du genre
-      if (createCategoryResponse.errors instanceof ZodError) {
-        return failure(createCategoryResponse.errors)
-      }
-
-      switch (createCategoryResponse.errors) {
-        case 'CATEGORY_NAME_ALREADY_EXISTS':
-          return failure('CATEGORY_NAME_ALREADY_EXISTS')
-        case 'FORBIDDEN':
-          return failure('FORBIDDEN')
-        case 'UNAUTHORIZED':
-          return failure('UNAUTHORIZED')
-        default:
-          return unexpectedError('Create category error:', createCategoryResponse.errors)
-      }
-    }
-
-    return success(createCategoryResponse.data)
+    return await ApiClient.POST<CategoryCreationResponse, CategoryCreationData>('/categories', categoryCreationData)
   } catch (error) {
-    return unexpectedError('Create category error:', error)
+    console.error('Create category error:', error)
+    return unknownError()
   }
 }
 
-const findCategories = async (): Promise<Result<null, CategoryDTO[]>> => {
+const findCategories = async (): ClientResponse<CategoryListResponse> => {
   try {
-    const categoryListResponse = await ApiClient.GET<CategoryListResponse>('/categories')
-
-    if (categoryListResponse.status === 'ERROR') {
-      return unexpectedError('Find categories error:', categoryListResponse.errors)
-    }
-
-    return success(categoryListResponse.data)
+    return await ApiClient.GET<CategoryListResponse>('/categories')
   } catch (error) {
-    return unexpectedError('Find categories error:', error)
+    console.error('Find categories error:', error)
+    return unknownError()
   }
 }
 
-type UpdateCategoryResult = ValidationResult<CategoryUpdateError, CategoryUpdateData | string, CategoryDTO>
-
-const updateCategory = async (categoryId: string, categoryUpdateData: CategoryUpdateData): Promise<UpdateCategoryResult> => {
+const updateCategory = async (categoryId: string, categoryUpdateData: CategoryUpdateData): ClientResponse<CategoryUpdateResponse> => {
   try {
-    const updateCategoryResponse = await ApiClient.PUT<CategoryUpdateResponse, CategoryUpdateData>(`/categories/${categoryId}`, categoryUpdateData)
-
-    if (updateCategoryResponse.status === 'ERROR') {
-      switch (updateCategoryResponse.errors) {
-        case 'CATEGORY_NAME_ALREADY_EXISTS':
-          return failure('CATEGORY_NAME_ALREADY_EXISTS')
-        case 'FORBIDDEN':
-          return failure('FORBIDDEN')
-        case 'UNAUTHORIZED':
-          return failure('UNAUTHORIZED')
-        case 'INTERNAL_SERVER_ERROR':
-        case 'UNEXPECTED_ERROR':
-          return unexpectedError('Update category error:', updateCategoryResponse.errors)
-      }
-
-      return failure(updateCategoryResponse.errors)
-    }
-
-    return success(updateCategoryResponse.data)
+    return await ApiClient.PUT<CategoryUpdateResponse, CategoryUpdateData>(`/categories/${categoryId}`, categoryUpdateData)
   } catch (error) {
-    return unexpectedError('Update category error:', error)
+    console.error('Update category error:', error)
+    return unknownError()
   }
 }
 

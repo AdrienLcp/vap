@@ -1,5 +1,3 @@
-import type { ZodError } from 'zod'
-
 export type NotFound = 'NOT_FOUND'
 export type Unauthorized = 'UNAUTHORIZED'
 export type BadRequest = 'BAD_REQUEST'
@@ -49,7 +47,3 @@ export const unexpectedError = (...logs: Parameters<typeof console.error>): Erro
   console.error(...logs)
   return failure()
 }
-
-export type ValidationResult<Errors = null, Request = null, Data = null> =
-  | ErrorResult<Errors | ZodError<Request>>
-  | SuccessResult<Data>

@@ -1,104 +1,50 @@
 'use client'
 
-import { failure, type Result, success, unexpectedError } from '@/helpers/result'
-import { ApiClient } from '@/infrastructure/api/api-client'
-import type { ProductCreationData, ProductCreationResponse, ProductDTO, ProductError, ProductListResponse, ProductPublicDTO, ProductPublicListResponse, ProductUpdateData, ProductUpdateResponse } from '@/product/domain/product-entities'
+import { ApiClient, type ClientResponse, unknownError } from '@/infrastructure/api/api-client'
+import type { ProductCreationData, ProductCreationResponse, ProductDeleteResponse, ProductListResponse, ProductPublicListResponse, ProductUpdateData, ProductUpdateResponse } from '@/product/domain/product-entities'
 
-const createProduct = async (productData: ProductCreationData): Promise<Result<ProductError, ProductDTO>> => {
+const createProduct = async (productData: ProductCreationData): ClientResponse<ProductCreationResponse> => {
   try {
-    const createdProductResult = await ApiClient.POST<ProductCreationResponse, ProductCreationData>('/products', productData)
-
-    if (createdProductResult.status === 'ERROR') {
-      switch (createdProductResult.errors) {
-        case 'FORBIDDEN':
-          return failure('FORBIDDEN')
-        case 'UNAUTHORIZED':
-          return failure('UNAUTHORIZED')
-        default:
-          return unexpectedError(createdProductResult.errors)
-      }
-    }
-
-    return success(createdProductResult.data)
+    return await ApiClient.POST<ProductCreationResponse, ProductCreationData>('/products', productData)
   } catch (error) {
-    return unexpectedError(error)
+    console.error('Create product error:', error)
+    return unknownError()
   }
 }
 
-const deleteProduct = async (productId: string): Promise<Result<ProductError>> => {
+const deleteProduct = async (productId: string): ClientResponse<ProductDeleteResponse> => {
   try {
-    const deleteResult = await ApiClient.DELETE<ProductListResponse>(`/products/${productId}`)
-
-    if (deleteResult.status === 'ERROR') {
-      switch (deleteResult.errors) {
-        case 'FORBIDDEN':
-          return failure('FORBIDDEN')
-        case 'UNAUTHORIZED':
-          return failure('UNAUTHORIZED')
-        default:
-          return unexpectedError(deleteResult.errors)
-      }
-    }
-
-    return success()
+    return await ApiClient.DELETE<ProductDeleteResponse>(`/products/${productId}`)
   } catch (error) {
-    return unexpectedError(error)
+    console.error('Delete product error:', error)
+    return unknownError()
   }
 }
 
-const findProducts = async (): Promise<Result<ProductError, ProductDTO[]>> => {
+const findProducts = async (): ClientResponse<ProductListResponse> => {
   try {
-    const productsResult = await ApiClient.GET<ProductListResponse>('/products')
-
-    if (productsResult.status === 'ERROR') {
-      switch (productsResult.errors) {
-        case 'FORBIDDEN':
-          return failure('FORBIDDEN')
-        case 'UNAUTHORIZED':
-          return failure('UNAUTHORIZED')
-        default:
-          return unexpectedError(productsResult.errors)
-      }
-    }
-
-    return success(productsResult.data)
+    return await ApiClient.GET<ProductListResponse>('/products')
   } catch (error) {
-    return unexpectedError(error)
+    console.error('Find products error:', error)
+    return unknownError()
   }
 }
 
-const findPublicProducts = async (): Promise<Result<null, ProductPublicDTO[]>> => {
+const findPublicProducts = async (): ClientResponse<ProductPublicListResponse> => {
   try {
-    const productsResult = await ApiClient.GET<ProductPublicListResponse>('/products/public')
-
-    if (productsResult.status === 'ERROR') {
-      return unexpectedError(productsResult.errors)
-    }
-
-    return success(productsResult.data)
+    return await ApiClient.GET<ProductPublicListResponse>('/products/public')
   } catch (error) {
-    return unexpectedError(error)
+    console.error('Find public products error:', error)
+    return unknownError()
   }
 }
 
-const updateProduct = async (productId: string, productUpdateData: ProductUpdateData): Promise<Result<ProductError, ProductDTO>> => {
+const updateProduct = async (productId: string, productUpdateData: ProductUpdateData): ClientResponse<ProductUpdateResponse> => {
   try {
-    const updatedProductResult = await ApiClient.PUT<ProductUpdateResponse, ProductUpdateData>(`/products/${productId}`, productUpdateData)
-
-    if (updatedProductResult.status === 'ERROR') {
-      switch (updatedProductResult.errors) {
-        case 'FORBIDDEN':
-          return failure('FORBIDDEN')
-        case 'UNAUTHORIZED':
-          return failure('UNAUTHORIZED')
-        default:
-          return unexpectedError(updatedProductResult.errors)
-      }
-    }
-
-    return success(updatedProductResult.data)
+    return await ApiClient.PUT<ProductUpdateResponse, ProductUpdateData>(`/products/${productId}`, productUpdateData)
   } catch (error) {
-    return unexpectedError(error)
+    console.error('Update product error:', error)
+    return unknownError()
   }
 }
 
