@@ -13,6 +13,7 @@ export type CategoryUpdateData = z.infer<typeof CategoryUpdateSchema>
 export type CategoryDTO = z.infer<typeof CategoryDTOSchema>
 
 export type CategoryNameAlreadyExists = typeof CATEGORY_CONSTANTS.NAME_ALREADY_EXISTS
+export type CategoryConflictError = CategoryNameAlreadyExists
 
 export type CategoryCreationError =
   | CategoryNameAlreadyExists
@@ -29,7 +30,7 @@ export type CategoryListResponse = Response<OkResponse<CategoryDTO[]>>
 export type CategoryCreationResponse = Response<
   | CreatedResponse<CategoryDTO>
   | BadRequestResponse<Issues<CategoryCreationData>>
-  | ConflictResponse<CategoryNameAlreadyExists>
+  | ConflictResponse<CategoryConflictError>
   | UnauthorizedResponse
   | ForbiddenResponse
 >

@@ -7,7 +7,7 @@ import { CategoryDescriptionField } from '@/category/components/category-descrip
 import { CategoryImageUrlField } from '@/category/components/category-image-url-field'
 import { CategoryNameField } from '@/category/components/category-name-field'
 import { CATEGORY_CONSTANTS, CATEGORY_FORM_FIELDS } from '@/category/domain/category-constants'
-import type { CategoryCreationData } from '@/category/domain/category-entities'
+import type { CategoryConflictError, CategoryCreationData } from '@/category/domain/category-entities'
 import { t } from '@/infrastructure/i18n'
 import { Form } from '@/presentation/components/forms/form'
 import { FormError } from '@/presentation/components/forms/form-error'
@@ -23,14 +23,13 @@ export const CreateCategoryForm: React.FC = () => {
   const [isCategoryCreationLoading, setIsCategoryCreationLoading] = React.useState(false)
   const [createCategoryFormErrors, setCreateCategoryFormErrors] = React.useState<CreateCategoryValidationErrors | null>(null)
 
-  const onBadRequestError = (issues: Issues<CategoryCreationData>) => {
+  const onCategoryCreationBadRequestError = React.useCallback((issues: Issues<CategoryCreationData>) => {
     const nameErrors: string[] = []
     const formErrors: string[] = []
 
     for (const issue of issues) {
       switch (issue.message) {
         case CATEGORY_CONSTANTS.NAME_TOO_LONG:
-          nameErrors.push(t('category.create.errors.categoryNameTooLong', { max: CATEGORY_CONSTANTS.NAME_MAX_LENGTH }))
           nameErrors.push(t('category.create.errors.categoryNameTooLong', { max: CATEGORY_CONSTANTS.NAME_MAX_LENGTH }))
           break
         default:
@@ -39,16 +38,30 @@ export const CreateCategoryForm: React.FC = () => {
       }
     }
 
-    formErrors.push(t('components.forms.formValidationErrorDefaultMessage'))
-    formErrors.push(t('components.forms.formValidationErrorDefaultMessage'))
-
     setCreateCategoryFormErrors({
       form: formErrors,
       [CATEGORY_FORM_FIELDS.NAME]: nameErrors
     })
-  }
+  }, [])
 
-  const onCategoryCreationFormSubmit = async (formData: FormData) => {
+  const onCategoryCreationConflictError = React.useCallback((error: CategoryConflictError) => {
+    switch (error) {
+      case CATEGORY_CONSTANTS.NAME_ALREADY_EXISTS:
+        setCreateCategoryFormErrors({
+          [CATEGORY_FORM_FIELDS.NAME]: [t('category.create.errors.categoryNameAlreadyExists')]
+        })
+        break
+      default:
+        setCreateCategoryFormErrors({ form: t('components.forms.formValidationErrorDefaultMessage') })
+        break
+    }
+  }, [])
+
+  const onCategoryCreationSuccess = React.useCallback(() => {
+    setCreateCategoryFormErrors(null)
+  }, [])
+
+  const onCategoryCreationFormSubmit = React.useCallback(async (formData: FormData) => {
     setIsCategoryCreationLoading(true)
 
     const categoryCreationData: CategoryCreationData = {
@@ -58,28 +71,21 @@ export const CreateCategoryForm: React.FC = () => {
     }
 
     const createdCategoryResponse = await CategoryClient.createCategory(categoryCreationData)
+
     setIsCategoryCreationLoading(false)
 
-    if (createdCategoryResponse.status === 201) {
-      setCreateCategoryFormErrors(null)
-      return
-    }
-
     switch (createdCategoryResponse.status) {
+      case 201:
+        onCategoryCreationSuccess()
+        break
       case 400:
-        onBadRequestError(createdCategoryResponse.issues)
+        onCategoryCreationBadRequestError(createdCategoryResponse.issues)
         break
       case 409:
-        switch (createdCategoryResponse.error) {
-          case 'CATEGORY_NAME_ALREADY_EXISTS':
-            setCreateCategoryFormErrors({
-              [CATEGORY_FORM_FIELDS.NAME]: t('category.create.errors.categoryNameAlreadyExists')
-            })
-            break
-        }
+        onCategoryCreationConflictError(createdCategoryResponse.error)
         break
     }
-  }
+  }, [onCategoryCreationBadRequestError, onCategoryCreationConflictError, onCategoryCreationSuccess])
 
   return (
     <Form onSubmit={onCategoryCreationFormSubmit} validationErrors={createCategoryFormErrors}>
@@ -92,10 +98,7 @@ export const CreateCategoryForm: React.FC = () => {
       <FormError validationErrors={createCategoryFormErrors} />
 
       <Button isPending={isCategoryCreationLoading} type='submit'>
-        {t(isCategoryCreationLoading
-          ? 'category.create.form.submit.creating'
-          : 'category.create.form.submit.label'
-        )}
+        {({ isPending }) => t(`category.create.form.submit.${isPending ? 'creating' : 'label'}`)}
       </Button>
     </Form>
   )
