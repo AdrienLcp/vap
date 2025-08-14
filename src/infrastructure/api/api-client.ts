@@ -8,6 +8,11 @@ type RequestOptions = {
   signal?: AbortSignal
 }
 
+const hasJsonBody = (response: Response) => {
+  const contentType = response.headers.get('content-type')
+  return !!contentType && contentType.includes('application/json')
+}
+
 const request = async <Response, RequestBody = undefined>(
   route: string,
   method: Method,
@@ -25,7 +30,9 @@ const request = async <Response, RequestBody = undefined>(
     signal: options?.signal
   })
 
-  const json = await response.json()
+  const json = hasJsonBody(response)
+    ? await response.json()
+    : undefined
 
   return {
     ...json,

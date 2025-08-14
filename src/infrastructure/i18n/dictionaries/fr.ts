@@ -1,20 +1,12 @@
-import { dt, type LanguageMessages } from '@/infrastructure/i18n/lib'
+import type { LanguageMessages } from '@/infrastructure/i18n/lib'
 
 export const fr = {
   appName: 'VAP',
-  test: {
-    messageCount: dt('{messages:plural}', {
-      plural: {
-        messages: {
-          zero: 'Vous n\'avez aucun message',
-          one: 'Vous avez {?} message',
-          other: 'Vous avez {?} messages'
-        }
-      }
-    })
-  },
   category: {
     create: {
+      errors: {
+        categoryNameAlreadyExists: 'Une catégorie avec ce nom existe déjà.'
+      },
       form: {
         description: {
           label: 'Description',
@@ -32,6 +24,21 @@ export const fr = {
           creating: 'Création en cours...',
           label: 'Créer'
         }
+      }
+    }
+  },
+  components: {
+    forms: {
+      fieldError: {
+        badInput: 'Entrée invalide.',
+        patternMismatch: 'Le format de la valeur est incorrect.',
+        rangeOverflow: 'La valeur dépasse la limite autorisée.',
+        rangeUnderflow: 'La valeur est inférieure à la limite autorisée.',
+        stepMismatch: 'La valeur ne correspond pas à l\'intervalle requis.',
+        tooLong: 'La valeur saisie est trop longue.',
+        tooShort: 'La valeur saisie est trop courte.',
+        typeMismatch: 'Le type de la valeur est incorrect.',
+        valueMissing: 'Ce champ est requis.'
       }
     }
   }

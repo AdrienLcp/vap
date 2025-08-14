@@ -21,12 +21,12 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     const userResponse = await AuthClient.findUser()
 
     if (userResponse.status === OK_STATUS) {
-      setAuth({ status: 'authenticated', user: userResponse.data })
+      setUser(userResponse.data)
       return
     }
 
     setAuth({ status: 'unauthenticated' })
-  }, [])
+  }, [setUser])
 
   React.useEffect(() => {
     if (session.isPending) {

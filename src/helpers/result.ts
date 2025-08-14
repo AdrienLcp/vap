@@ -42,8 +42,3 @@ export type SuccessResult<Data = null> = Data extends undefined | null
 export type Result<Errors = null, Data = null> =
   | ErrorResult<Errors>
   | SuccessResult<Data>
-
-export const unexpectedError = (...logs: Parameters<typeof console.error>): ErrorResult<UnexpectedError> => {
-  console.error(...logs)
-  return failure()
-}

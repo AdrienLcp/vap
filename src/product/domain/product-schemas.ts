@@ -1,4 +1,4 @@
-import z from 'zod'
+import { z } from 'zod'
 
 import { CategoryDTOSchema, CategoryIdSchema } from '@/category/domain/category-schemas'
 import { PRODUCT_CONSTANTS } from '@/product/domain/product-constants'

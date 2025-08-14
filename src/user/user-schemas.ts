@@ -1,4 +1,4 @@
-import z from 'zod'
+import { z } from 'zod'
 
 import { USER_CONSTANTS } from '@/user/user-constants'
 

@@ -1,14 +1,23 @@
 import 'server-only'
 
 import type { CategoryCreationData, CategoryDTO, CategoryNameAlreadyExists, CategoryUpdateData } from '@/category/domain/category-entities'
-import { type Result, success, unexpectedError } from '@/helpers/result'
-import { CategoryDatabase } from '@/infrastructure/database'
+import { type ErrorResult, failure, type Result, success } from '@/helpers/result'
+import { CategoryDatabase, getDatabaseError } from '@/infrastructure/database'
 
 const categorySelect = {
   id: true,
   name: true,
   description: true,
   imageUrl: true
+}
+
+const onCategoryDuplicateError = (duplicatedKeys: string[]): ErrorResult<CategoryNameAlreadyExists> => {
+  if (duplicatedKeys.includes('name')) {
+    return failure('CATEGORY_NAME_ALREADY_EXISTS')
+  }
+
+  console.error('Duplicate key error in CategoryRepository:', duplicatedKeys)
+  return failure()
 }
 
 const createCategory = async (categoryCreationData: CategoryCreationData): Promise<Result<CategoryNameAlreadyExists, CategoryDTO>> => {
@@ -24,7 +33,15 @@ const createCategory = async (categoryCreationData: CategoryCreationData): Promi
 
     return success(createdCategory)
   } catch (error) {
-    return unexpectedError('Unknown error in CategoryRepository.createCategory:', error)
+    const databaseError = getDatabaseError(error)
+
+    switch (databaseError.code) {
+      case 'DUPLICATE':
+        return onCategoryDuplicateError(databaseError.duplicatedKeys)
+      default:
+        console.error('Unknown error in CategoryRepository.createCategory:', error)
+        return failure()
+    }
   }
 }
 
@@ -34,7 +51,8 @@ const findCategories = async (): Promise<Result<null, CategoryDTO[]>> => {
 
     return success(categories)
   } catch (error) {
-    return unexpectedError('Unknown error in CategoryRepository.findCategories:', error)
+    console.error('Unknown error in CategoryRepository.findCategories:', error)
+    return failure()
   }
 }
 
@@ -52,7 +70,15 @@ const updateCategory = async (categoryId: string, categoryData: CategoryUpdateDa
 
     return success(updatedCategory)
   } catch (error) {
-    return unexpectedError('Unknown error in CategoryRepository.updateCategory:', error)
+    const databaseError = getDatabaseError(error)
+
+    switch (databaseError.code) {
+      case 'DUPLICATE':
+        return onCategoryDuplicateError(databaseError.duplicatedKeys)
+      default:
+        console.error('Unknown error in CategoryRepository.createCategory:', error)
+        return failure()
+    }
   }
 }
 
