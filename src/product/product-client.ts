@@ -3,7 +3,7 @@
 import { ApiClient, type ClientResponse, unknownError } from '@/infrastructure/api/api-client'
 import type { ProductCreationData, ProductCreationResponse, ProductDeleteResponse, ProductListResponse, ProductPublicListResponse, ProductUpdateData, ProductUpdateResponse } from '@/product/domain/product-entities'
 
-const createProduct = async (productData: ProductCreationData): ClientResponse<ProductCreationResponse> => {
+const createProduct = async (productData: ProductCreationData): Promise<ClientResponse<ProductCreationResponse>> => {
   try {
     return await ApiClient.POST<ProductCreationResponse, ProductCreationData>('/products', productData)
   } catch (error) {
@@ -12,7 +12,7 @@ const createProduct = async (productData: ProductCreationData): ClientResponse<P
   }
 }
 
-const deleteProduct = async (productId: string): ClientResponse<ProductDeleteResponse> => {
+const deleteProduct = async (productId: string): Promise<ClientResponse<ProductDeleteResponse>> => {
   try {
     return await ApiClient.DELETE<ProductDeleteResponse>(`/products/${productId}`)
   } catch (error) {
@@ -21,7 +21,7 @@ const deleteProduct = async (productId: string): ClientResponse<ProductDeleteRes
   }
 }
 
-const findProducts = async (): ClientResponse<ProductListResponse> => {
+const findProducts = async (): Promise<ClientResponse<ProductListResponse>> => {
   try {
     return await ApiClient.GET<ProductListResponse>('/products')
   } catch (error) {
@@ -30,7 +30,7 @@ const findProducts = async (): ClientResponse<ProductListResponse> => {
   }
 }
 
-const findPublicProducts = async (): ClientResponse<ProductPublicListResponse> => {
+const findPublicProducts = async (): Promise<ClientResponse<ProductPublicListResponse>> => {
   try {
     return await ApiClient.GET<ProductPublicListResponse>('/products/public')
   } catch (error) {
@@ -39,7 +39,7 @@ const findPublicProducts = async (): ClientResponse<ProductPublicListResponse> =
   }
 }
 
-const updateProduct = async (productId: string, productUpdateData: ProductUpdateData): ClientResponse<ProductUpdateResponse> => {
+const updateProduct = async (productId: string, productUpdateData: ProductUpdateData): Promise<ClientResponse<ProductUpdateResponse>> => {
   try {
     return await ApiClient.PUT<ProductUpdateResponse, ProductUpdateData>(`/products/${productId}`, productUpdateData)
   } catch (error) {

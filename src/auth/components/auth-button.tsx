@@ -5,14 +5,15 @@ import { redirect } from 'next/navigation'
 import { AuthClient } from '@/auth/auth-client'
 import { useAuth } from '@/auth/hooks/use-auth'
 import { DEFAULT_ROUTE, ROUTES } from '@/domain/navigation'
+import  { NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
 import { Spinner } from '@/presentation/components/ui/loaders/spinner'
 import { Button } from '@/presentation/components/ui/pressables/button'
 import { Link } from '@/presentation/components/ui/pressables/link'
 
 const signOut = async () => {
-  const result = await AuthClient.signOut()
+  const signOutResponse = await AuthClient.signOut()
 
-  if (result.status === 'SUCCESS') {
+  if (signOutResponse.status === NO_CONTENT_STATUS) {
     redirect(DEFAULT_ROUTE)
   }
 }

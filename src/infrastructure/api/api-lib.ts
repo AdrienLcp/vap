@@ -19,11 +19,11 @@ export const nextResponse = async <Response extends ApiResponse> (promise: Promi
     const { headers, status } = response
 
     if (hasData(response)) {
-      return NextResponse.json(response.data, { headers, status })
+      return NextResponse.json({ data: response.data }, { headers, status })
     }
 
     if (hasError(response)) {
-      return NextResponse.json(response.error, { headers, status })
+      return NextResponse.json({ error: response.error }, { headers, status })
     }
 
     return new NextResponse(null, { headers, status })

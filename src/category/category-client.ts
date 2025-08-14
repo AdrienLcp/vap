@@ -3,7 +3,7 @@
 import type { CategoryCreationData, CategoryCreationResponse, CategoryListResponse, CategoryUpdateData, CategoryUpdateResponse } from '@/category/domain/category-entities'
 import { ApiClient, type ClientResponse, unknownError } from '@/infrastructure/api/api-client'
 
-const createCategory = async (categoryCreationData: CategoryCreationData): ClientResponse<CategoryCreationResponse> => {
+const createCategory = async (categoryCreationData: CategoryCreationData): Promise<ClientResponse<CategoryCreationResponse>> => {
   try {
     return await ApiClient.POST<CategoryCreationResponse, CategoryCreationData>('/categories', categoryCreationData)
   } catch (error) {
@@ -12,7 +12,7 @@ const createCategory = async (categoryCreationData: CategoryCreationData): Clien
   }
 }
 
-const findCategories = async (): ClientResponse<CategoryListResponse> => {
+const findCategories = async (): Promise<ClientResponse<CategoryListResponse>> => {
   try {
     return await ApiClient.GET<CategoryListResponse>('/categories')
   } catch (error) {
@@ -21,7 +21,7 @@ const findCategories = async (): ClientResponse<CategoryListResponse> => {
   }
 }
 
-const updateCategory = async (categoryId: string, categoryUpdateData: CategoryUpdateData): ClientResponse<CategoryUpdateResponse> => {
+const updateCategory = async (categoryId: string, categoryUpdateData: CategoryUpdateData): Promise<ClientResponse<CategoryUpdateResponse>> => {
   try {
     return await ApiClient.PUT<CategoryUpdateResponse, CategoryUpdateData>(`/categories/${categoryId}`, categoryUpdateData)
   } catch (error) {

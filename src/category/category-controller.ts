@@ -19,7 +19,7 @@ const createCategory = async (categoryCreationRequest: Request): Promise<Categor
     if (createdCategoryResult.status === 'ERROR') {
       switch (createdCategoryResult.errors) {
         case 'CATEGORY_NAME_ALREADY_EXISTS':
-          return HttpResponse.conflict('CATEGORY_NAME_ALREADY_EXISTS')
+          return HttpResponse.conflict('CATEGORY_NAME_ALREADY_EXISTS' as const)
         case 'FORBIDDEN':
           return HttpResponse.forbidden()
         case 'UNAUTHORIZED':

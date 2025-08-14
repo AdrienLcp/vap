@@ -33,19 +33,33 @@ export const CreateCategoryForm: React.FC = () => {
       imageUrl: formData.get(createCategoryFormFields.imageUrl) as string
     }
 
-    const createdCategoryResult = await CategoryClient.createCategory(categoryCreationData)
+    const createdCategoryResponse = await CategoryClient.createCategory(categoryCreationData)
     setIsCategoryCreationLoading(false)
 
-    if (createdCategoryResult.status !== 201) {
-      switch (createdCategoryResult.status) {
-        case 400:
-          console.log(createdCategoryResult.error)
-          break
-      }
+    if (createdCategoryResponse.status === 201) {
+      setCreateCategoryFormErrors(undefined)
+      return
     }
 
-    setCreateCategoryFormErrors(undefined)
-    console.log(createdCategoryResult)
+    switch (createdCategoryResponse.status) {
+      case 400:
+        console.error(createdCategoryResponse.error)
+        break
+      case 401:
+        console.error(createdCategoryResponse)
+        break
+      case 403:
+        console.error(createdCategoryResponse)
+        break
+      case 409:
+        console.error(createdCategoryResponse.error)
+        break
+      case 500:
+        console.error(createdCategoryResponse)
+        break
+      default:
+        console.error(createdCategoryResponse)
+    }
   }
 
   return (

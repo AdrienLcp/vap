@@ -3,7 +3,7 @@ import type { z } from 'zod'
 import type { AUTH_CONSTANTS } from '@/auth/domain/auth-constants'
 import type { AuthPermissionsSchema, AuthUserDTOSchema } from '@/auth/domain/auth-schemas'
 import type { Unauthorized } from '@/helpers/result'
-import type { OkResponse, Response, UnauthorizedResponse } from '@/infrastructure/api/http-response'
+import type { BadRequestResponse, ConflictResponse, NoContentResponse, OkResponse, Response, UnauthorizedResponse } from '@/infrastructure/api/http-response'
 import type { UserRole } from '@/user/user-entities'
 
 export type AuthPermissions = z.infer<typeof AuthPermissionsSchema>
@@ -21,6 +21,7 @@ export type AuthUserResponse = Response<OkResponse<AuthUserDTO> | UnauthorizedRe
 
 export type InvalidCredentials = 'INVALID_CREDENTIALS'
 export type PasswordTooShort = typeof AUTH_CONSTANTS.PASSWORD_TOO_SHORT
+export type InvalidPassword = 'INVALID_PASSWORD'
 export type UserAlreadyExists = 'USER_ALREADY_EXISTS'
 
 export type SignInInfo = {
@@ -28,9 +29,9 @@ export type SignInInfo = {
   password: string
 }
 
-export type SignInError =
-  | InvalidCredentials
-  | Unauthorized
+export type EmailSignInResponse =
+  | AuthUserResponse
+  | Response<BadRequestResponse<InvalidCredentials>>
 
 export type SignUpInfo = {
   email: string
@@ -38,15 +39,38 @@ export type SignUpInfo = {
   password: string
 }
 
-export type SignUpError =
-// adds invalid email + test
-  | PasswordTooShort
-  | Unauthorized
-  | UserAlreadyExists
+export type SignUpErrorResponse = Response<
+  | BadRequestResponse<PasswordTooShort>
+  | ConflictResponse<UserAlreadyExists>
+>
+
+export type SignUpResponse =
+  | AuthUserResponse
+  | SignUpErrorResponse
+
+export type SignOutResponse = Response<
+  | NoContentResponse
+  | UnauthorizedResponse
+>
+
+export type DeleteUserResponse = Response<
+  | NoContentResponse
+  | UnauthorizedResponse
+>
 
 export type ChangePasswordInfo = {
   currentPassword: string
   newPassword: string
 }
+
+export type ChangePasswordResponse = Response<
+  | NoContentResponse
+  | BadRequestResponse<PasswordTooShort | InvalidPassword>
+>
+
+export type ChangeEmailResponse = Response<
+  | NoContentResponse
+  | UnauthorizedResponse
+>
 
 export type SocialProvider = typeof AUTH_CONSTANTS.SOCIAL_PROVIDERS[number]

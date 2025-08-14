@@ -2,33 +2,32 @@
 
 import { createAuthClient } from 'better-auth/react'
 
-import type { AuthUserDTO, AuthUserError, AuthUserResponse, ChangePasswordInfo, SignInError, SignInInfo, SignUpError, SignUpInfo, SocialProvider } from '@/auth/domain/auth-entities'
-import { failure, type Result, success, unexpectedError } from '@/helpers/result'
-import { ApiClient } from '@/infrastructure/api/api-client'
-import type { Unauthorized } from '@/infrastructure/api/api-domain'
+import type { AuthUserResponse, ChangeEmailResponse, ChangePasswordInfo, ChangePasswordResponse, DeleteUserResponse, EmailSignInResponse, SignInInfo, SignOutResponse, SignUpInfo, SignUpResponse, SocialProvider } from '@/auth/domain/auth-entities'
+import { ApiClient, type ClientResponse, unknownError } from '@/infrastructure/api/api-client'
+import { HttpResponse } from '@/infrastructure/api/http-response'
 
 export const betterAuthClient = createAuthClient()
 
-const changeEmail = async (newEmail: string): Promise<Result<Unauthorized>> => {
+const changeEmail = async (newEmail: string): Promise<ClientResponse<ChangeEmailResponse>> => {
   try {
     const changeEmailResponse = await betterAuthClient.changeEmail({ newEmail })
 
     if (changeEmailResponse.error) {
       switch (changeEmailResponse.error.code) {
         default:
-          return unexpectedError('Change email error:', changeEmailResponse.error)
+          console.error('Change email error:', changeEmailResponse.error)
+          return unknownError()
       }
     }
 
-    return success()
+    return HttpResponse.noContent()
   } catch (error) {
-    return unexpectedError('Change email error:', error)
+    console.error('Change email error:', error)
+    return unknownError()
   }
 }
 
-type ChangePasswordError = 'INVALID_PASSWORD' | 'PASSWORD_TOO_SHORT'
-
-const changePassword = async (changePasswordInfo: ChangePasswordInfo): Promise<Result<ChangePasswordError>> => {
+const changePassword = async (changePasswordInfo: ChangePasswordInfo): Promise<ClientResponse<ChangePasswordResponse>> => {
   try {
     const changeEmailResponse = await betterAuthClient.changePassword({
       currentPassword: changePasswordInfo.currentPassword,
@@ -39,21 +38,23 @@ const changePassword = async (changePasswordInfo: ChangePasswordInfo): Promise<R
     if (changeEmailResponse.error) {
       switch (changeEmailResponse.error.code) {
         case 'INVALID_PASSWORD':
-          return failure('INVALID_PASSWORD')
+          return HttpResponse.badRequest('INVALID_PASSWORD')
         case 'PASSWORD_TOO_SHORT':
-          return failure('PASSWORD_TOO_SHORT')
+          return HttpResponse.badRequest('PASSWORD_TOO_SHORT')
         default:
-          return unexpectedError('Change password error:', changeEmailResponse.error)
+          console.error('Change password error:', changeEmailResponse.error)
+          return unknownError()
       }
     }
 
-    return success()
+    return HttpResponse.noContent()
   } catch (error) {
-    return unexpectedError('Change password error:', error)
+    console.error('Change password error:', error)
+    return unknownError()
   }
 }
 
-const emailSignIn = async (signInInfo: SignInInfo): Promise<Result<SignInError, AuthUserDTO>> => {
+const emailSignIn = async (signInInfo: SignInInfo): Promise<ClientResponse<EmailSignInResponse>> => {
   try {
     const emailSignInResponse = await betterAuthClient.signIn.email({
       email: signInInfo.email,
@@ -63,19 +64,21 @@ const emailSignIn = async (signInInfo: SignInInfo): Promise<Result<SignInError, 
     if (emailSignInResponse.error) {
       switch (emailSignInResponse.error.code) {
         case 'INVALID_EMAIL_OR_PASSWORD':
-          return failure('INVALID_CREDENTIALS')
+          return HttpResponse.badRequest('INVALID_CREDENTIALS')
         default:
-          return unexpectedError('Email sign-in error:', emailSignInResponse.error)
+          console.error('Email sign-in error:', emailSignInResponse.error)
+          return unknownError()
       }
     }
 
     return await findUser()
   } catch (error) {
-    return unexpectedError('Email sign-in error:', error)
+    console.error('Email sign-in error:', error)
+    return unknownError()
   }
 }
 
-const emailSignUp = async (signUpInfo: SignUpInfo): Promise<Result<SignUpError, AuthUserDTO>> => {
+const emailSignUp = async (signUpInfo: SignUpInfo): Promise<ClientResponse<SignUpResponse>> => {
   try {
     const emailSignUpResponse = await betterAuthClient.signUp.email({
       email: signUpInfo.email,
@@ -86,21 +89,23 @@ const emailSignUp = async (signUpInfo: SignUpInfo): Promise<Result<SignUpError, 
     if (emailSignUpResponse.error) {
       switch (emailSignUpResponse.error.code) {
         case 'PASSWORD_TOO_SHORT':
-          return failure('PASSWORD_TOO_SHORT')
+          return HttpResponse.badRequest('PASSWORD_TOO_SHORT')
         case 'USER_ALREADY_EXISTS':
-          return failure('USER_ALREADY_EXISTS')
+          return HttpResponse.conflict('USER_ALREADY_EXISTS')
         default:
-          return unexpectedError('Email sign-up error:', emailSignUpResponse.error)
+          console.error('Email sign-up error:', emailSignUpResponse.error)
+          return unknownError()
       }
     }
 
     return await findUser()
   } catch (error) {
-    return unexpectedError('Email sign-up error:', error)
+    console.error('Email sign-up error:', error)
+    return unknownError()
   }
 }
 
-const deleteUser = async (password: string): Promise<Result<Unauthorized>> => {
+const deleteUser = async (password: string): Promise<ClientResponse<DeleteUserResponse>> => {
   try {
     const deleteUserResponse = await betterAuthClient.deleteUser({ password })
 
@@ -108,63 +113,55 @@ const deleteUser = async (password: string): Promise<Result<Unauthorized>> => {
       switch (deleteUserResponse.error.code) {
         default:
           console.error('Delete user error:', deleteUserResponse.error)
-          return failure('UNAUTHORIZED')
+          unknownError()
       }
     }
 
-    return success()
+    return HttpResponse.noContent()
   } catch (error) {
-    return unexpectedError('Delete user error:', error)
+    console.error('Delete user error:', error)
+    return unknownError()
   }
 }
 
-const findUser = async (): Promise<Result<AuthUserError, AuthUserDTO>> => {
+const findUser = async (): Promise<ClientResponse<AuthUserResponse>> => {
   try {
-    const userResponse = await ApiClient.GET<AuthUserResponse>('/auth/user')
-
-    if (userResponse.status === 'SUCCESS') {
-      return success(userResponse.data)
-    }
-
-    switch (userResponse.errors) {
-      case 'UNAUTHORIZED':
-        return failure('UNAUTHORIZED')
-      case 'INTERNAL_SERVER_ERROR':
-      case 'UNEXPECTED_ERROR':
-      default:
-        return unexpectedError('User fetch error:', userResponse.errors)
-    }
+    return await ApiClient.GET<AuthUserResponse>('/auth/user')
   } catch (error) {
-    return unexpectedError('User fetch error:', error)
+    console.error('User fetch error:', error)
+    return unknownError()
   }
 }
 
-const signOut = async (): Promise<Result<Unauthorized>> => {
+const signOut = async (): Promise<ClientResponse<SignOutResponse>> => {
   try {
     const signOutResponse = await betterAuthClient.signOut()
 
     if (signOutResponse.error) {
       console.error('Sign out error:', signOutResponse.error)
-      return failure('UNAUTHORIZED')
+      return HttpResponse.unauthorized()
     }
 
-    return success()
+    return HttpResponse.noContent()
   } catch (error) {
-    return unexpectedError('Sign out error:', error)
+    console.error('Sign out error:', error)
+    return unknownError()
   }
 }
 
-const socialSignIn = async (provider: SocialProvider): Promise<Result<AuthUserError, AuthUserDTO>> => {
+const socialSignIn = async (provider: SocialProvider): Promise<ClientResponse<AuthUserResponse>> => {
   try {
     const signInResponse = await betterAuthClient.signIn.social({ provider })
 
     if (signInResponse.error) {
-      return unexpectedError('Social sign-in error:', signInResponse.error)
+      console.error('Social sign-in error:', signInResponse.error)
+      return unknownError()
     }
 
     return await findUser()
   } catch (error) {
-    return unexpectedError('Social sign-in error:', error)
+    console.error('Social sign-in error:', error)
+    return unknownError()
   }
 }
 

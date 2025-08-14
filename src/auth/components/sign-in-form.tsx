@@ -17,15 +17,12 @@ const onSubmit = async (formData: FormData) => {
     password: String(formData.get(signInFields.password))
   }
 
-  const signInResult = await AuthClient.emailSignIn(credentials)
+  const signInResponse = await AuthClient.emailSignIn(credentials)
 
-  if (signInResult.status === 'ERROR') {
-    console.error('Sign in error:', signInResult.errors)
-    return
+  if (signInResponse.status === 200) {
+    console.log(signInResponse)
+    redirect(DEFAULT_ROUTE)
   }
-
-  console.log('Sign in success:', signInResult.data)
-  redirect(DEFAULT_ROUTE)
 }
 
 export const SignInForm: React.FC = () => (

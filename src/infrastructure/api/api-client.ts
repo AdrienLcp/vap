@@ -1,28 +1,53 @@
 'use client'
 
-import type { BaseResponse } from './http-response'
-
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 
-const request = async <Response, RequestBody = undefined>(route: string, method: Method, body?: RequestBody): Promise<Response> => {
-  const response = await fetch(`/api/${route}`, {
-    body: body ? JSON.stringify(body) : undefined,
-    headers: body ? { 'Content-Type': 'application/json' } : undefined,
-    method
-  })
-
-  return await response.json()
+type RequestOptions = {
+  headers?: Record<string, string>
+  credentials?: RequestCredentials
+  signal?: AbortSignal
 }
 
-const DELETE = async <Response>(route: string) => await request<Response>(route, 'DELETE')
+const request = async <Response, RequestBody = undefined>(
+  route: string,
+  method: Method,
+  options?: RequestOptions,
+  body?: RequestBody
+): Promise<Response> => {
+  const response = await fetch(`/api/${route}`, {
+    method,
+    body: body ? JSON.stringify(body) : null,
+    headers: {
+      ...(body ? { 'Content-Type': 'application/json' } : {}),
+      ...(options?.headers ?? {})
+    },
+    credentials: options?.credentials,
+    signal: options?.signal
+  })
 
-const GET = async <Response>(route: string) => await request<Response>(route, 'GET')
+  const json = await response.json()
 
-const PATCH = async <Response, RequestBody>(route: string, body?: RequestBody) => await request<Response, RequestBody>(route, 'PATCH', body)
+  return {
+    ...json,
+    headers: response.headers,
+    status: response.status
+  }
+}
 
-const POST = async <Response, RequestBody>(route: string, body?: RequestBody) => await request<Response, RequestBody>(route, 'POST', body)
+const DELETE = async <Response>(route: string, options?: RequestOptions) =>
+  await request<Response>(route, 'DELETE', options)
 
-const PUT = async <Response, RequestBody>(route: string, body?: RequestBody) => await request<Response, RequestBody>(route, 'PUT', body)
+const GET = async <Response>(route: string, options?: RequestOptions) =>
+  await request<Response>(route, 'GET', options)
+
+const PATCH = async <Response, RequestBody>(route: string, body?: RequestBody, options?: RequestOptions) =>
+  await request<Response, RequestBody>(route, 'PATCH', options, body)
+
+const POST = async <Response, RequestBody>(route: string, body?: RequestBody, options?: RequestOptions) =>
+  await request<Response, RequestBody>(route, 'POST', options, body)
+
+const PUT = async <Response, RequestBody>(route: string, body?: RequestBody, options?: RequestOptions) =>
+  await request<Response, RequestBody>(route, 'PUT', options, body)
 
 export const ApiClient = {
   DELETE,
@@ -32,12 +57,12 @@ export const ApiClient = {
   PUT
 }
 
-export const UNKNOWN_ERROR_STATUS_CODE = 0 as const
-export type UnknownErrorStatusCode = typeof UNKNOWN_ERROR_STATUS_CODE
-export type UnknownErrorResponse = BaseResponse<UnknownErrorStatusCode>
+export const UNKNOWN_ERROR_STATUS = 0 as const
+export type UnknownErrorStatus = typeof UNKNOWN_ERROR_STATUS
+export type UnknownErrorResponse = { status: UnknownErrorStatus }
 
-export const unknownError = ():UnknownErrorResponse => {
-  return { statusCode: UNKNOWN_ERROR_STATUS_CODE }
+export const unknownError = (): UnknownErrorResponse => {
+  return { status: UNKNOWN_ERROR_STATUS }
 }
 
-export type ClientResponse<T> = Promise<T | UnknownErrorResponse>
+export type ClientResponse<T> = T | UnknownErrorResponse

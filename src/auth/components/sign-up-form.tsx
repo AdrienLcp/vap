@@ -19,15 +19,12 @@ const onSubmit = async (formData: FormData) => {
     password: String(formData.get(signUpFields.password))
   }
 
-  const signUpResult = await AuthClient.emailSignUp(credentials)
+  const signUpResponse = await AuthClient.emailSignUp(credentials)
 
-  if (signUpResult.status === 'ERROR') {
-    console.error('Sign up error:', signUpResult.errors)
-    return
+  if (signUpResponse.status === 200) {
+    console.log(signUpResponse)
+    redirect(DEFAULT_ROUTE)
   }
-
-  console.log('Sign up success:', signUpResult.data)
-  redirect(DEFAULT_ROUTE)
 }
 
 export const SignUpForm: React.FC = () => (

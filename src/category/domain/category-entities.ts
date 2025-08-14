@@ -26,7 +26,7 @@ export type CategoryListResponse = Response<OkResponse<CategoryDTO[]>>
 
 export type CategoryCreationResponse = Response<
   | CreatedResponse<CategoryDTO>
-  | BadRequestResponse<CategoryCreationData>
+  | BadRequestResponse<z.ZodError<CategoryCreationData>>
   | ConflictResponse<CategoryNameAlreadyExists>
   | UnauthorizedResponse
   | ForbiddenResponse
@@ -34,7 +34,7 @@ export type CategoryCreationResponse = Response<
 
 export type CategoryUpdateResponse = Response<
   | OkResponse<CategoryDTO>
-  | BadRequestResponse<CategoryUpdateData | string>
+  | BadRequestResponse<z.ZodError<CategoryUpdateData | string>>
   | ConflictResponse<CategoryNameAlreadyExists>
   | UnauthorizedResponse
   | ForbiddenResponse

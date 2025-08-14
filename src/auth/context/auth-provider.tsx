@@ -4,22 +4,28 @@ import React from 'react'
 
 import { AuthClient } from '@/auth/auth-client'
 import { type Auth, AuthContext } from '@/auth/context/auth-context'
+import type { AuthUserDTO } from '@/auth/domain/auth-entities'
 import { useSession } from '@/auth/hooks/use-session'
+import { OK_STATUS } from '@/infrastructure/api/http-response'
 
 export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [auth, setAuth] = React.useState<Auth>({ status: 'loading' })
 
   const session = useSession()
 
-  const loadUser = React.useCallback(async () => {
-    const userResult = await AuthClient.findUser()
+  const setUser = React.useCallback((user: AuthUserDTO) => {
+    setAuth({ status: 'authenticated', user })
+  }, [])
 
-    if (userResult.status === 'ERROR') {
-      setAuth({ status: 'unauthenticated' })
+  const loadUser = React.useCallback(async () => {
+    const userResponse = await AuthClient.findUser()
+
+    if (userResponse.status === OK_STATUS) {
+      setAuth({ status: 'authenticated', user: userResponse.data })
       return
     }
 
-    setAuth({ status: 'authenticated', user: userResult.data })
+    setAuth({ status: 'unauthenticated' })
   }, [])
 
   React.useEffect(() => {
@@ -37,7 +43,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
   }, [loadUser, session])
 
   return (
-    <AuthContext value={{ auth, setAuth }}>
+    <AuthContext value={{ auth, setAuth, setUser }}>
       {children}
     </AuthContext>
   )

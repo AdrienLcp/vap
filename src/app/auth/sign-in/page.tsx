@@ -6,8 +6,8 @@ import { DEFAULT_ROUTE } from '@/domain/navigation'
 import { OK_STATUS } from '@/infrastructure/api/http-response'
 
 const SignInPage: React.FC = async () => {
-  const authUserResult = await AuthController.findUser()
-  const isUserAuthenticated = authUserResult.status === OK_STATUS
+  const authUserResponse = await AuthController.findUser()
+  const isUserAuthenticated = authUserResponse.status === OK_STATUS
 
   if (isUserAuthenticated) {
     redirect(DEFAULT_ROUTE)

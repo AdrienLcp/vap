@@ -26,21 +26,21 @@ export type ProductPublicListResponse = Response<OkResponse<ProductDTO[]>>
 
 export type ProductCreationResponse = Response<
   | CreatedResponse<ProductDTO>
-  | BadRequestResponse<ProductCreationData>
+  | BadRequestResponse<z.ZodError<ProductCreationData>>
   | UnauthorizedResponse
   | ForbiddenResponse
 >
 
 export type ProductUpdateResponse = Response<
   | OkResponse<ProductDTO>
-  | BadRequestResponse<ProductUpdateData | string>
+  | BadRequestResponse<z.ZodError<ProductUpdateData | string>>
   | UnauthorizedResponse
   | ForbiddenResponse
 >
 
 export type ProductDeleteResponse = Response<
   | NoContentResponse
-  | BadRequestResponse<string>
+  | BadRequestResponse<z.ZodError<string>>
   | UnauthorizedResponse
   | ForbiddenResponse
 >
