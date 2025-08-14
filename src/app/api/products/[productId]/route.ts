@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server'
 
 import { nextResponse } from '@/infrastructure/api/api-lib'
-import { ProductController } from '@/product/product-controller'
+import { ProductController } from '@/product/presentation/product-controller'
 
 type ProductIdParams = { params: Promise<{ productId: string }> }
 

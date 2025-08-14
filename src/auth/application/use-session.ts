@@ -1,5 +1,5 @@
 'use client'
 
-import { betterAuthClient } from '@/auth/auth-client'
+import { betterAuthClient } from '@/auth/infrastructure/auth-client'
 
 export const useSession = betterAuthClient.useSession

@@ -1,9 +1,9 @@
 import 'server-only'
 
 import { HttpResponse } from '@/infrastructure/api/http-response'
+import { ProductService } from '@/product/application/product-service'
 import type { ProductCreationResponse, ProductDeleteResponse, ProductListResponse, ProductPublicListResponse, ProductUpdateResponse } from '@/product/domain/product-entities'
 import { ProductCreationSchema, ProductDTOSchema, ProductIdSchema, ProductUpdateSchema } from '@/product/domain/product-schemas'
-import { ProductService } from '@/product/product-service'
 
 const createProduct = async (productCreationRequest: Request): Promise<ProductCreationResponse> => {
   try {

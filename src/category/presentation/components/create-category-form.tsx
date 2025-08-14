@@ -2,12 +2,12 @@
 
 import React from 'react'
 
-import { CategoryClient } from '@/category/category-client'
-import { CategoryDescriptionField } from '@/category/components/category-description-field'
-import { CategoryImageUrlField } from '@/category/components/category-image-url-field'
-import { CategoryNameField } from '@/category/components/category-name-field'
 import { CATEGORY_CONSTANTS, CATEGORY_FORM_FIELDS } from '@/category/domain/category-constants'
 import type { CategoryConflictError, CategoryCreationData } from '@/category/domain/category-entities'
+import { CategoryClient } from '@/category/infrastructure/category-client'
+import { CategoryDescriptionField } from '@/category/presentation/components/category-description-field'
+import { CategoryImageUrlField } from '@/category/presentation/components/category-image-url-field'
+import { CategoryNameField } from '@/category/presentation/components/category-name-field'
 import { t } from '@/infrastructure/i18n'
 import { Form } from '@/presentation/components/forms/form'
 import { FormError } from '@/presentation/components/forms/form-error'

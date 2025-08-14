@@ -1,8 +1,8 @@
 import 'server-only'
 
-import { AuthService } from '@/auth/auth-service'
-import { CategoryRepository } from '@/category/category-repository'
+import { AuthService } from '@/auth/application/auth-service'
 import type { CategoryCreationData, CategoryCreationError, CategoryDTO, CategoryUpdateData } from '@/category/domain/category-entities'
+import { CategoryRepository } from '@/category/infrastructure/category-repository'
 import { failure, type Result } from '@/helpers/result'
 
 const createCategory = async (categoryCreationData: CategoryCreationData): Promise<Result<CategoryCreationError, CategoryDTO>> => {

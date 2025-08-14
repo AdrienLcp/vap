@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 
-import { AuthController } from '@/auth/auth-controller'
-import { ChangePassword } from '@/auth/components/change-password'
+import { AuthController } from '@/auth/presentation/auth-controller'
+import { ChangePassword } from '@/auth/presentation/components/change-password'
 import { ROUTES } from '@/domain/navigation'
 import { OK_STATUS } from '@/infrastructure/api/http-response'
 

@@ -1,9 +1,9 @@
 import 'server-only'
 
-import { AuthService } from '@/auth/auth-service'
+import { AuthService } from '@/auth/application/auth-service'
 import { failure, type Result, success } from '@/helpers/result'
 import type { ProductCreationData, ProductDTO, ProductError, ProductPublicDTO, ProductUpdateData } from '@/product/domain/product-entities'
-import { ProductRepository } from '@/product/product-repository'
+import { ProductRepository } from '@/product/infrastructure/product-repository'
 
 const createProduct = async (productCreationData: ProductCreationData): Promise<Result<ProductError, ProductDTO>>  => {
   const userResult = await AuthService.findUser()

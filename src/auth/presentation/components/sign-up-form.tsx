@@ -2,7 +2,7 @@
 
 import { redirect } from 'next/navigation'
 
-import { AuthClient } from '@/auth/auth-client'
+import { AuthClient } from '@/auth/infrastructure/auth-client'
 import { DEFAULT_ROUTE } from '@/domain/navigation'
 import { Form } from '@/presentation/components/forms/form'
 

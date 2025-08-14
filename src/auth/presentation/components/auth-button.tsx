@@ -2,8 +2,8 @@
 
 import { redirect } from 'next/navigation'
 
-import { AuthClient } from '@/auth/auth-client'
-import { useAuth } from '@/auth/hooks/use-auth'
+import { useAuth } from '@/auth/application/use-auth'
+import { AuthClient } from '@/auth/infrastructure/auth-client'
 import { DEFAULT_ROUTE, ROUTES } from '@/domain/navigation'
 import  { NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
 import { Spinner } from '@/presentation/components/ui/loaders/spinner'

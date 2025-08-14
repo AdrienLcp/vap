@@ -1,6 +1,6 @@
 import 'server-only'
 
-import { AuthService } from '@/auth/auth-service'
+import { AuthService } from '@/auth/application/auth-service'
 import type { AuthUserResponse } from '@/auth/domain/auth-entities'
 import { AuthUserDTOSchema } from '@/auth/domain/auth-schemas'
 import { HttpResponse } from '@/infrastructure/api/http-response'

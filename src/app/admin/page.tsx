@@ -1,10 +1,10 @@
 import { redirect } from 'next/navigation'
 
-import { AuthController } from '@/auth/auth-controller'
-import { CreateCategoryForm } from '@/category/components/create-category-form'
+import { AuthController } from '@/auth/presentation/auth-controller'
+import { CreateCategoryForm } from '@/category/presentation/components/create-category-form'
 import { ROUTES } from '@/domain/navigation'
 import { OK_STATUS } from '@/infrastructure/api/http-response'
-import { CreateProductForm } from '@/product/components/create-product-form'
+import { CreateProductForm } from '@/product/presentation/components/create-product-form'
 
 const AdminPage: React.FC = async () => {
   const authUserResult = await AuthController.findUser()

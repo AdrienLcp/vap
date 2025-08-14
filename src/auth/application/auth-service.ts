@@ -1,8 +1,8 @@
 import 'server-only'
 
-import { AuthRepository } from '@/auth/auth-repository'
 import type { AuthUserDTO, AuthUserError } from '@/auth/domain/auth-entities'
 import { ROLE_PERMISSIONS } from '@/auth/domain/auth-permissions'
+import { AuthRepository } from '@/auth/infrastructure/auth-repository'
 import { type Result, success } from '@/helpers/result'
 import type { UserRole } from '@/user/user-entities'
 

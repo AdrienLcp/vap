@@ -1,6 +1,6 @@
 import 'server-only'
 
-import { CategoryService } from '@/category/category-service'
+import { CategoryService } from '@/category/application/category-service'
 import { CATEGORY_CONSTANTS } from '@/category/domain/category-constants'
 import type { CategoryCreationResponse, CategoryListResponse, CategoryUpdateResponse } from '@/category/domain/category-entities'
 import { CategoryCreationSchema, CategoryDTOSchema, CategoryIdSchema, CategoryUpdateSchema } from '@/category/domain/category-schemas'

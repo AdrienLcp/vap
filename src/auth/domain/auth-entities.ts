@@ -20,8 +20,8 @@ export type AuthUserError = Unauthorized
 export type AuthUserResponse = Response<OkResponse<AuthUserDTO> | UnauthorizedResponse>
 
 export type InvalidCredentials = 'INVALID_CREDENTIALS'
-export type PasswordTooShort = typeof AUTH_CONSTANTS.PASSWORD_TOO_SHORT
 export type InvalidPassword = 'INVALID_PASSWORD'
+export type PasswordTooShort = typeof AUTH_CONSTANTS.PASSWORD_TOO_SHORT
 export type UserAlreadyExists = 'USER_ALREADY_EXISTS'
 
 export type SignInInfo = {

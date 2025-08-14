@@ -1,6 +1,6 @@
 'use client'
 
-import { AuthClient } from '@/auth/auth-client'
+import { AuthClient } from '@/auth/infrastructure/auth-client'
 import { Form } from '@/presentation/components/forms/form'
 
 const changePasswordFormFields = {

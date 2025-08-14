@@ -2,10 +2,10 @@
 
 import React from 'react'
 
-import { AuthClient } from '@/auth/auth-client'
-import { type Auth, AuthContext } from '@/auth/context/auth-context'
+import { useSession } from '@/auth/application/use-session'
 import type { AuthUserDTO } from '@/auth/domain/auth-entities'
-import { useSession } from '@/auth/hooks/use-session'
+import { AuthClient } from '@/auth/infrastructure/auth-client'
+import { type Auth, AuthContext } from '@/auth/presentation/context/auth-context'
 import { OK_STATUS } from '@/infrastructure/api/http-response'
 
 export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
