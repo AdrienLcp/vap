@@ -12,7 +12,7 @@ const createProduct = async (productCreationRequest: Request): Promise<ProductCr
     const productCreationValidation = ProductCreationSchema.safeParse(productCreationData)
 
     if (productCreationValidation.error) {
-      return HttpResponse.badRequest(productCreationValidation.error)
+      return HttpResponse.badRequest(productCreationValidation.error.issues)
     }
 
     const createdProductResult = await ProductService.createProduct(productCreationValidation.data)
@@ -48,7 +48,7 @@ const deleteProduct = async (productId: string): Promise<ProductDeleteResponse> 
     const productIdValidation = ProductIdSchema.safeParse(productId)
 
     if (productIdValidation.error) {
-      return HttpResponse.badRequest(productIdValidation.error)
+      return HttpResponse.badRequest(productIdValidation.error.issues)
     }
 
     const deleteResult = await ProductService.deleteProduct(productIdValidation.data)
@@ -130,7 +130,7 @@ const updateProduct = async (productId: string, productUpdateRequest: Request): 
     const productIdValidation = ProductIdSchema.safeParse(productId)
 
     if (productIdValidation.error) {
-      return HttpResponse.badRequest(productIdValidation.error)
+      return HttpResponse.badRequest(productIdValidation.error.issues)
     }
 
     const productUpdateData = await productUpdateRequest.json()
@@ -138,7 +138,7 @@ const updateProduct = async (productId: string, productUpdateRequest: Request): 
     const productUpdateValidation = ProductUpdateSchema.safeParse(productUpdateData)
 
     if (productUpdateValidation.error) {
-      return HttpResponse.badRequest(productUpdateValidation.error)
+      return HttpResponse.badRequest(productUpdateValidation.error.issues)
     }
 
     const updatedProductResult = await ProductService.updateProduct(productIdValidation.data, productUpdateValidation.data)

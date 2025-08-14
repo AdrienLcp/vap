@@ -1,14 +1,6 @@
 import 'server-only'
 
-import { Prisma, PrismaClient } from '@prisma/client'
-
-const globalForPrisma = globalThis as unknown as { prisma: PrismaClient }
-
-export const prisma = globalForPrisma.prisma || new PrismaClient()
-
-if (process.env.NODE_ENV !== 'production') {
-  globalForPrisma.prisma = prisma
-}
+import { Prisma } from '@prisma/client'
 
 export const isKnownDatabaseError = (error: unknown): error is Prisma.PrismaClientKnownRequestError => {
   return error instanceof Prisma.PrismaClientKnownRequestError
@@ -33,7 +25,3 @@ export const getDatabaseError = (error: unknown): DatabaseError => {
 
   return { code: 'UNKNOWN' }
 }
-
-export const CategoryDatabase = prisma.category
-export const ProductDatabase = prisma.product
-export const UserDatabase = prisma.user

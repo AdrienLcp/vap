@@ -2,7 +2,8 @@ import 'server-only'
 
 import type { CategoryCreationData, CategoryDTO, CategoryNameAlreadyExists, CategoryUpdateData } from '@/category/domain/category-entities'
 import { type ErrorResult, failure, type Result, success } from '@/helpers/result'
-import { CategoryDatabase, getDatabaseError } from '@/infrastructure/database'
+import { CategoryDatabase } from '@/infrastructure/database'
+import { getDatabaseError } from '@/infrastructure/database/database-helpers'
 
 const categorySelect = {
   id: true,

@@ -8,16 +8,20 @@ import './field-error.sass'
 
 type FieldErrorProps = ReactAriaFieldErrorProps & {
   maxLength?: number
+  minLength?: number
 }
 
-export const FieldError: React.FC<FieldErrorProps> = ({ className }) => (
-  <ReactAriaFieldError className={values => reactAriaClassNames(values, className, 'field-error')}>
+export const FieldError: React.FC<FieldErrorProps> = ({ className, maxLength, minLength, ...fieldErrorRestProps }) => (
+  <ReactAriaFieldError
+    className={values => reactAriaClassNames(values, className, 'field-error')}
+    {...fieldErrorRestProps}
+  >
     {({ defaultChildren, validationDetails, validationErrors }) => {
       if (validationDetails.customError) {
-        return validationErrors.map(error => (
-          <React.Fragment key={error}>
-            {error}
-          </React.Fragment>
+        return validationErrors.map((errorMessage, index) => (
+          <span key={index}>
+            {errorMessage}
+          </span>
         ))
       }
 
@@ -42,10 +46,26 @@ export const FieldError: React.FC<FieldErrorProps> = ({ className }) => (
       }
 
       if (validationDetails.tooLong) {
+        if (maxLength != null && minLength != null) {
+          return t('components.forms.fieldError.lengthValues', { min: minLength, max: maxLength })
+        }
+
+        if (maxLength != null) {
+          return t('components.forms.fieldError.tooLongValue', { max: maxLength })
+        }
+
         return t('components.forms.fieldError.tooLong')
       }
 
       if (validationDetails.tooShort) {
+        if (maxLength != null && minLength != null) {
+          return t('components.forms.fieldError.lengthValues', { min: minLength, max: maxLength })
+        }
+
+        if (minLength != null) {
+          return t('components.forms.fieldError.tooShortValue', { min: minLength })
+        }
+
         return t('components.forms.fieldError.tooShort')
       }
 

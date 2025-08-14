@@ -2,12 +2,13 @@ import { Form as ReactAriaForm, type FormProps as ReactAriaFormProps } from 'rea
 
 export type FormTarget = EventTarget & HTMLFormElement
 
-export type FormProps = Omit<ReactAriaFormProps, 'onSubmit'> & {
+export type FormProps = Omit<ReactAriaFormProps, 'onSubmit' | 'validationErrors'> & {
   hasResetAfterSubmit?: boolean
   onSubmit?: (data: FormData, currentTarget: FormTarget) => void
+  validationErrors?: ReactAriaFormProps['validationErrors'] | null
 }
 
-export const Form: React.FC<FormProps> = ({ children, onSubmit, ...formRestProps }) => {
+export const Form: React.FC<FormProps> = ({ children, onSubmit, validationErrors, ...formRestProps }) => {
   const onSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     if (!onSubmit) {
       return
@@ -22,7 +23,11 @@ export const Form: React.FC<FormProps> = ({ children, onSubmit, ...formRestProps
   }
 
   return (
-    <ReactAriaForm onSubmit={onSubmit && onSubmitHandler} {...formRestProps}>
+    <ReactAriaForm
+      onSubmit={onSubmit && onSubmitHandler}
+      validationErrors={validationErrors ?? undefined}
+      {...formRestProps}
+    >
       {children}
     </ReactAriaForm>
   )

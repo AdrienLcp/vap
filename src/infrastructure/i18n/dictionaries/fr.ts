@@ -5,7 +5,8 @@ export const fr = {
   category: {
     create: {
       errors: {
-        categoryNameAlreadyExists: 'Une catégorie avec ce nom existe déjà.'
+        categoryNameAlreadyExists: 'Une catégorie avec ce nom existe déjà.',
+        categoryNameTooLong: 'Le nom de la catégorie ne doit pas dépasser {max:number} caractères.'
       },
       form: {
         description: {
@@ -29,14 +30,18 @@ export const fr = {
   },
   components: {
     forms: {
+      formValidationErrorDefaultMessage: 'Le formulaire contient des erreurs.',
       fieldError: {
         badInput: 'Entrée invalide.',
+        lengthValues: 'La valeur doit être comprise entre {min:number} et {max:number} caractères.',
         patternMismatch: 'Le format de la valeur est incorrect.',
         rangeOverflow: 'La valeur dépasse la limite autorisée.',
         rangeUnderflow: 'La valeur est inférieure à la limite autorisée.',
         stepMismatch: 'La valeur ne correspond pas à l\'intervalle requis.',
         tooLong: 'La valeur saisie est trop longue.',
+        tooLongValue: 'La valeur saisie doit faire moins de {max:number} caractères.',
         tooShort: 'La valeur saisie est trop courte.',
+        tooShortValue: 'La valeur saisie doit faire au moins {min:number} caractères.',
         typeMismatch: 'Le type de la valeur est incorrect.',
         valueMissing: 'Ce champ est requis.'
       }

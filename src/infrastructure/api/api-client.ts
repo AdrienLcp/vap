@@ -8,9 +8,9 @@ type RequestOptions = {
   signal?: AbortSignal
 }
 
-const hasJsonBody = (response: Response) => {
-  const contentType = response.headers.get('content-type')
-  return !!contentType && contentType.includes('application/json')
+const hasBody = (response: Response) => {
+  const contentType = response.headers.get('Content-Type')
+  return contentType && contentType.includes('application/json')
 }
 
 const request = async <Response, RequestBody = undefined>(
@@ -19,20 +19,21 @@ const request = async <Response, RequestBody = undefined>(
   options?: RequestOptions,
   body?: RequestBody
 ): Promise<Response> => {
+  const headers = new Headers(options?.headers)
+
+  if (body) {
+    headers.set('Content-Type', 'application/json')
+  }
+
   const response = await fetch(`/api/${route}`, {
-    method,
     body: body ? JSON.stringify(body) : null,
-    headers: {
-      ...(body ? { 'Content-Type': 'application/json' } : {}),
-      ...(options?.headers ?? {})
-    },
     credentials: options?.credentials,
+    headers,
+    method,
     signal: options?.signal
   })
 
-  const json = hasJsonBody(response)
-    ? await response.json()
-    : undefined
+  const json = hasBody(response) ? await response.json() : null
 
   return {
     ...json,

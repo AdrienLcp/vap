@@ -17,7 +17,7 @@ export type OkResponse<Data> = BaseResponse<typeof OK_STATUS, { data: Data }>
 export type CreatedResponse<Data> = BaseResponse<typeof CREATED_STATUS, { data: Data }>
 export type NoContentResponse = BaseResponse<typeof NO_CONTENT_STATUS>
 
-export type BadRequestResponse<Error> = BaseResponse<typeof BAD_REQUEST_STATUS, { error: Error }>
+export type BadRequestResponse<Issues> = BaseResponse<typeof BAD_REQUEST_STATUS, { issues: Issues }>
 export type NotFoundResponse = BaseResponse<typeof NOT_FOUND_STATUS>
 export type UnauthorizedResponse = BaseResponse<typeof UNAUTHORIZED_STATUS>
 export type ForbiddenResponse = BaseResponse<typeof FORBIDDEN_STATUS>
@@ -51,8 +51,8 @@ const noContent = (headers?: HeadersInit): NoContentResponse => {
   return { headers, status: NO_CONTENT_STATUS }
 }
 
-const badRequest = <Error>(error: Error, headers?: HeadersInit): BadRequestResponse<Error> => {
-  return { headers, error, status: BAD_REQUEST_STATUS }
+const badRequest = <Issues>(issues: Issues, headers?: HeadersInit): BadRequestResponse<Issues> => {
+  return { headers, issues, status: BAD_REQUEST_STATUS }
 }
 
 const unauthorized = (headers?: HeadersInit): UnauthorizedResponse => {

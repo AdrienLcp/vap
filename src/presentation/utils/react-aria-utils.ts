@@ -1,11 +1,12 @@
 import classNames from 'classnames'
-import type { ButtonRenderProps, FieldErrorRenderProps, LinkRenderProps, TextFieldRenderProps } from 'react-aria-components'
+import type { ButtonRenderProps, FieldErrorRenderProps, LinkRenderProps, TextFieldRenderProps, TooltipRenderProps } from 'react-aria-components'
 
 export type ReactAriaComponentRenderProps =
   | ButtonRenderProps
   | FieldErrorRenderProps
   | LinkRenderProps
   | TextFieldRenderProps
+  | TooltipRenderProps
 
 export type RenderPropsValues <T extends ReactAriaComponentRenderProps> = T & {
   defaultClassName: string | undefined
@@ -28,8 +29,8 @@ export const reactAriaClassNames = <T extends ReactAriaComponentRenderProps> (
   return classNames(...baseClassName, classNameOverride)
 }
 
-export type GlobalFormErrors = 'form'
-export type ValidationErrors <T extends string = string> = Partial<Record<T, string | string[]>>
+export type GlobalFormErrorsKey = 'form'
+export type ValidationErrors <T extends PropertyKey> = Partial<Record<T | GlobalFormErrorsKey, string | string[]>>
 
 type ReactAriaComponentChildrenValues <T extends ReactAriaComponentRenderProps> = T & { defaultChildren: React.ReactNode | undefined }
 

@@ -2,7 +2,7 @@ import { betterAuth } from 'better-auth'
 import { prismaAdapter } from 'better-auth/adapters/prisma'
 
 import { prisma } from '@/infrastructure/database'
-import { env } from '@/infrastructure/env'
+import { serverEnvVariables } from '@/infrastructure/env/server'
 import { USER_CONSTANTS } from '@/user/user-constants'
 
 export const auth = betterAuth({
@@ -14,8 +14,8 @@ export const auth = betterAuth({
   },
   socialProviders: {
     google: {
-      clientId: env.AUTH_GOOGLE_CLIENT_ID,
-      clientSecret: env.AUTH_GOOGLE_CLIENT_SECRET
+      clientId: serverEnvVariables.AUTH_GOOGLE_CLIENT_ID,
+      clientSecret: serverEnvVariables.AUTH_GOOGLE_CLIENT_SECRET
     }
   },
   user: {

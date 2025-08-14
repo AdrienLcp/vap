@@ -10,7 +10,7 @@ export const CategoryImageUrlSchema = z
 
 export const CategoryNameSchema = z
   .string()
-  .max(CATEGORY_CONSTANTS.NAME_MAX_LENGTH)
+  .max(CATEGORY_CONSTANTS.NAME_MAX_LENGTH, { message: CATEGORY_CONSTANTS.NAME_TOO_LONG })
 
 export const CategoryDescriptionSchema = z
   .string()

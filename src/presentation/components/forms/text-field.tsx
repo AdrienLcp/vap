@@ -11,30 +11,37 @@ export type TextFieldProps = ReactAriaTextFieldProps & {
   placeholder?: string
 }
 
-export const TextField: React.FC<TextFieldProps> = ({ className, description, label, ...textFieldRestProps }) => {
-  return (
-    <ReactAriaTextField
-      {...textFieldRestProps}
-      className={values => reactAriaClassNames(values, className, 'text-field')}
-    >
-      {({ isInvalid, isRequired }) => (
-        <>
-          <Label>
-            {label}{isRequired && ' *'}
-          </Label>
+export const TextField: React.FC<TextFieldProps> = ({
+  className,
+  description,
+  label,
+  maxLength,
+  minLength,
+  ...textFieldRestProps
+}) => (
+  <ReactAriaTextField
+    {...textFieldRestProps}
+    className={values => reactAriaClassNames(values, className, 'text-field')}
+    minLength={minLength}
+    maxLength={maxLength}
+  >
+    {({ isInvalid, isRequired }) => (
+      <>
+        <Label>
+          {label}{isRequired && ' *'}
+        </Label>
 
-          <Input className='input' />
+        <Input className='input' />
 
-          {isInvalid
-            ? <FieldError />
-            : description && (
-              <Text slot='description' className='description'>
-                {description}
-              </Text>
-            )
-          }
-        </>
-      )}
-    </ReactAriaTextField>
-  )
-}
+        {isInvalid
+          ? <FieldError maxLength={maxLength} minLength={minLength} />
+          : description && (
+            <Text slot='description' className='description'>
+              {description}
+            </Text>
+          )
+        }
+      </>
+    )}
+  </ReactAriaTextField>
+)

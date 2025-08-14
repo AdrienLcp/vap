@@ -3,6 +3,7 @@ import type z from 'zod'
 import type { Forbidden, Unauthorized } from '@/helpers/result'
 import type { BadRequestResponse, CreatedResponse, ForbiddenResponse, NoContentResponse, OkResponse, Response, UnauthorizedResponse } from '@/infrastructure/api/http-response'
 import type { ProductCreationSchema, ProductDTOSchema, ProductPublicDTOSchema, ProductStatusSchema, ProductUpdateSchema } from '@/product/domain/product-schemas'
+import type { Issues } from '@/utils/validation-utils'
 
 export type ProductStatus = z.infer<typeof ProductStatusSchema>
 
@@ -26,21 +27,21 @@ export type ProductPublicListResponse = Response<OkResponse<ProductDTO[]>>
 
 export type ProductCreationResponse = Response<
   | CreatedResponse<ProductDTO>
-  | BadRequestResponse<z.ZodError<ProductCreationData>>
+  | BadRequestResponse<Issues<ProductCreationData>>
   | UnauthorizedResponse
   | ForbiddenResponse
 >
 
 export type ProductUpdateResponse = Response<
   | OkResponse<ProductDTO>
-  | BadRequestResponse<z.ZodError<ProductUpdateData | string>>
+  | BadRequestResponse<Issues<ProductUpdateData | string>>
   | UnauthorizedResponse
   | ForbiddenResponse
 >
 
 export type ProductDeleteResponse = Response<
   | NoContentResponse
-  | BadRequestResponse<z.ZodError<string>>
+  | BadRequestResponse<Issues<string>>
   | UnauthorizedResponse
   | ForbiddenResponse
 >

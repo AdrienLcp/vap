@@ -1,5 +1,7 @@
 import { type LinkRenderProps, Link as ReactAriaLink, type LinkProps as ReactAriaLinkProps } from 'react-aria-components'
 
+import { Tooltip, type TooltipProps } from '@/presentation/components/ui/tooltip/tooltip'
+
 import { type DefaultChildrenProps, type PressableProps, reactAriaPressableClassNames } from './pressable'
 
 type LinkProps = PressableProps & ReactAriaLinkProps
@@ -10,7 +12,7 @@ const renderLinkChildren = (children: LinkProps['children'], renderValues: LinkR
   return typeof children === 'function' ? children(renderValues) : children
 }
 
-export const Link: React.FC<LinkProps> = ({
+export const BaseLink: React.FC<LinkProps> = ({
   children,
   className,
   Icon,
@@ -49,3 +51,19 @@ export const Link: React.FC<LinkProps> = ({
     }
   </ReactAriaLink>
 )
+
+type LinkWithTooltipProps = LinkProps & {
+  tooltip?: TooltipProps['children']
+}
+
+export const Link: React.FC<LinkWithTooltipProps> = ({ tooltip, ...linkRestProps }) => {
+  if (tooltip == null) {
+    return <BaseLink {...linkRestProps} />
+  }
+
+  return (
+    <Tooltip Trigger={<BaseLink {...linkRestProps} />}>
+      {tooltip}
+    </Tooltip>
+  )
+}

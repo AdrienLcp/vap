@@ -12,7 +12,7 @@ const createCategory = async (categoryCreationRequest: Request): Promise<Categor
     const categoryCreationValidation = CategoryCreationSchema.safeParse(categoryCreationData)
 
     if (categoryCreationValidation.error) {
-      return HttpResponse.badRequest(categoryCreationValidation.error)
+      return HttpResponse.badRequest(categoryCreationValidation.error.issues)
     }
 
     const createdCategoryResult = await CategoryService.createCategory(categoryCreationValidation.data)
@@ -73,14 +73,14 @@ const updateCategory = async (categoryId: unknown, categoryUpdateRequest: Reques
     const categoryIdValidation = CategoryIdSchema.safeParse(categoryId)
 
     if (categoryIdValidation.error) {
-      return HttpResponse.badRequest(categoryIdValidation.error)
+      return HttpResponse.badRequest(categoryIdValidation.error.issues)
     }
 
     const categoryUpdateData = await categoryUpdateRequest.json()
     const categoryUpdateValidation = CategoryUpdateSchema.safeParse(categoryUpdateData)
 
     if (categoryUpdateValidation.error) {
-      return HttpResponse.badRequest(categoryUpdateValidation.error)
+      return HttpResponse.badRequest(categoryUpdateValidation.error.issues)
     }
 
     const updatedCategoryResult = await CategoryService.updateCategory(categoryIdValidation.data, categoryUpdateValidation.data)

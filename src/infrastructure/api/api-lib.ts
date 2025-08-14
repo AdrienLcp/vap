@@ -9,7 +9,11 @@ const hasData = <Response extends ApiResponse>(response: Response): response is 
 }
 
 const hasError = <Response extends ApiResponse> (response: Response): response is Response & { error: object } => {
-  return (response.status === BAD_REQUEST_STATUS || response.status === CONFLICT_STATUS || response.status === UNPROCESSABLE_ENTITY_STATUS) && response.error != null
+  return (response.status === CONFLICT_STATUS || response.status === UNPROCESSABLE_ENTITY_STATUS) && response.error != null
+}
+
+const hasIssues = <Response extends ApiResponse> (response: Response): response is Response & { issues: object } => {
+  return response.status === BAD_REQUEST_STATUS && response.issues != null
 }
 
 export const nextResponse = async <Response extends ApiResponse> (promise: Promise<Response>) => {
@@ -20,6 +24,10 @@ export const nextResponse = async <Response extends ApiResponse> (promise: Promi
 
     if (hasData(response)) {
       return NextResponse.json({ data: response.data }, { headers, status })
+    }
+
+    if (hasIssues(response)) {
+      return NextResponse.json({ issues: response.issues }, { headers, status })
     }
 
     if (hasError(response)) {
