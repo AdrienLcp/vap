@@ -1,11 +1,12 @@
 import 'server-only'
 
 import { CategoryService } from '@/category/category-service'
+import { CATEGORY_CONSTANTS } from '@/category/domain/category-constants'
 import type { CategoryCreationResponse, CategoryListResponse, CategoryUpdateResponse } from '@/category/domain/category-entities'
 import { CategoryCreationSchema, CategoryDTOSchema, CategoryIdSchema, CategoryUpdateSchema } from '@/category/domain/category-schemas'
 import { HttpResponse } from '@/infrastructure/api/http-response'
 
-const createCategory = async (categoryCreationRequest: Request): CategoryCreationResponse => {
+const createCategory = async (categoryCreationRequest: Request): Promise<CategoryCreationResponse> => {
   try {
     const categoryCreationData = await categoryCreationRequest.json()
     const categoryCreationValidation = CategoryCreationSchema.safeParse(categoryCreationData)
@@ -18,50 +19,56 @@ const createCategory = async (categoryCreationRequest: Request): CategoryCreatio
 
     if (createdCategoryResult.status === 'ERROR') {
       switch (createdCategoryResult.errors) {
-        case 'CATEGORY_NAME_ALREADY_EXISTS':
-          return HttpResponse.conflict('CATEGORY_NAME_ALREADY_EXISTS')
+        case CATEGORY_CONSTANTS.NAME_ALREADY_EXISTS:
+          return HttpResponse.conflict(CATEGORY_CONSTANTS.NAME_ALREADY_EXISTS)
         case 'FORBIDDEN':
           return HttpResponse.forbidden()
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
         default:
-          return HttpResponse.internalServerError('Unknown error in CategoryController.createCategory:', createdCategoryResult.errors)
+          console.error('Unknown error in CategoryController.createCategory:', createdCategoryResult.errors)
+          return HttpResponse.internalServerError()
       }
     }
 
     const categoryDTOValidation = CategoryDTOSchema.safeParse(createdCategoryResult.data)
 
     if (categoryDTOValidation.error) {
-      return HttpResponse.internalServerError('Validation error in CategoryController.createCategory:', categoryDTOValidation.error)
+      console.error('Validation error in CategoryController.createCategory:', categoryDTOValidation.error)
+      return HttpResponse.internalServerError()
     }
 
     return HttpResponse.created(categoryDTOValidation.data)
   } catch (error) {
-    return HttpResponse.internalServerError('Unknown error in CategoryController.createCategory:', error)
+    console.error('Unknown error in CategoryController.createCategory:', error)
+    return HttpResponse.internalServerError()
   }
 }
 
-const findCategories = async (): CategoryListResponse => {
+const findCategories = async (): Promise<CategoryListResponse> => {
   try {
     const categoriesResult = await CategoryService.findCategories()
 
     if (categoriesResult.status === 'ERROR') {
-      return HttpResponse.internalServerError('Unknown error in CategoryController.findCategories:', categoriesResult.errors)
+      console.error('Unknown error in CategoryController.findCategories:', categoriesResult.errors)
+      return HttpResponse.internalServerError()
     }
 
     const categoriesDTOValidation = CategoryDTOSchema.array().safeParse(categoriesResult.data)
 
     if (categoriesDTOValidation.error) {
-      return HttpResponse.internalServerError('Validation error in CategoryController.findCategories:', categoriesDTOValidation.error)
+      console.error('Validation error in CategoryController.findCategories:', categoriesDTOValidation.error)
+      return HttpResponse.internalServerError()
     }
 
     return HttpResponse.ok(categoriesResult.data)
   } catch (error) {
-    return HttpResponse.internalServerError('Unknown error in CategoryController.findCategories:', error)
+    console.error('Unknown error in CategoryController.findCategories:', error)
+    return HttpResponse.internalServerError()
   }
 }
 
-const updateCategory = async (categoryId: unknown, categoryUpdateRequest: Request): CategoryUpdateResponse => {
+const updateCategory = async (categoryId: unknown, categoryUpdateRequest: Request): Promise<CategoryUpdateResponse> => {
   try {
     const categoryIdValidation = CategoryIdSchema.safeParse(categoryId)
 
@@ -80,26 +87,29 @@ const updateCategory = async (categoryId: unknown, categoryUpdateRequest: Reques
 
     if (updatedCategoryResult.status === 'ERROR') {
       switch (updatedCategoryResult.errors) {
-        case 'CATEGORY_NAME_ALREADY_EXISTS':
-          return HttpResponse.conflict('CATEGORY_NAME_ALREADY_EXISTS')
+        case CATEGORY_CONSTANTS.NAME_ALREADY_EXISTS:
+          return HttpResponse.conflict(CATEGORY_CONSTANTS.NAME_ALREADY_EXISTS)
         case 'FORBIDDEN':
           return HttpResponse.forbidden()
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
         default:
-          return HttpResponse.internalServerError('Unknown error in CategoryController.updateCategory:', updatedCategoryResult.errors)
+          console.error('Unknown error in CategoryController.updateCategory:', updatedCategoryResult.errors)
+          return HttpResponse.internalServerError()
       }
     }
 
     const categoryDTOValidation = CategoryDTOSchema.safeParse(updatedCategoryResult.data)
 
     if (categoryDTOValidation.error) {
-      return HttpResponse.internalServerError('Validation error in CategoryController.updateCategory:', categoryDTOValidation.error)
+      console.error('Validation error in CategoryController.updateCategory:', categoryDTOValidation.error)
+      return HttpResponse.internalServerError()
     }
 
     return HttpResponse.ok(categoryDTOValidation.data)
   } catch (error) {
-    return HttpResponse.internalServerError('Unknown error in CategoryController.updateCategory:', error)
+    console.error('Unknown error in CategoryController.updateCategory:', error)
+    return HttpResponse.internalServerError()
   }
 }
 

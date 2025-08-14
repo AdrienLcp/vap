@@ -1,99 +1,93 @@
-import type { ZodError } from 'zod'
+export const OK_STATUS = 200
+export const CREATED_STATUS = 201
+export const NO_CONTENT_STATUS = 204
+export const BAD_REQUEST_STATUS = 400
+export const UNAUTHORIZED_STATUS = 401
+export const FORBIDDEN_STATUS = 403
+export const NOT_FOUND_STATUS = 404
+export const CONFLICT_STATUS = 409
+export const UNPROCESSABLE_ENTITY_STATUS = 422
+export const INTERNAL_SERVER_ERROR_STATUS = 500
 
-import { failure, type NotFound, success } from '@/helpers/result'
-import type { BadRequest, Conflict, ErrorResponse, Forbidden, InternalServerError, SuccessResponse, Unauthorized } from '@/infrastructure/api/api-domain'
+export type BaseResponse<Status = number, T = null> = T extends null | undefined
+  ? { headers?: HeadersInit, status: Status }
+  : { headers?: HeadersInit, status: Status } & T
 
-const OK_STATUS_CODE = 200
-const CREATED_STATUS_CODE = 201
-const BAD_REQUEST_STATUS_CODE = 400
-const UNAUTHORIZED_STATUS_CODE = 401
-const FORBIDDEN_STATUS_CODE = 403
-const NOT_FOUND_STATUS_CODE = 404
-const CONFLICT_STATUS_CODE = 409
-const INTERNAL_SERVER_ERROR_STATUS_CODE = 500
+export type OkResponse<Data> = BaseResponse<typeof OK_STATUS, { data: Data }>
+export type CreatedResponse<Data> = BaseResponse<typeof CREATED_STATUS, { data: Data }>
+export type NoContentResponse = BaseResponse<typeof NO_CONTENT_STATUS>
 
-function ok(): SuccessResponse
-function ok<Data>(data: Data): SuccessResponse<Data>
-function ok<Data>(data?: Data) {
-  if (data == null) {
-    return { ...success(), statusCode: OK_STATUS_CODE }
-  }
+export type BadRequestResponse<Error> = BaseResponse<typeof BAD_REQUEST_STATUS, { error: Error }>
+export type NotFoundResponse = BaseResponse<typeof NOT_FOUND_STATUS>
+export type UnauthorizedResponse = BaseResponse<typeof UNAUTHORIZED_STATUS>
+export type ForbiddenResponse = BaseResponse<typeof FORBIDDEN_STATUS>
+export type ConflictResponse<Error> = BaseResponse<typeof CONFLICT_STATUS, { error: Error }>
+export type UnprocessableEntityResponse<Error> = BaseResponse<typeof UNPROCESSABLE_ENTITY_STATUS, { error: Error }>
+export type InternalServerErrorResponse = BaseResponse<typeof INTERNAL_SERVER_ERROR_STATUS>
 
-  return { ...success(data), statusCode: OK_STATUS_CODE }
+export type Response<T> = T | InternalServerErrorResponse
+
+export type ApiResponse<Data = unknown, Error = unknown> =
+  | OkResponse<Data>
+  | CreatedResponse<Data>
+  | NoContentResponse
+  | BadRequestResponse<Error>
+  | UnauthorizedResponse
+  | ForbiddenResponse
+  | NotFoundResponse
+  | ConflictResponse<Error>
+  | UnprocessableEntityResponse<Error>
+  | InternalServerErrorResponse
+
+const ok = <Data>(data: Data, headers?: HeadersInit): OkResponse<Data> => {
+  return { data, headers, status: OK_STATUS }
 }
 
-function created(): SuccessResponse
-function created<Data>(data: Data): SuccessResponse<Data>
-function created<Data>(data?: Data) {
-  if (data == null) {
-    return { ...success(), statusCode: CREATED_STATUS_CODE }
-  }
-
-  return { ...success(data), statusCode: CREATED_STATUS_CODE }
+const created = <Data>(data: Data, headers?: HeadersInit): CreatedResponse<Data> => {
+  return { data, headers, status: CREATED_STATUS }
 }
 
-function badRequest(): ErrorResponse<BadRequest>
-function badRequest<RequestBody, Errors extends ZodError<RequestBody>>(errors: Errors): ErrorResponse<Errors>
-function badRequest<RequestBody, Errors extends ZodError<RequestBody>>(errors?: Errors) {
-  if (errors == null) {
-    return { ...failure('BAD_REQUEST'), statusCode: BAD_REQUEST_STATUS_CODE }
-  }
-
-  return { ...failure(errors), statusCode: BAD_REQUEST_STATUS_CODE }
+const noContent = (headers?: HeadersInit): NoContentResponse => {
+  return { headers, status: NO_CONTENT_STATUS }
 }
 
-function unauthorized(): ErrorResponse<Unauthorized>
-function unauthorized<Errors>(errors: Errors): ErrorResponse<Errors>
-function unauthorized<Errors>(errors?: Errors) {
-  if (errors == null) {
-    return { ...failure('UNAUTHORIZED'), statusCode: UNAUTHORIZED_STATUS_CODE }
-  }
-
-  return { ...failure(errors), statusCode: UNAUTHORIZED_STATUS_CODE }
+const badRequest = <Error>(error: Error, headers?: HeadersInit): BadRequestResponse<Error> => {
+  return { headers, error, status: BAD_REQUEST_STATUS }
 }
 
-function forbidden(): ErrorResponse<Forbidden>
-function forbidden<Errors>(errors: Errors): ErrorResponse<Errors>
-function forbidden<Errors>(errors?: Errors) {
-  if (errors == null) {
-    return { ...failure('FORBIDDEN'), statusCode: FORBIDDEN_STATUS_CODE }
-  }
-
-  return { ...failure(errors), statusCode: FORBIDDEN_STATUS_CODE }
+const unauthorized = (headers?: HeadersInit): UnauthorizedResponse => {
+  return { headers, status: UNAUTHORIZED_STATUS }
 }
 
-function notFound(): ErrorResponse<NotFound>
-function notFound<Errors>(errors: Errors): ErrorResponse<Errors>
-function notFound<Errors>(errors?: Errors) {
-  if (errors == null) {
-    return { ...failure('NOT_FOUND'), statusCode: NOT_FOUND_STATUS_CODE }
-  }
-
-  return { ...failure(errors), statusCode: NOT_FOUND_STATUS_CODE }
+const forbidden = (headers?: HeadersInit): ForbiddenResponse => {
+  return { headers, status: FORBIDDEN_STATUS }
 }
 
-function conflict(): ErrorResponse<Conflict>
-function conflict<Errors>(errors: Errors): ErrorResponse<Errors>
-function conflict<Errors>(errors?: Errors) {
-  if (errors == null) {
-    return { ...failure('CONFLICT'), statusCode: CONFLICT_STATUS_CODE }
-  }
-
-  return { ...failure(errors), statusCode: CONFLICT_STATUS_CODE }
+const conflict = <Error>(error: Error, headers?: HeadersInit): ConflictResponse<Error> => {
+  return { headers, error, status: CONFLICT_STATUS }
 }
 
-const internalServerError = (...logs: Parameters<typeof console.error>): ErrorResponse<InternalServerError> => {
-  console.error(...logs)
-  return { ...failure('INTERNAL_SERVER_ERROR'), statusCode: INTERNAL_SERVER_ERROR_STATUS_CODE }
+const notFound = (headers?: HeadersInit): NotFoundResponse => {
+  return { headers, status: NOT_FOUND_STATUS }
+}
+
+const unprocessableEntity = <Error>(error: Error, headers?: HeadersInit): UnprocessableEntityResponse<Error> => {
+  return { headers, error, status: UNPROCESSABLE_ENTITY_STATUS }
+}
+
+const internalServerError = (headers?: HeadersInit): InternalServerErrorResponse => {
+  return { headers, status: INTERNAL_SERVER_ERROR_STATUS }
 }
 
 export const HttpResponse = {
   ok,
   created,
+  noContent,
   badRequest,
   unauthorized,
   forbidden,
   notFound,
   conflict,
+  unprocessableEntity,
   internalServerError
 }

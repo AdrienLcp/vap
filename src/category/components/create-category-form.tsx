@@ -3,21 +3,18 @@
 import React from 'react'
 
 import { CategoryClient } from '@/category/category-client'
+import { CategoryDescriptionField } from '@/category/components/category-description-field'
+import { CategoryImageUrlField } from '@/category/components/category-image-url-field'
+import { CategoryNameField } from '@/category/components/category-name-field'
+import { CATEGORY_FORM_FIELDS } from '@/category/domain/category-constants'
 import type { CategoryCreationData } from '@/category/domain/category-entities'
 import { t } from '@/infrastructure/i18n'
 import { Form } from '@/presentation/components/forms/form'
-import { TextField } from '@/presentation/components/forms/text-field'
 import { Button } from '@/presentation/components/ui/pressables/button'
 import type { ValidationErrors } from '@/presentation/utils/react-aria-utils'
 import type { ValueOf } from '@/utils/object-utils'
 
-const createCategoryFormFields = {
-  name: 'name',
-  description: 'description',
-  imageUrl: 'image-url'
-} as const
-
-type CreateCategoryFormFieldName = ValueOf<typeof createCategoryFormFields>
+type CreateCategoryFormFieldName = ValueOf<typeof CATEGORY_FORM_FIELDS>
 type CreateCategoryValidationErrors = ValidationErrors<CreateCategoryFormFieldName>
 
 export const CreateCategoryForm: React.FC = () => {
@@ -28,44 +25,42 @@ export const CreateCategoryForm: React.FC = () => {
     setIsCategoryCreationLoading(true)
 
     const categoryCreationData: CategoryCreationData = {
-      name: formData.get(createCategoryFormFields.name) as string,
-      description: formData.get(createCategoryFormFields.description) as string,
-      imageUrl: formData.get(createCategoryFormFields.imageUrl) as string
+      name: formData.get(CATEGORY_FORM_FIELDS.NAME) as string,
+      description: formData.get(CATEGORY_FORM_FIELDS.DESCRIPTION) as string,
+      imageUrl: formData.get(CATEGORY_FORM_FIELDS.IMAGE_URL) as string
     }
 
-    const createdCategoryResult = await CategoryClient.createCategory(categoryCreationData)
-
-    if (createdCategoryResult.status === 'ERROR') {
-      console.log(createdCategoryResult.errors)
-    }
-
-    console.log(createdCategoryResult)
+    const createdCategoryResponse = await CategoryClient.createCategory(categoryCreationData)
     setIsCategoryCreationLoading(false)
+
+    if (createdCategoryResponse.status === 201) {
+      setCreateCategoryFormErrors(undefined)
+      return
+    }
+
+    switch (createdCategoryResponse.status) {
+      case 400:
+        console.error(createdCategoryResponse.error)
+        break
+      case 409:
+        switch (createdCategoryResponse.error) {
+          case 'CATEGORY_NAME_ALREADY_EXISTS':
+            setCreateCategoryFormErrors({
+              [CATEGORY_FORM_FIELDS.NAME]: t('category.create.errors.categoryNameAlreadyExists')
+            })
+            break
+        }
+        break
+    }
   }
 
   return (
     <Form onSubmit={onCategoryCreationFormSubmit} validationErrors={createCategoryFormErrors}>
-      <TextField
-        isRequired
-        label={t('category.create.form.name.label')}
-        name={createCategoryFormFields.name}
-        placeholder={t('category.create.form.name.placeholder')}
-        type='text'
-      />
+      <CategoryNameField />
 
-      <TextField
-        label={t('category.create.form.description.label')}
-        name={createCategoryFormFields.description}
-        placeholder={t('category.create.form.description.placeholder')}
-        type='text'
-      />
+      <CategoryDescriptionField />
 
-      <TextField
-        label={t('category.create.form.image.label')}
-        name={createCategoryFormFields.imageUrl}
-        placeholder={t('category.create.form.image.placeholder')}
-        type='url'
-      />
+      <CategoryImageUrlField />
 
       <Button isPending={isCategoryCreationLoading} type='submit'>
         {t(isCategoryCreationLoading

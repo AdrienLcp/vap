@@ -1,10 +1,14 @@
-import type { ZodError } from 'zod'
-
-export type UnexpectedError = 'UNEXPECTED_ERROR'
 export type NotFound = 'NOT_FOUND'
+export type Unauthorized = 'UNAUTHORIZED'
+export type BadRequest = 'BAD_REQUEST'
+export type Forbidden = 'FORBIDDEN'
+export type Conflict = 'CONFLICT'
+export type InternalServerError = 'INTERNAL_SERVER_ERROR'
+export type UnexpectedError = 'UNEXPECTED_ERROR'
 
 export const STATUS_ERROR = 'ERROR'
 export const STATUS_SUCCESS = 'SUCCESS'
+
 export const UNEXPECTED_ERROR: UnexpectedError = 'UNEXPECTED_ERROR'
 
 export function failure(): { errors: UnexpectedError, status: typeof STATUS_ERROR }
@@ -37,13 +41,4 @@ export type SuccessResult<Data = null> = Data extends undefined | null
 
 export type Result<Errors = null, Data = null> =
   | ErrorResult<Errors>
-  | SuccessResult<Data>
-
-export const unknownError = (...logs: Parameters<typeof console.error>): ErrorResult<UnexpectedError> => {
-  console.error('Unknown error:', ...logs)
-  return failure()
-}
-
-export type ValidationResult<Errors = null, Body = null, Data = null> =
-  | ErrorResult<Errors | ZodError<Body extends null | undefined ? string : Body | string>>
   | SuccessResult<Data>

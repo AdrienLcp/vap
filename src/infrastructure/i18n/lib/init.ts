@@ -205,12 +205,17 @@ function performSubstitution(
       case 'plural': {
         if (typeof argValue !== 'number') throw new Error('Invalid argument')
         const pluralMap = translationParams.plural?.[argKey]
-        const pluralRules = new Intl.PluralRules(locale, {
-          type: pluralMap?.type
-        })
+        let replacement: string | undefined
 
-        const replacement =
-          pluralMap?.[pluralRules.select(argValue)] ?? pluralMap?.other
+        // If value is 0 and 'zero' exists, use it
+        if (argValue === 0 && pluralMap?.zero) {
+          replacement = pluralMap.zero
+        } else {
+          const pluralRules = new Intl.PluralRules(locale, {
+            type: pluralMap?.type
+          })
+          replacement = pluralMap?.[pluralRules.select(argValue)] ?? pluralMap?.other
+        }
 
         if (replacement == null) throw new Error('Missing replacement value')
         const numberFormatter = new Intl.NumberFormat(

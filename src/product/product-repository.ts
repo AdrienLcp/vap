@@ -1,6 +1,6 @@
 import 'server-only'
 
-import { type Result, success, unknownError } from '@/helpers/result'
+import { failure, type Result, success } from '@/helpers/result'
 import { ProductDatabase } from '@/infrastructure/database'
 import type { ProductCreationData, ProductDTO, ProductUpdateData } from '@/product/domain/product-entities'
 
@@ -42,7 +42,8 @@ const createProduct = async (productCreationData: ProductCreationData): Promise<
 
     return success(createdProduct)
   } catch (error) {
-    return unknownError('Unknown error in ProductRepository.createProduct:', error)
+    console.error('Unknown error in ProductRepository.createProduct:', error)
+    return failure()
   }
 }
 
@@ -51,7 +52,8 @@ const deleteProduct = async (productId: string): Promise<Result> => {
     await ProductDatabase.delete({ where: { id: productId } })
     return success()
   } catch (error) {
-    return unknownError('Unknown error in ProductRepository.deleteProduct:', error)
+    console.error('Unknown error in ProductRepository.deleteProduct:', error)
+    return failure()
   }
 }
 
@@ -61,7 +63,8 @@ const findProducts = async (): Promise<Result<null, ProductDTO[]>> => {
 
     return success(products)
   } catch (error) {
-    return unknownError('Unknown error in ProductRepository.findProducts:', error)
+    console.error('Unknown error in ProductRepository.findProducts:', error)
+    return failure()
   }
 }
 
@@ -86,7 +89,8 @@ const updateProduct = async (productId: string, productData: ProductUpdateData):
 
     return success(updatedProduct)
   } catch (error) {
-    return unknownError('Unknown error in ProductRepository.updateProduct:', error)
+    console.error('Unknown error in ProductRepository.updateProduct:', error)
+    return failure()
   }
 }
 

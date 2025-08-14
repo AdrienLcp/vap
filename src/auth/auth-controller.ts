@@ -5,16 +5,17 @@ import type { AuthUserResponse } from '@/auth/domain/auth-entities'
 import { AuthUserDTOSchema } from '@/auth/domain/auth-schemas'
 import { HttpResponse } from '@/infrastructure/api/http-response'
 
-const findUser = async (): AuthUserResponse => {
+const findUser = async (): Promise<AuthUserResponse> => {
   try {
     const userResult = await AuthService.findUser()
 
     if (userResult.status === 'ERROR') {
       switch (userResult.errors) {
         case 'UNAUTHORIZED':
-          return HttpResponse.unauthorized('UNAUTHORIZED')
+          return HttpResponse.unauthorized()
         default:
-          return HttpResponse.internalServerError('Unknown error in AuthController.findUser:', userResult.errors)
+          console.error('Unknown error in AuthController.findUser:', userResult.errors)
+          return HttpResponse.internalServerError()
       }
     }
 
@@ -26,7 +27,8 @@ const findUser = async (): AuthUserResponse => {
 
     return HttpResponse.ok(authUserDTOValidation.data)
   } catch (error) {
-    return HttpResponse.internalServerError('Unknown error in AuthController.findUser:', error)
+    console.error('Error in AuthController.findUser:', error)
+    return HttpResponse.internalServerError()
   }
 }
 

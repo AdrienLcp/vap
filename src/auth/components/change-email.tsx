@@ -10,14 +10,9 @@ const changeEmailFormFields = {
 const onChangeEmailFormSubmit = async (formData: FormData): Promise<void> => {
   const newEmail = formData.get(changeEmailFormFields.newEmail) as string
 
-  const changeEmailResult = await AuthClient.changeEmail(newEmail)
+  const changeEmailResponse = await AuthClient.changeEmail(newEmail)
 
-  if (changeEmailResult.status === 'ERROR') {
-    console.error('Failed to change email:', changeEmailResult.errors)
-    return
-  }
-
-  console.log('Email changed successfully')
+  console.log(changeEmailResponse)
 }
 
 export const ChangeEmail: React.FC = () => (

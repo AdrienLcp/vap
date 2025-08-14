@@ -14,14 +14,9 @@ const onChangePasswordFormSubmit = async (formData: FormData) => {
     newPassword: formData.get(changePasswordFormFields.newPassword) as string
   }
 
-  const changePasswordResult = await AuthClient.changePassword(changePasswordInfo)
+  const changePasswordResponse = await AuthClient.changePassword(changePasswordInfo)
 
-  if (changePasswordResult.status === 'ERROR') {
-    console.error('Change password error:', changePasswordResult.errors)
-    return
-  }
-
-  console.log('Change password successful')
+  console.log(changePasswordResponse)
 }
 
 export const ChangePassword: React.FC = () => (

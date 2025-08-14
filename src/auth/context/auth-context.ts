@@ -12,6 +12,7 @@ export type Auth =
 type AuthContextValue = {
   auth: Auth
   setAuth: React.Dispatch<React.SetStateAction<Auth>>
+  setUser: (user: AuthUserDTO) => void
 }
 
 export const AuthContext = React.createContext<AuthContextValue | null>(null)

@@ -6,7 +6,7 @@ import { ROUTES } from '@/domain/navigation'
 
 const ChangeEmailPage: React.FC = async () => {
   const userResult = await AuthController.findUser()
-  const isUserAuthenticated = userResult.status !== 'ERROR'
+  const isUserAuthenticated = userResult.status === 200
 
   if (!isUserAuthenticated) {
     redirect(ROUTES.unauthorized)
