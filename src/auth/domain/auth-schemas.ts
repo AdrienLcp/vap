@@ -11,6 +11,7 @@ export const AuthPermissionsSchema = z.object({
 
   canCreateCategory: z.boolean(),
   canUpdateCategory: z.boolean(),
+  canDeleteCategory: z.boolean(),
 
   canCreateProduct: z.boolean(),
   canReadProduct: z.boolean(),
