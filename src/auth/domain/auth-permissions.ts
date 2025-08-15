@@ -1,38 +1,57 @@
 import type { AuthPermissions } from '@/auth/domain/auth-entities'
 import type { UserRole } from '@/user/user-entities'
 
-export const ROLE_PERMISSIONS: Record<UserRole, AuthPermissions> = {
-  USER: {
-    canAccessAdmin: false,
+type Feature =
+  | 'admin'
+  | 'category'
+  | 'product'
 
-    canCreateCategory: false,
-    canUpdateCategory: false,
+type Action =
+  | 'create'
+  | 'delete'
+  | 'read'
+  | 'update'
 
-    canReadProduct: false,
-    canCreateProduct: false,
-    canUpdateProduct: false,
-    canDeleteProduct: false
-  },
-  ADMIN: {
-    canAccessAdmin: true,
+type Right = `${Action}:${Feature}`
 
-    canCreateCategory: true,
-    canUpdateCategory: true,
+const USER_RIGHTS: Right[] = []
 
-    canReadProduct: true,
-    canCreateProduct: true,
-    canUpdateProduct: true,
-    canDeleteProduct: true
-  },
-  SUPER_ADMIN: {
-    canAccessAdmin: true,
+const ADMIN_RIGHTS: Right[] = [
+  ...USER_RIGHTS,
+  'read:admin',
+  'create:category',
+  'update:category',
+  'delete:category',
+  'read:product',
+  'create:product',
+  'update:product',
+  'delete:product'
+]
 
-    canCreateCategory: true,
-    canUpdateCategory: true,
+const SUPER_ADMIN_RIGHTS: Rights = [...ADMIN_RIGHTS]
 
-    canReadProduct: true,
-    canCreateProduct: true,
-    canUpdateProduct: true,
-    canDeleteProduct: true
-  }
+const ROLE_RIGHTS: Record<UserRole, Rights> = {
+  USER: USER_RIGHTS,
+  ADMIN: ADMIN_RIGHTS,
+  SUPER_ADMIN: SUPER_ADMIN_RIGHTS
 }
+
+const getRights = (role: UserRole): Auth Permissions => {
+  const rights = ROLE_RIGHTS[role] ?? ROLE_RIGHTS.USER
+
+  const permissions: AuthPermissions = {
+    canAccessAdmin: rights.includes('read:admin'),
+
+    canCreateCategory: rights.includes('create:category'),
+    canUpdateCategory: rights.includes('update:category'),
+    canDeleteCategory: rights.includes('delete:category'),
+
+    canReadProduct: rights.includes('read:product'),
+    canCreateProduct: rights.includes('create:product'),
+    canUpdateProduct: rights.includes('update:product'),
+    canDeleteProduct: rights.includes('delete:product')
+ }
+
+  return permissions
+}
+
