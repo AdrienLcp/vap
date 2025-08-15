@@ -1,14 +1,10 @@
 import 'server-only'
 
 import type { AuthUserDTO, AuthUserError } from '@/auth/domain/auth-entities'
-import { ROLE_PERMISSIONS } from '@/auth/domain/auth-permissions'
+import { getAuthUserPermissionsByRole } from '@/auth/domain/auth-permissions'
 import { AuthRepository } from '@/auth/infrastructure/auth-repository'
 import { type Result, success } from '@/helpers/result'
 import type { UserRole } from '@/user/user-entities'
-
-const getAuthUserPermissionsByRole = (role: UserRole) => {
-  return ROLE_PERMISSIONS[role] || ROLE_PERMISSIONS.USER
-}
 
 const findUser = async (): Promise<Result<AuthUserError, AuthUserDTO>> => {
   const authUserResult = await AuthRepository.findUser()
@@ -17,10 +13,12 @@ const findUser = async (): Promise<Result<AuthUserError, AuthUserDTO>> => {
     return authUserResult
   }
 
-  const authUserPermissions = getAuthUserPermissionsByRole(authUserResult.data.role)
+  const authUser = authUserResult.data
+
+  const authUserPermissions = getAuthUserPermissionsByRole(authUser.role)
 
   const authUserDTO: AuthUserDTO = {
-    name: authUserResult.data.name,
+    name: authUser.name,
     permissions: authUserPermissions
   }
 
