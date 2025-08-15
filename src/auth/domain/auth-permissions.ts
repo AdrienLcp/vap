@@ -36,7 +36,7 @@ const ROLE_RIGHTS: Record<UserRole, Rights> = {
   SUPER_ADMIN: SUPER_ADMIN_RIGHTS
 }
 
-const getAuthPermissionsByRole = (role: UserRole): AuthPermissions => {
+const getAuthUserPermissionsByRole = (role: UserRole): AuthPermissions => {
   const rights = ROLE_RIGHTS[role] ?? ROLE_RIGHTS.USER
 
   const permissions: AuthPermissions = {
