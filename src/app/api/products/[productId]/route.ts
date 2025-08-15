@@ -10,7 +10,7 @@ export const DELETE = async (_request: NextRequest, { params }: ProductIdParams)
   return nextResponse(ProductController.deleteProduct(productId))
 }
 
-export const POST = async (request: NextRequest, { params }: ProductIdParams) => {
+export const PATCH = async (request: NextRequest, { params }: ProductIdParams) => {
   const { productId } = await params
   return nextResponse(ProductController.updateProduct(productId, request))
 }

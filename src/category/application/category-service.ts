@@ -12,11 +12,25 @@ const createCategory = async (categoryCreationData: CategoryCreationData): Promi
     return failure('UNAUTHORIZED')
   }
 
-  if (!userResult.data.permissions.canUpdateCategory) {
+  if (!userResult.data.permissions.canCreateCategory) {
     return failure('FORBIDDEN')
   }
 
   return await CategoryRepository.createCategory(categoryCreationData)
+}
+
+const deleteCategory = async (categoryId: string) => {
+  const userResult = await AuthService.findUser()
+
+  if (userResult.status === 'ERROR') {
+    return failure('UNAUTHORIZED')
+  }
+
+  if (!userResult.data.permissions.canDeleteCategory) {
+    return failure('FORBIDDEN')
+  }
+
+  return await CategoryRepository.deleteCategory(categoryId)
 }
 
 const findCategories = async () => {
@@ -39,6 +53,7 @@ const updateCategory = async (categoryId: string, categoryUpdateData: CategoryUp
 
 export const CategoryService = {
   createCategory,
+  deleteCategory,
   findCategories,
   updateCategory
 }

@@ -46,6 +46,16 @@ const createCategory = async (categoryCreationData: CategoryCreationData): Promi
   }
 }
 
+const deleteCategory = async (categoryId: string): Promise<Result> => {
+  try {
+    await CategoryDatabase.delete({ where: { id: categoryId } })
+    return success()
+  } catch (error) {
+    console.error('Unknown error in CategoryRepository.deleteCategory:', error)
+    return failure()
+  }
+}
+
 const findCategories = async (): Promise<Result<null, CategoryDTO[]>> => {
   try {
     const categories = await CategoryDatabase.findMany({ select: categorySelect })
@@ -85,6 +95,7 @@ const updateCategory = async (categoryId: string, categoryData: CategoryUpdateDa
 
 export const CategoryRepository = {
   createCategory,
+  deleteCategory,
   findCategories,
   updateCategory
 }

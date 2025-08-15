@@ -4,7 +4,6 @@ import type { AuthUserDTO, AuthUserError } from '@/auth/domain/auth-entities'
 import { getAuthUserPermissionsByRole } from '@/auth/domain/auth-permissions'
 import { AuthRepository } from '@/auth/infrastructure/auth-repository'
 import { type Result, success } from '@/helpers/result'
-import type { UserRole } from '@/user/user-entities'
 
 const findUser = async (): Promise<Result<AuthUserError, AuthUserDTO>> => {
   const authUserResult = await AuthRepository.findUser()

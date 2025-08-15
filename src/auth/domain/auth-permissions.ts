@@ -28,15 +28,15 @@ const ADMIN_RIGHTS: Right[] = [
   'delete:product'
 ]
 
-const SUPER_ADMIN_RIGHTS: Rights = [...ADMIN_RIGHTS]
+const SUPER_ADMIN_RIGHTS: Right[] = [...ADMIN_RIGHTS]
 
-const ROLE_RIGHTS: Record<UserRole, Rights> = {
+const ROLE_RIGHTS: Record<UserRole, Right[]> = {
   USER: USER_RIGHTS,
   ADMIN: ADMIN_RIGHTS,
   SUPER_ADMIN: SUPER_ADMIN_RIGHTS
 }
 
-const getAuthUserPermissionsByRole = (role: UserRole): AuthPermissions => {
+export const getAuthUserPermissionsByRole = (role: UserRole): AuthPermissions => {
   const rights = ROLE_RIGHTS[role] ?? ROLE_RIGHTS.USER
 
   const permissions: AuthPermissions = {
@@ -54,4 +54,3 @@ const getAuthUserPermissionsByRole = (role: UserRole): AuthPermissions => {
 
   return permissions
 }
-

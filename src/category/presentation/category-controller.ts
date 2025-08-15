@@ -2,7 +2,7 @@ import 'server-only'
 
 import { CategoryService } from '@/category/application/category-service'
 import { CATEGORY_CONSTANTS } from '@/category/domain/category-constants'
-import type { CategoryCreationResponse, CategoryListResponse, CategoryUpdateResponse } from '@/category/domain/category-entities'
+import type { CategoryCreationResponse, CategoryDeletionResponse, CategoryListResponse, CategoryUpdateResponse } from '@/category/domain/category-entities'
 import { CategoryCreationSchema, CategoryDTOSchema, CategoryIdSchema, CategoryUpdateSchema } from '@/category/domain/category-schemas'
 import { HttpResponse } from '@/infrastructure/api/http-response'
 
@@ -41,6 +41,35 @@ const createCategory = async (categoryCreationRequest: Request): Promise<Categor
     return HttpResponse.created(categoryDTOValidation.data)
   } catch (error) {
     console.error('Unknown error in CategoryController.createCategory:', error)
+    return HttpResponse.internalServerError()
+  }
+}
+
+const deleteCategory = async (categoryId: unknown): Promise<CategoryDeletionResponse> => {
+  try {
+    const categoryIdValidation = CategoryIdSchema.safeParse(categoryId)
+
+    if (categoryIdValidation.error) {
+      return HttpResponse.badRequest(categoryIdValidation.error.issues)
+    }
+
+    const deletionResult = await CategoryService.deleteCategory(categoryIdValidation.data)
+
+    if (deletionResult.status === 'ERROR') {
+      switch (deletionResult.errors) {
+        case 'FORBIDDEN':
+          return HttpResponse.forbidden()
+        case 'UNAUTHORIZED':
+          return HttpResponse.unauthorized()
+        default:
+          console.error('Unknown error in CategoryController.deleteCategory:', deletionResult.errors)
+          return HttpResponse.internalServerError()
+      }
+    }
+
+    return HttpResponse.noContent()
+  } catch (error) {
+    console.error('Unknown error in CategoryController.deleteCategory:', error)
     return HttpResponse.internalServerError()
   }
 }
@@ -115,6 +144,7 @@ const updateCategory = async (categoryId: unknown, categoryUpdateRequest: Reques
 
 export const CategoryController = {
   createCategory,
+  deleteCategory,
   findCategories,
   updateCategory
 }

@@ -41,7 +41,7 @@ const findPublicProducts = async (): Promise<ClientResponse<ProductPublicListRes
 
 const updateProduct = async (productId: string, productUpdateData: ProductUpdateData): Promise<ClientResponse<ProductUpdateResponse>> => {
   try {
-    return await ApiClient.PUT<ProductUpdateResponse, ProductUpdateData>(`/products/${productId}`, productUpdateData)
+    return await ApiClient.PATCH<ProductUpdateResponse, ProductUpdateData>(`/products/${productId}`, productUpdateData)
   } catch (error) {
     console.error('Update product error:', error)
     return unknownError()
