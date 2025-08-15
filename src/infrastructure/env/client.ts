@@ -11,6 +11,6 @@ export const clientEnvVariables = createEnv({
   }
 })
 
-export const buildLocationUrl = (basePath: string, resourceId: string): string => {
-  return `${clientEnvVariables.NEXT_PUBLIC_APP_URL}/api/${basePath}/${encodeURIComponent(resourceId)}`
+export const buildLocationUrl = (basePath: string, resourceKey: string): string => {
+  return `${clientEnvVariables.NEXT_PUBLIC_APP_URL}/api/${basePath}/${encodeURIComponent(resourceKey)}`
 }

@@ -5,6 +5,11 @@ import { ProductController } from '@/product/presentation/product-controller'
 
 type ProductIdParams = { params: Promise<{ productId: string }> }
 
+export const GET = async (_request: NextRequest, { params }: ProductIdParams) => {
+  const { productId } = await params
+  return nextResponse(ProductController.findProduct(productId))
+}
+
 export const DELETE = async (_request: NextRequest, { params }: ProductIdParams) => {
   const { productId } = await params
   return nextResponse(ProductController.deleteProduct(productId))
