@@ -8,6 +8,7 @@ import { CategoryClient } from '@/category/infrastructure/category-client'
 import { CategoryDescriptionField } from '@/category/presentation/components/category-description-field'
 import { CategoryImageUrlField } from '@/category/presentation/components/category-image-url-field'
 import { CategoryNameField } from '@/category/presentation/components/category-name-field'
+import { BAD_REQUEST_STATUS, CONFLICT_STATUS, CREATED_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { Form } from '@/presentation/components/forms/form'
 import { FormError } from '@/presentation/components/forms/form-error'
@@ -75,13 +76,13 @@ export const CreateCategoryForm: React.FC = () => {
     setIsCategoryCreationLoading(false)
 
     switch (createdCategoryResponse.status) {
-      case 201:
+      case CREATED_STATUS:
         onCategoryCreationSuccess()
         break
-      case 400:
+      case BAD_REQUEST_STATUS:
         onCategoryCreationBadRequestError(createdCategoryResponse.issues)
         break
-      case 409:
+      case CONFLICT_STATUS:
         onCategoryCreationConflictError(createdCategoryResponse.error)
         break
     }

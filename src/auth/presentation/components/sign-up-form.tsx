@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 
 import { AuthClient } from '@/auth/infrastructure/auth-client'
 import { DEFAULT_ROUTE } from '@/domain/navigation'
+import { OK_STATUS } from '@/infrastructure/api/http-response'
 import { Form } from '@/presentation/components/forms/form'
 
 const signUpFields = {
@@ -21,8 +22,7 @@ const onSubmit = async (formData: FormData) => {
 
   const signUpResponse = await AuthClient.emailSignUp(credentials)
 
-  if (signUpResponse.status === 200) {
-    console.log(signUpResponse)
+  if (signUpResponse.status === OK_STATUS) {
     redirect(DEFAULT_ROUTE)
   }
 }
