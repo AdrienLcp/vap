@@ -2,7 +2,7 @@ import 'server-only'
 
 import { HttpResponse } from '@/infrastructure/api/http-response'
 import { ProductService } from '@/product/application/product-service'
-import type { ProductCreationResponse, ProductDeleteResponse, ProductListResponse, ProductPublicListResponse, ProductUpdateResponse } from '@/product/domain/product-entities'
+import type { ProductCreationResponse, ProductDeleteResponse, ProductListResponse, ProductPublicListResponse, ProductPublicResponse, ProductResponse, ProductUpdateResponse } from '@/product/domain/product-entities'
 import { ProductCreationSchema, ProductDTOSchema, ProductIdSchema, ProductUpdateSchema } from '@/product/domain/product-schemas'
 
 const createProduct = async (productCreationRequest: Request): Promise<ProductCreationResponse> => {
@@ -72,6 +72,44 @@ const deleteProduct = async (productId: string): Promise<ProductDeleteResponse> 
   }
 }
 
+const findProduct = async (productId: string): Promise<ProductResponse> => {
+  try {
+    const productIdValidation = ProductIdSchema.safeParse(productId)
+
+    if (productIdValidation.error) {
+      return HttpResponse.badRequest(productIdValidation.error.issues)
+    }
+
+    const productResult = await ProductService.findProduct(productIdValidation.data)
+
+    if (productResult.status === 'ERROR') {
+      switch (productResult.errors) {
+        case 'FORBIDDEN':
+          return HttpResponse.forbidden()
+        case 'UNAUTHORIZED':
+          return HttpResponse.unauthorized()
+        case 'NOT_FOUND':
+          return HttpResponse.notFound()
+        default:
+          console.error('Unknown error in ProductController.findProduct:', productResult.errors)
+          return HttpResponse.internalServerError()
+      }
+    }
+
+    const productDTOValidation = ProductDTOSchema.safeParse(productResult.data)
+
+    if (productDTOValidation.error) {
+      console.error('Validation error in ProductController.findProduct:', productDTOValidation.error)
+      return HttpResponse.internalServerError()
+    }
+
+    return HttpResponse.ok(productDTOValidation.data)
+  } catch (error) {
+    console.error('Unknown error in ProductController.findProduct:', error)
+    return HttpResponse.internalServerError()
+  }
+}
+
 const findProducts = async (): Promise<ProductListResponse> => {
   try {
     const productsResult = await ProductService.findProducts()
@@ -98,6 +136,40 @@ const findProducts = async (): Promise<ProductListResponse> => {
     return HttpResponse.ok(productsDTOValidation.data)
   } catch (error) {
     console.error('Unknown error in ProductController.findProducts:', error)
+    return HttpResponse.internalServerError()
+  }
+}
+
+const findPublicProduct = async (productId: string): Promise<ProductPublicResponse> => {
+  try {
+    const productIdValidation = ProductIdSchema.safeParse(productId)
+
+    if (productIdValidation.error) {
+      return HttpResponse.badRequest(productIdValidation.error.issues)
+    }
+
+    const productResult = await ProductService.findPublicProduct(productIdValidation.data)
+
+    if (productResult.status === 'ERROR') {
+      switch (productResult.errors) {
+        case 'NOT_FOUND':
+          return HttpResponse.notFound()
+        default:
+          console.error('Unknown error in ProductController.findPublicProduct:', productResult.errors)
+          return HttpResponse.internalServerError()
+      }
+    }
+
+    const productPublicDTOValidation = ProductDTOSchema.safeParse(productResult.data)
+
+    if (productPublicDTOValidation.error) {
+      console.error('Validation error in ProductController.findPublicProduct:', productPublicDTOValidation.error)
+      return HttpResponse.internalServerError()
+    }
+
+    return HttpResponse.ok(productPublicDTOValidation.data)
+  } catch (error) {
+    console.error('Unknown error in ProductController.findPublicProduct:', error)
     return HttpResponse.internalServerError()
   }
 }
@@ -172,7 +244,9 @@ const updateProduct = async (productId: string, productUpdateRequest: Request): 
 export const ProductController = {
   createProduct,
   deleteProduct,
+  findProduct,
   findProducts,
+  findPublicProduct,
   findPublicProducts,
   updateProduct
 }

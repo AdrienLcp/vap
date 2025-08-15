@@ -13,3 +13,5 @@ export const CATEGORY_FORM_FIELDS = {
   DESCRIPTION: 'category-description',
   IMAGE_URL: 'category-image-url'
 } as const
+
+export const CATEGORY_API_BASE_URL = '/categories'

@@ -1,7 +1,7 @@
 import type z from 'zod'
 
 import type { Forbidden, Unauthorized } from '@/helpers/result'
-import type { BadRequestResponse, CreatedResponse, ForbiddenResponse, NoContentResponse, OkResponse, Response, UnauthorizedResponse } from '@/infrastructure/api/http-response'
+import type { BadRequestResponse, CreatedResponse, ForbiddenResponse, NoContentResponse, NotFoundResponse, OkResponse, Response, UnauthorizedResponse } from '@/infrastructure/api/http-response'
 import type { ProductCreationSchema, ProductDTOSchema, ProductPublicDTOSchema, ProductStatusSchema, ProductUpdateSchema } from '@/product/domain/product-schemas'
 import type { Issues } from '@/utils/validation-utils'
 
@@ -23,7 +23,21 @@ export type ProductListResponse = Response<
   | ForbiddenResponse
 >
 
+export type ProductResponse = Response<
+  | OkResponse<ProductDTO>
+  | BadRequestResponse<Issues<string>>
+  | UnauthorizedResponse
+  | ForbiddenResponse
+  | NotFoundResponse
+>
+
 export type ProductPublicListResponse = Response<OkResponse<ProductDTO[]>>
+
+export type ProductPublicResponse = Response<
+  | OkResponse<ProductPublicDTO>
+  | BadRequestResponse<Issues<string>>
+  | NotFoundResponse
+>
 
 export type ProductCreationResponse = Response<
   | CreatedResponse<ProductDTO>

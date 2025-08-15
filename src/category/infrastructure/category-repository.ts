@@ -1,7 +1,7 @@
 import 'server-only'
 
 import type { CategoryCreationData, CategoryDTO, CategoryNameAlreadyExists, CategoryUpdateData } from '@/category/domain/category-entities'
-import { type ErrorResult, failure, type Result, success } from '@/helpers/result'
+import { type ErrorResult, failure, type NotFound, type Result, success } from '@/helpers/result'
 import { CategoryDatabase } from '@/infrastructure/database'
 import { getDatabaseError } from '@/infrastructure/database/database-helpers'
 
@@ -67,6 +67,24 @@ const findCategories = async (): Promise<Result<null, CategoryDTO[]>> => {
   }
 }
 
+const findCategory = async (categoryId: string): Promise<Result<NotFound, CategoryDTO>> => {
+  try {
+    const category = await CategoryDatabase.findUnique({
+      where: { id: categoryId },
+      select: categorySelect
+    })
+
+    if (!category) {
+      return failure('NOT_FOUND')
+    }
+
+    return success(category)
+  } catch (error) {
+    console.error('Unknown error in CategoryRepository.findCategory:', error)
+    return failure()
+  }
+}
+
 const updateCategory = async (categoryId: string, categoryData: CategoryUpdateData): Promise<Result<CategoryNameAlreadyExists, CategoryDTO>> => {
   try {
     const updatedCategory = await CategoryDatabase.update({
@@ -97,5 +115,6 @@ export const CategoryRepository = {
   createCategory,
   deleteCategory,
   findCategories,
+  findCategory,
   updateCategory
 }

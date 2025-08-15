@@ -9,3 +9,5 @@ export const PRODUCT_CONSTANTS = {
   DEFAULT_STATUS: 'INACTIVE' satisfies ProductStatus,
   STATUS: ['ACTIVE', 'INACTIVE', 'FEATURED'] satisfies ProductStatus[]
 } as const
+
+export const PRODUCT_API_BASE_URL = '/products'

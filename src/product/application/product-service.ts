@@ -1,8 +1,9 @@
 import 'server-only'
 
 import { AuthService } from '@/auth/application/auth-service'
-import { failure, type Result, success } from '@/helpers/result'
+import { failure, type NotFound, type Result, success } from '@/helpers/result'
 import type { ProductCreationData, ProductDTO, ProductError, ProductPublicDTO, ProductUpdateData } from '@/product/domain/product-entities'
+import { toProductPublicDTO } from '@/product/domain/product-mappers'
 import { ProductRepository } from '@/product/infrastructure/product-repository'
 
 const createProduct = async (productCreationData: ProductCreationData): Promise<Result<ProductError, ProductDTO>>  => {
@@ -45,6 +46,20 @@ const deleteProduct = async (productId: string): Promise<Result<ProductError>> =
   return success()
 }
 
+const findProduct = async (productId: string): Promise<Result<ProductError | NotFound, ProductDTO>> => {
+  const userResult = await AuthService.findUser()
+
+  if (userResult.status === 'ERROR') {
+    return userResult
+  }
+
+  if (!userResult.data.permissions.canReadProduct) {
+    return failure('FORBIDDEN')
+  }
+
+  return await ProductRepository.findProduct(productId)
+}
+
 const findProducts = async (): Promise<Result<ProductError, ProductDTO[]>> => {
   const userResult = await AuthService.findUser()
 
@@ -59,6 +74,24 @@ const findProducts = async (): Promise<Result<ProductError, ProductDTO[]>> => {
   return await ProductRepository.findProducts()
 }
 
+const findPublicProduct = async (productId: string): Promise<Result<ProductError | NotFound, ProductPublicDTO>> => {
+  const productResult = await ProductRepository.findProduct(productId)
+
+  if (productResult.status === 'ERROR') {
+    return productResult
+  }
+
+  const product = productResult.data
+
+  if (product.status === 'INACTIVE') {
+    return failure('NOT_FOUND')
+  }
+
+  const productPublicDTO: ProductPublicDTO = toProductPublicDTO(product)
+
+  return success(productPublicDTO)
+}
+
 const findPublicProducts = async (): Promise<Result<null, ProductPublicDTO[]>> => {
   const productsResult = await ProductRepository.findProducts()
 
@@ -68,20 +101,7 @@ const findPublicProducts = async (): Promise<Result<null, ProductPublicDTO[]>> =
 
   const filteredProducts = productsResult.data.filter(product => product.status !== 'INACTIVE')
 
-  const publicProducts: ProductPublicDTO[] = filteredProducts.map(product => ({
-    id: product.id,
-    name: product.name,
-    sku: product.sku,
-    description: product.description,
-    price: product.price,
-    discountedPrice: product.discountedPrice,
-    status: product.status,
-    stock: product.stock,
-    imageUrl: product.imageUrl,
-    category: product.category
-      ? { name: product.category.name, imageUrl: product.category.imageUrl }
-      : null
-  }))
+  const publicProducts: ProductPublicDTO[] = filteredProducts.map(toProductPublicDTO)
 
   return success(publicProducts)
 }
@@ -109,7 +129,9 @@ const updateProduct = async (productId: string, productUpdateData: ProductUpdate
 export const ProductService = {
   createProduct,
   deleteProduct,
+  findProduct,
   findProducts,
+  findPublicProduct,
   findPublicProducts,
   updateProduct
 }

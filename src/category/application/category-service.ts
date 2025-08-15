@@ -3,7 +3,7 @@ import 'server-only'
 import { AuthService } from '@/auth/application/auth-service'
 import type { CategoryCreationData, CategoryCreationError, CategoryDTO, CategoryUpdateData } from '@/category/domain/category-entities'
 import { CategoryRepository } from '@/category/infrastructure/category-repository'
-import { failure, type Result } from '@/helpers/result'
+import { failure, type NotFound, type Result } from '@/helpers/result'
 
 const createCategory = async (categoryCreationData: CategoryCreationData): Promise<Result<CategoryCreationError, CategoryDTO>> => {
   const userResult = await AuthService.findUser()
@@ -37,6 +37,10 @@ const findCategories = async () => {
   return await CategoryRepository.findCategories()
 }
 
+const findCategory = async (categoryId: string): Promise<Result<NotFound, CategoryDTO>> => {
+  return await CategoryRepository.findCategory(categoryId)
+}
+
 const updateCategory = async (categoryId: string, categoryUpdateData: CategoryUpdateData) => {
   const userResult = await AuthService.findUser()
 
@@ -55,5 +59,6 @@ export const CategoryService = {
   createCategory,
   deleteCategory,
   findCategories,
+  findCategory,
   updateCategory
 }

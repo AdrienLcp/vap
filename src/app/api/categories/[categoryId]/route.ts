@@ -8,6 +8,11 @@ export const DELETE = async (_request: NextRequest, { params }: { params: Promis
   return nextResponse(CategoryController.deleteCategory(categoryId))
 }
 
+export const GET = async (_request: NextRequest, { params }: { params: Promise<{ categoryId: string }> }) => {
+  const { categoryId } = await params
+  return nextResponse(CategoryController.findCategory(categoryId))
+}
+
 export const PATCH = async (request: NextRequest, { params }: { params: Promise<{ categoryId: string }> }) => {
   const { categoryId } = await params
   return nextResponse(CategoryController.updateCategory(categoryId, request))

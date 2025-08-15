@@ -1,6 +1,6 @@
 import 'server-only'
 
-import { failure, type Result, success } from '@/helpers/result'
+import { failure, type NotFound, type Result, success } from '@/helpers/result'
 import { ProductDatabase } from '@/infrastructure/database'
 import type { ProductCreationData, ProductDTO, ProductUpdateData } from '@/product/domain/product-entities'
 
@@ -57,6 +57,24 @@ const deleteProduct = async (productId: string): Promise<Result> => {
   }
 }
 
+const findProduct = async (productId: string): Promise<Result<NotFound, ProductDTO>> => {
+  try {
+    const product = await ProductDatabase.findUnique({
+      where: { id: productId },
+      select: productSelect
+    })
+
+    if (!product) {
+      return failure('NOT_FOUND')
+    }
+
+    return success(product)
+  } catch (error) {
+    console.error('Unknown error in ProductRepository.findProduct:', error)
+    return failure()
+  }
+}
+
 const findProducts = async (): Promise<Result<null, ProductDTO[]>> => {
   try {
     const products = await ProductDatabase.findMany({ select: productSelect })
@@ -97,6 +115,7 @@ const updateProduct = async (productId: string, productData: ProductUpdateData):
 export const ProductRepository = {
   createProduct,
   deleteProduct,
+  findProduct,
   findProducts,
   updateProduct
 }

@@ -1,9 +1,8 @@
 'use client'
 
-import type { CategoryCreationData, CategoryCreationResponse, CategoryDeletionResponse, CategoryListResponse, CategoryUpdateData, CategoryUpdateResponse } from '@/category/domain/category-entities'
+import { CATEGORY_API_BASE_URL } from '@/category/domain/category-constants'
+import type { CategoryCreationData, CategoryCreationResponse, CategoryDeletionResponse, CategoryListResponse, CategoryResponse, CategoryUpdateData, CategoryUpdateResponse } from '@/category/domain/category-entities'
 import { ApiClient, type ClientResponse, unknownError } from '@/infrastructure/api/api-client'
-
-const CATEGORY_API_BASE_URL = '/categories'
 
 const createCategory = async (categoryCreationData: CategoryCreationData): Promise<ClientResponse<CategoryCreationResponse>> => {
   try {
@@ -33,6 +32,16 @@ const findCategories = async (): Promise<ClientResponse<CategoryListResponse>> =
   }
 }
 
+const findCategory = async (categoryId: string): Promise<ClientResponse<CategoryResponse>> => {
+  try {
+    const encodedCategoryId = encodeURIComponent(categoryId)
+    return await ApiClient.GET<CategoryResponse>(`${CATEGORY_API_BASE_URL}/${encodedCategoryId}`)
+  } catch (error) {
+    console.error('Find category error:', error)
+    return unknownError()
+  }
+}
+
 const updateCategory = async (categoryId: string, categoryUpdateData: CategoryUpdateData): Promise<ClientResponse<CategoryUpdateResponse>> => {
   try {
     const encodedCategoryId = encodeURIComponent(categoryId)
@@ -47,5 +56,6 @@ export const CategoryClient = {
   createCategory,
   deleteCategory,
   findCategories,
+  findCategory,
   updateCategory
 }

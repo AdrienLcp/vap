@@ -3,7 +3,7 @@ import type z from 'zod'
 import type { CATEGORY_CONSTANTS } from '@/category/domain/category-constants'
 import type { CategoryCreationSchema, CategoryDTOSchema, CategoryUpdateSchema } from '@/category/domain/category-schemas'
 import type { Forbidden, Unauthorized } from '@/helpers/result'
-import type { BadRequestResponse, ConflictResponse, CreatedResponse, ForbiddenResponse, NoContentResponse, OkResponse, Response, UnauthorizedResponse } from '@/infrastructure/api/http-response'
+import type { BadRequestResponse, ConflictResponse, CreatedResponse, ForbiddenResponse, NoContentResponse, NotFoundResponse, OkResponse, Response, UnauthorizedResponse } from '@/infrastructure/api/http-response'
 import type { Issues } from '@/utils/validation-utils'
 
 export type CategoryCreationData = z.infer<typeof CategoryCreationSchema>
@@ -26,6 +26,12 @@ export type CategoryUpdateError =
   | Unauthorized
 
 export type CategoryListResponse = Response<OkResponse<CategoryDTO[]>>
+
+export type CategoryResponse = Response<
+  | OkResponse<CategoryDTO>
+  | BadRequestResponse<Issues<string>>
+  | NotFoundResponse
+>
 
 export type CategoryCreationResponse = Response<
   | CreatedResponse<CategoryDTO>
