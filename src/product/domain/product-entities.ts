@@ -31,7 +31,7 @@ export type ProductResponse = Response<
   | NotFoundResponse
 >
 
-export type ProductPublicListResponse = Response<OkResponse<ProductDTO[]>>
+export type ProductPublicListResponse = Response<OkResponse<ProductPublicDTO[]>>
 
 export type ProductPublicResponse = Response<
   | OkResponse<ProductPublicDTO>

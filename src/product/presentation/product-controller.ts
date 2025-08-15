@@ -1,9 +1,11 @@
 import 'server-only'
 
 import { HttpResponse } from '@/infrastructure/api/http-response'
+import { buildLocationUrl } from '@/infrastructure/env/client'
 import { ProductService } from '@/product/application/product-service'
+import { PRODUCT_API_BASE_URL } from '@/product/domain/product-constants'
 import type { ProductCreationResponse, ProductDeleteResponse, ProductListResponse, ProductPublicListResponse, ProductPublicResponse, ProductResponse, ProductUpdateResponse } from '@/product/domain/product-entities'
-import { ProductCreationSchema, ProductDTOSchema, ProductIdSchema, ProductUpdateSchema } from '@/product/domain/product-schemas'
+import { ProductCreationSchema, ProductDTOSchema, ProductIdSchema, ProductPublicDTOSchema, ProductUpdateSchema } from '@/product/domain/product-schemas'
 
 const createProduct = async (productCreationRequest: Request): Promise<ProductCreationResponse> => {
   try {
@@ -36,7 +38,10 @@ const createProduct = async (productCreationRequest: Request): Promise<ProductCr
       return HttpResponse.internalServerError()
     }
 
-    return HttpResponse.created(productDTOValidation.data)
+    const productDTO = productDTOValidation.data
+    const createdProductLocationUrl = buildLocationUrl(PRODUCT_API_BASE_URL, productDTO.id)
+
+    return HttpResponse.created(productDTO, { 'Location': createdProductLocationUrl })
   } catch (error) {
     console.error('Unknown error in ProductController.createProduct:', error)
     return HttpResponse.internalServerError()
@@ -160,7 +165,7 @@ const findPublicProduct = async (productId: string): Promise<ProductPublicRespon
       }
     }
 
-    const productPublicDTOValidation = ProductDTOSchema.safeParse(productResult.data)
+    const productPublicDTOValidation = ProductPublicDTOSchema.safeParse(productResult.data)
 
     if (productPublicDTOValidation.error) {
       console.error('Validation error in ProductController.findPublicProduct:', productPublicDTOValidation.error)
@@ -183,7 +188,7 @@ const findPublicProducts = async (): Promise<ProductPublicListResponse> => {
       return HttpResponse.internalServerError()
     }
 
-    const productsDTOValidation = ProductDTOSchema.array().safeParse(productsResult.data)
+    const productsDTOValidation = ProductPublicDTOSchema.array().safeParse(productsResult.data)
 
     if (productsDTOValidation.error) {
       console.error('Validation error in ProductController.findPublicProducts:', productsDTOValidation.error)

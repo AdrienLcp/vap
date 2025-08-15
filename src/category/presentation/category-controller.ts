@@ -5,6 +5,7 @@ import { CATEGORY_API_BASE_URL, CATEGORY_CONSTANTS } from '@/category/domain/cat
 import type { CategoryCreationResponse, CategoryDeletionResponse, CategoryListResponse, CategoryResponse, CategoryUpdateResponse } from '@/category/domain/category-entities'
 import { CategoryCreationSchema, CategoryDTOSchema, CategoryIdSchema, CategoryUpdateSchema } from '@/category/domain/category-schemas'
 import { HttpResponse } from '@/infrastructure/api/http-response'
+import { buildLocationUrl } from '@/infrastructure/env/client'
 
 const createCategory = async (categoryCreationRequest: Request): Promise<CategoryCreationResponse> => {
   try {
@@ -39,10 +40,9 @@ const createCategory = async (categoryCreationRequest: Request): Promise<Categor
     }
 
     const categoryDTO = categoryDTOValidation.data
+    const createdCategoryLocationUrl = buildLocationUrl(CATEGORY_API_BASE_URL, categoryDTO.id)
 
-    const createdCategoryLocation = `${CATEGORY_API_BASE_URL}/${encodeURIComponent(categoryDTO.id)}`
-
-    return HttpResponse.created(categoryDTO, { 'Location': createdCategoryLocation })
+    return HttpResponse.created(categoryDTO, { 'Location': createdCategoryLocationUrl })
   } catch (error) {
     console.error('Unknown error in CategoryController.createCategory:', error)
     return HttpResponse.internalServerError()
@@ -57,16 +57,16 @@ const deleteCategory = async (categoryId: unknown): Promise<CategoryDeletionResp
       return HttpResponse.badRequest(categoryIdValidation.error.issues)
     }
 
-    const deletionResult = await CategoryService.deleteCategory(categoryIdValidation.data)
+    const categoryDeletionResult = await CategoryService.deleteCategory(categoryIdValidation.data)
 
-    if (deletionResult.status === 'ERROR') {
-      switch (deletionResult.errors) {
+    if (categoryDeletionResult.status === 'ERROR') {
+      switch (categoryDeletionResult.errors) {
         case 'FORBIDDEN':
           return HttpResponse.forbidden()
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
         default:
-          console.error('Unknown error in CategoryController.deleteCategory:', deletionResult.errors)
+          console.error('Unknown error in CategoryController.deleteCategory:', categoryDeletionResult.errors)
           return HttpResponse.internalServerError()
       }
     }
