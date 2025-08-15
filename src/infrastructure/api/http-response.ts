@@ -9,7 +9,7 @@ export const CONFLICT_STATUS = 409
 export const UNPROCESSABLE_ENTITY_STATUS = 422
 export const INTERNAL_SERVER_ERROR_STATUS = 500
 
-export type BaseResponse<Status = number, T = null> = T extends null | undefined
+export type BaseResponse<Status extends number, T = null> = T extends null | undefined
   ? { headers?: HeadersInit, status: Status }
   : { headers?: HeadersInit, status: Status } & T
 
