@@ -50,7 +50,7 @@ const getAuthPermissionsByRole = (role: UserRole): AuthPermissions => {
     canCreateProduct: rights.includes('create:product'),
     canUpdateProduct: rights.includes('update:product'),
     canDeleteProduct: rights.includes('delete:product')
- }
+  }
 
   return permissions
 }
