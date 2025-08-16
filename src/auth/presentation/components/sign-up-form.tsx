@@ -21,13 +21,11 @@ import { UserNameField } from '@/user/presentation/user-name-field'
 import { UserPasswordField } from '@/user/presentation/user-password-field'
 import type { ValueOf } from '@/utils/object-utils'
 
-import './sign-up-form.sass'
-
-type SignUpFormValidationErrors = ValidationErrors<ValueOf<typeof AUTH_FORM_FIELDS>>
+type SignUpFormErrors = ValidationErrors<ValueOf<typeof AUTH_FORM_FIELDS>>
 
 export const SignUpForm: React.FC = () => {
   const [isUserCreationLoading, setIsUserCreationLoading] = React.useState(false)
-  const [signUpFormErrors, setSignUpFormErrors] = React.useState<SignUpFormValidationErrors>()
+  const [signUpFormErrors, setSignUpFormErrors] = React.useState<SignUpFormErrors>()
 
   const { setUser } = useAuth()
 
@@ -69,7 +67,6 @@ export const SignUpForm: React.FC = () => {
 
   return (
     <Form
-      className='sign-up-form'
       onSubmit={onSignUpFormSubmit}
       validationErrors={signUpFormErrors}
     >

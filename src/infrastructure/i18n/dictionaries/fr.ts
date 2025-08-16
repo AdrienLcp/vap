@@ -3,9 +3,21 @@ import { dt, type LanguageMessages } from '@/infrastructure/i18n/lib'
 export const fr = {
   appName: 'VAP',
   auth: {
+    signIn: {
+      title: 'Connexion',
+      errors: {
+        invalidCredentials: 'L\'adresse mail et le mot de passe ne correspondent pas.',
+        unknown: 'Une erreur inconnue est survenue.'
+      },
+      form: {
+        email: {
+          label: 'Email',
+          placeholder: 'jean-neige@gmail.com'
+        }
+      }
+    },
     signUp: {
       title: 'Inscription',
-      description: 'Créez un compte pour gérer vos achats',
       errors: {
         passwordTooShort: dt('Le mot de passe doit comporter au moins {characterCount:plural} caractères.', {
           plural: { characterCount: { zero: '0 caractère', one: '1 caractère', other: '{?} caractères' } }
