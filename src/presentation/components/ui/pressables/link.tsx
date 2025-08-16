@@ -1,6 +1,6 @@
 import { type LinkRenderProps, Link as ReactAriaLink, type LinkProps as ReactAriaLinkProps } from 'react-aria-components'
 
-import { Tooltip, type TooltipProps } from '@/presentation/components/ui/tooltip/tooltip'
+import { Tooltip, type TooltipProps } from '@/presentation/components/ui/tooltip'
 
 import { type DefaultChildrenProps, type PressableProps, reactAriaPressableClassNames } from './pressable'
 

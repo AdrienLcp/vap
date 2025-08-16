@@ -1,7 +1,7 @@
 import { type ButtonRenderProps, Button as ReactAriaButton, type ButtonProps as ReactAriaButtonProps } from 'react-aria-components'
 
 import { Spinner } from '@/presentation/components/ui/loaders/spinner'
-import { Tooltip, type TooltipProps } from '@/presentation/components/ui/tooltip/tooltip'
+import { Tooltip, type TooltipProps } from '@/presentation/components/ui/tooltip'
 
 import { type PressableProps, reactAriaPressableClassNames } from './pressable'
 

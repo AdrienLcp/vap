@@ -5,6 +5,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { lang } from '@/infrastructure/i18n'
 import { Header } from '@/presentation/components/header'
 import { Providers } from '@/presentation/components/providers'
+import { Toaster } from '@/presentation/components/ui/toaster'
 
 import '@/presentation/styles/base.sass'
 
@@ -30,6 +31,8 @@ const RootLayout: React.FC<React.PropsWithChildren> = async ({ children }) => (
         <Header />
 
         {children}
+
+        <Toaster />
       </body>
     </html>
   </Providers>

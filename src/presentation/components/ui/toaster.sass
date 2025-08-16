@@ -1,0 +1,25 @@
+.toaster
+  display: grid
+  gap: var(--size-80, 0.5rem)
+
+  & .toast
+    align-items: center
+    display: flex
+    gap: var(--size-80, 0.5rem)
+    // view-transition-class: toast
+
+::view-transition-new(.toast):only-child
+  animation: slide-in var(--transition-150)
+
+::view-transition-old(.toast):only-child
+  animation: slide-out var(--transition-150)
+
+@keyframes slide-out
+  to
+    opacity: 0
+    translate: 0 100%
+
+@keyframes slide-in
+  from
+    opacity: 0
+    translate: 0 100%
