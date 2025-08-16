@@ -1,11 +1,12 @@
 'use client'
 
+import { LogInIcon } from 'lucide-react'
 import { redirect } from 'next/navigation'
 import React from 'react'
 
 import { useAuth } from '@/auth/application/use-auth'
 import { AUTH_CONSTANTS, AUTH_FORM_FIELDS } from '@/auth/domain/auth-constants'
-import type { AuthUserDTO } from '@/auth/domain/auth-entities'
+import type { AuthUserDTO, SignUpInfo } from '@/auth/domain/auth-entities'
 import { AuthClient } from '@/auth/infrastructure/auth-client'
 import { DEFAULT_ROUTE } from '@/domain/navigation'
 import { BAD_REQUEST_STATUS, CONFLICT_STATUS, CREATED_STATUS } from '@/infrastructure/api/http-response'
@@ -38,7 +39,7 @@ export const SignUpForm: React.FC = () => {
     setIsUserCreationLoading(true)
     setSignUpFormErrors(null)
 
-    const credentials = {
+    const credentials: SignUpInfo = {
       email: formData.get(AUTH_FORM_FIELDS.EMAIL) as string,
       name: formData.get(AUTH_FORM_FIELDS.NAME) as string,
       password: formData.get(AUTH_FORM_FIELDS.PASSWORD) as string
@@ -53,7 +54,10 @@ export const SignUpForm: React.FC = () => {
         onSignUpSuccess(signUpResponse.data)
       case BAD_REQUEST_STATUS:
         setSignUpFormErrors({
-          [AUTH_FORM_FIELDS.PASSWORD]: t('auth.signUp.errors.passwordTooShort', { characterCount: AUTH_CONSTANTS.PASSWORD_MIN_LENGTH })
+          [AUTH_FORM_FIELDS.PASSWORD]: t('auth.signUp.errors.invalidPasswordLength', {
+            maxLength: AUTH_CONSTANTS.PASSWORD_MAX_LENGTH,
+            minLength: AUTH_CONSTANTS.PASSWORD_MIN_LENGTH
+          })
         })
         break
       case CONFLICT_STATUS:
@@ -82,8 +86,13 @@ export const SignUpForm: React.FC = () => {
 
       <FormError validationErrors={signUpFormErrors} />
 
-      <Button variant='filled' type='submit'>
-        {t(`auth.signUp.form.submit.${isUserCreationLoading ? 'creating' : 'label'}`)}
+      <Button
+        Icon={<LogInIcon />}
+        isPending={isUserCreationLoading}
+        type='submit'
+        variant='filled'
+      >
+        {({ isPending }) => t(`auth.signUp.form.submit.${isPending ? 'creating' : 'label'}`)}
       </Button>
     </Form>
   )

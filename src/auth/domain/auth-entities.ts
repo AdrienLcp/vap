@@ -61,9 +61,11 @@ export type ChangePasswordInfo = {
   newPassword: string
 }
 
+export type ChangePasswordConflictError = PasswordTooShort | InvalidPassword
+
 export type ChangePasswordResponse = Response<
   | NoContentResponse
-  | BadRequestResponse<PasswordTooShort | InvalidPassword>
+  | BadRequestResponse<ChangePasswordConflictError>
 >
 
 export type ChangeEmailResponse = Response<

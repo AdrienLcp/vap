@@ -13,5 +13,6 @@ export const AUTH_CONSTANTS = {
 export const AUTH_FORM_FIELDS = {
   NAME: 'name',
   EMAIL: 'email',
-  PASSWORD: 'password'
+  PASSWORD: 'password',
+  NEW_PASSWORD: 'new-password'
 } as const

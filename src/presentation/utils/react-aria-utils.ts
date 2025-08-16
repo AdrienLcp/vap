@@ -29,9 +29,8 @@ export const reactAriaClassNames = <T extends ReactAriaComponentRenderProps> (
   return classNames(...baseClassName, classNameOverride)
 }
 
-export type GlobalFormErrorsKey = 'form'
 export type ValidationErrors <T extends PropertyKey> =
-  | Partial<Record<T | GlobalFormErrorsKey, string | string[]>>
+  | Partial<Record<T | 'form', string | string[]>>
   | null
   | undefined
 

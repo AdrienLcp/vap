@@ -97,7 +97,11 @@ export const CreateCategoryForm: React.FC = () => {
 
       <FormError validationErrors={createCategoryFormErrors} />
 
-      <Button isPending={isCategoryCreationLoading} type='submit'>
+      <Button
+        isPending={isCategoryCreationLoading}
+        type='submit'
+        variant='filled'
+      >
         {({ isPending }) => t(`category.create.form.submit.${isPending ? 'creating' : 'label'}`)}
       </Button>
     </Form>

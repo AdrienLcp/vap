@@ -3,6 +3,47 @@ import { dt, type LanguageMessages } from '@/infrastructure/i18n/lib'
 export const fr = {
   appName: 'VAP',
   auth: {
+    changeEmail: {
+      errors: {
+        unknown: 'Une erreur inconnue est survenue.'
+      },
+      form: {
+        email: {
+          label: 'Nouvel email',
+          placeholder: 'jean-neige@gmail.com'
+        },
+        submit: {
+          label: 'Changer email',
+          loading: 'Changement en cours...'
+        }
+      }
+    },
+    changePassword: {
+      errors: {
+        invalidPassword: 'Le mot de passe actuel est incorrect.',
+        invalidPasswordLength: dt('Le mot de passe doit comporter entre {minLength:plural} et {maxLength:plural}', {
+          plural: {
+            maxLength: { zero: '0 caractère', one: '1 caractère', other: '{?} caractères' },
+            minLength: { zero: '0 caractère', one: '1 caractère', other: '{?} caractères' }
+          }
+        }),
+        unknown: 'Une erreur inconnue est survenue.'
+      },
+      form: {
+        currentPassword: {
+          label: 'Mot de passe actuel',
+          placeholder: 'Entrez votre mot de passe actuel'
+        },
+        newPassword: {
+          label: 'Nouveau mot de passe',
+          placeholder: 'Entrez votre nouveau mot de passe'
+        },
+        submit: {
+          label: 'Confirmer',
+          loading: 'Chargement...'
+        }
+      }
+    },
     signIn: {
       title: 'Connexion',
       errors: {
@@ -13,14 +54,21 @@ export const fr = {
         email: {
           label: 'Email',
           placeholder: 'jean-neige@gmail.com'
+        },
+        submit: {
+          label: 'Se connecter',
+          loading: 'Connexion en cours...'
         }
       }
     },
     signUp: {
       title: 'Inscription',
       errors: {
-        passwordTooShort: dt('Le mot de passe doit comporter au moins {characterCount:plural} caractères.', {
-          plural: { characterCount: { zero: '0 caractère', one: '1 caractère', other: '{?} caractères' } }
+        invalidPasswordLength: dt('Le mot de passe doit comporter entre {minLength:plural} et {maxLength:plural}', {
+          plural: {
+            maxLength: { zero: '0 caractère', one: '1 caractère', other: '{?} caractères' },
+            minLength: { zero: '0 caractère', one: '1 caractère', other: '{?} caractères' }
+          }
         }),
         unknown: 'Une erreur inconnue est survenue.',
         userAlreadyExists: 'Un utilisateur avec cet email existe déjà.'
