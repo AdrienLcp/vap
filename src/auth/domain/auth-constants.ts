@@ -9,3 +9,10 @@ export const AUTH_CONSTANTS = {
 
   SOCIAL_PROVIDERS: ['google']
 } as const
+
+export const AUTH_FORM_FIELDS = {
+  NAME: 'name',
+  EMAIL: 'email',
+  PASSWORD: 'password',
+  CONFIRM_PASSWORD: 'confirm-password'
+}

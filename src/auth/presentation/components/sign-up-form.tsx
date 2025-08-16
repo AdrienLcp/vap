@@ -1,66 +1,57 @@
 'use client'
 
 import { redirect } from 'next/navigation'
+import React from 'react'
 
+import { AUTH_FORM_FIELDS } from '@/auth/domain/auth-constants'
 import { AuthClient } from '@/auth/infrastructure/auth-client'
 import { DEFAULT_ROUTE } from '@/domain/navigation'
 import { OK_STATUS } from '@/infrastructure/api/http-response'
+import { t } from '@/infrastructure/i18n'
 import { Form } from '@/presentation/components/forms/form'
+import { Button } from '@/presentation/components/ui/pressables/button'
+import type { ValidationErrors } from '@/presentation/utils/react-aria-utils'
+import { UserEmailField } from '@/user/presentation/components/user-email-field'
+import { UserNameField } from '@/user/presentation/components/user-name-field'
+import { UserPasswordField } from '@/user/presentation/components/user-password-field'
+import type { ValueOf } from '@/utils/object-utils'
 
-const signUpFields = {
-  email: 'email',
-  name: 'name',
-  password: 'password'
+type SignUpFormValidationErrors = ValidationErrors<ValueOf<typeof AUTH_FORM_FIELDS>> | null
+
+export const SignUpForm: React.FC = () => {
+  const [isUserCreationLoading, setIsUserCreationLoading] = React.useState(false)
+  const [signUpFormValidationErrors, setSignUpFormValidationErrors] = React.useState<SignUpFormValidationErrors>(null)
+
+  const onSignUpFormSubmit = React.useCallback(async (formData: FormData) => {
+    setIsUserCreationLoading(true)
+    setSignUpFormValidationErrors(null)
+
+    const credentials = {
+      email: formData.get(AUTH_FORM_FIELDS.EMAIL) as string,
+      name: formData.get(AUTH_FORM_FIELDS.NAME) as string,
+      password: formData.get(AUTH_FORM_FIELDS.PASSWORD) as string
+    }
+
+    const signUpResponse = await AuthClient.emailSignUp(credentials)
+
+    setIsUserCreationLoading(false)
+
+    if (signUpResponse.status === OK_STATUS) {
+      redirect(DEFAULT_ROUTE)
+    }
+  }, [])
+
+  return (
+    <Form onSubmit={onSignUpFormSubmit}>
+      <UserEmailField />
+
+      <UserNameField />
+
+      <UserPasswordField />
+
+      <Button type='submit'>
+        {t(`auth.signUp.form.submit.${isUserCreationLoading ? 'creating' : 'label'}`)}
+      </Button>
+    </Form>
+  )
 }
-
-const onSubmit = async (formData: FormData) => {
-  const credentials = {
-    email: String(formData.get(signUpFields.email)),
-    name: String(formData.get(signUpFields.name)),
-    password: String(formData.get(signUpFields.password))
-  }
-
-  const signUpResponse = await AuthClient.emailSignUp(credentials)
-
-  if (signUpResponse.status === OK_STATUS) {
-    redirect(DEFAULT_ROUTE)
-  }
-}
-
-export const SignUpForm: React.FC = () => (
-  <Form onSubmit={onSubmit}>
-    <label>
-      Email:
-      <input
-        name={signUpFields.email}
-        placeholder='jean-neige@gmail.com'
-        required
-        type='text'
-      />
-    </label>
-
-    <label>
-      Name:
-      <input
-        name={signUpFields.name}
-        placeholder='Jean Neige'
-        required
-        type='text'
-      />
-    </label>
-
-    <label>
-      Password:
-      <input
-        name={signUpFields.password}
-        placeholder='Password'
-        required
-        type='password'
-      />
-    </label>
-
-    <button type='submit'>
-      Submit
-    </button>
-  </Form>
-)

@@ -27,18 +27,6 @@ export type InternalServerErrorResponse = BaseResponse<typeof INTERNAL_SERVER_ER
 
 export type Response<T> = T | InternalServerErrorResponse
 
-export type ApiResponse<Data = unknown, Error = unknown> =
-  | OkResponse<Data>
-  | CreatedResponse<Data>
-  | NoContentResponse
-  | BadRequestResponse<Error>
-  | UnauthorizedResponse
-  | ForbiddenResponse
-  | NotFoundResponse
-  | ConflictResponse<Error>
-  | UnprocessableEntityResponse<Error>
-  | InternalServerErrorResponse
-
 const ok = <Data>(data: Data, headers?: HeadersInit): OkResponse<Data> => {
   return { data, headers, status: OK_STATUS }
 }

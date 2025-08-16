@@ -1,5 +1,5 @@
-import type { defineTranslation, ParamOptions } from './defineTranslation'
-import type { Register } from './my-translations'
+import type { defineTranslation, ParamOptions } from '@/infrastructure/i18n/lib/defineTranslation'
+import type { Register } from '@/infrastructure/i18n/lib/register'
 
 export type RegisteredTranslations = Register extends { translations: infer T }
   ? T extends infer Translations

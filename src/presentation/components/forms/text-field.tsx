@@ -22,8 +22,8 @@ export const TextField: React.FC<TextFieldProps> = ({
   <ReactAriaTextField
     {...textFieldRestProps}
     className={values => reactAriaClassNames(values, className, 'text-field')}
-    minLength={minLength}
     maxLength={maxLength}
+    minLength={minLength}
   >
     {({ isInvalid, isRequired }) => (
       <>

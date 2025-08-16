@@ -1,7 +1,33 @@
-import type { LanguageMessages } from '@/infrastructure/i18n/lib'
+import { dt, type LanguageMessages } from '@/infrastructure/i18n/lib'
 
 export const fr = {
   appName: 'VAP',
+  auth: {
+    signUp: {
+      title: 'Inscription',
+      description: 'Créez un compte pour gérer vos achats',
+      form: {
+        email: {
+          label: 'Email',
+          placeholder: 'jean-neige@gmail.com'
+        },
+        name: {
+          label: 'Nom',
+          placeholder: 'Jean Neige'
+        },
+        password: {
+          label: 'Mot de passe',
+          description: dt('Au moins {characterCount:plural}', {
+            plural: { characterCount: { zero: '0 caractère', one: '1 caractère', other: '{?} caractères' } }
+          })
+        },
+        submit: {
+          creating: 'Création en cours...',
+          label: 'S\'inscrire'
+        }
+      }
+    }
+  },
   category: {
     create: {
       errors: {

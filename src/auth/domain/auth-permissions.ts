@@ -1,22 +1,9 @@
 import type { AuthPermissions } from '@/auth/domain/auth-entities'
 import type { UserRole } from '@/user/user-entities'
 
-type Feature =
-  | 'admin'
-  | 'category'
-  | 'product'
+const USER_RIGHTS = [] as const
 
-type Action =
-  | 'create'
-  | 'delete'
-  | 'read'
-  | 'update'
-
-type Right = `${Action}:${Feature}`
-
-const USER_RIGHTS: Right[] = []
-
-const ADMIN_RIGHTS: Right[] = [
+const ADMIN_RIGHTS = [
   ...USER_RIGHTS,
   'read:admin',
   'create:category',
@@ -26,11 +13,13 @@ const ADMIN_RIGHTS: Right[] = [
   'create:product',
   'update:product',
   'delete:product'
-]
+] as const
 
-const SUPER_ADMIN_RIGHTS: Right[] = [...ADMIN_RIGHTS]
+const SUPER_ADMIN_RIGHTS = [...ADMIN_RIGHTS] as const
 
-const ROLE_RIGHTS: Record<UserRole, Right[]> = {
+type Right = (typeof SUPER_ADMIN_RIGHTS)[number]
+
+const ROLE_RIGHTS: Record<UserRole, Readonly<Right[]>> = {
   USER: USER_RIGHTS,
   ADMIN: ADMIN_RIGHTS,
   SUPER_ADMIN: SUPER_ADMIN_RIGHTS

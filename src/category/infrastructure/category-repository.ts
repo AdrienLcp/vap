@@ -59,7 +59,6 @@ const deleteCategory = async (categoryId: string): Promise<Result> => {
 const findCategories = async (): Promise<Result<null, CategoryDTO[]>> => {
   try {
     const categories = await CategoryDatabase.findMany({ select: categorySelect })
-
     return success(categories)
   } catch (error) {
     console.error('Unknown error in CategoryRepository.findCategories:', error)

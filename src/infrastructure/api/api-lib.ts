@@ -2,7 +2,35 @@ import 'server-only'
 
 import { NextResponse } from 'next/server'
 
-import { type ApiResponse, BAD_REQUEST_STATUS, CONFLICT_STATUS, CREATED_STATUS, OK_STATUS, UNPROCESSABLE_ENTITY_STATUS } from '@/infrastructure/api/http-response'
+import {
+  BAD_REQUEST_STATUS,
+  type BadRequestResponse,
+  CONFLICT_STATUS,
+  type ConflictResponse,
+  CREATED_STATUS,
+  type CreatedResponse,
+  type ForbiddenResponse,
+  type InternalServerErrorResponse,
+  type NoContentResponse,
+  type NotFoundResponse,
+  OK_STATUS,
+  type OkResponse,
+  type UnauthorizedResponse,
+  UNPROCESSABLE_ENTITY_STATUS,
+  type UnprocessableEntityResponse
+} from '@/infrastructure/api/http-response'
+
+type ApiResponse<Data = unknown, Error = unknown> =
+  | OkResponse<Data>
+  | CreatedResponse<Data>
+  | NoContentResponse
+  | BadRequestResponse<Error>
+  | UnauthorizedResponse
+  | ForbiddenResponse
+  | NotFoundResponse
+  | ConflictResponse<Error>
+  | UnprocessableEntityResponse<Error>
+  | InternalServerErrorResponse
 
 const hasData = <Response extends ApiResponse>(response: Response): response is Response & { data: object } => {
   return (response.status === OK_STATUS || response.status === CREATED_STATUS) && response.data != null
