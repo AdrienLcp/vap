@@ -3,7 +3,7 @@ import { prismaAdapter } from 'better-auth/adapters/prisma'
 
 import { prisma } from '@/infrastructure/database'
 import { serverEnvVariables } from '@/infrastructure/env/server'
-import { USER_CONSTANTS } from '@/user/user-constants'
+import { USER_CONSTANTS } from '@/user/domain/user-constants'
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {

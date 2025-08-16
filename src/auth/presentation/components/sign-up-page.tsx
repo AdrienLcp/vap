@@ -8,6 +8,8 @@ import { DEFAULT_ROUTE } from '@/domain/navigation'
 import { OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 
+import './sign-up-page.sass'
+
 export const SignUpPage: React.FC = async () => {
   const userResult = await AuthController.findUser()
   const isUserAuthenticated = userResult.status === OK_STATUS
@@ -17,10 +19,10 @@ export const SignUpPage: React.FC = async () => {
   }
 
   return (
-    <>
+    <div className='sign-up'>
       <h1>{t('auth.signUp.title')}</h1>
 
       <SignUpForm />
-    </>
+    </div>
   )
 }

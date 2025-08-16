@@ -17,12 +17,11 @@ import type { ValidationErrors } from '@/presentation/utils/react-aria-utils'
 import type { ValueOf } from '@/utils/object-utils'
 import type { Issues } from '@/utils/validation-utils'
 
-type CreateCategoryFormFieldName = ValueOf<typeof CATEGORY_FORM_FIELDS>
-type CreateCategoryValidationErrors = ValidationErrors<CreateCategoryFormFieldName>
+type CreateCategoryValidationErrors = ValidationErrors<ValueOf<typeof CATEGORY_FORM_FIELDS>>
 
 export const CreateCategoryForm: React.FC = () => {
   const [isCategoryCreationLoading, setIsCategoryCreationLoading] = React.useState(false)
-  const [createCategoryFormErrors, setCreateCategoryFormErrors] = React.useState<CreateCategoryValidationErrors | null>(null)
+  const [createCategoryFormErrors, setCreateCategoryFormErrors] = React.useState<CreateCategoryValidationErrors>()
 
   const onCategoryCreationBadRequestError = React.useCallback((issues: Issues<CategoryCreationData>) => {
     const nameErrors: string[] = []
@@ -49,7 +48,7 @@ export const CreateCategoryForm: React.FC = () => {
     switch (error) {
       case CATEGORY_CONSTANTS.NAME_ALREADY_EXISTS:
         setCreateCategoryFormErrors({
-          [CATEGORY_FORM_FIELDS.NAME]: [t('category.create.errors.categoryNameAlreadyExists')]
+          [CATEGORY_FORM_FIELDS.NAME]: t('category.create.errors.categoryNameAlreadyExists')
         })
         break
       default:

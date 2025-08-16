@@ -4,7 +4,7 @@ import { createAuthClient } from 'better-auth/react'
 
 import type { AuthUserResponse, ChangeEmailResponse, ChangePasswordInfo, ChangePasswordResponse, DeleteUserResponse, EmailSignInResponse, SignInInfo, SignOutResponse, SignUpInfo, SignUpResponse, SocialProvider } from '@/auth/domain/auth-entities'
 import { ApiClient, type ClientResponse, unknownError } from '@/infrastructure/api/api-client'
-import { HttpResponse } from '@/infrastructure/api/http-response'
+import { HttpResponse, OK_STATUS } from '@/infrastructure/api/http-response'
 
 export const betterAuthClient = createAuthClient()
 
@@ -71,7 +71,14 @@ const emailSignIn = async (signInInfo: SignInInfo): Promise<ClientResponse<Email
       }
     }
 
-    return await findUser()
+    const userResult = await findUser()
+
+    if (userResult.status !== OK_STATUS) {
+      console.error('Failed to fetch user after sign-in:', userResult)
+      return unknownError()
+    }
+
+    return HttpResponse.ok(userResult.data)
   } catch (error) {
     console.error('Email sign-in error:', error)
     return unknownError()
@@ -92,13 +99,22 @@ const emailSignUp = async (signUpInfo: SignUpInfo): Promise<ClientResponse<SignU
           return HttpResponse.badRequest('PASSWORD_TOO_SHORT')
         case 'USER_ALREADY_EXISTS':
           return HttpResponse.conflict('USER_ALREADY_EXISTS')
+        case 'INVALID_EMAIL':
+          return HttpResponse.badRequest('INVALID_EMAIL')
         default:
           console.error('Email sign-up error:', emailSignUpResponse.error)
           return unknownError()
       }
     }
 
-    return await findUser()
+    const userResult = await findUser()
+
+    if (userResult.status !== OK_STATUS) {
+      console.error('Failed to fetch user after sign-up:', userResult)
+      return unknownError()
+    }
+
+    return HttpResponse.created(userResult.data)
   } catch (error) {
     console.error('Email sign-up error:', error)
     return unknownError()

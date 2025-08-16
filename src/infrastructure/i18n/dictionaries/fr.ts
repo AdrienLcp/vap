@@ -6,6 +6,13 @@ export const fr = {
     signUp: {
       title: 'Inscription',
       description: 'Créez un compte pour gérer vos achats',
+      errors: {
+        passwordTooShort: dt('Le mot de passe doit comporter au moins {characterCount:plural} caractères.', {
+          plural: { characterCount: { zero: '0 caractère', one: '1 caractère', other: '{?} caractères' } }
+        }),
+        unknown: 'Une erreur inconnue est survenue.',
+        userAlreadyExists: 'Un utilisateur avec cet email existe déjà.'
+      },
       form: {
         email: {
           label: 'Email',
@@ -16,10 +23,11 @@ export const fr = {
           placeholder: 'Jean Neige'
         },
         password: {
-          label: 'Mot de passe',
           description: dt('Au moins {characterCount:plural}', {
             plural: { characterCount: { zero: '0 caractère', one: '1 caractère', other: '{?} caractères' } }
-          })
+          }),
+          label: 'Mot de passe',
+          placeholder: 'Entrez votre mot de passe'
         },
         submit: {
           creating: 'Création en cours...',
@@ -58,19 +66,14 @@ export const fr = {
     forms: {
       formValidationErrorDefaultMessage: 'Le formulaire contient des erreurs.',
       fieldError: {
-        badInput: 'Entrée invalide.',
         lengthValues: 'La valeur doit être comprise entre {min:number} et {max:number} caractères.',
-        patternMismatch: 'Le format de la valeur est incorrect.',
-        rangeOverflow: 'La valeur dépasse la limite autorisée.',
-        rangeUnderflow: 'La valeur est inférieure à la limite autorisée.',
-        stepMismatch: 'La valeur ne correspond pas à l\'intervalle requis.',
         tooLong: 'La valeur saisie est trop longue.',
         tooLongValue: 'La valeur saisie doit faire moins de {max:number} caractères.',
         tooShort: 'La valeur saisie est trop courte.',
         tooShortValue: 'La valeur saisie doit faire au moins {min:number} caractères.',
-        typeMismatch: 'Le type de la valeur est incorrect.',
         valueMissing: 'Ce champ est requis.'
-      }
+      },
+      requiredFields: 'Les champs marqués d\'un * sont requis.'
     }
   }
 } as const satisfies LanguageMessages

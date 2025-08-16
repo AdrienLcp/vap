@@ -1,0 +1,49 @@
+@use '@/presentation/styles/breakpoints'
+@use '@/presentation/styles/interactive'
+@use '@/presentation/styles/typography'
+
+@mixin common-pressable
+  @include typography.label-medium
+
+  &
+    align-items: center
+    block-size: var(--element-size, 2.5rem)
+    border-radius: var(--element-radius, 0.25rem)
+    display: flex
+    gap: var(--size-80, 0.5rem)
+    inline-size: 100%
+    justify-content: center
+    padding-inline: var(--size-120)
+
+  & svg
+    inline-size: var(--icon-size, 1rem)
+
+  &.has-icon-on-right
+    flex-direction: row-reverse
+
+  &.small
+    block-size: var(--size-160, 1rem)
+    padding-inline: var(--size-20, 0.125rem)
+
+    & svg
+      inline-size: var(--size-120, 0.75rem)
+
+  &.is-icon-button
+    padding: 0
+    inline-size: var(--element-size, 2.5rem)
+
+  @include breakpoints.is-desktop
+    inline-size: fit-content
+
+.pressable
+  &.filled
+    @include interactive.filled
+
+    &
+      @include common-pressable
+
+  &.outlined
+    @include interactive.outlined
+
+    &
+      @include common-pressable

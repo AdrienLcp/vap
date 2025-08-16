@@ -77,8 +77,8 @@ export function reactAriaPressableClassNames <T extends PressableRenderProps> (
     className,
     'pressable',
     currentVariant,
-    hasIcon && !isIconButton && `icon-${iconSide}`,
-    isIconButton && 'icon-size',
+    hasIcon && !isIconButton && `has-icon-on-${iconSide}`,
+    isIconButton && 'is-icon-button',
     currentSize
   )
 }

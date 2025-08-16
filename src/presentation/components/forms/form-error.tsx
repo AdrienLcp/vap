@@ -1,3 +1,5 @@
+import { CircleAlertIcon } from 'lucide-react'
+
 import type { ValidationErrors } from '@/presentation/utils/react-aria-utils'
 
 import './form-error.sass'
@@ -12,11 +14,15 @@ export function FormError <T extends PropertyKey> ({ validationErrors }: FormErr
   }
 
   return (
-    <p className='form-error'>
-      {Array.isArray(validationErrors.form)
-        ? validationErrors.form.map((error, index) => <span key={index}>{error}</span>)
-        : validationErrors.form
-      }
-    </p>
+    <div className='form-error'>
+      <CircleAlertIcon />
+
+      <p>
+        {Array.isArray(validationErrors.form)
+          ? validationErrors.form.map((error, index) => <span key={index}>{error}</span>)
+          : validationErrors.form
+        }
+      </p>
+    </div>
   )
 }

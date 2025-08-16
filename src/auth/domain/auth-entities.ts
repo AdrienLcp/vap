@@ -3,8 +3,8 @@ import type { z } from 'zod'
 import type { AUTH_CONSTANTS } from '@/auth/domain/auth-constants'
 import type { AuthPermissionsSchema, AuthUserDTOSchema } from '@/auth/domain/auth-schemas'
 import type { Unauthorized } from '@/helpers/result'
-import type { BadRequestResponse, ConflictResponse, NoContentResponse, OkResponse, Response, UnauthorizedResponse } from '@/infrastructure/api/http-response'
-import type { UserRole } from '@/user/user-entities'
+import type { BadRequestResponse, ConflictResponse, CreatedResponse, NoContentResponse, OkResponse, Response, UnauthorizedResponse } from '@/infrastructure/api/http-response'
+import type { UserRole } from '@/user/domain/user-entities'
 
 export type AuthPermissions = z.infer<typeof AuthPermissionsSchema>
 
@@ -20,6 +20,7 @@ export type AuthUserError = Unauthorized
 export type AuthUserResponse = Response<OkResponse<AuthUserDTO> | UnauthorizedResponse>
 
 export type InvalidCredentials = 'INVALID_CREDENTIALS'
+export type InvalidEmail = typeof AUTH_CONSTANTS.INVALID_EMAIL
 export type InvalidPassword = 'INVALID_PASSWORD'
 export type PasswordTooShort = typeof AUTH_CONSTANTS.PASSWORD_TOO_SHORT
 export type UserAlreadyExists = 'USER_ALREADY_EXISTS'
@@ -29,9 +30,10 @@ export type SignInInfo = {
   password: string
 }
 
-export type EmailSignInResponse =
-  | AuthUserResponse
-  | Response<BadRequestResponse<InvalidCredentials>>
+export type EmailSignInResponse = Response<
+  | OkResponse<AuthUserDTO>
+  | BadRequestResponse<InvalidCredentials>
+>
 
 export type SignUpInfo = {
   email: string
@@ -39,14 +41,10 @@ export type SignUpInfo = {
   password: string
 }
 
-export type SignUpErrorResponse = Response<
-  | BadRequestResponse<PasswordTooShort>
-  | ConflictResponse<UserAlreadyExists>
->
-
 export type SignUpResponse =
-  | AuthUserResponse
-  | SignUpErrorResponse
+  | CreatedResponse<AuthUserDTO>
+  | BadRequestResponse<InvalidEmail | PasswordTooShort>
+  | ConflictResponse<UserAlreadyExists>
 
 export type SignOutResponse = Response<
   | NoContentResponse

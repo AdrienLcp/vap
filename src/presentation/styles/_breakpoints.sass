@@ -7,5 +7,9 @@ $breakpoints: (
 )
 
 @mixin responsive($size)
-  @media (min-width: map-get($breakpoints, $size))
+  @media (width < map-get($breakpoints, $size))
+    @content
+
+@mixin is-desktop
+  @media (width > map-get($breakpoints, m))
     @content

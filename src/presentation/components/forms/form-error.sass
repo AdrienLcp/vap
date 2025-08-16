@@ -1,3 +1,21 @@
+@use '@/presentation/styles/typography'
+
 .form-error
-  color: var(--status-error-foreground)
-  display: grid
+  @include typography.label-medium
+
+  &
+    align-items: center
+    background-color: var(--status-error-background)
+    border: 1px solid var(--status-error-border)
+    border-radius: var(--radius-s)
+    color: var(--status-error-foreground)
+    display: flex
+    gap: var(--size-80, 0.5rem)
+    justify-content: center
+    padding: var(--size-120, 0.75rem) var(--size-160, 1rem)
+
+  & svg
+    min-inline-size: var(--icon-size, 1rem)
+
+  & p
+    display: grid

@@ -19,7 +19,7 @@ const renderButtonIcon = (Icon: ButtonProps['Icon'], variant: ButtonProps['varia
   }
 
   return (
-    <div className='pressable-icon' role='presentation'>
+    <div className='icon' role='presentation'>
       {isPending && Icon != null ? <Spinner /> : Icon}
     </div>
   )
@@ -52,7 +52,7 @@ const BaseButton: React.FC<ButtonProps> = ({
           {renderButtonIcon(Icon, variant, values.isPending)}
 
           {children != null && (
-            <div className='pressable-content'>
+            <div className='content'>
               {renderButtonChildren(children, values)}
             </div>
           )}

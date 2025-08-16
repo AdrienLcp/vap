@@ -1,0 +1,12 @@
+@use '@/presentation/styles/typography'
+
+.sign-up
+  display: grid
+  gap: var(--size-320, 2rem)
+  margin: auto
+  justify-items: center
+  padding-block: var(--size-320, 2rem)
+  inline-size: clamp(200px, 100% - var(--size-80), 40ch)
+
+  & h1
+    @include typography.title-large

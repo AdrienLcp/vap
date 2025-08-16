@@ -1,5 +1,5 @@
 import type { AuthPermissions } from '@/auth/domain/auth-entities'
-import type { UserRole } from '@/user/user-entities'
+import type { UserRole } from '@/user/domain/user-entities'
 
 const USER_RIGHTS = [] as const
 

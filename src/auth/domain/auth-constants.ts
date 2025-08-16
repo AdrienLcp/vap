@@ -15,4 +15,4 @@ export const AUTH_FORM_FIELDS = {
   EMAIL: 'email',
   PASSWORD: 'password',
   CONFIRM_PASSWORD: 'confirm-password'
-}
+} as const

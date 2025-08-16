@@ -1,15 +1,29 @@
 @use '@/presentation/styles/animations'
 @use '@/presentation/styles/selectors'
 
+@mixin filled
+  @include animations.color-transitions
+
+  &
+    background-color: var(--brand-background)
+    color: var(--neutral-foreground-inverted)
+
+  @include selectors.hovered
+    background-color: var(--brand-background-hovered)
+
+  @include selectors.pressed
+    background-color: var(--brand-background-pressed)
+
+  @include selectors.focused
+    background-color: var(--brand-background-focused)
+
 @mixin outlined
   @include animations.color-transitions
 
   &
     background-color: transparent
     border: var(--stroke-m) solid var(--neutral-border)
-    border-radius: var(--radius-s)
     color: var(--neutral-foreground)
-    padding: var(--size-80) var(--size-120)
 
   @include selectors.hovered
     border-color: var(--neutral-border-hovered)

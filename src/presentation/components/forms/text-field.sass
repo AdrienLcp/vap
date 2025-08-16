@@ -1,9 +1,41 @@
-@use '@/presentation/styles/colors'
 @use '@/presentation/styles/interactive'
+@use '@/presentation/styles/typography'
 
 .text-field
   display: grid
   gap: var(--size-40)
 
+  & .label
+    @include typography.label-medium
+
+    &
+      @include typography.text-ellipsis
+
+    &
+      padding-inline: var(--size-20, 0.125rem)
+
   & .input
     @include interactive.outlined
+
+    &
+      @include typography.text-ellipsis
+
+    &
+      height: var(--element-size, 2.5rem)
+      min-width: 100%
+
+    &::placeholder
+      @include typography.text-ellipsis
+
+      &
+        color: var(--neutral-foreground-muted)
+
+  & .description
+    @include typography.body-small
+
+    &
+      @include typography.text-ellipsis
+
+    &
+      color: var(--neutral-foreground-light)
+      padding-inline: var(--size-20, 0.125rem)
