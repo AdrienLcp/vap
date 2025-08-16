@@ -1,8 +1,15 @@
 @use '@/presentation/styles/animations'
 @use '@/presentation/styles/selectors'
 
+@mixin common-interactive
+  border-radius: var(--element-radius, 0.25rem)
+  padding: var(--size-80, 0.5rem) var(--size-120, 0.75rem)
+
 @mixin filled
-  @include animations.color-transitions
+  @include common-interactive
+
+  &
+    @include animations.color-transitions
 
   &
     background-color: var(--brand-background)
@@ -18,7 +25,10 @@
     background-color: var(--brand-background-focused)
 
 @mixin outlined
-  @include animations.color-transitions
+  @include common-interactive
+
+  &
+    @include animations.color-transitions
 
   &
     background-color: transparent

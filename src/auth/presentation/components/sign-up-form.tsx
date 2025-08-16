@@ -1,6 +1,5 @@
 'use client'
 
-import { AlertCircleIcon } from 'lucide-react'
 import { redirect } from 'next/navigation'
 import React from 'react'
 
