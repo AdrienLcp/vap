@@ -9,6 +9,7 @@ import { BAD_REQUEST_STATUS, NO_CONTENT_STATUS } from '@/infrastructure/api/http
 import { t } from '@/infrastructure/i18n'
 import { Form } from '@/presentation/components/forms/form'
 import { Button } from '@/presentation/components/ui/pressables/button'
+import { ToastService } from '@/presentation/services/toast-service'
 import type { ValidationErrors } from '@/presentation/utils/react-aria-utils'
 import { UserPasswordField } from '@/user/presentation/user-password-field'
 import type { ValueOf } from '@/utils/object-utils'
@@ -51,7 +52,7 @@ export const ChangePasswordForm: React.FC = () => {
 
     switch (changePasswordResponse.status) {
       case NO_CONTENT_STATUS:
-        // toast success message can be added here
+        ToastService.success(t('auth.changePassword.success'))
         break
       case BAD_REQUEST_STATUS:
         onChangePasswordBadRequest(changePasswordResponse.issues)

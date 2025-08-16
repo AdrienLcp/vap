@@ -1,12 +1,31 @@
 .toaster
+  bottom: var(--size-80, 0.5rem)
   display: grid
   gap: var(--size-80, 0.5rem)
+  position: fixed
+  right: var(--size-80, 0.5rem)
 
   & .toast
     align-items: center
+    background-color: var(--neutral-background)
+    border-radius: var(--element-radius, 0.25rem)
+    box-shadow: var(--shadow-s)
     display: flex
     gap: var(--size-80, 0.5rem)
-    // view-transition-class: toast
+    padding: var(--size-120, 0.75rem)var(--size-160, 1rem)
+    view-transition-class: toast
+
+    &.error
+      background-color: var(--status-error-background)
+      color: var(--status-error-foreground)
+
+    &.success
+      background-color: var(--status-success-background)
+      color: var(--status-success-foreground)
+
+    &.warning
+      background-color: var(--status-warning-background)
+      color: var(--status-warning-foreground)
 
 ::view-transition-new(.toast):only-child
   animation: slide-in var(--transition-150)

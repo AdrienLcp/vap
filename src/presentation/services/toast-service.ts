@@ -27,7 +27,7 @@ type ToastOptions = Pick<Toast, 'description' | 'Icon'> & {
   duration?: number
 }
 
-const DEFAULT_DURATION = 3000
+const DEFAULT_DURATION = 100000
 
 const error = (title: string, options?: ToastOptions) => {
   toastQueue.add({

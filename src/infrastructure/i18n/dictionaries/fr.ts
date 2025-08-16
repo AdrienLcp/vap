@@ -16,7 +16,8 @@ export const fr = {
           label: 'Changer email',
           loading: 'Changement en cours...'
         }
-      }
+      },
+      success: 'Votre email a été changé avec succès.'
     },
     changePassword: {
       errors: {
@@ -42,7 +43,8 @@ export const fr = {
           label: 'Confirmer',
           loading: 'Chargement...'
         }
-      }
+      },
+      success: 'Votre mot de passe a été changé avec succès.'
     },
     signIn: {
       title: 'Connexion',

@@ -1,5 +1,6 @@
 'use client'
 
+import classNames from 'classnames'
 import { CircleXIcon } from 'lucide-react'
 import {
   Text,
@@ -11,11 +12,13 @@ import {
 import { Button } from '@/presentation/components/ui/pressables/button'
 import { toastQueue } from '@/presentation/services/toast-service'
 
+import './toaster.sass'
+
 export const Toaster: React.FC = () => (
-  <ToastRegion queue={toastQueue}>
+  <ToastRegion className='toaster' queue={toastQueue}>
     {({ toast }) => (
       <Toast
-        className='toast'
+        className={classNames('toast', toast.content.type)}
         style={{ viewTransitionName: toast.key }}
         toast={toast}
       >

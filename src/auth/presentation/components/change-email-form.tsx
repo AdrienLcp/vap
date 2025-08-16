@@ -31,8 +31,7 @@ export const ChangeEmailForm: React.FC = () => {
 
     switch (changeEmailResponse.status) {
       case NO_CONTENT_STATUS:
-        // toast success message can be added here
-        ToastService.success('auth.changeEmail.success')
+        ToastService.success(t('auth.changeEmail.success'))
         break
       default:
         setChangeEmailFormErrors({ form: t('auth.changeEmail.errors.unknown') })
