@@ -8,6 +8,7 @@ import { NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { Form } from '@/presentation/components/forms/form'
 import { Button } from '@/presentation/components/ui/pressables/button'
+import { ToastService } from '@/presentation/services/toast-service'
 import type { ValidationErrors } from '@/presentation/utils/react-aria-utils'
 import { UserEmailField } from '@/user/presentation/user-email-field'
 import type { ValueOf } from '@/utils/object-utils'
@@ -31,6 +32,7 @@ export const ChangeEmailForm: React.FC = () => {
     switch (changeEmailResponse.status) {
       case NO_CONTENT_STATUS:
         // toast success message can be added here
+        ToastService.success('auth.changeEmail.success')
         break
       default:
         setChangeEmailFormErrors({ form: t('auth.changeEmail.errors.unknown') })
