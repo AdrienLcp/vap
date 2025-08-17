@@ -1,34 +1,20 @@
 'use client'
 
-import { LogInIcon, LogOutIcon } from 'lucide-react'
-import { redirect } from 'next/navigation'
+import { LogInIcon } from 'lucide-react'
+import React from 'react'
 
 import { useAuth } from '@/auth/application/use-auth'
-import { AuthClient } from '@/auth/infrastructure/auth-client'
-import { DEFAULT_ROUTE, ROUTES } from '@/domain/navigation'
-import { NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
+import { PersonaMenu } from '@/auth/presentation/components/persona-menu'
+import { ROUTES } from '@/domain/navigation'
 import { t } from '@/infrastructure/i18n'
-import { Spinner } from '@/presentation/components/ui/loaders/spinner'
-import { Button } from '@/presentation/components/ui/pressables/button'
+import { Loader } from '@/presentation/components/ui/loaders/loader'
 import { Link } from '@/presentation/components/ui/pressables/link'
-import { ToastService } from '@/presentation/services/toast-service'
-
-const signOut = async () => {
-  const signOutResponse = await AuthClient.signOut()
-
-  switch (signOutResponse.status) {
-    case NO_CONTENT_STATUS:
-      redirect(DEFAULT_ROUTE)
-    default:
-      ToastService.error(t('auth.signOut.errors.unknown'))
-  }
-}
 
 export const AuthButton: React.FC = () => {
   const { auth } = useAuth()
 
   if (auth.status === 'loading') {
-    return <Spinner />
+    return <Loader />
   }
 
   if (auth.status === 'unauthenticated') {
@@ -39,9 +25,13 @@ export const AuthButton: React.FC = () => {
     )
   }
 
+  const user = auth.user
+
   return (
-    <Button Icon={<LogOutIcon />} onPress={signOut} variant='underlined'>
-      {t('auth.signOut.label')}
-    </Button>
+    <PersonaMenu
+      userEmail={user.email}
+      userImageUrl={user.image}
+      userName={user.name}
+    />
   )
 }

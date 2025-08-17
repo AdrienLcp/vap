@@ -5,28 +5,23 @@ import { Image } from '@/presentation/components/ui/image'
 
 import './avatar.sass'
 
-type AvatarUser = {
-  email: string
-  image?: string | null
-  name: string
-}
-
 type AvatarProps = {
   size?: 'medium' | 'small'
-  user: AvatarUser
+  userEmail: string
+  userImageUrl?: string | null
+  userName: string
 }
 
-export const Avatar: React.FC<AvatarProps> = ({ size = 'medium', user }) => {
+export const Avatar: React.FC<AvatarProps> = ({ size = 'medium', userEmail, userImageUrl, userName }) => {
   const imageSize = size === 'medium' ? 48 : 32
-  const hashedEmail = sha256(user.email.trim().toLowerCase())
-  const userName = user.name
+  const hashedEmail = sha256(userEmail.trim().toLowerCase())
 
   return (
     <Image
-      alt={userName ? t('components.avatar.alt', { userName }) : t('components.avatar.defaultAlt')}
+      alt={userName ? t('user.avatar.alt', { userName }) : t('user.avatar.defaultAlt')}
       className='avatar'
       height={imageSize}
-      src={user.image ?? `https://www.gravatar.com/avatar/${hashedEmail}?s=${imageSize}&d=mp`}
+      src={userImageUrl ?? `https://www.gravatar.com/avatar/${hashedEmail}?s=${imageSize}&d=mp`}
       width={imageSize}
     />
   )

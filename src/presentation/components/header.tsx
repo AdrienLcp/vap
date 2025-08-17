@@ -1,6 +1,5 @@
-import { PersonaMenu } from '@/auth/presentation/components/persona-menu'
+import { AuthButton } from '@/auth/presentation/components/auth-button'
 import { DEFAULT_ROUTE } from '@/domain/navigation'
-import { NavBar } from '@/presentation/components/nav-bar'
 import { Logo } from '@/presentation/components/ui/logo'
 import { Link } from '@/presentation/components/ui/pressables/link'
 
@@ -12,10 +11,6 @@ export const Header: React.FC = () => (
       <Logo />
     </Link>
 
-    <div className='content'>
-      <NavBar />
-
-      <PersonaMenu />
-    </div>
+    <AuthButton />
   </header>
 )

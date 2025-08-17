@@ -45,6 +45,10 @@ export const fr = {
       },
       success: 'Votre mot de passe a été changé avec succès.'
     },
+    persona: {
+      profile: 'Profil',
+      signOut: 'Se déconnecter'
+    },
     signIn: {
       errors: {
         invalidCredentials: 'L\'adresse mail et le mot de passe ne correspondent pas.',
@@ -134,10 +138,6 @@ export const fr = {
     }
   },
   components: {
-    avatar: {
-      alt: 'Avatar de {userName}',
-      defaultAlt: 'Avatar de l\'utilisateur'
-    },
     forms: {
       formValidationErrorDefaultMessage: 'Le formulaire contient des erreurs.',
       fieldError: {
@@ -149,6 +149,12 @@ export const fr = {
         valueMissing: 'Ce champ est requis.'
       },
       requiredFields: 'Les champs marqués d\'un * sont requis.'
+    }
+  },
+  user: {
+    avatar: {
+      alt: 'Avatar de {userName}',
+      defaultAlt: 'Avatar de l\'utilisateur'
     }
   }
 } as const satisfies LanguageMessages

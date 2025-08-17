@@ -1,10 +1,18 @@
 import classNames from 'classnames'
-import type { ButtonRenderProps, FieldErrorRenderProps, LinkRenderProps, TextFieldRenderProps, TooltipRenderProps } from 'react-aria-components'
+import type {
+  ButtonRenderProps,
+  FieldErrorRenderProps,
+  LinkRenderProps,
+  MenuItemRenderProps,
+  TextFieldRenderProps,
+  TooltipRenderProps
+} from 'react-aria-components'
 
 export type ReactAriaComponentRenderProps =
   | ButtonRenderProps
   | FieldErrorRenderProps
   | LinkRenderProps
+  | MenuItemRenderProps
   | TextFieldRenderProps
   | TooltipRenderProps
 
