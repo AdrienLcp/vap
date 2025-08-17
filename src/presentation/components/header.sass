@@ -1,0 +1,12 @@
+@use '@/presentation/styles/sizes'
+
+.header
+  align-items: center
+  display: flex
+  justify-content: space-between
+  padding: var(--size-160, 1rem) var(--size-320, 2rem)
+  position: sticky
+  top: 0
+
+  & .logo
+    @include sizes.square(3rem)

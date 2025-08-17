@@ -72,7 +72,7 @@ export const fr = {
       }
     },
     signUp: {
-      title: 'Inscription',
+      alreadyHaveAccount: 'Vous avez déjà un compte ?',
       errors: {
         invalidPasswordLength: dt('Le mot de passe doit comporter entre {minLength:number} et {maxLength:plural}', {
           plural: {
@@ -102,7 +102,9 @@ export const fr = {
           creating: 'Création en cours...',
           label: 'S\'inscrire'
         }
-      }
+      },
+      signInHere: 'Connectez-vous ici',
+      title: 'Inscription'
     }
   },
   category: {

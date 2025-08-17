@@ -23,8 +23,6 @@ import { UserEmailField } from '@/user/presentation/user-email-field'
 import { UserPasswordField } from '@/user/presentation/user-password-field'
 import type { ValueOf } from '@/utils/object-utils'
 
-import './sign-in-form.sass'
-
 type SignInFormErrors = ValidationErrors<ValueOf<typeof AUTH_FORM_FIELDS>>
 
 export const SignInForm: React.FC = () => {
@@ -65,11 +63,7 @@ export const SignInForm: React.FC = () => {
   }, [onSignInSuccess])
 
   return (
-    <Form
-      className='sign-in-form'
-      onSubmit={onSignInFormSubmit}
-      validationErrors={signInFormErrors}
-    >
+    <Form onSubmit={onSignInFormSubmit} validationErrors={signInFormErrors}>
       <FieldSet isDisabled={isUserAuthenticationLoading}>
         <UserEmailField />
 

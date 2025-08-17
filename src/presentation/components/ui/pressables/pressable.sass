@@ -1,5 +1,6 @@
 @use '@/presentation/styles/breakpoints'
 @use '@/presentation/styles/interactive'
+@use '@/presentation/styles/sizes'
 @use '@/presentation/styles/typography'
 
 @mixin common-pressable
@@ -14,6 +15,9 @@
     inline-size: 100%
     justify-content: center
     padding: 0 var(--size-120, 0.75rem)
+
+  & svg
+    @include sizes.square(1em)
 
   &.has-icon-on-left
     padding-inline: var(--size-120, 0.75rem) var(--size-160, 1rem)

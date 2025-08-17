@@ -4,9 +4,23 @@
   display: grid
   gap: var(--size-320, 2rem)
   margin: auto
+  inline-size: clamp(200px, 100% - var(--size-80), 40ch)
   justify-items: center
   padding-block: var(--size-320, 2rem)
-  inline-size: clamp(200px, 100% - var(--size-80), 40ch)
 
   & h1
     @include typography.title-large
+
+  & .sign-in,
+  & .sign-up
+    display: grid
+    gap: var(--size-80, 0.5rem)
+    margin: auto
+    place-items: center
+    inline-size: fit-content
+
+    & p
+      @include typography.label-small
+
+      &
+        color: var(--neutral-foreground-light)

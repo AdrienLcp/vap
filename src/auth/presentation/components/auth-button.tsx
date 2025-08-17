@@ -1,5 +1,6 @@
 'use client'
 
+import { LogInIcon, LogOutIcon } from 'lucide-react'
 import { redirect } from 'next/navigation'
 
 import { useAuth } from '@/auth/application/use-auth'
@@ -32,14 +33,14 @@ export const AuthButton: React.FC = () => {
 
   if (auth.status === 'unauthenticated') {
     return (
-      <Link href={ROUTES.signIn} variant='filled'>
+      <Link Icon={<LogInIcon />} href={ROUTES.signIn} variant='filled'>
         {t('auth.signIn.label')}
       </Link>
     )
   }
 
   return (
-    <Button onPress={signOut} variant='outlined'>
+    <Button Icon={<LogOutIcon />} onPress={signOut} variant='underlined'>
       {t('auth.signOut.label')}
     </Button>
   )

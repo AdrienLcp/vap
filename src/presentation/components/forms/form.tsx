@@ -1,5 +1,7 @@
 import { Form as ReactAriaForm, type FormProps as ReactAriaFormProps } from 'react-aria-components'
 
+import './form.sass'
+
 export type FormTarget = EventTarget & HTMLFormElement
 
 export type FormProps = Omit<ReactAriaFormProps, 'onSubmit' | 'validationErrors'> & {
@@ -24,6 +26,7 @@ export const Form: React.FC<FormProps> = ({ children, onSubmit, validationErrors
 
   return (
     <ReactAriaForm
+      className='form'
       onSubmit={onSubmit && onSubmitHandler}
       validationErrors={validationErrors ?? undefined}
       {...formRestProps}

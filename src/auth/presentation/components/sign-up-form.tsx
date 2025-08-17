@@ -8,7 +8,7 @@ import { useAuth } from '@/auth/application/use-auth'
 import { AUTH_CONSTANTS, AUTH_FORM_FIELDS } from '@/auth/domain/auth-constants'
 import type { AuthUserDTO, SignUpInfo } from '@/auth/domain/auth-entities'
 import { AuthClient } from '@/auth/infrastructure/auth-client'
-import { DEFAULT_ROUTE } from '@/domain/navigation'
+import { DEFAULT_ROUTE, ROUTES } from '@/domain/navigation'
 import { BAD_REQUEST_STATUS, CONFLICT_STATUS, CREATED_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
@@ -16,6 +16,8 @@ import { Form } from '@/presentation/components/forms/form'
 import { FormError } from '@/presentation/components/forms/form-error'
 import { RequiredFieldsMessage } from '@/presentation/components/forms/required-fields-message'
 import { Button } from '@/presentation/components/ui/pressables/button'
+import { Link } from '@/presentation/components/ui/pressables/link'
+import { Separator } from '@/presentation/components/ui/separator'
 import type { ValidationErrors } from '@/presentation/utils/react-aria-utils'
 import { UserEmailField } from '@/user/presentation/user-email-field'
 import { UserNameField } from '@/user/presentation/user-name-field'
@@ -26,7 +28,7 @@ type SignUpFormErrors = ValidationErrors<ValueOf<typeof AUTH_FORM_FIELDS>>
 
 export const SignUpForm: React.FC = () => {
   const [isUserCreationLoading, setIsUserCreationLoading] = React.useState(false)
-  const [signUpFormErrors, setSignUpFormErrors] = React.useState<SignUpFormErrors>()
+  const [signUpFormErrors, setSignUpFormErrors] = React.useState<SignUpFormErrors>({ form: 'test' })
 
   const { setUser } = useAuth()
 
@@ -70,10 +72,7 @@ export const SignUpForm: React.FC = () => {
   }, [onSignUpSuccess])
 
   return (
-    <Form
-      onSubmit={onSignUpFormSubmit}
-      validationErrors={signUpFormErrors}
-    >
+    <Form onSubmit={onSignUpFormSubmit} validationErrors={signUpFormErrors}>
       <FieldSet isDisabled={isUserCreationLoading}>
         <UserEmailField />
 
@@ -94,6 +93,16 @@ export const SignUpForm: React.FC = () => {
       >
         {({ isPending }) => t(`auth.signUp.form.submit.${isPending ? 'creating' : 'label'}`)}
       </Button>
+
+      <div className='sign-in'>
+        <p>{t('auth.signUp.alreadyHaveAccount')}</p>
+
+        <Separator />
+
+        <Link href={ROUTES.signIn} variant='underlined'>
+          {t('auth.signUp.signInHere')}
+        </Link>
+      </div>
     </Form>
   )
 }
