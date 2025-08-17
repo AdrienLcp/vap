@@ -51,11 +51,7 @@ const BaseButton: React.FC<ButtonProps> = ({
       : <>
           {renderButtonIcon(Icon, variant, values.isPending)}
 
-          {children != null && (
-            <div className='content'>
-              {renderButtonChildren(children, values)}
-            </div>
-          )}
+          {children != null && renderButtonChildren(children, values)}
         </>
     }
   </ReactAriaButton>

@@ -8,7 +8,6 @@ import { Providers } from '@/presentation/components/providers'
 import { Toaster } from '@/presentation/components/ui/toaster'
 
 import '@/presentation/styles/base.sass'
-import { ChangeEmailForm } from '@/auth/presentation/components/change-email-form'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -30,8 +29,6 @@ const RootLayout: React.FC<React.PropsWithChildren> = async ({ children }) => (
     <html data-scroll-behavior='smooth' lang={lang}>
       <body className={classNames(geistSans.variable, geistMono.variable)}>
         <Header />
-
-        <ChangeEmailForm />
 
         {children}
 

@@ -8,7 +8,7 @@ import { useAuth } from '@/auth/application/use-auth'
 import { AUTH_FORM_FIELDS } from '@/auth/domain/auth-constants'
 import type { AuthUserDTO, SignInInfo } from '@/auth/domain/auth-entities'
 import { AuthClient } from '@/auth/infrastructure/auth-client'
-import { DEFAULT_ROUTE } from '@/domain/navigation'
+import { DEFAULT_ROUTE, ROUTES } from '@/domain/navigation'
 import { BAD_REQUEST_STATUS, OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
@@ -16,10 +16,14 @@ import { Form } from '@/presentation/components/forms/form'
 import { FormError } from '@/presentation/components/forms/form-error'
 import { RequiredFieldsMessage } from '@/presentation/components/forms/required-fields-message'
 import { Button } from '@/presentation/components/ui/pressables/button'
+import { Link } from '@/presentation/components/ui/pressables/link'
+import { Separator } from '@/presentation/components/ui/separator'
 import type { ValidationErrors } from '@/presentation/utils/react-aria-utils'
 import { UserEmailField } from '@/user/presentation/user-email-field'
 import { UserPasswordField } from '@/user/presentation/user-password-field'
 import type { ValueOf } from '@/utils/object-utils'
+
+import './sign-in-form.sass'
 
 type SignInFormErrors = ValidationErrors<ValueOf<typeof AUTH_FORM_FIELDS>>
 
@@ -61,7 +65,11 @@ export const SignInForm: React.FC = () => {
   }, [onSignInSuccess])
 
   return (
-    <Form onSubmit={onSignInFormSubmit} validationErrors={signInFormErrors}>
+    <Form
+      className='sign-in-form'
+      onSubmit={onSignInFormSubmit}
+      validationErrors={signInFormErrors}
+    >
       <FieldSet isDisabled={isUserAuthenticationLoading}>
         <UserEmailField />
 
@@ -80,6 +88,16 @@ export const SignInForm: React.FC = () => {
       >
         {({ isPending }) => t(`auth.signIn.form.submit.${isPending ? 'loading' : 'label'}`)}
       </Button>
+
+      <div className='sign-up'>
+        <p>{t('auth.signIn.noAccount')}</p>
+
+        <Separator />
+
+        <Link href={ROUTES.signUp} variant='underlined'>
+          {t('auth.signIn.signUpHere')}
+        </Link>
+      </div>
     </Form>
   )
 }

@@ -1,19 +1,14 @@
 @use '@/presentation/styles/animations'
 @use '@/presentation/styles/selectors'
 
-@mixin common-interactive
-  border-radius: var(--element-radius, 0.25rem)
-  padding: var(--size-80, 0.5rem) var(--size-120, 0.75rem)
-
 @mixin filled
-  @include common-interactive
-
-  &
-    @include animations.color-transitions
+  @include animations.color-transitions
 
   &
     background-color: var(--brand-background)
+    border-radius: var(--element-radius, 0.25rem)
     color: var(--neutral-foreground-inverted)
+    padding: var(--size-80, 0.5rem) var(--size-120, 0.75rem)
 
   @include selectors.hovered
     background-color: var(--brand-background-hovered)
@@ -25,15 +20,14 @@
     background-color: var(--brand-background-focused)
 
 @mixin outlined
-  @include common-interactive
-
-  &
-    @include animations.color-transitions
+  @include animations.color-transitions
 
   &
     background-color: transparent
     border: var(--stroke-m) solid var(--neutral-border)
+    border-radius: var(--element-radius, 0.25rem)
     color: var(--neutral-foreground)
+    padding: var(--size-80, 0.5rem) var(--size-120, 0.75rem)
 
   @include selectors.hovered
     border-color: var(--neutral-border-hovered)
@@ -43,3 +37,24 @@
 
   @include selectors.focused
     border-color: var(--neutral-border-focused)
+
+@mixin underlined
+  @include animations.color-transitions
+
+  &
+    align-items: center
+    color: var(--neutral-foreground)
+    display: flex
+    inline-size: fit-content
+
+  @include selectors.hovered
+    color: var(--neutral-foreground-hovered)
+    text-decoration: underline
+  
+  @include selectors.pressed
+    color: var(--neutral-foreground-pressed)
+    text-decoration: underline
+
+  @include selectors.focused
+    color: var(--neutral-foreground-focused)
+    text-decoration: underline

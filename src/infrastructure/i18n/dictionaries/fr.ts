@@ -22,10 +22,9 @@ export const fr = {
     changePassword: {
       errors: {
         invalidPassword: 'Le mot de passe actuel est incorrect.',
-        invalidPasswordLength: dt('Le mot de passe doit comporter entre {minLength:plural} et {maxLength:plural}', {
+        invalidPasswordLength: dt('Le mot de passe doit comporter entre {minLength:number} et {maxLength:plural}', {
           plural: {
-            maxLength: { zero: '0 caractère', one: '1 caractère', other: '{?} caractères' },
-            minLength: { zero: '0 caractère', one: '1 caractère', other: '{?} caractères' }
+            maxLength: { zero: '0 caractère', one: '1 caractère', other: '{?} caractères' }
           }
         }),
         unknown: 'Une erreur inconnue est survenue.'
@@ -47,7 +46,6 @@ export const fr = {
       success: 'Votre mot de passe a été changé avec succès.'
     },
     signIn: {
-      title: 'Connexion',
       errors: {
         invalidCredentials: 'L\'adresse mail et le mot de passe ne correspondent pas.',
         unknown: 'Une erreur inconnue est survenue.'
@@ -61,15 +59,24 @@ export const fr = {
           label: 'Se connecter',
           loading: 'Connexion en cours...'
         }
+      },
+      label: 'Se connecter',
+      noAccount: 'Vous n\'avez pas de compte ?',
+      signUpHere: 'Inscrivez-vous ici',
+      title: 'Connexion'
+    },
+    signOut: {
+      label: 'Se déconnecter',
+      errors: {
+        unknown: 'Une erreur inconnue est survenue.'
       }
     },
     signUp: {
       title: 'Inscription',
       errors: {
-        invalidPasswordLength: dt('Le mot de passe doit comporter entre {minLength:plural} et {maxLength:plural}', {
+        invalidPasswordLength: dt('Le mot de passe doit comporter entre {minLength:number} et {maxLength:plural}', {
           plural: {
-            maxLength: { zero: '0 caractère', one: '1 caractère', other: '{?} caractères' },
-            minLength: { zero: '0 caractère', one: '1 caractère', other: '{?} caractères' }
+            maxLength: { zero: '0 caractère', one: '1 caractère', other: '{?} caractères' }
           }
         }),
         unknown: 'Une erreur inconnue est survenue.',
