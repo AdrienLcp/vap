@@ -11,6 +11,8 @@ import { t } from '@/infrastructure/i18n'
 import { Loader } from '@/presentation/components/ui/loaders/loader'
 import { Link } from '@/presentation/components/ui/pressables/link'
 
+import './auth-button.sass'
+
 export const AuthButton: React.FC = () => {
   const { auth } = useAuth()
   const pathname = usePathname()
@@ -25,7 +27,12 @@ export const AuthButton: React.FC = () => {
     }
 
     return (
-      <Link Icon={<LogInIcon />} href={ROUTES.signIn} variant='filled'>
+      <Link
+        className='auth-link'
+        Icon={<LogInIcon />}
+        href={ROUTES.signIn}
+        variant='filled'
+      >
         {t('auth.signIn.label')}
       </Link>
     )

@@ -7,7 +7,7 @@ import { ROUTES } from '@/domain/navigation'
 import { OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 
-import './auth-wrapper.sass'
+import './profile-page.sass'
 
 export const ProfilePage: React.FC = async () => {
   const userResponse = await AuthController.findUser()
@@ -18,7 +18,7 @@ export const ProfilePage: React.FC = async () => {
   }
 
   return (
-    <div className='auth-wrapper'>
+    <>
       <h1>{t('auth.profile.title')}</h1>
 
       <section>
@@ -30,6 +30,6 @@ export const ProfilePage: React.FC = async () => {
         <h2>{t('auth.profile.changePassword')}</h2>
         <ChangePasswordForm />
       </section>
-    </div>
+    </>
   )
 }

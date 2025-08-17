@@ -114,6 +114,11 @@ export const fr = {
       },
       signInHere: 'Connectez-vous ici',
       title: 'Inscription'
+    },
+    unauthorized: {
+      description: 'Vous n\'êtes pas autorisé à accéder à cette page.',
+      linkLabel: 'Retour à la page d\'accueil',
+      title: 'Accès non autorisé'
     }
   },
   category: {

@@ -3,12 +3,11 @@
 import { redirect } from 'next/navigation'
 
 import { AuthController } from '@/auth/presentation/auth-controller'
+import { AlreadyRegistered } from '@/auth/presentation/components/already-registered'
 import { SignUpForm } from '@/auth/presentation/components/sign-up-form'
 import { DEFAULT_ROUTE } from '@/domain/navigation'
 import { OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
-
-import './auth-wrapper.sass'
 
 export const SignUpPage: React.FC = async () => {
   const userResult = await AuthController.findUser()
@@ -19,10 +18,12 @@ export const SignUpPage: React.FC = async () => {
   }
 
   return (
-    <div className='auth-wrapper'>
+    <>
       <h1>{t('auth.signUp.title')}</h1>
 
       <SignUpForm />
-    </div>
+
+      <AlreadyRegistered />
+    </>
   )
 }

@@ -27,12 +27,13 @@ type ErrorProps = {
 }
 
 export const Error: React.FC<ErrorProps> = ({ reset }) => (
-  <ErrorWrapper className='error'>
+  <ErrorWrapper>
     <ErrorTitle>{t('components.error.title')}</ErrorTitle>
 
     <ErrorDescription>{t('components.error.description')}</ErrorDescription>
 
     <Button
+      className='error-button'
       Icon={<RefreshCwIcon />}
       onPress={reset}
       variant='filled'

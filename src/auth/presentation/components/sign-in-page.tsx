@@ -1,12 +1,11 @@
 import { redirect } from 'next/navigation'
 
 import { AuthController } from '@/auth/presentation/auth-controller'
+import { NoAccount } from '@/auth/presentation/components/no-account'
 import { SignInForm } from '@/auth/presentation/components/sign-in-form'
 import { DEFAULT_ROUTE } from '@/domain/navigation'
 import { OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
-
-import './auth-wrapper.sass'
 
 export const SignInPage: React.FC = async () => {
   const userResult = await AuthController.findUser()
@@ -17,10 +16,12 @@ export const SignInPage: React.FC = async () => {
   }
 
   return (
-    <div className='auth-wrapper'>
+    <>
       <h1>{t('auth.signIn.title')}</h1>
 
       <SignInForm />
-    </div>
+
+      <NoAccount />
+    </>
   )
 }

@@ -1,18 +1,20 @@
 @use '@/presentation/styles/typography'
 
-.auth-wrapper
+main
   display: grid
-  gap: var(--size-320, 2rem)
+  gap: var(--size-160, 1rem) // Pourquoi le gap augmente quand je change la taille de la fenêtre ???
   inline-size: clamp(12.5rem, 100% - var(--size-80), 40ch)
-  justify-items: center
   margin-inline: auto
-  padding-block: var(--size-320, 2rem)
+  padding-block: var(--size-320, 2rem) calc(var(--size-320, 2rem) + 15%)
 
   & h1
     @include typography.title-large
 
-  & .sign-in,
-  & .sign-up
+    &
+      text-align: center
+
+  & .no-account,
+  & .already-registered
     display: grid
     gap: var(--size-80, 0.5rem)
     inline-size: fit-content
@@ -27,9 +29,3 @@
 
     & a
       padding: var(--size-20, 0.125rem) var(--size-40, 0.25rem)
-
-  & section
-    display: grid
-    gap: var(--size-160, 1rem)
-    inline-size: 100%
-    padding-block: var(--size-160, 1rem)

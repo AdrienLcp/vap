@@ -7,4 +7,5 @@ type ErrorPageProps = {
 }
 
 const ErrorPage: React.FC<ErrorPageProps> = ({ reset }) => <Error reset={reset} />
+
 export default ErrorPage
