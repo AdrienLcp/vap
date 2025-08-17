@@ -9,6 +9,8 @@ import type { UserRole } from '@/user/domain/user-entities'
 export type AuthPermissions = z.infer<typeof AuthPermissionsSchema>
 
 export type AuthUser = {
+  email: string
+  image?: string | null
   name: string
   role: UserRole
 }

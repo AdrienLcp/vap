@@ -20,6 +20,8 @@ export const AuthPermissionsSchema = z.object({
 })
 
 export const AuthUserDTOSchema = z.object({
+  email: UserEmailSchema,
+  image: z.string().nullish(),
   name: UserNameSchema,
   permissions: AuthPermissionsSchema
 })

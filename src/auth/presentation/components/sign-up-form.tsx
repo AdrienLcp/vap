@@ -28,7 +28,7 @@ type SignUpFormErrors = ValidationErrors<ValueOf<typeof AUTH_FORM_FIELDS>>
 
 export const SignUpForm: React.FC = () => {
   const [isUserCreationLoading, setIsUserCreationLoading] = React.useState(false)
-  const [signUpFormErrors, setSignUpFormErrors] = React.useState<SignUpFormErrors>({ form: 'test' })
+  const [signUpFormErrors, setSignUpFormErrors] = React.useState<SignUpFormErrors>(null)
 
   const { setUser } = useAuth()
 

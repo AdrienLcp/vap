@@ -134,6 +134,10 @@ export const fr = {
     }
   },
   components: {
+    avatar: {
+      alt: 'Avatar de {userName}',
+      defaultAlt: 'Avatar de l\'utilisateur'
+    },
     forms: {
       formValidationErrorDefaultMessage: 'Le formulaire contient des erreurs.',
       fieldError: {

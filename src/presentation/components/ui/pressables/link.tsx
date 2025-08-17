@@ -1,3 +1,5 @@
+'use client'
+
 import { type LinkRenderProps, Link as ReactAriaLink, type LinkProps as ReactAriaLinkProps } from 'react-aria-components'
 
 import { Tooltip, type TooltipProps } from '@/presentation/components/ui/tooltip'
