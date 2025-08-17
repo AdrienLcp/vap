@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import React from 'react'
 
 import { AuthClient } from '@/auth/infrastructure/auth-client'
-import { DEFAULT_ROUTE } from '@/domain/navigation'
+import { DEFAULT_ROUTE, ROUTES } from '@/domain/navigation'
 import { NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { Avatar } from '@/presentation/components/ui/avatar'
@@ -34,7 +34,7 @@ const menuItems: MenuItem[] = [
   {
     Icon: <UserIcon />,
     id: 'profile',
-    href: '/auth/sign-in',
+    href: ROUTES.profile,
     textValue: t('auth.persona.profile')
   },
   {

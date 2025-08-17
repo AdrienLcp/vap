@@ -7,7 +7,7 @@
   &
     background-color: var(--brand-background)
     border-radius: var(--element-radius, 0.25rem)
-    color: var(--neutral-foreground-inverted)
+    color: var(--neutral-background)
     padding: var(--size-80, 0.5rem) var(--size-120, 0.75rem)
 
   @include selectors.hovered
@@ -15,9 +15,6 @@
 
   @include selectors.pressed
     background-color: var(--brand-background-pressed)
-
-  @include selectors.focused
-    background-color: var(--brand-background-focused)
 
 @mixin outlined
   @include animations.color-transitions
@@ -34,9 +31,6 @@
 
   @include selectors.pressed
     border-color: var(--neutral-border-pressed)
-
-  @include selectors.focused
-    border-color: var(--neutral-border-focused)
 
 @mixin underlined
   @include animations.color-transitions
@@ -55,8 +49,4 @@
   
   @include selectors.pressed
     color: var(--neutral-foreground-pressed)
-    text-decoration: underline
-
-  @include selectors.focused
-    color: var(--neutral-foreground-focused)
     text-decoration: underline
