@@ -1,0 +1,23 @@
+@use '@/presentation/styles/typography'
+
+.error-wrapper
+  inline-size: min(50ch, 100vw - var(--size-160, 1rem))
+  margin: auto
+  padding-block-end: 10%
+
+.error-title
+  @include typography.title-large
+
+  &
+    text-align: center
+
+.error-description
+  @include typography.body-small
+
+  &
+    margin-block: var(--size-160, 1rem) var(--size-320, 2rem)
+    text-align: center
+
+.error-actions,
+.error button
+  margin-inline: auto

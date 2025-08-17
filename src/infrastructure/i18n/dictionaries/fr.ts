@@ -143,6 +143,11 @@ export const fr = {
     }
   },
   components: {
+    error: {
+      description: 'Veuillez réessayer plus tard ou contacter le support si le problème persiste.',
+      resetButton: 'Réessayer',
+      title: 'Une erreur est survenue'
+    },
     forms: {
       formValidationErrorDefaultMessage: 'Le formulaire contient des erreurs.',
       fieldError: {

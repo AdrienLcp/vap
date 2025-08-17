@@ -3,9 +3,9 @@
 .auth-wrapper
   display: grid
   gap: var(--size-320, 2rem)
-  margin: auto
   inline-size: clamp(12.5rem, 100% - var(--size-80), 40ch)
   justify-items: center
+  margin-inline: auto
   padding-block: var(--size-320, 2rem)
 
   & h1
@@ -15,9 +15,9 @@
   & .sign-up
     display: grid
     gap: var(--size-80, 0.5rem)
-    margin: auto
-    place-items: center
     inline-size: fit-content
+    margin-inline: auto
+    place-items: center
 
     & p
       @include typography.label-small
