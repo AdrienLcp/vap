@@ -3,8 +3,7 @@ export const ROUTES = {
 
   admin: '/admin',
 
-  profile: '/profile',
-
+  profile: '/auth/profile',
   signIn: '/auth/sign-in',
   signUp: '/auth/sign-up',
 

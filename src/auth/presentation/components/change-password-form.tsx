@@ -7,6 +7,7 @@ import type { ChangePasswordConflictError } from '@/auth/domain/auth-entities'
 import { AuthClient } from '@/auth/infrastructure/auth-client'
 import { BAD_REQUEST_STATUS, NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
+import { FieldSet } from '@/presentation/components/forms/field-set'
 import { Form } from '@/presentation/components/forms/form'
 import { Button } from '@/presentation/components/ui/pressables/button'
 import { ToastService } from '@/presentation/services/toast-service'
@@ -65,16 +66,18 @@ export const ChangePasswordForm: React.FC = () => {
 
   return (
     <Form onSubmit={onChangePasswordFormSubmit} validationErrors={changePasswordFormErrors}>
-      <UserPasswordField
-        label={t('auth.changePassword.form.currentPassword.label')}
-        placeholder={t('auth.changePassword.form.currentPassword.placeholder')}
-      />
+      <FieldSet isDisabled={isChangePasswordLoading}>
+        <UserPasswordField
+          label={t('auth.changePassword.form.currentPassword.label')}
+          placeholder={t('auth.changePassword.form.currentPassword.placeholder')}
+        />
 
-      <UserPasswordField
-        label={t('auth.changePassword.form.newPassword.label')}
-        name={AUTH_FORM_FIELDS.NEW_PASSWORD}
-        placeholder={t('auth.changePassword.form.newPassword.placeholder')}
-      />
+        <UserPasswordField
+          label={t('auth.changePassword.form.newPassword.label')}
+          name={AUTH_FORM_FIELDS.NEW_PASSWORD}
+          placeholder={t('auth.changePassword.form.newPassword.placeholder')}
+        />
+      </FieldSet>
 
       <Button
         isPending={isChangePasswordLoading}

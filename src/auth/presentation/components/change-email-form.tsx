@@ -40,11 +40,11 @@ export const ChangeEmailForm: React.FC = () => {
 
   return (
     <Form
-      className='change-email-form'
       onSubmit={onChangeEmailFormSubmit}
       validationErrors={changeEmailFormErrors}
     >
       <UserEmailField
+        isDisabled={isChangeEmailLoading}
         label={t('auth.changeEmail.form.email.label')}
         placeholder={t('auth.changeEmail.form.email.placeholder')}
       />

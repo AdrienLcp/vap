@@ -1,6 +1,7 @@
 'use client'
 
 import { LogInIcon } from 'lucide-react'
+import { usePathname } from 'next/navigation'
 import React from 'react'
 
 import { useAuth } from '@/auth/application/use-auth'
@@ -12,12 +13,17 @@ import { Link } from '@/presentation/components/ui/pressables/link'
 
 export const AuthButton: React.FC = () => {
   const { auth } = useAuth()
+  const pathname = usePathname()
 
   if (auth.status === 'loading') {
     return <Loader />
   }
 
   if (auth.status === 'unauthenticated') {
+    if (pathname === ROUTES.signIn) {
+      return null
+    }
+
     return (
       <Link Icon={<LogInIcon />} href={ROUTES.signIn} variant='filled'>
         {t('auth.signIn.label')}

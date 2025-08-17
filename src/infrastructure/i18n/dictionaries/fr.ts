@@ -13,7 +13,7 @@ export const fr = {
           placeholder: 'jean-neige@gmail.com'
         },
         submit: {
-          label: 'Changer email',
+          label: 'Changer l\'email',
           loading: 'Changement en cours...'
         }
       },
@@ -39,7 +39,7 @@ export const fr = {
           placeholder: 'Entrez votre nouveau mot de passe'
         },
         submit: {
-          label: 'Confirmer',
+          label: 'Changer le mot de passe',
           loading: 'Chargement...'
         }
       },
@@ -48,6 +48,11 @@ export const fr = {
     persona: {
       profile: 'Profil',
       signOut: 'Se déconnecter'
+    },
+    profile: {
+      title: 'Mon profil',
+      changeEmail: 'Changer mon email',
+      changePassword: 'Changer mon mot de passe'
     },
     signIn: {
       errors: {
