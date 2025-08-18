@@ -1,0 +1,23 @@
+@use '@/presentation/styles/typography'
+
+html
+  -moz-osx-font-smoothing: grayscale
+  -webkit-font-smoothing: antialiased
+  -webkit-tap-highlight-color: transparent
+  accent-color: var(--brand-foreground-accent)
+  caret-color: var(--brand-foreground-accent)
+  color-scheme: dark light
+  scroll-behavior: smooth
+
+  ::selection
+    background-color: var(--brand-background)
+    color: var(--neutral-background)
+
+body
+  @include typography.body-medium
+
+  &
+    background-color: var(--neutral-background)
+    color: var(--neutral-foreground)
+    display: flex
+    flex-direction: column

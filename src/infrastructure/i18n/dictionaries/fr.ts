@@ -2,6 +2,13 @@ import { dt, type LanguageMessages } from '@/infrastructure/i18n/lib'
 
 export const fr = {
   appName: 'VAP',
+  admin: {
+    nav: {
+      admin: 'Administration',
+      products: 'Produits',
+      categories: 'Catégories'
+    }
+  },
   auth: {
     changeEmail: {
       errors: {
@@ -46,6 +53,7 @@ export const fr = {
       success: 'Votre mot de passe a été changé avec succès.'
     },
     persona: {
+      admin: 'Administration',
       profile: 'Profil',
       signOut: 'Se déconnecter'
     },

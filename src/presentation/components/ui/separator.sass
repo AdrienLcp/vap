@@ -1,7 +1,11 @@
 .separator
-  border-color: var(--neutral-foreground-muted)
-  inline-size: 100%
+  --separator-thickness: var(--stroke-m, 0.125rem)
+  background-color: var(--neutral-border)
+  border: none
+  border-radius: var(--circular, 99rem)
+  block-size: var(--separator-thickness)
+  inline-size: var(--separator-size, 100%)
 
   &[aria-orientation='vertical']
-    block-size: 100%
-    inline-size: var(--stroke-s, 0.0625rem)
+    block-size: var(--separator-size, 1.5em)
+    inline-size: var(--separator-thickness)

@@ -2,6 +2,8 @@ export const ROUTES = {
   home: '/',
 
   admin: '/admin',
+  adminProducts: '/admin/products',
+  adminCategories: '/admin/categories',
 
   profile: '/auth/profile',
   signIn: '/auth/sign-in',

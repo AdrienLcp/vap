@@ -1,7 +1,8 @@
-import { LogOutIcon, UserIcon } from 'lucide-react'
+import { LogOutIcon, ShieldIcon, UserIcon } from 'lucide-react'
 import { redirect } from 'next/navigation'
 import React from 'react'
 
+import type { AuthUserDTO } from '@/auth/domain/auth-entities'
 import { AuthClient } from '@/auth/infrastructure/auth-client'
 import { DEFAULT_ROUTE, ROUTES } from '@/domain/navigation'
 import { NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
@@ -14,9 +15,7 @@ import { ToastService } from '@/presentation/services/toast-service'
 import './persona-menu.sass'
 
 type PersonaMenuProps = {
-  userEmail: string
-  userImageUrl?: string | null
-  userName: string
+  user: AuthUserDTO
 }
 
 const signOut = async () => {
@@ -30,12 +29,20 @@ const signOut = async () => {
   }
 }
 
+const MENU_ITEM_ADMIN_ID = 'admin'
+
 const menuItems: MenuItem[] = [
   {
     Icon: <UserIcon />,
     id: 'profile',
     href: ROUTES.profile,
     textValue: t('auth.persona.profile')
+  },
+  {
+    Icon: <ShieldIcon />,
+    id: MENU_ITEM_ADMIN_ID,
+    href: ROUTES.admin,
+    textValue: t('auth.persona.admin')
   },
   {
     Icon: <LogOutIcon />,
@@ -45,20 +52,26 @@ const menuItems: MenuItem[] = [
   }
 ]
 
-export const PersonaMenu: React.FC<PersonaMenuProps> = ({ userEmail, userImageUrl, userName }) => {
+export const PersonaMenu: React.FC<PersonaMenuProps> = ({ user }) => {
   const MenuTrigger = React.useMemo(() => (
     <Button className='persona-menu-trigger'>
       <Avatar
-        userEmail={userEmail}
-        userImageUrl={userImageUrl}
-        userName={userName}
+        userEmail={user.email}
+        userImageUrl={user.image}
+        userName={user.name}
       />
     </Button>
-  ), [userEmail, userImageUrl, userName])
+  ), [user.email, user.image, user.name])
+
+  const filteredMenuItems = React.useMemo(() => {
+    return user.permissions.canAccessAdmin
+      ? menuItems
+      : menuItems.filter(item => item.id !== MENU_ITEM_ADMIN_ID)
+  }, [user.permissions.canAccessAdmin])
 
   return (
     <Menu
-      items={menuItems}
+      items={filteredMenuItems}
       Trigger={MenuTrigger}
     />
   )

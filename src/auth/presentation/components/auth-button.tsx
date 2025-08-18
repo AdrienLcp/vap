@@ -38,13 +38,5 @@ export const AuthButton: React.FC = () => {
     )
   }
 
-  const user = auth.user
-
-  return (
-    <PersonaMenu
-      userEmail={user.email}
-      userImageUrl={user.image}
-      userName={user.name}
-    />
-  )
+  return <PersonaMenu user={auth.user} />
 }
