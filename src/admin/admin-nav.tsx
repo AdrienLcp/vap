@@ -17,8 +17,8 @@ type AdminNavLinkProps = {
 
 const AdminLink: React.FC<AdminNavLinkProps> = ({ href, Icon, label }) => (
   <Link
-    Icon={Icon}
     href={href}
+    Icon={Icon}
     variant='underlined'
   >
     {label}

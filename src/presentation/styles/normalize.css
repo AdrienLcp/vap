@@ -78,10 +78,7 @@ time,
 mark,
 audio,
 video {
-  margin: 0;
-  padding: 0;
   font-size: 100%;
-  font: inherit;
 }
 
 /* HTML5 display-role reset for older browsers */
@@ -97,10 +94,6 @@ menu,
 nav,
 section {
   display: block;
-}
-
-body {
-  line-height: 1;
 }
 
 ol,
@@ -134,14 +127,30 @@ table {
   padding: 0;
 }
 
+* {
+  font: inherit;
+  line-height: inherit;
+}
+
+html:focus-within {
+  scroll-behavior: smooth;
+}
+
+body {
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+}
+
+#root {
+  isolation: isolate;
+}
+
 a,
 del,
 ins {
   text-decoration: none;
-}
-
-a {
-  color: inherit;
 }
 
 label {
@@ -149,14 +158,8 @@ label {
 }
 
 input {
+  font-family: inherit;
   outline: 0;
-}
-
-/* Personal adds */
-
-* {
-  font: inherit;
-  line-height: inherit;
 }
 
 input[type="search"]::-webkit-search-cancel-button {
@@ -195,10 +198,6 @@ button {
   height: fit-content;
 }
 
-input {
-  font-family: inherit;
-}
-
 li {
   list-style-type: none;
 }
@@ -207,6 +206,15 @@ a {
   display: inline-block;
   color: inherit;
   text-decoration: none;
+}
+
+fieldset {
+  border: none;
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
 }
 
 img {
@@ -219,65 +227,16 @@ img {
   shape-margin: 0.75rem;
 }
 
-fieldset {
-  border: none;
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
 }
 
-p {
-  text-wrap: pretty;
-}
-
-* {
-  margin: 0;
-}
-
-body {
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-  min-height: 100vh;
-  text-rendering: optimizeSpeed;
-}
-
-img, picture, video, canvas, svg {
-  display: block;
-  max-width: 100%;
-}
-
-input, button, textarea, select {
-  font: inherit;
-}
-
-p, h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, p {
   overflow-wrap: break-word;
 }
 
 p {
   text-wrap: pretty;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  text-wrap: balance;
-}
-
-#root {
-  isolation: isolate;
-}
-
-body,
-h1,
-h2,
-h3,
-h4,
-p,
-figure,
-blockquote,
-dl,
-dd {
-  margin: 0;
-}
-
-html:focus-within {
-  scroll-behavior: smooth;
 }
 
 a:not([class]) {
@@ -288,13 +247,6 @@ img,
 picture {
   max-width: 100%;
   display: block;
-}
-
-input,
-button,
-textarea,
-select {
-  font: inherit;
 }
 
 @media (prefers-reduced-motion: reduce) {
