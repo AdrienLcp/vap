@@ -4,6 +4,7 @@ import type {
   FieldErrorRenderProps,
   LinkRenderProps,
   MenuItemRenderProps,
+  NumberFieldRenderProps,
   TextFieldRenderProps,
   TooltipRenderProps
 } from 'react-aria-components'
@@ -13,6 +14,7 @@ export type ReactAriaComponentRenderProps =
   | FieldErrorRenderProps
   | LinkRenderProps
   | MenuItemRenderProps
+  | NumberFieldRenderProps
   | TextFieldRenderProps
   | TooltipRenderProps
 

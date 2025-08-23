@@ -52,7 +52,7 @@ const forbidden = (headers?: HeadersInit): ForbiddenResponse => {
 }
 
 const conflict = <Error>(error: Error, headers?: HeadersInit): ConflictResponse<Error> => {
-  return { headers, error, status: CONFLICT_STATUS }
+  return { error, headers, status: CONFLICT_STATUS }
 }
 
 const notFound = (headers?: HeadersInit): NotFoundResponse => {
@@ -60,7 +60,7 @@ const notFound = (headers?: HeadersInit): NotFoundResponse => {
 }
 
 const unprocessableEntity = <Error>(error: Error, headers?: HeadersInit): UnprocessableEntityResponse<Error> => {
-  return { headers, error, status: UNPROCESSABLE_ENTITY_STATUS }
+  return { error, headers, status: UNPROCESSABLE_ENTITY_STATUS }
 }
 
 const internalServerError = (headers?: HeadersInit): InternalServerErrorResponse => {

@@ -7,7 +7,7 @@ import { AuthClient } from '@/auth/infrastructure/auth-client'
 import { NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { Form } from '@/presentation/components/forms/form'
-import { Button } from '@/presentation/components/ui/pressables/button'
+import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import { ToastService } from '@/presentation/services/toast-service'
 import type { ValidationErrors } from '@/presentation/utils/react-aria-utils'
 import { UserEmailField } from '@/user/presentation/user-email-field'
@@ -45,17 +45,15 @@ export const ChangeEmailForm: React.FC = () => {
     >
       <UserEmailField
         isDisabled={isChangeEmailLoading}
-        label={t('auth.changeEmail.form.email.label')}
-        placeholder={t('auth.changeEmail.form.email.placeholder')}
+        label={t('auth.fields.email.label')}
+        placeholder={t('auth.fields.email.placeholder')}
       />
 
-      <Button
+      <SubmitButton
         isPending={isChangeEmailLoading}
-        type='submit'
-        variant='filled'
       >
-        {({ isPending }) => t(`auth.changeEmail.form.submit.${isPending ? 'loading' : 'label'}`)}
-      </Button>
+        {({ isPending }) => t(`auth.changeEmail.submit.${isPending ? 'loading' : 'label'}`)}
+      </SubmitButton>
     </Form>
   )
 }

@@ -9,7 +9,7 @@ import { BAD_REQUEST_STATUS, NO_CONTENT_STATUS } from '@/infrastructure/api/http
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
 import { Form } from '@/presentation/components/forms/form'
-import { Button } from '@/presentation/components/ui/pressables/button'
+import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import { ToastService } from '@/presentation/services/toast-service'
 import type { ValidationErrors } from '@/presentation/utils/react-aria-utils'
 import { UserPasswordField } from '@/user/presentation/user-password-field'
@@ -79,13 +79,9 @@ export const ChangePasswordForm: React.FC = () => {
         />
       </FieldSet>
 
-      <Button
-        isPending={isChangePasswordLoading}
-        type='submit'
-        variant='filled'
-      >
+      <SubmitButton isPending={isChangePasswordLoading}>
         {({ isPending }) => t(`auth.changePassword.form.submit.${isPending ? 'loading' : 'label'}`)}
-      </Button>
+      </SubmitButton>
     </Form>
   )
 }

@@ -35,7 +35,7 @@ export function Menu <T>({ Trigger, ...menuRestProps }: MenuProps<T>) {
               textValue={textValue}
               {...restItemProps}
             >
-              {Icon && <span className='icon'>{Icon}</span>}
+              {Icon && <span aria-hidden className='icon'>{Icon}</span>}
 
               <span className='text'>{textValue}</span>
             </ReactAriaMenuItem>

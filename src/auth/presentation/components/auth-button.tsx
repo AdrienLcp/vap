@@ -29,7 +29,7 @@ export const AuthButton: React.FC = () => {
     return (
       <Link
         className='auth-link'
-        Icon={<LogInIcon />}
+        Icon={<LogInIcon aria-hidden />}
         href={ROUTES.signIn}
         variant='filled'
       >

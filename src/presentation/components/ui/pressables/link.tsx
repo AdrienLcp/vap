@@ -39,7 +39,7 @@ export const BaseLink: React.FC<LinkProps> = ({
       ? renderLinkChildren(children, values)
       : <>
           {Icon && (
-            <div className='icon' role='presentation'>
+            <div className='icon'>
               {Icon}
             </div>
           )}

@@ -15,7 +15,7 @@ import { FieldSet } from '@/presentation/components/forms/field-set'
 import { Form } from '@/presentation/components/forms/form'
 import { FormError } from '@/presentation/components/forms/form-error'
 import { RequiredFieldsMessage } from '@/presentation/components/forms/required-fields-message'
-import { Button } from '@/presentation/components/ui/pressables/button'
+import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import type { ValidationErrors } from '@/presentation/utils/react-aria-utils'
 import { UserEmailField } from '@/user/presentation/user-email-field'
 import { UserPasswordField } from '@/user/presentation/user-password-field'
@@ -72,14 +72,9 @@ export const SignInForm: React.FC = () => {
 
       <FormError validationErrors={signInFormErrors} />
 
-      <Button
-        Icon={<LogInIcon />}
-        isPending={isUserAuthenticationLoading}
-        type='submit'
-        variant='filled'
-      >
-        {({ isPending }) => t(`auth.signIn.form.submit.${isPending ? 'loading' : 'label'}`)}
-      </Button>
+      <SubmitButton Icon={<LogInIcon aria-hidden />} isPending={isUserAuthenticationLoading}>
+        {({ isPending }) => t(`auth.signIn.submit.${isPending ? 'loading' : 'label'}`)}
+      </SubmitButton>
     </Form>
   )
 }

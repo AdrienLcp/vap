@@ -3,9 +3,9 @@ import { t } from '@/infrastructure/i18n'
 import { TextField, type TextFieldProps } from '@/presentation/components/forms/text-field'
 
 export const UserEmailField: React.FC<Partial<TextFieldProps>> = ({
-  label = t('auth.signUp.form.email.label'),
+  label = t('auth.fields.email.label'),
   name = AUTH_FORM_FIELDS.EMAIL,
-  placeholder = t('auth.signUp.form.email.placeholder'),
+  placeholder = t('auth.fields.email.placeholder'),
   ...userEmailFieldRestProps
 }) => (
   <TextField

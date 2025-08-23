@@ -29,7 +29,7 @@ export const AdminNav: React.FC = () => (
   <nav className='admin-nav'>
     <AdminLink
       href={ROUTES.admin}
-      Icon={<ShieldIcon />}
+      Icon={<ShieldIcon aria-hidden />}
       label={t('admin.nav.admin')}
     />
 
@@ -37,7 +37,7 @@ export const AdminNav: React.FC = () => (
 
     <AdminLink
       href={ROUTES.adminProducts}
-      Icon={<BoxIcon />}
+      Icon={<BoxIcon aria-hidden />}
       label={t('admin.nav.products')}
     />
 
@@ -45,7 +45,7 @@ export const AdminNav: React.FC = () => (
 
     <AdminLink
       href={ROUTES.adminCategories}
-      Icon={<ListIcon />}
+      Icon={<ListIcon aria-hidden />}
       label={t('admin.nav.categories')}
     />
   </nav>

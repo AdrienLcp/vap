@@ -9,6 +9,7 @@ import {
   UNSTABLE_ToastRegion as ToastRegion
 } from 'react-aria-components'
 
+import { t } from '@/infrastructure/i18n'
 import { Button } from '@/presentation/components/ui/pressables/button'
 import { toastQueue } from '@/presentation/services/toast-service'
 
@@ -31,7 +32,8 @@ export const Toaster: React.FC = () => (
         </ToastContent>
 
         <Button slot='close'>
-          <CircleXIcon />
+          <CircleXIcon aria-hidden />
+          <span className='sr-only'>{t('components.toaster.closeButtonLabel')}</span>
         </Button>
       </Toast>
     )}

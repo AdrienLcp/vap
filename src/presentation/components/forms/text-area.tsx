@@ -1,17 +1,17 @@
-import { Input, Label, TextField as ReactAriaTextField, type TextFieldProps as ReactAriaTextFieldProps, Text } from 'react-aria-components'
+import { Label, TextArea as ReactAriaTextArea, TextField as ReactAriaTextField, type TextFieldProps as ReactAriaTextFieldProps, Text } from 'react-aria-components'
 
 import { FieldError } from '@/presentation/components/forms/field-error'
 import { reactAriaClassNames } from '@/presentation/utils/react-aria-utils'
 
-import './text-field.sass'
+import './text-area.sass'
 
-export type TextFieldProps = ReactAriaTextFieldProps & {
+export type TextAreaProps = ReactAriaTextFieldProps & {
   description?: string
   label: string
   placeholder?: string
 }
 
-export const TextField: React.FC<TextFieldProps> = ({
+export const TextArea: React.FC<TextAreaProps> = ({
   className,
   description,
   label,
@@ -21,15 +21,17 @@ export const TextField: React.FC<TextFieldProps> = ({
 }) => (
   <ReactAriaTextField
     {...textFieldRestProps}
-    className={values => reactAriaClassNames(values, className, 'text-field')}
+    className={values => reactAriaClassNames(values, className, 'text-area')}
     maxLength={maxLength}
     minLength={minLength}
   >
     {({ isInvalid, isRequired }) => (
       <>
-        <Label>{label}{isRequired && ' *'}</Label>
+        <Label className='label'>
+          {label}{isRequired && ' *'}
+        </Label>
 
-        <Input />
+        <ReactAriaTextArea className='input' />
 
         {isInvalid
           ? <FieldError maxLength={maxLength} minLength={minLength} />

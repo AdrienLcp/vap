@@ -15,7 +15,7 @@ export function FormError <T extends PropertyKey> ({ validationErrors }: FormErr
 
   return (
     <div className='form-error'>
-      <CircleAlertIcon />
+      <CircleAlertIcon aria-hidden />
 
       <p>
         {Array.isArray(validationErrors.form)

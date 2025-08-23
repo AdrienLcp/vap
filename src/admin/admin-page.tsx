@@ -1,9 +1,9 @@
-import { CreateCategoryForm } from '@/category/presentation/components/create-category-form'
-import { CreateProductForm } from '@/product/presentation/components/create-product-form'
+import { CategoryCreationForm } from '@/category/presentation/components/category-creation-form'
+import { ProductCreationForm } from '@/product/presentation/components/product-creation-form'
 
 export const AdminPage: React.FC = () => (
   <>
-    <CreateCategoryForm />
-    <CreateProductForm />
+    <CategoryCreationForm />
+    <ProductCreationForm />
   </>
 )

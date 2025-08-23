@@ -33,19 +33,19 @@ const MENU_ITEM_ADMIN_ID = 'admin'
 
 const menuItems: MenuItem[] = [
   {
-    Icon: <UserIcon />,
+    Icon: <UserIcon aria-hidden />,
     id: 'profile',
     href: ROUTES.profile,
     textValue: t('auth.persona.profile')
   },
   {
-    Icon: <ShieldIcon />,
+    Icon: <ShieldIcon aria-hidden />,
     id: MENU_ITEM_ADMIN_ID,
     href: ROUTES.admin,
     textValue: t('auth.persona.admin')
   },
   {
-    Icon: <LogOutIcon />,
+    Icon: <LogOutIcon aria-hidden />,
     id: 'sign-out',
     onAction: signOut,
     textValue: t('auth.persona.signOut')

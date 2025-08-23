@@ -3,7 +3,7 @@
 import React from 'react'
 
 import { CATEGORY_CONSTANTS, CATEGORY_FORM_FIELDS } from '@/category/domain/category-constants'
-import type { CategoryConflictError, CategoryCreationData } from '@/category/domain/category-entities'
+import type { CategoryConflictError, CategoryCreationData, CategoryDTO } from '@/category/domain/category-entities'
 import { CategoryClient } from '@/category/infrastructure/category-client'
 import { CategoryDescriptionField } from '@/category/presentation/components/category-description-field'
 import { CategoryImageUrlField } from '@/category/presentation/components/category-image-url-field'
@@ -12,14 +12,14 @@ import { BAD_REQUEST_STATUS, CONFLICT_STATUS, CREATED_STATUS } from '@/infrastru
 import { t } from '@/infrastructure/i18n'
 import { Form } from '@/presentation/components/forms/form'
 import { FormError } from '@/presentation/components/forms/form-error'
-import { Button } from '@/presentation/components/ui/pressables/button'
+import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import type { ValidationErrors } from '@/presentation/utils/react-aria-utils'
 import type { ValueOf } from '@/utils/object-utils'
 import type { Issues } from '@/utils/validation-utils'
 
 type CreateCategoryValidationErrors = ValidationErrors<ValueOf<typeof CATEGORY_FORM_FIELDS>>
 
-export const CreateCategoryForm: React.FC = () => {
+export const CategoryCreationForm: React.FC = () => {
   const [isCategoryCreationLoading, setIsCategoryCreationLoading] = React.useState(false)
   const [createCategoryFormErrors, setCreateCategoryFormErrors] = React.useState<CreateCategoryValidationErrors>()
 
@@ -57,7 +57,8 @@ export const CreateCategoryForm: React.FC = () => {
     }
   }, [])
 
-  const onCategoryCreationSuccess = React.useCallback(() => {
+  const onCategoryCreationSuccess = React.useCallback((createdCategory: CategoryDTO) => {
+    console.log(createdCategory)
     setCreateCategoryFormErrors(null)
   }, [])
 
@@ -76,7 +77,7 @@ export const CreateCategoryForm: React.FC = () => {
 
     switch (createdCategoryResponse.status) {
       case CREATED_STATUS:
-        onCategoryCreationSuccess()
+        onCategoryCreationSuccess(createdCategoryResponse.data)
         break
       case BAD_REQUEST_STATUS:
         onCategoryCreationBadRequestError(createdCategoryResponse.issues)
@@ -97,13 +98,9 @@ export const CreateCategoryForm: React.FC = () => {
 
       <FormError validationErrors={createCategoryFormErrors} />
 
-      <Button
-        isPending={isCategoryCreationLoading}
-        type='submit'
-        variant='filled'
-      >
-        {({ isPending }) => t(`category.create.form.submit.${isPending ? 'creating' : 'label'}`)}
-      </Button>
+      <SubmitButton isPending={isCategoryCreationLoading}>
+        {({ isPending }) => t(`category.create.submit.${isPending ? 'creating' : 'label'}`)}
+      </SubmitButton>
     </Form>
   )
 }
