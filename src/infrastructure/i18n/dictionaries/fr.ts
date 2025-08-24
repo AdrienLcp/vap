@@ -216,6 +216,16 @@ export const fr = {
       active: 'Actif',
       featured: 'En vedette',
       inactive: 'Inactif'
+    },
+    update: {
+      errors: {
+        unknown: 'Une erreur inconnue est survenue.'
+      },
+      submit: {
+        updating: 'Mise à jour en cours...',
+        label: 'Mettre à jour le produit'
+      },
+      success: '"{productName}" a été mis à jour avec succès.'
     }
   },
   user: {

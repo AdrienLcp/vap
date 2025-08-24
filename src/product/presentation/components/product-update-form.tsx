@@ -2,14 +2,14 @@
 
 import React from 'react'
 
-import { CREATED_STATUS } from '@/infrastructure/api/http-response'
+import { OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
 import { Form } from '@/presentation/components/forms/form'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import { ToastService } from '@/presentation/services/toast-service'
 import { PRODUCT_FORM_FIELDS } from '@/product/domain/product-constants'
-import type { ProductCreationData, ProductDTO, ProductStatus, ProductValidationErrors } from '@/product/domain/product-entities'
+import type { ProductDTO, ProductStatus, ProductUpdateData, ProductValidationErrors } from '@/product/domain/product-entities'
 import { ProductClient } from '@/product/infrastructure/product-client'
 import { ProductCategorySelect } from '@/product/presentation/components/product-category-select'
 import { ProductDescriptionField } from '@/product/presentation/components/product-description-field'
@@ -21,19 +21,19 @@ import { ProductSkuField } from '@/product/presentation/components/product-sku-f
 import { ProductStatusSelect } from '@/product/presentation/components/product-status-select'
 import { ProductStockField } from '@/product/presentation/components/product-stock-field'
 
-export const ProductCreationForm: React.FC = () => {
-  const [isProductCreationLoading, setIsProductCreationLoading] = React.useState<boolean>(false)
-  const [productCreationFormErrors, setProductCreationFormErrors] = React.useState<ProductValidationErrors>(null)
+export const ProductUpdateForm: React.FC = () => {
+  const [isProductUpdateLoading, setIsProductUpdateLoading] = React.useState<boolean>(false)
+  const [productUpdateFormErrors, setProductUpdateFormErrors] = React.useState<ProductValidationErrors>(null)
 
-  const onProductCreationSuccess = React.useCallback((createdProduct: ProductDTO) => {
-    ToastService.success(t('product.creation.success', { productName: createdProduct.name }))
+  const onProductUpdateSuccess = React.useCallback((updatedProduct: ProductDTO) => {
+    ToastService.success(t('product.update.success', { productName: updatedProduct.name }))
   }, [])
 
-  const onProductCreationFormSubmit = React.useCallback(async (formData: FormData) => {
-    setIsProductCreationLoading(true)
-    setProductCreationFormErrors(null)
+  const onProductUpdateFormSubmit = React.useCallback(async (formData: FormData) => {
+    setIsProductUpdateLoading(true)
+    setProductUpdateFormErrors(null)
 
-    const productCreationData: ProductCreationData = {
+    const productUpdateData: ProductUpdateData = {
       categoryId: formData.get(PRODUCT_FORM_FIELDS.CATEGORY_ID) as string,
       description: formData.get(PRODUCT_FORM_FIELDS.DESCRIPTION) as string,
       discountedPrice: parseInt(formData.get(PRODUCT_FORM_FIELDS.DISCOUNTED_PRICE) as string),
@@ -45,22 +45,22 @@ export const ProductCreationForm: React.FC = () => {
       stock: parseInt(formData.get(PRODUCT_FORM_FIELDS.STOCK) as string)
     }
 
-    const productCreationResponse = await ProductClient.createProduct(productCreationData)
+    const productUpdateResponse = await ProductClient.updateProduct('', productUpdateData)
 
-    setIsProductCreationLoading(false)
+    setIsProductUpdateLoading(false)
 
-    switch (productCreationResponse.status) {
-      case CREATED_STATUS:
-        onProductCreationSuccess(productCreationResponse.data)
+    switch (productUpdateResponse.status) {
+      case OK_STATUS:
+        onProductUpdateSuccess(productUpdateResponse.data)
         break
       default:
-        ToastService.error(t('product.creation.errors.unknown'))
+        ToastService.error(t('product.update.errors.unknown'))
     }
-  }, [onProductCreationSuccess])
+  }, [onProductUpdateSuccess])
 
   return (
-    <Form onSubmit={onProductCreationFormSubmit} validationErrors={productCreationFormErrors}>
-      <FieldSet isDisabled={isProductCreationLoading}>
+    <Form onSubmit={onProductUpdateFormSubmit} validationErrors={productUpdateFormErrors}>
+      <FieldSet isDisabled={isProductUpdateLoading}>
         <ProductNameField />
 
         <ProductDescriptionField />
@@ -80,8 +80,8 @@ export const ProductCreationForm: React.FC = () => {
         <ProductCategorySelect items={[]} />
       </FieldSet>
 
-      <SubmitButton isPending={isProductCreationLoading}>
-        {({ isPending }) => t(`product.creation.submit.${isPending ? 'creating' : 'label'}`)}
+      <SubmitButton isPending={isProductUpdateLoading}>
+        {({ isPending }) => t(`product.update.submit.${isPending ? 'updating' : 'label'}`)}
       </SubmitButton>
     </Form>
   )

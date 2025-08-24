@@ -1,5 +1,5 @@
 import { t } from '@/infrastructure/i18n'
-import { Select, type SelectItem } from '@/presentation/components/forms/select'
+import { Select, type SelectItem, type SelectProps } from '@/presentation/components/forms/select'
 import { PRODUCT_CONSTANTS, PRODUCT_FORM_FIELDS } from '@/product/domain/product-constants'
 import type { ProductStatus } from '@/product/domain/product-entities'
 
@@ -9,11 +9,18 @@ const productStatusSelectItems: SelectItem<ProductStatus>[] = [
   { id: 'FEATURED', textValue: t('product.status.featured') }
 ]
 
-export const ProductStatusSelect: React.FC = () => (
+export const ProductStatusSelect: React.FC<Partial<SelectProps<ProductStatus>>> = ({
+  defaultSelectedKey = PRODUCT_CONSTANTS.DEFAULT_STATUS,
+  items = productStatusSelectItems,
+  label = t('product.fields.status.label'),
+  name = PRODUCT_FORM_FIELDS.STATUS,
+  ...productStatusSelectRestProps
+}) => (
   <Select
-    defaultSelectedKey={PRODUCT_CONSTANTS.DEFAULT_STATUS}
-    items={productStatusSelectItems}
-    label={t('product.fields.status.label')}
-    name={PRODUCT_FORM_FIELDS.STATUS}
+    {...productStatusSelectRestProps}
+    defaultSelectedKey={defaultSelectedKey}
+    items={items}
+    label={label}
+    name={name}
   />
 )
