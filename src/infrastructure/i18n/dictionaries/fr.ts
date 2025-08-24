@@ -1,7 +1,6 @@
 import { dt, type LanguageMessages } from '@/infrastructure/i18n/lib'
 
 export const fr = {
-  appName: 'VAP',
   admin: {
     nav: {
       admin: 'Administration',
@@ -9,6 +8,7 @@ export const fr = {
       categories: 'Catégories'
     }
   },
+  appName: 'VAP',
   auth: {
     changeEmail: {
       errors: {
@@ -140,6 +140,16 @@ export const fr = {
         label: 'Catégorie',
         placeholder: 'Nom de la catégorie'
       }
+    },
+    update: {
+      errors: {
+        categoryNameAlreadyExists: 'Une catégorie avec ce nom existe déjà.',
+        categoryNameTooLong: 'Le nom de la catégorie ne doit pas dépasser {max:number} caractères.'
+      },
+      submit: {
+        label: 'Mettre à jour',
+        updating: 'Mise à jour en cours...'
+      }
     }
   },
   components: {
@@ -222,8 +232,8 @@ export const fr = {
         unknown: 'Une erreur inconnue est survenue.'
       },
       submit: {
-        updating: 'Mise à jour en cours...',
-        label: 'Mettre à jour le produit'
+        label: 'Mettre à jour le produit',
+        updating: 'Mise à jour en cours...'
       },
       success: '"{productName}" a été mis à jour avec succès.'
     }

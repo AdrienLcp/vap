@@ -1,6 +1,6 @@
 import { CircleAlertIcon } from 'lucide-react'
 
-import type { ValidationErrors } from '@/presentation/utils/react-aria-utils'
+import type { ValidationErrors } from '@/domain/entities'
 
 import './form-error.sass'
 
