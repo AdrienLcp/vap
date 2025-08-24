@@ -12,12 +12,14 @@ import type { ValidationErrors } from '@/presentation/utils/react-aria-utils'
 import { PRODUCT_FORM_FIELDS } from '@/product/domain/product-constants'
 import type { ProductCreationData, ProductDTO, ProductStatus } from '@/product/domain/product-entities'
 import { ProductClient } from '@/product/infrastructure/product-client'
+import { ProductCategorySelect } from '@/product/presentation/components/product-category-select'
 import { ProductDescriptionField } from '@/product/presentation/components/product-description-field'
 import { ProductDiscountedPriceField } from '@/product/presentation/components/product-discounted-price-field'
 import { ProductImageUrlField } from '@/product/presentation/components/product-image-url-field'
 import { ProductNameField } from '@/product/presentation/components/product-name-field'
 import { ProductPriceField } from '@/product/presentation/components/product-price-field'
 import { ProductSkuField } from '@/product/presentation/components/product-sku-field'
+import { ProductStatusSelect } from '@/product/presentation/components/product-status-select'
 import { ProductStockField } from '@/product/presentation/components/product-stock-field'
 import type { ValueOf } from '@/utils/object-utils'
 
@@ -76,6 +78,10 @@ export const ProductCreationForm: React.FC = () => {
         <ProductSkuField />
 
         <ProductStockField />
+
+        <ProductStatusSelect />
+
+        <ProductCategorySelect items={[]} />
       </FieldSet>
 
       <SubmitButton isPending={isProductCreationLoading}>

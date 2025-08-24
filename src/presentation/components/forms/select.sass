@@ -1,0 +1,23 @@
+@use '@/presentation/styles/forms'
+@use '@/presentation/styles/interactive'
+
+.select
+  @include forms.field
+
+  & .trigger
+    @include forms.field-input
+
+  & .popover
+    @include interactive.popover
+
+    & .item
+      @include interactive.transparent
+
+      &
+        align-items: center
+        block-size: var(--size-360, 2rem)
+        cursor: pointer
+        display: flex
+        gap: var(--size-80, 0.5rem)
+        line-height: 1.25
+        padding: var(--size-80, 0.5rem) var(--size-120, 0.75rem)

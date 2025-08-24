@@ -13,8 +13,8 @@ import { reactAriaClassNames } from '@/presentation/utils/react-aria-utils'
 import './menu.sass'
 
 export type MenuItem = Omit<MenuItemProps, 'id'> & {
-  id: Key
   Icon?: React.ReactElement
+  id: Key
 }
 
 type MenuProps<T> = ReactAriaMenuProps<T> & {

@@ -180,8 +180,7 @@ export const fr = {
     },
     fields: {
       category: {
-        label: 'Catégorie',
-        placeholder: 'Choisissez une catégorie pour ce produit'
+        label: 'Catégorie'
       },
       description: {
         label: 'Description',
@@ -206,13 +205,17 @@ export const fr = {
         label: 'SKU'
       },
       status: {
-        label: 'Statut',
-        placeholder: 'Sélectionnez le statut du produit'
+        label: 'Statut'
       },
       stock: {
         description: 'Quantité en stock',
         label: 'Stock'
       }
+    },
+    status: {
+      active: 'Actif',
+      featured: 'En vedette',
+      inactive: 'Inactif'
     }
   },
   user: {

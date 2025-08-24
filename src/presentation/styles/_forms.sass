@@ -1,6 +1,22 @@
 @use '@/presentation/styles/interactive'
 @use '@/presentation/styles/typography'
 
+@mixin field-input
+  @include interactive.outlined
+
+  &
+    @include typography.text-ellipsis
+
+  &
+    block-size: var(--element-size, 2.5rem)
+    min-inline-size: 100%
+
+  &::placeholder
+    @include typography.text-ellipsis
+
+    &
+      color: var(--neutral-foreground-muted)
+
 @mixin field
   display: grid
   gap: var(--size-80, 0.5rem)
@@ -13,22 +29,6 @@
 
     &
       padding-inline: var(--size-20, 0.125rem)
-
-  & input
-    @include interactive.outlined
-
-    &
-      @include typography.text-ellipsis
-
-    &
-      block-size: var(--element-size, 2.5rem)
-      min-inline-size: 100%
-
-    &::placeholder
-      @include typography.text-ellipsis
-
-      &
-        color: var(--neutral-foreground-muted)
 
   & .description
     @include typography.body-small

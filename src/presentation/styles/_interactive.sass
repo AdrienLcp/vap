@@ -6,9 +6,7 @@
 
   &
     background-color: var(--brand-background)
-    border-radius: var(--element-radius, 0.25rem)
     color: var(--neutral-background)
-    padding: var(--size-80, 0.5rem) var(--size-120, 0.75rem)
 
   @include selectors.hovered
     background-color: var(--brand-background-hovered)
@@ -20,11 +18,8 @@
   @include animations.color-transitions
 
   &
-    background-color: transparent
     border: var(--stroke-m) solid var(--neutral-border)
-    border-radius: var(--element-radius, 0.25rem)
     color: var(--neutral-foreground)
-    padding: var(--size-80, 0.5rem) var(--size-120, 0.75rem)
 
   @include selectors.hovered
     border-color: var(--neutral-border-hovered)
@@ -32,16 +27,34 @@
   @include selectors.pressed
     border-color: var(--neutral-border-pressed)
 
+@mixin popover
+  background: var(--neutral-background)
+  border: var(--stroke-s, 0.25rem) solid var(--neutral-border)
+  border-radius: var(--element-radius, 0.25rem)
+  inline-size: min(15.625rem, 100vw - var(--size-80, 0.5rem))
+  padding-block: var(--size-80, 0.5rem)
+
+@mixin transparent
+  @include animations.color-transitions
+
+  &
+    background-color: transparent
+    color: var(--neutral-foreground)
+
+  @include selectors.hovered
+    background-color: var(--neutral-background-hovered)
+    color: var(--neutral-foreground-hovered)
+
+  @include selectors.pressed
+    background-color: var(--neutral-background-pressed)
+    color: var(--neutral-foreground-pressed)
+
 @mixin underlined
   @include animations.color-transitions
 
   &
-    align-items: center
-    border-radius: var(--element-radius, 0.25rem)
     color: var(--neutral-foreground)
-    display: flex
-    gap: var(--size-40, 0.25rem)
-    inline-size: fit-content
+    text-decoration: none
 
   @include selectors.hovered
     color: var(--neutral-foreground-hovered)

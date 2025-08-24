@@ -3,8 +3,10 @@ import type {
   ButtonRenderProps,
   FieldErrorRenderProps,
   LinkRenderProps,
+  ListBoxItemRenderProps,
   MenuItemRenderProps,
   NumberFieldRenderProps,
+  SelectRenderProps,
   TextFieldRenderProps,
   TooltipRenderProps
 } from 'react-aria-components'
@@ -13,8 +15,10 @@ export type ReactAriaComponentRenderProps =
   | ButtonRenderProps
   | FieldErrorRenderProps
   | LinkRenderProps
+  | ListBoxItemRenderProps
   | MenuItemRenderProps
   | NumberFieldRenderProps
+  | SelectRenderProps
   | TextFieldRenderProps
   | TooltipRenderProps
 
