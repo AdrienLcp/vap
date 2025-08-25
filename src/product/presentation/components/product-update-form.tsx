@@ -2,10 +2,12 @@
 
 import React from 'react'
 
+import type { CategoryDTO } from '@/category/domain/category-entities'
 import { OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
 import { Form } from '@/presentation/components/forms/form'
+import { FormError } from '@/presentation/components/forms/form-error'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import { ToastService } from '@/presentation/services/toast-service'
 import { PRODUCT_FORM_FIELDS } from '@/product/domain/product-constants'
@@ -14,14 +16,19 @@ import { ProductClient } from '@/product/infrastructure/product-client'
 import { ProductCategorySelect } from '@/product/presentation/components/product-category-select'
 import { ProductDescriptionField } from '@/product/presentation/components/product-description-field'
 import { ProductDiscountedPriceField } from '@/product/presentation/components/product-discounted-price-field'
-import { ProductImageUrlField } from '@/product/presentation/components/product-image-url-field'
+import { ProductImagePreviewField } from '@/product/presentation/components/product-image-preview-field'
 import { ProductNameField } from '@/product/presentation/components/product-name-field'
 import { ProductPriceField } from '@/product/presentation/components/product-price-field'
 import { ProductSkuField } from '@/product/presentation/components/product-sku-field'
 import { ProductStatusSelect } from '@/product/presentation/components/product-status-select'
 import { ProductStockField } from '@/product/presentation/components/product-stock-field'
 
-export const ProductUpdateForm: React.FC = () => {
+type ProductUpdateFormProps = {
+  categories: CategoryDTO[]
+  product: ProductDTO
+}
+
+export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({ categories, product }) => {
   const [isProductUpdateLoading, setIsProductUpdateLoading] = React.useState<boolean>(false)
   const [productUpdateFormErrors, setProductUpdateFormErrors] = React.useState<ProductValidationErrors>(null)
 
@@ -45,7 +52,7 @@ export const ProductUpdateForm: React.FC = () => {
       stock: parseInt(formData.get(PRODUCT_FORM_FIELDS.STOCK) as string)
     }
 
-    const productUpdateResponse = await ProductClient.updateProduct('', productUpdateData)
+    const productUpdateResponse = await ProductClient.updateProduct(product.id, productUpdateData)
 
     setIsProductUpdateLoading(false)
 
@@ -61,24 +68,26 @@ export const ProductUpdateForm: React.FC = () => {
   return (
     <Form onSubmit={onProductUpdateFormSubmit} validationErrors={productUpdateFormErrors}>
       <FieldSet isDisabled={isProductUpdateLoading}>
-        <ProductNameField />
+        <ProductNameField defaultValue={product.name} />
 
-        <ProductDescriptionField />
+        <ProductDescriptionField defaultValue={product.description ?? undefined} />
 
-        <ProductPriceField />
+        <ProductPriceField defaultValue={product.price} />
 
-        <ProductImageUrlField />
+        <ProductImagePreviewField imageUrl={product.imageUrl ?? undefined} />
 
-        <ProductDiscountedPriceField />
+        <ProductDiscountedPriceField defaultValue={product.discountedPrice ?? undefined} />
 
-        <ProductSkuField />
+        <ProductSkuField defaultValue={product.sku} />
 
-        <ProductStockField />
+        <ProductStockField defaultValue={product.stock} />
 
-        <ProductStatusSelect />
+        <ProductStatusSelect defaultSelectedKey={product.category?.id} />
 
-        <ProductCategorySelect items={[]} />
+        <ProductCategorySelect categories={categories} />
       </FieldSet>
+
+      <FormError errors={productUpdateFormErrors?.form} />
 
       <SubmitButton isPending={isProductUpdateLoading}>
         {({ isPending }) => t(`product.update.submit.${isPending ? 'updating' : 'label'}`)}

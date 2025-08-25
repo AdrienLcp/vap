@@ -6,7 +6,7 @@ import { CATEGORY_CONSTANTS, CATEGORY_FORM_FIELDS } from '@/category/domain/cate
 import type { CategoryConflictError, CategoryCreationData, CategoryDTO, CategoryValidationErrors } from '@/category/domain/category-entities'
 import { CategoryClient } from '@/category/infrastructure/category-client'
 import { CategoryDescriptionField } from '@/category/presentation/components/category-description-field'
-import { CategoryImageUrlField } from '@/category/presentation/components/category-image-url-field'
+import { CategoryImagePreviewField } from '@/category/presentation/components/category-image-preview-field'
 import { CategoryNameField } from '@/category/presentation/components/category-name-field'
 import { BAD_REQUEST_STATUS, CONFLICT_STATUS, CREATED_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
@@ -90,10 +90,10 @@ export const CategoryCreationForm: React.FC = () => {
 
         <CategoryDescriptionField />
 
-        <CategoryImageUrlField />
+        <CategoryImagePreviewField />
       </FieldSet>
 
-      <FormError validationErrors={categoryCreationFormErrors} />
+      <FormError errors={categoryCreationFormErrors?.form} />
 
       <SubmitButton isPending={isCategoryCreationLoading}>
         {({ isPending }) => t(`category.create.submit.${isPending ? 'creating' : 'label'}`)}

@@ -8,6 +8,7 @@ import { useAuth } from '@/auth/application/use-auth'
 import { AUTH_FORM_FIELDS } from '@/auth/domain/auth-constants'
 import type { AuthUserDTO, SignInInfo } from '@/auth/domain/auth-entities'
 import { AuthClient } from '@/auth/infrastructure/auth-client'
+import type { ValidationErrors } from '@/domain/entities'
 import { DEFAULT_ROUTE } from '@/domain/navigation'
 import { BAD_REQUEST_STATUS, OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
@@ -16,7 +17,6 @@ import { Form } from '@/presentation/components/forms/form'
 import { FormError } from '@/presentation/components/forms/form-error'
 import { RequiredFieldsMessage } from '@/presentation/components/forms/required-fields-message'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
-import type { ValidationErrors } from '@/presentation/utils/react-aria-utils'
 import { UserEmailField } from '@/user/presentation/user-email-field'
 import { UserPasswordField } from '@/user/presentation/user-password-field'
 import type { ValueOf } from '@/utils/object-utils'
@@ -70,7 +70,7 @@ export const SignInForm: React.FC = () => {
 
       <RequiredFieldsMessage />
 
-      <FormError validationErrors={signInFormErrors} />
+      <FormError errors={signInFormErrors?.form} />
 
       <SubmitButton Icon={<LogInIcon aria-hidden />} isPending={isUserAuthenticationLoading}>
         {({ isPending }) => t(`auth.signIn.submit.${isPending ? 'loading' : 'label'}`)}

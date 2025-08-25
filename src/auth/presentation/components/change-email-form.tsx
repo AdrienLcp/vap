@@ -4,12 +4,12 @@ import React from 'react'
 
 import { AUTH_FORM_FIELDS } from '@/auth/domain/auth-constants'
 import { AuthClient } from '@/auth/infrastructure/auth-client'
+import type { ValidationErrors } from '@/domain/entities'
 import { NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { Form } from '@/presentation/components/forms/form'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import { ToastService } from '@/presentation/services/toast-service'
-import type { ValidationErrors } from '@/presentation/utils/react-aria-utils'
 import { UserEmailField } from '@/user/presentation/user-email-field'
 import type { ValueOf } from '@/utils/object-utils'
 

@@ -141,6 +141,7 @@ export const fr = {
         placeholder: 'Nom de la catégorie'
       }
     },
+    imageAlt: 'Image de la catégorie',
     update: {
       errors: {
         categoryNameAlreadyExists: 'Une catégorie avec ce nom existe déjà.',
@@ -222,6 +223,7 @@ export const fr = {
         label: 'Stock'
       }
     },
+    imageAlt: 'Image du produit',
     status: {
       active: 'Actif',
       featured: 'En vedette',

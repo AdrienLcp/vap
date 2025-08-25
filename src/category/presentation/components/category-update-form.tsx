@@ -6,7 +6,7 @@ import { CATEGORY_CONSTANTS, CATEGORY_FORM_FIELDS } from '@/category/domain/cate
 import type { CategoryConflictError, CategoryDTO, CategoryUpdateData, CategoryValidationErrors } from '@/category/domain/category-entities'
 import { CategoryClient } from '@/category/infrastructure/category-client'
 import { CategoryDescriptionField } from '@/category/presentation/components/category-description-field'
-import { CategoryImageUrlField } from '@/category/presentation/components/category-image-url-field'
+import { CategoryImagePreviewField } from '@/category/presentation/components/category-image-preview-field'
 import { CategoryNameField } from '@/category/presentation/components/category-name-field'
 import { BAD_REQUEST_STATUS, CONFLICT_STATUS, OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
@@ -16,7 +16,11 @@ import { FormError } from '@/presentation/components/forms/form-error'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import type { Issues } from '@/utils/validation-utils'
 
-export const CategoryUpdateForm: React.FC = () => {
+type CategoryUpdateFormProps = {
+  category: CategoryDTO
+}
+
+export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = ({ category }) => {
   const [isCategoryUpdateLoading, setIsCategoryUpdateLoading] = React.useState(false)
   const [categoryUpdateFormErrors, setCategoryUpdateFormErrors] = React.useState<CategoryValidationErrors>()
 
@@ -44,9 +48,7 @@ export const CategoryUpdateForm: React.FC = () => {
   const onCategoryUpdateConflictError = React.useCallback((error: CategoryConflictError) => {
     switch (error) {
       case CATEGORY_CONSTANTS.NAME_ALREADY_EXISTS:
-        setCategoryUpdateFormErrors({
-          [CATEGORY_FORM_FIELDS.NAME]: t('category.update.errors.categoryNameAlreadyExists')
-        })
+        setCategoryUpdateFormErrors({ [CATEGORY_FORM_FIELDS.NAME]: t('category.update.errors.categoryNameAlreadyExists') })
         break
       default:
         setCategoryUpdateFormErrors({ form: t('components.forms.formValidationErrorDefaultMessage') })
@@ -68,7 +70,7 @@ export const CategoryUpdateForm: React.FC = () => {
       imageUrl: formData.get(CATEGORY_FORM_FIELDS.IMAGE_URL) as string
     }
 
-    const updatedCategoryResponse = await CategoryClient.updateCategory('', categoryUpdateData)
+    const updatedCategoryResponse = await CategoryClient.updateCategory(category.id, categoryUpdateData)
 
     setIsCategoryUpdateLoading(false)
 
@@ -88,14 +90,14 @@ export const CategoryUpdateForm: React.FC = () => {
   return (
     <Form onSubmit={onCategoryUpdateFormSubmit} validationErrors={categoryUpdateFormErrors}>
       <FieldSet isDisabled={isCategoryUpdateLoading}>
-        <CategoryNameField />
+        <CategoryNameField defaultValue={category.name} />
 
-        <CategoryDescriptionField />
+        <CategoryDescriptionField defaultValue={category.description ?? undefined} />
 
-        <CategoryImageUrlField />
+        <CategoryImagePreviewField imageUrl={category.imageUrl ?? undefined} />
       </FieldSet>
 
-      <FormError validationErrors={categoryUpdateFormErrors} />
+      <FormError errors={categoryUpdateFormErrors?.form} />
 
       <SubmitButton isPending={isCategoryUpdateLoading}>
         {({ isPending }) => t(`category.update.submit.${isPending ? 'updating' : 'label'}`)}

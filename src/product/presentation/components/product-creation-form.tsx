@@ -6,6 +6,7 @@ import { CREATED_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
 import { Form } from '@/presentation/components/forms/form'
+import { FormError } from '@/presentation/components/forms/form-error'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import { ToastService } from '@/presentation/services/toast-service'
 import { PRODUCT_FORM_FIELDS } from '@/product/domain/product-constants'
@@ -14,7 +15,7 @@ import { ProductClient } from '@/product/infrastructure/product-client'
 import { ProductCategorySelect } from '@/product/presentation/components/product-category-select'
 import { ProductDescriptionField } from '@/product/presentation/components/product-description-field'
 import { ProductDiscountedPriceField } from '@/product/presentation/components/product-discounted-price-field'
-import { ProductImageUrlField } from '@/product/presentation/components/product-image-url-field'
+import { ProductImagePreviewField } from '@/product/presentation/components/product-image-preview-field'
 import { ProductNameField } from '@/product/presentation/components/product-name-field'
 import { ProductPriceField } from '@/product/presentation/components/product-price-field'
 import { ProductSkuField } from '@/product/presentation/components/product-sku-field'
@@ -67,7 +68,7 @@ export const ProductCreationForm: React.FC = () => {
 
         <ProductPriceField />
 
-        <ProductImageUrlField />
+        <ProductImagePreviewField />
 
         <ProductDiscountedPriceField />
 
@@ -79,6 +80,8 @@ export const ProductCreationForm: React.FC = () => {
 
         <ProductCategorySelect items={[]} />
       </FieldSet>
+
+      <FormError errors={productCreationFormErrors?.form} />
 
       <SubmitButton isPending={isProductCreationLoading}>
         {({ isPending }) => t(`product.creation.submit.${isPending ? 'creating' : 'label'}`)}
