@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import { useCallback, useState } from 'react'
 
 import { CATEGORY_CONSTANTS, CATEGORY_FORM_FIELDS } from '@/category/domain/category-constants'
 import type { CategoryConflictError, CategoryCreationData, CategoryDTO, CategoryValidationErrors } from '@/category/domain/category-entities'
@@ -17,10 +17,10 @@ import { SubmitButton } from '@/presentation/components/ui/pressables/submit-but
 import type { Issues } from '@/utils/validation-utils'
 
 export const CategoryCreationForm: React.FC = () => {
-  const [isCategoryCreationLoading, setIsCategoryCreationLoading] = React.useState(false)
-  const [categoryCreationFormErrors, setCategoryCreationFormErrors] = React.useState<CategoryValidationErrors>()
+  const [isCategoryCreationLoading, setIsCategoryCreationLoading] = useState(false)
+  const [categoryCreationFormErrors, setCategoryCreationFormErrors] = useState<CategoryValidationErrors>()
 
-  const onCategoryCreationBadRequestError = React.useCallback((issues: Issues<CategoryCreationData>) => {
+  const onCategoryCreationBadRequestError = useCallback((issues: Issues<CategoryCreationData>) => {
     const nameErrors: string[] = []
     const formErrors: string[] = []
 
@@ -41,7 +41,7 @@ export const CategoryCreationForm: React.FC = () => {
     })
   }, [])
 
-  const onCategoryCreationConflictError = React.useCallback((error: CategoryConflictError) => {
+  const onCategoryCreationConflictError = useCallback((error: CategoryConflictError) => {
     switch (error) {
       case CATEGORY_CONSTANTS.NAME_ALREADY_EXISTS:
         setCategoryCreationFormErrors({ [CATEGORY_FORM_FIELDS.NAME]: t('category.create.errors.categoryNameAlreadyExists') })
@@ -52,12 +52,12 @@ export const CategoryCreationForm: React.FC = () => {
     }
   }, [])
 
-  const onCategoryCreationSuccess = React.useCallback((createdCategory: CategoryDTO) => {
+  const onCategoryCreationSuccess = useCallback((createdCategory: CategoryDTO) => {
     console.log(createdCategory)
     setCategoryCreationFormErrors(null)
   }, [])
 
-  const onCategoryCreationFormSubmit = React.useCallback(async (formData: FormData) => {
+  const onCategoryCreationFormSubmit = useCallback(async (formData: FormData) => {
     setIsCategoryCreationLoading(true)
 
     const categoryCreationData: CategoryCreationData = {

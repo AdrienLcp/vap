@@ -1,7 +1,8 @@
 'use client'
 
-import React from 'react'
+import { useCallback, useState } from 'react'
 
+import type { CategoryDTO } from '@/category/domain/category-entities'
 import { CREATED_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
@@ -22,15 +23,19 @@ import { ProductSkuField } from '@/product/presentation/components/product-sku-f
 import { ProductStatusSelect } from '@/product/presentation/components/product-status-select'
 import { ProductStockField } from '@/product/presentation/components/product-stock-field'
 
-export const ProductCreationForm: React.FC = () => {
-  const [isProductCreationLoading, setIsProductCreationLoading] = React.useState<boolean>(false)
-  const [productCreationFormErrors, setProductCreationFormErrors] = React.useState<ProductValidationErrors>(null)
+type ProductCreationFormProps = {
+  categories: CategoryDTO[]
+}
 
-  const onProductCreationSuccess = React.useCallback((createdProduct: ProductDTO) => {
+export const ProductCreationForm: React.FC<ProductCreationFormProps> = ({ categories }) => {
+  const [isProductCreationLoading, setIsProductCreationLoading] = useState<boolean>(false)
+  const [productCreationFormErrors, setProductCreationFormErrors] = useState<ProductValidationErrors>(null)
+
+  const onProductCreationSuccess = useCallback((createdProduct: ProductDTO) => {
     ToastService.success(t('product.creation.success', { productName: createdProduct.name }))
   }, [])
 
-  const onProductCreationFormSubmit = React.useCallback(async (formData: FormData) => {
+  const onProductCreationFormSubmit = useCallback(async (formData: FormData) => {
     setIsProductCreationLoading(true)
     setProductCreationFormErrors(null)
 
@@ -78,12 +83,12 @@ export const ProductCreationForm: React.FC = () => {
 
         <ProductStatusSelect />
 
-        <ProductCategorySelect items={[]} />
+        <ProductCategorySelect categories={categories} />
       </FieldSet>
 
       <FormError errors={productCreationFormErrors?.form} />
 
-      <SubmitButton isPending={isProductCreationLoading}>
+      <SubmitButton isDisabled isPending={isProductCreationLoading}>
         {({ isPending }) => t(`product.creation.submit.${isPending ? 'creating' : 'label'}`)}
       </SubmitButton>
     </Form>

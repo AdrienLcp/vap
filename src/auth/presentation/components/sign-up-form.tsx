@@ -2,7 +2,7 @@
 
 import { LogInIcon } from 'lucide-react'
 import { redirect } from 'next/navigation'
-import React from 'react'
+import { useCallback, useState } from 'react'
 
 import { useAuth } from '@/auth/application/use-auth'
 import { AUTH_CONSTANTS, AUTH_FORM_FIELDS } from '@/auth/domain/auth-constants'
@@ -25,17 +25,17 @@ import type { ValueOf } from '@/utils/object-utils'
 type SignUpFormErrors = ValidationErrors<ValueOf<typeof AUTH_FORM_FIELDS>>
 
 export const SignUpForm: React.FC = () => {
-  const [isUserCreationLoading, setIsUserCreationLoading] = React.useState(false)
-  const [signUpFormErrors, setSignUpFormErrors] = React.useState<SignUpFormErrors>(null)
+  const [isUserCreationLoading, setIsUserCreationLoading] = useState(false)
+  const [signUpFormErrors, setSignUpFormErrors] = useState<SignUpFormErrors>(null)
 
   const { setUser } = useAuth()
 
-  const onSignUpSuccess = React.useCallback((createdUser: AuthUserDTO) => {
+  const onSignUpSuccess = useCallback((createdUser: AuthUserDTO) => {
     setUser(createdUser)
     redirect(DEFAULT_ROUTE)
   }, [setUser])
 
-  const onSignUpFormSubmit = React.useCallback(async (formData: FormData) => {
+  const onSignUpFormSubmit = useCallback(async (formData: FormData) => {
     setIsUserCreationLoading(true)
     setSignUpFormErrors(null)
 

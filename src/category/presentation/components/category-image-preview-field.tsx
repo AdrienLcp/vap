@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState } from 'react'
 
 import { CATEGORY_CONSTANTS } from '@/category/domain/category-constants'
 import { CategoryImageUrlField } from '@/category/presentation/components/category-image-url-field'
@@ -12,7 +12,7 @@ type CategoryImagePreviewFieldProps = {
 }
 
 export const CategoryImagePreviewField: React.FC<CategoryImagePreviewFieldProps> = ({ imageUrl }) => {
-  const [currentCategoryImageUrl, setCurrentCategoryImageUrl] = React.useState(imageUrl)
+  const [currentCategoryImageUrl, setCurrentCategoryImageUrl] = useState(imageUrl)
 
   return (
     <div className='category-image-preview-field'>
@@ -22,7 +22,7 @@ export const CategoryImagePreviewField: React.FC<CategoryImagePreviewFieldProps>
         alt={t('category.imageAlt')}
         className='image'
         height={CATEGORY_CONSTANTS.IMAGE_SIZE_IN_PX}
-        src={imageUrl}
+        src={currentCategoryImageUrl}
         width={CATEGORY_CONSTANTS.IMAGE_SIZE_IN_PX}
       />
     </div>

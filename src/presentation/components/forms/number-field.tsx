@@ -1,5 +1,4 @@
 import {
-  FieldError,
   Input,
   Label,
   NumberField as ReactAriaNumberField,
@@ -7,7 +6,7 @@ import {
   Text
 } from 'react-aria-components'
 
-// import { FieldError } from '@/presentation/components/forms/field-error'
+import { FieldError } from '@/presentation/components/forms/field-error'
 import { reactAriaClassNames } from '@/presentation/utils/react-aria-utils'
 
 import './number-field.sass'
@@ -22,17 +21,11 @@ export const NumberField: React.FC<NumberFieldProps> = ({
   className,
   description,
   label,
-  maxValue,
-  minValue,
-  placeholder,
   ...numberFieldRestProps
 }) => (
   <ReactAriaNumberField
     {...numberFieldRestProps}
     className={values => reactAriaClassNames(values, className, 'number-field')}
-    maxValue={maxValue}
-    minValue={minValue}
-    placeholder='test'
   >
     {({ isInvalid, isRequired }) => (
       <>
@@ -41,13 +34,7 @@ export const NumberField: React.FC<NumberFieldProps> = ({
         <Input />
 
         {isInvalid
-          // ? <FieldError maxValue={maxValue} minValue={minValue} />
-          ? <FieldError>
-              {(values) => {
-                console.log(values)
-                return values.defaultChildren
-              }}
-            </FieldError>
+          ? <FieldError />
           : description && (
             <Text className='description' slot='description'>
               {description}

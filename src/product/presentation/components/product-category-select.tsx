@@ -1,4 +1,4 @@
-import React from 'react'
+import { useMemo } from 'react'
 
 import type { CategoryDTO } from '@/category/domain/category-entities'
 import { t } from '@/infrastructure/i18n'
@@ -14,7 +14,7 @@ export const ProductCategorySelect: React.FC<ProductCategorySelectProps> = ({
   label = t('product.fields.category.label'),
   name = PRODUCT_FORM_FIELDS.CATEGORY_ID
 }) => {
-  const categorySelectItems: SelectItem[] = React.useMemo(() => {
+  const categorySelectItems: SelectItem[] = useMemo(() => {
     return categories.map(category => ({
       ...category,
       textValue: category.name

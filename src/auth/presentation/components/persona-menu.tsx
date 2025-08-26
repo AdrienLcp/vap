@@ -1,6 +1,6 @@
 import { LogOutIcon, ShieldIcon, UserIcon } from 'lucide-react'
 import { redirect } from 'next/navigation'
-import React from 'react'
+import { useMemo } from 'react'
 
 import type { AuthUserDTO } from '@/auth/domain/auth-entities'
 import { AuthClient } from '@/auth/infrastructure/auth-client'
@@ -53,7 +53,7 @@ const menuItems: MenuItem[] = [
 ]
 
 export const PersonaMenu: React.FC<PersonaMenuProps> = ({ user }) => {
-  const MenuTrigger = React.useMemo(() => (
+  const MenuTrigger = useMemo(() => (
     <Button className='persona-menu-trigger'>
       <Avatar
         userEmail={user.email}
@@ -63,7 +63,7 @@ export const PersonaMenu: React.FC<PersonaMenuProps> = ({ user }) => {
     </Button>
   ), [user.email, user.image, user.name])
 
-  const filteredMenuItems = React.useMemo(() => {
+  const filteredMenuItems = useMemo(() => {
     return user.permissions.canAccessAdmin
       ? menuItems
       : menuItems.filter(item => item.id !== MENU_ITEM_ADMIN_ID)

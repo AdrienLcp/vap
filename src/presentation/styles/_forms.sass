@@ -8,8 +8,12 @@
     @include typography.text-ellipsis
 
   &
+    background: transparent
     block-size: var(--element-size, 2.5rem)
+    border: var(--element-stroke, 0.125rem) solid var(--neutral-border)
+    border-radius: var(--element-radius, 0.25rem)
     min-inline-size: 100%
+    padding-inline: var(--size-80, 0.5rem)
 
   &::placeholder
     @include typography.text-ellipsis
@@ -19,7 +23,9 @@
 
 @mixin field
   display: grid
-  gap: var(--size-80, 0.5rem)
+  gap: var(--size-40, 0.25rem)
+  inline-size: min(100%, 100vw - var(--size-160, 1rem))
+  margin-inline: auto
 
   & label
     @include typography.label-medium

@@ -17,6 +17,7 @@ const productSelect = {
   salesCount: true,
   category: {
     select: {
+      id: true,
       name: true,
       imageUrl: true
     }

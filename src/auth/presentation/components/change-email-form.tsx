@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import { useCallback, useState } from 'react'
 
 import { AUTH_FORM_FIELDS } from '@/auth/domain/auth-constants'
 import { AuthClient } from '@/auth/infrastructure/auth-client'
@@ -16,10 +16,10 @@ import type { ValueOf } from '@/utils/object-utils'
 type ChangeEmailFormErrors = ValidationErrors<ValueOf<typeof AUTH_FORM_FIELDS>>
 
 export const ChangeEmailForm: React.FC = () => {
-  const [isChangeEmailLoading, setIsChangeEmailLoading] = React.useState(false)
-  const [changeEmailFormErrors, setChangeEmailFormErrors] = React.useState<ChangeEmailFormErrors>(null)
+  const [isChangeEmailLoading, setIsChangeEmailLoading] = useState(false)
+  const [changeEmailFormErrors, setChangeEmailFormErrors] = useState<ChangeEmailFormErrors>(null)
 
-  const onChangeEmailFormSubmit = React.useCallback(async (formData: FormData) => {
+  const onChangeEmailFormSubmit = useCallback(async (formData: FormData) => {
     setIsChangeEmailLoading(true)
     setChangeEmailFormErrors(null)
 

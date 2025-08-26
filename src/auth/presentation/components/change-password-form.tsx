@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import { useCallback, useState } from 'react'
 
 import { AUTH_CONSTANTS, AUTH_FORM_FIELDS } from '@/auth/domain/auth-constants'
 import type { ChangePasswordConflictError } from '@/auth/domain/auth-entities'
@@ -18,10 +18,10 @@ import type { ValueOf } from '@/utils/object-utils'
 type ChangePasswordFormErrors = ValidationErrors<ValueOf<typeof AUTH_FORM_FIELDS>>
 
 export const ChangePasswordForm: React.FC = () => {
-  const [isChangePasswordLoading, setIsChangePasswordLoading] = React.useState(false)
-  const [changePasswordFormErrors, setChangePasswordFormErrors] = React.useState<ChangePasswordFormErrors>(null)
+  const [isChangePasswordLoading, setIsChangePasswordLoading] = useState(false)
+  const [changePasswordFormErrors, setChangePasswordFormErrors] = useState<ChangePasswordFormErrors>(null)
 
-  const onChangePasswordBadRequest = React.useCallback((errorCode: ChangePasswordConflictError) => {
+  const onChangePasswordBadRequest = useCallback((errorCode: ChangePasswordConflictError) => {
     switch (errorCode) {
       case 'INVALID_PASSWORD':
         setChangePasswordFormErrors({ [AUTH_FORM_FIELDS.NEW_PASSWORD]: t('auth.changePassword.errors.invalidPassword') })
@@ -38,7 +38,7 @@ export const ChangePasswordForm: React.FC = () => {
     }
   }, [])
 
-  const onChangePasswordFormSubmit = React.useCallback(async (formData: FormData) => {
+  const onChangePasswordFormSubmit = useCallback(async (formData: FormData) => {
     setIsChangePasswordLoading(true)
     setChangePasswordFormErrors(null)
 

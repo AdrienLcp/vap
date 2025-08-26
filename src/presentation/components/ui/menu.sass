@@ -26,6 +26,9 @@
       line-height: 1.25
       padding: var(--size-80, 0.5rem) var(--size-120, 0.75rem)
 
+    @include selectors.disabled
+      cursor: default
+
     & .text
       @include typography.text-ellipsis
 

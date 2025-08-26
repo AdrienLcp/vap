@@ -42,13 +42,13 @@ export function Select <K extends Key = string> ({ className, label, items, ...s
         <ChevronDown aria-hidden />
       </Button>
 
-      <Popover className='popover'>
-        <ListBox items={items}>
+      <Popover className='select-popover'>
+        <ListBox className='list' items={items}>
           {({ className, Icon, textValue, ...selectItemRestProps }) => (
             <ListBoxItem
+              {...selectItemRestProps}
               className={values => reactAriaClassNames(values, className, 'item')}
               textValue={textValue}
-              {...selectItemRestProps}
             >
               {Icon && <span aria-hidden className='icon'>{Icon}</span>}
 

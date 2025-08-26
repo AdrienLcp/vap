@@ -2,7 +2,6 @@
 
 import { LogInIcon } from 'lucide-react'
 import { usePathname } from 'next/navigation'
-import React from 'react'
 
 import { useAuth } from '@/auth/application/use-auth'
 import { PersonaMenu } from '@/auth/presentation/components/persona-menu'

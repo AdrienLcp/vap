@@ -1,5 +1,6 @@
 @use '@/presentation/styles/breakpoints'
 @use '@/presentation/styles/interactive'
+@use '@/presentation/styles/selectors'
 @use '@/presentation/styles/sizes'
 @use '@/presentation/styles/typography'
 
@@ -7,13 +8,13 @@
   block-size: var(--element-size, 2.5rem)
   inline-size: 100%
   justify-content: center
-  padding: 0 var(--size-120, 0.75rem)
+  padding: 0 var(--size-160, 1rem)
 
   &.has-icon-on-left
-    padding-inline: var(--size-120, 0.75rem) var(--size-160, 1rem)
+    padding-inline: var(--size-160, 1rem) var(--size-200, 1.25rem)
 
   &.has-icon-on-right
-    padding-inline: var(--size-160, 1rem) var(--size-120, 0.75rem)
+    padding-inline: var(--size-200, 1.25rem) var(--size-160, 1rem)
 
   &.small
     block-size: var(--size-280, 1.75rem)
@@ -34,6 +35,7 @@
   &
     align-items: center
     border-radius: var(--element-radius, 0.25rem)
+    cursor: pointer
     display: flex
     gap: var(--size-80, 0.5rem)
 
@@ -49,6 +51,9 @@
   &.is-icon-button
     padding: 0
     inline-size: var(--element-size, 2.5rem)
+
+  @include selectors.disabled
+    cursor: default
 
 .pressable
   &.filled

@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import { useCallback, useState } from 'react'
 
 import type { CategoryDTO } from '@/category/domain/category-entities'
 import { OK_STATUS } from '@/infrastructure/api/http-response'
@@ -29,14 +29,14 @@ type ProductUpdateFormProps = {
 }
 
 export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({ categories, product }) => {
-  const [isProductUpdateLoading, setIsProductUpdateLoading] = React.useState<boolean>(false)
-  const [productUpdateFormErrors, setProductUpdateFormErrors] = React.useState<ProductValidationErrors>(null)
+  const [isProductUpdateLoading, setIsProductUpdateLoading] = useState<boolean>(false)
+  const [productUpdateFormErrors, setProductUpdateFormErrors] = useState<ProductValidationErrors>(null)
 
-  const onProductUpdateSuccess = React.useCallback((updatedProduct: ProductDTO) => {
+  const onProductUpdateSuccess = useCallback((updatedProduct: ProductDTO) => {
     ToastService.success(t('product.update.success', { productName: updatedProduct.name }))
   }, [])
 
-  const onProductUpdateFormSubmit = React.useCallback(async (formData: FormData) => {
+  const onProductUpdateFormSubmit = useCallback(async (formData: FormData) => {
     setIsProductUpdateLoading(true)
     setProductUpdateFormErrors(null)
 

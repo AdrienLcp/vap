@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import { useCallback, useState } from 'react'
 
 import { CATEGORY_CONSTANTS, CATEGORY_FORM_FIELDS } from '@/category/domain/category-constants'
 import type { CategoryConflictError, CategoryDTO, CategoryUpdateData, CategoryValidationErrors } from '@/category/domain/category-entities'
@@ -21,10 +21,10 @@ type CategoryUpdateFormProps = {
 }
 
 export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = ({ category }) => {
-  const [isCategoryUpdateLoading, setIsCategoryUpdateLoading] = React.useState(false)
-  const [categoryUpdateFormErrors, setCategoryUpdateFormErrors] = React.useState<CategoryValidationErrors>()
+  const [isCategoryUpdateLoading, setIsCategoryUpdateLoading] = useState(false)
+  const [categoryUpdateFormErrors, setCategoryUpdateFormErrors] = useState<CategoryValidationErrors>()
 
-  const onCategoryUpdateBadRequestError = React.useCallback((issues: Issues<CategoryUpdateData>) => {
+  const onCategoryUpdateBadRequestError = useCallback((issues: Issues<CategoryUpdateData>) => {
     const nameErrors: string[] = []
     const formErrors: string[] = []
 
@@ -45,7 +45,7 @@ export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = ({ category
     })
   }, [])
 
-  const onCategoryUpdateConflictError = React.useCallback((error: CategoryConflictError) => {
+  const onCategoryUpdateConflictError = useCallback((error: CategoryConflictError) => {
     switch (error) {
       case CATEGORY_CONSTANTS.NAME_ALREADY_EXISTS:
         setCategoryUpdateFormErrors({ [CATEGORY_FORM_FIELDS.NAME]: t('category.update.errors.categoryNameAlreadyExists') })
@@ -56,11 +56,11 @@ export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = ({ category
     }
   }, [])
 
-  const onCategoryUpdateSuccess = React.useCallback((updatedCategory: CategoryDTO) => {
+  const onCategoryUpdateSuccess = useCallback((updatedCategory: CategoryDTO) => {
     console.log(updatedCategory)
   }, [])
 
-  const onCategoryUpdateFormSubmit = React.useCallback(async (formData: FormData) => {
+  const onCategoryUpdateFormSubmit = useCallback(async (formData: FormData) => {
     setCategoryUpdateFormErrors(null)
     setIsCategoryUpdateLoading(true)
 
@@ -85,7 +85,7 @@ export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = ({ category
         onCategoryUpdateConflictError(updatedCategoryResponse.error)
         break
     }
-  }, [onCategoryUpdateBadRequestError, onCategoryUpdateConflictError, onCategoryUpdateSuccess])
+  }, [category.id, onCategoryUpdateBadRequestError, onCategoryUpdateConflictError, onCategoryUpdateSuccess])
 
   return (
     <Form onSubmit={onCategoryUpdateFormSubmit} validationErrors={categoryUpdateFormErrors}>

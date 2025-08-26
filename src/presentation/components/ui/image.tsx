@@ -1,14 +1,14 @@
 import classNames from 'classnames'
 import { ImageOffIcon } from 'lucide-react'
 import NextImage, { type ImageProps as NextImageProps } from 'next/image'
-import React from 'react'
+import { useState } from 'react'
 
 import type { CSSVariables } from '@/presentation/utils/styles-utils'
 
 import './image.sass'
 
 type ImageProps = Omit<NextImageProps, 'src'> & {
-  Fallback?: React.ReactElement
+  Fallback?: React.ReactNode
   src?: NextImageProps['src']
 }
 
@@ -34,12 +34,11 @@ export const Image: React.FC<ImageProps> = ({
   className,
   Fallback,
   height,
-  placeholder = 'blur',
   src,
   width,
   ...imageRestProps
 }) => {
-  const [hasImageError, setHasImageError] = React.useState<boolean>(false)
+  const [hasImageError, setHasImageError] = useState<boolean>(false)
 
   if (hasImageError || !src) {
     return Fallback ?? <ImageDefaultFallback className={className} height={height} width={width} />
@@ -51,7 +50,6 @@ export const Image: React.FC<ImageProps> = ({
       className={className}
       height={height}
       onError={() => setHasImageError(true)}
-      placeholder={placeholder}
       src={src}
       width={width}
     />

@@ -1,4 +1,3 @@
-import React from 'react'
 import { FieldError as ReactAriaFieldError, type FieldErrorProps as ReactAriaFieldErrorProps } from 'react-aria-components'
 
 import { t } from '@/infrastructure/i18n'
@@ -8,9 +7,7 @@ import './field-error.sass'
 
 type FieldErrorProps = Omit<ReactAriaFieldErrorProps, 'children'> & {
   maxLength?: number
-  maxValue?: number
   minLength?: number
-  minValue?: number
 }
 
 export const FieldError: React.FC<FieldErrorProps> = ({ className, maxLength, minLength, ...fieldErrorRestProps }) => (
