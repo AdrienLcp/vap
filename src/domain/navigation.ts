@@ -2,8 +2,9 @@ export const ROUTES = {
   home: '/',
 
   admin: '/admin',
-  adminProducts: '/admin/products',
   adminCategories: '/admin/categories',
+  adminProducts: '/admin/products',
+  adminProduct: '/admin/products/:productId',
 
   profile: '/auth/profile',
   signIn: '/auth/sign-in',
@@ -12,6 +13,10 @@ export const ROUTES = {
   unauthorized: '/auth/unauthorized',
 
   notFound: '/not-found'
-}
+} as const
 
 export const DEFAULT_ROUTE = ROUTES.home
+
+export const getAdminProductRoute = (productId: string) => {
+  return ROUTES.adminProduct.replace(':productId', productId)
+}

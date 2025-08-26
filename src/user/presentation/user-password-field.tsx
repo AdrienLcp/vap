@@ -3,10 +3,10 @@ import { t } from '@/infrastructure/i18n'
 import { TextField, type TextFieldProps } from '@/presentation/components/forms/text-field'
 
 export const UserPasswordField: React.FC<Partial<TextFieldProps>> = ({
-  description = t('auth.signUp.form.password.description', { characterCount: AUTH_CONSTANTS.PASSWORD_MIN_LENGTH }),
-  label = t('auth.signUp.form.password.label'),
+  description = t('auth.fields.password.description', { characterCount: AUTH_CONSTANTS.PASSWORD_MIN_LENGTH }),
+  label = t('auth.fields.password.label'),
   name = AUTH_FORM_FIELDS.PASSWORD,
-  placeholder = t('auth.signUp.form.password.placeholder'),
+  placeholder = t('auth.fields.password.placeholder'),
   ...userPasswordFieldRestProps
 }) => (
   <TextField

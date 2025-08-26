@@ -1,0 +1,47 @@
+@use '@/presentation/styles/interactive'
+@use '@/presentation/styles/typography'
+
+@mixin field-input
+  @include interactive.outlined
+
+  &
+    @include typography.text-ellipsis
+
+  &
+    background: transparent
+    block-size: var(--element-size, 2.5rem)
+    border: var(--element-stroke, 0.125rem) solid var(--neutral-border)
+    border-radius: var(--element-radius, 0.25rem)
+    min-inline-size: 100%
+    padding-inline: var(--size-80, 0.5rem)
+
+  &::placeholder
+    @include typography.text-ellipsis
+
+    &
+      color: var(--neutral-foreground-muted)
+
+@mixin field
+  display: grid
+  gap: var(--size-40, 0.25rem)
+  inline-size: min(100%, 100vw - var(--size-160, 1rem))
+  margin-inline: auto
+
+  & label
+    @include typography.label-medium
+
+    &
+      @include typography.text-ellipsis
+
+    &
+      padding-inline: var(--size-20, 0.125rem)
+
+  & .description
+    @include typography.body-small
+
+    &
+      @include typography.text-ellipsis
+
+    &
+      color: var(--neutral-foreground-light)
+      padding-inline: var(--size-20, 0.125rem)

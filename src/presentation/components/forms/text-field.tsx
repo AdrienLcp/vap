@@ -27,11 +27,9 @@ export const TextField: React.FC<TextFieldProps> = ({
   >
     {({ isInvalid, isRequired }) => (
       <>
-        <Label className='label'>
-          {label}{isRequired && ' *'}
-        </Label>
+        <Label>{label}{isRequired && ' *'}</Label>
 
-        <Input className='input' />
+        <Input />
 
         {isInvalid
           ? <FieldError maxLength={maxLength} minLength={minLength} />

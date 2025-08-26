@@ -34,7 +34,7 @@ export const Error: React.FC<ErrorProps> = ({ reset }) => (
 
     <Button
       className='error-button'
-      Icon={<RefreshCwIcon />}
+      Icon={<RefreshCwIcon aria-hidden />}
       onPress={reset}
       variant='filled'
     >

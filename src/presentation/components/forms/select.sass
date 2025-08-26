@@ -1,0 +1,32 @@
+@use '@/presentation/styles/forms'
+@use '@/presentation/styles/interactive'
+@use '@/presentation/styles/selectors'
+
+.select
+  @include forms.field
+
+  & .trigger
+    @include forms.field-input
+
+    &
+      align-items: center
+      display: flex
+      gap: var(--size-80, 0.5rem)
+      justify-content: space-between
+
+.select-popover
+  @include interactive.popover
+
+  & .item
+    @include interactive.transparent
+
+    &
+      align-items: center
+      block-size: var(--size-360, 2rem)
+      cursor: pointer
+      display: flex
+      gap: var(--size-80, 0.5rem)
+      padding: var(--size-80, 0.5rem) var(--size-120, 0.75rem)
+
+    @include selectors.disabled
+      cursor: default

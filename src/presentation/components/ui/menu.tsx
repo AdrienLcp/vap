@@ -13,8 +13,8 @@ import { reactAriaClassNames } from '@/presentation/utils/react-aria-utils'
 import './menu.sass'
 
 export type MenuItem = Omit<MenuItemProps, 'id'> & {
-  id: Key
   Icon?: React.ReactElement
+  id: Key
 }
 
 type MenuProps<T> = ReactAriaMenuProps<T> & {
@@ -35,7 +35,7 @@ export function Menu <T>({ Trigger, ...menuRestProps }: MenuProps<T>) {
               textValue={textValue}
               {...restItemProps}
             >
-              {Icon && <span className='icon'>{Icon}</span>}
+              {Icon && <span aria-hidden className='icon'>{Icon}</span>}
 
               <span className='text'>{textValue}</span>
             </ReactAriaMenuItem>

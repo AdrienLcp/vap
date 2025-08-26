@@ -1,0 +1,11 @@
+.image-default-fallback
+  align-content: center
+  border: var(--element-stroke, 0.125rem) solid var(--neutral-border)
+  height: var(--image-default-fallback-height)
+  justify-items: center
+  width: var(--image-default-fallback-width)
+
+  & svg
+    --image-default-fallback-icon-size: clamp(var(--size-80, 0.5rem), 50%, var(--size-480, 3rem))
+    block-size: var(--image-default-fallback-icon-size)
+    inline-size: var(--image-default-fallback-icon-size)

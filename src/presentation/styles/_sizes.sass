@@ -39,9 +39,12 @@
   --stroke-l: 0.1875rem
   --stroke-xl: 0.25rem
 
+  --element-icon-size: var(--size-160, 1rem)
+  --element-radius: var(--radius-s, 0.25rem)
   --element-size: var(--size-400, 2.5rem)
   --element-stroke: var(--stroke-m, 0.125rem)
-  --element-icon-size: var(--size-160, 1rem)
+
+  --min-width: min(100%, 100vw - var(--size-40, 0.25rem))
 
 @mixin square($size)
   block-size: $size

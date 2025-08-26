@@ -1,3 +1,8 @@
+import { redirect } from 'next/navigation'
+
+import { DEFAULT_ROUTE, ROUTES } from '@/domain/navigation'
+import type { ValueOf } from '@/utils/object-utils'
+
 export const OK_STATUS = 200
 export const CREATED_STATUS = 201
 export const NO_CONTENT_STATUS = 204
@@ -9,21 +14,41 @@ export const CONFLICT_STATUS = 409
 export const UNPROCESSABLE_ENTITY_STATUS = 422
 export const INTERNAL_SERVER_ERROR_STATUS = 500
 
+export type OkStatus = typeof OK_STATUS
+export type CreatedStatus = typeof CREATED_STATUS
+export type NoContentStatus = typeof NO_CONTENT_STATUS
+export type BadRequestStatus = typeof BAD_REQUEST_STATUS
+export type UnauthorizedStatus = typeof UNAUTHORIZED_STATUS
+export type ForbiddenStatus = typeof FORBIDDEN_STATUS
+export type NotFoundStatus = typeof NOT_FOUND_STATUS
+export type ConflictStatus = typeof CONFLICT_STATUS
+export type UnprocessableEntityStatus = typeof UNPROCESSABLE_ENTITY_STATUS
+export type InternalServerErrorStatus = typeof INTERNAL_SERVER_ERROR_STATUS
+
 export type BaseResponse<Status extends number, T = null> = T extends null | undefined
   ? { headers?: HeadersInit, status: Status }
   : { headers?: HeadersInit, status: Status } & T
 
-export type OkResponse<Data> = BaseResponse<typeof OK_STATUS, { data: Data }>
-export type CreatedResponse<Data> = BaseResponse<typeof CREATED_STATUS, { data: Data }>
-export type NoContentResponse = BaseResponse<typeof NO_CONTENT_STATUS>
+export type OkResponse<Data> = BaseResponse<OkStatus, { data: Data }>
+export type CreatedResponse<Data> = BaseResponse<CreatedStatus, { data: Data }>
+export type NoContentResponse = BaseResponse<NoContentStatus>
 
-export type BadRequestResponse<Issues> = BaseResponse<typeof BAD_REQUEST_STATUS, { issues: Issues }>
-export type NotFoundResponse = BaseResponse<typeof NOT_FOUND_STATUS>
-export type UnauthorizedResponse = BaseResponse<typeof UNAUTHORIZED_STATUS>
-export type ForbiddenResponse = BaseResponse<typeof FORBIDDEN_STATUS>
-export type ConflictResponse<Error> = BaseResponse<typeof CONFLICT_STATUS, { error: Error }>
-export type UnprocessableEntityResponse<Error> = BaseResponse<typeof UNPROCESSABLE_ENTITY_STATUS, { error: Error }>
-export type InternalServerErrorResponse = BaseResponse<typeof INTERNAL_SERVER_ERROR_STATUS>
+export type BadRequestResponse<Issues> = BaseResponse<BadRequestStatus, { issues: Issues }>
+export type NotFoundResponse = BaseResponse<NotFoundStatus>
+export type UnauthorizedResponse = BaseResponse<UnauthorizedStatus>
+export type ForbiddenResponse = BaseResponse<ForbiddenStatus>
+export type ConflictResponse<Error> = BaseResponse<ConflictStatus, { error: Error }>
+export type UnprocessableEntityResponse<Error> = BaseResponse<UnprocessableEntityStatus, { error: Error }>
+export type InternalServerErrorResponse = BaseResponse<InternalServerErrorStatus>
+
+export type ErrorStatus =
+  | BadRequestStatus
+  | UnauthorizedStatus
+  | ForbiddenStatus
+  | NotFoundStatus
+  | ConflictStatus
+  | UnprocessableEntityStatus
+  | InternalServerErrorStatus
 
 export type Response<T> = T | InternalServerErrorResponse
 
@@ -52,7 +77,7 @@ const forbidden = (headers?: HeadersInit): ForbiddenResponse => {
 }
 
 const conflict = <Error>(error: Error, headers?: HeadersInit): ConflictResponse<Error> => {
-  return { headers, error, status: CONFLICT_STATUS }
+  return { error, headers, status: CONFLICT_STATUS }
 }
 
 const notFound = (headers?: HeadersInit): NotFoundResponse => {
@@ -60,7 +85,7 @@ const notFound = (headers?: HeadersInit): NotFoundResponse => {
 }
 
 const unprocessableEntity = <Error>(error: Error, headers?: HeadersInit): UnprocessableEntityResponse<Error> => {
-  return { headers, error, status: UNPROCESSABLE_ENTITY_STATUS }
+  return { error, headers, status: UNPROCESSABLE_ENTITY_STATUS }
 }
 
 const internalServerError = (headers?: HeadersInit): InternalServerErrorResponse => {
@@ -78,4 +103,17 @@ export const HttpResponse = {
   conflict,
   unprocessableEntity,
   internalServerError
+}
+
+export const errorRedirectByStatus = (status: ErrorStatus, fallbackRoute?: ValueOf<typeof ROUTES>) => {
+  switch (status) {
+    case UNAUTHORIZED_STATUS:
+      redirect(ROUTES.unauthorized)
+    case FORBIDDEN_STATUS:
+      redirect(ROUTES.forbidden)
+    case NOT_FOUND_STATUS:
+      redirect(ROUTES.notFound)
+    default:
+      redirect(fallbackRoute ?? DEFAULT_ROUTE)
+  }
 }

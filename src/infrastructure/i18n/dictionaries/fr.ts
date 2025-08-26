@@ -1,7 +1,6 @@
 import { dt, type LanguageMessages } from '@/infrastructure/i18n/lib'
 
 export const fr = {
-  appName: 'VAP',
   admin: {
     nav: {
       admin: 'Administration',
@@ -9,20 +8,15 @@ export const fr = {
       categories: 'Catégories'
     }
   },
+  appName: 'VAP',
   auth: {
     changeEmail: {
       errors: {
         unknown: 'Une erreur inconnue est survenue.'
       },
-      form: {
-        email: {
-          label: 'Nouvel email',
-          placeholder: 'jean-neige@gmail.com'
-        },
-        submit: {
-          label: 'Changer l\'email',
-          loading: 'Changement en cours...'
-        }
+      submit: {
+        label: 'Changer email',
+        loading: 'Changement en cours...'
       },
       success: 'Votre email a été changé avec succès.'
     },
@@ -52,38 +46,48 @@ export const fr = {
       },
       success: 'Votre mot de passe a été changé avec succès.'
     },
+    fields: {
+      email: {
+        label: 'Email',
+        placeholder: 'jean-neige@gmail.com'
+      },
+      name: {
+        label: 'Nom',
+        placeholder: 'Jean Neige'
+      },
+      password: {
+        description: dt('Au moins {characterCount:plural}', {
+          plural: { characterCount: { zero: '0 caractère', one: '1 caractère', other: '{?} caractères' } }
+        }),
+        label: 'Mot de passe',
+        placeholder: 'Entrez votre mot de passe'
+      }
+    },
     persona: {
-      admin: 'Administration',
+      admin: 'Admin',
       profile: 'Profil',
       signOut: 'Se déconnecter'
     },
     profile: {
-      title: 'Mon profil',
-      changeEmail: 'Changer mon email',
-      changePassword: 'Changer mon mot de passe'
+      changeEmail: 'Changer l\'email',
+      changePassword: 'Changer le mot de passe',
+      title: 'Mon profil'
     },
     signIn: {
       errors: {
         invalidCredentials: 'L\'adresse mail et le mot de passe ne correspondent pas.',
         unknown: 'Une erreur inconnue est survenue.'
       },
-      form: {
-        email: {
-          label: 'Email',
-          placeholder: 'jean-neige@gmail.com'
-        },
-        submit: {
-          label: 'Se connecter',
-          loading: 'Connexion en cours...'
-        }
-      },
       label: 'Se connecter',
       noAccount: 'Vous n\'avez pas de compte ?',
       signUpHere: 'Inscrivez-vous ici',
-      title: 'Connexion'
+      submit: {
+        label: 'Se connecter',
+        loading: 'Connexion en cours...'
+      },
+      title: 'Se connecter'
     },
     signOut: {
-      label: 'Se déconnecter',
       errors: {
         unknown: 'Une erreur inconnue est survenue.'
       }
@@ -99,33 +103,16 @@ export const fr = {
         unknown: 'Une erreur inconnue est survenue.',
         userAlreadyExists: 'Un utilisateur avec cet email existe déjà.'
       },
-      form: {
-        email: {
-          label: 'Email',
-          placeholder: 'jean-neige@gmail.com'
-        },
-        name: {
-          label: 'Nom',
-          placeholder: 'Jean Neige'
-        },
-        password: {
-          description: dt('Au moins {characterCount:plural}', {
-            plural: { characterCount: { zero: '0 caractère', one: '1 caractère', other: '{?} caractères' } }
-          }),
-          label: 'Mot de passe',
-          placeholder: 'Entrez votre mot de passe'
-        },
-        submit: {
-          creating: 'Création en cours...',
-          label: 'S\'inscrire'
-        }
-      },
       signInHere: 'Connectez-vous ici',
-      title: 'Inscription'
+      submit: {
+        creating: 'Création en cours...',
+        label: 'S\'inscrire'
+      },
+      title: 'S\'inscrire'
     },
     unauthorized: {
       description: 'Vous n\'êtes pas autorisé à accéder à cette page.',
-      linkLabel: 'Retour à la page d\'accueil',
+      linkLabel: 'Retour à l\'accueil',
       title: 'Accès non autorisé'
     }
   },
@@ -135,23 +122,34 @@ export const fr = {
         categoryNameAlreadyExists: 'Une catégorie avec ce nom existe déjà.',
         categoryNameTooLong: 'Le nom de la catégorie ne doit pas dépasser {max:number} caractères.'
       },
-      form: {
-        description: {
-          label: 'Description',
-          placeholder: 'Description de la catégorie'
-        },
-        image: {
-          label: 'Image',
-          placeholder: 'URL de l\'image'
-        },
-        name: {
-          label: 'Catégorie',
-          placeholder: 'Nom de la catégorie'
-        },
-        submit: {
-          creating: 'Création en cours...',
-          label: 'Créer'
-        }
+      submit: {
+        creating: 'Création en cours...',
+        label: 'Créer'
+      }
+    },
+    fields: {
+      description: {
+        label: 'Description',
+        placeholder: 'Description de la catégorie'
+      },
+      image: {
+        label: 'Image',
+        placeholder: 'URL de l\'image'
+      },
+      name: {
+        label: 'Catégorie',
+        placeholder: 'Nom de la catégorie'
+      }
+    },
+    imageAlt: 'Image de la catégorie',
+    update: {
+      errors: {
+        categoryNameAlreadyExists: 'Une catégorie avec ce nom existe déjà.',
+        categoryNameTooLong: 'Le nom de la catégorie ne doit pas dépasser {max:number} caractères.'
+      },
+      submit: {
+        label: 'Mettre à jour',
+        updating: 'Mise à jour en cours...'
       }
     }
   },
@@ -172,6 +170,74 @@ export const fr = {
         valueMissing: 'Ce champ est requis.'
       },
       requiredFields: 'Les champs marqués d\'un * sont requis.'
+    },
+    spinner: {
+      label: 'Chargement en cours...'
+    },
+    toaster: {
+      closeButtonLabel: 'Fermer'
+    }
+  },
+  product: {
+    creation: {
+      errors: {
+        unknown: 'Une erreur inconnue est survenue.'
+      },
+      submit: {
+        creating: 'Création en cours...',
+        label: 'Créer le produit'
+      },
+      success: '"{productName}" a été créé avec succès.'
+    },
+    fields: {
+      category: {
+        label: 'Catégorie'
+      },
+      description: {
+        label: 'Description',
+        placeholder: 'Décrivez le produit'
+      },
+      discountedPrice: {
+        description: 'Ajouter un prix ici pour créer une réduction',
+        label: 'Prix réduit'
+      },
+      imageUrl: {
+        label: 'URL de l\'image'
+      },
+      name: {
+        label: 'Nom',
+        placeholder: 'Nom du produit'
+      },
+      price: {
+        label: 'Prix'
+      },
+      sku: {
+        description: 'Code unique du produit',
+        label: 'SKU'
+      },
+      status: {
+        label: 'Statut'
+      },
+      stock: {
+        description: 'Quantité en stock',
+        label: 'Stock'
+      }
+    },
+    imageAlt: 'Image du produit',
+    status: {
+      active: 'Actif',
+      featured: 'En vedette',
+      inactive: 'Inactif'
+    },
+    update: {
+      errors: {
+        unknown: 'Une erreur inconnue est survenue.'
+      },
+      submit: {
+        label: 'Mettre à jour le produit',
+        updating: 'Mise à jour en cours...'
+      },
+      success: '"{productName}" a été mis à jour avec succès.'
     }
   },
   user: {

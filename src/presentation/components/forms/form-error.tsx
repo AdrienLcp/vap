@@ -1,26 +1,26 @@
 import { CircleAlertIcon } from 'lucide-react'
 
-import type { ValidationErrors } from '@/presentation/utils/react-aria-utils'
-
 import './form-error.sass'
 
-type FormErrorProps<T extends PropertyKey> = {
-  validationErrors?: ValidationErrors<T> | null
+type FormErrorProps = {
+  errors?: string | string[]
 }
 
-export function FormError <T extends PropertyKey> ({ validationErrors }: FormErrorProps<T>) {
-  if (!validationErrors?.form) {
+export const FormError: React.FC<FormErrorProps> = ({ errors }) => {
+  const isErrorsArray = Array.isArray(errors)
+
+  if (!errors || (isErrorsArray && errors.length === 0)) {
     return null
   }
 
   return (
     <div className='form-error'>
-      <CircleAlertIcon />
+      <CircleAlertIcon aria-hidden />
 
       <p>
-        {Array.isArray(validationErrors.form)
-          ? validationErrors.form.map((error, index) => <span key={index}>{error}</span>)
-          : validationErrors.form
+        {isErrorsArray
+          ? errors.map((error, index) => <span key={index}>{error}</span>)
+          : errors
         }
       </p>
     </div>

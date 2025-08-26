@@ -1,25 +1,25 @@
 'use client'
 
-import React from 'react'
+import { useCallback, useState } from 'react'
 
 import { AUTH_FORM_FIELDS } from '@/auth/domain/auth-constants'
 import { AuthClient } from '@/auth/infrastructure/auth-client'
+import type { ValidationErrors } from '@/domain/entities'
 import { NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { Form } from '@/presentation/components/forms/form'
-import { Button } from '@/presentation/components/ui/pressables/button'
+import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import { ToastService } from '@/presentation/services/toast-service'
-import type { ValidationErrors } from '@/presentation/utils/react-aria-utils'
 import { UserEmailField } from '@/user/presentation/user-email-field'
 import type { ValueOf } from '@/utils/object-utils'
 
 type ChangeEmailFormErrors = ValidationErrors<ValueOf<typeof AUTH_FORM_FIELDS>>
 
 export const ChangeEmailForm: React.FC = () => {
-  const [isChangeEmailLoading, setIsChangeEmailLoading] = React.useState(false)
-  const [changeEmailFormErrors, setChangeEmailFormErrors] = React.useState<ChangeEmailFormErrors>(null)
+  const [isChangeEmailLoading, setIsChangeEmailLoading] = useState(false)
+  const [changeEmailFormErrors, setChangeEmailFormErrors] = useState<ChangeEmailFormErrors>(null)
 
-  const onChangeEmailFormSubmit = React.useCallback(async (formData: FormData) => {
+  const onChangeEmailFormSubmit = useCallback(async (formData: FormData) => {
     setIsChangeEmailLoading(true)
     setChangeEmailFormErrors(null)
 
@@ -45,17 +45,15 @@ export const ChangeEmailForm: React.FC = () => {
     >
       <UserEmailField
         isDisabled={isChangeEmailLoading}
-        label={t('auth.changeEmail.form.email.label')}
-        placeholder={t('auth.changeEmail.form.email.placeholder')}
+        label={t('auth.fields.email.label')}
+        placeholder={t('auth.fields.email.placeholder')}
       />
 
-      <Button
+      <SubmitButton
         isPending={isChangeEmailLoading}
-        type='submit'
-        variant='filled'
       >
-        {({ isPending }) => t(`auth.changeEmail.form.submit.${isPending ? 'loading' : 'label'}`)}
-      </Button>
+        {({ isPending }) => t(`auth.changeEmail.submit.${isPending ? 'loading' : 'label'}`)}
+      </SubmitButton>
     </Form>
   )
 }

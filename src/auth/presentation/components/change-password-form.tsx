@@ -1,27 +1,27 @@
 'use client'
 
-import React from 'react'
+import { useCallback, useState } from 'react'
 
 import { AUTH_CONSTANTS, AUTH_FORM_FIELDS } from '@/auth/domain/auth-constants'
 import type { ChangePasswordConflictError } from '@/auth/domain/auth-entities'
 import { AuthClient } from '@/auth/infrastructure/auth-client'
+import type { ValidationErrors } from '@/domain/entities'
 import { BAD_REQUEST_STATUS, NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
 import { Form } from '@/presentation/components/forms/form'
-import { Button } from '@/presentation/components/ui/pressables/button'
+import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import { ToastService } from '@/presentation/services/toast-service'
-import type { ValidationErrors } from '@/presentation/utils/react-aria-utils'
 import { UserPasswordField } from '@/user/presentation/user-password-field'
 import type { ValueOf } from '@/utils/object-utils'
 
 type ChangePasswordFormErrors = ValidationErrors<ValueOf<typeof AUTH_FORM_FIELDS>>
 
 export const ChangePasswordForm: React.FC = () => {
-  const [isChangePasswordLoading, setIsChangePasswordLoading] = React.useState(false)
-  const [changePasswordFormErrors, setChangePasswordFormErrors] = React.useState<ChangePasswordFormErrors>(null)
+  const [isChangePasswordLoading, setIsChangePasswordLoading] = useState(false)
+  const [changePasswordFormErrors, setChangePasswordFormErrors] = useState<ChangePasswordFormErrors>(null)
 
-  const onChangePasswordBadRequest = React.useCallback((errorCode: ChangePasswordConflictError) => {
+  const onChangePasswordBadRequest = useCallback((errorCode: ChangePasswordConflictError) => {
     switch (errorCode) {
       case 'INVALID_PASSWORD':
         setChangePasswordFormErrors({ [AUTH_FORM_FIELDS.NEW_PASSWORD]: t('auth.changePassword.errors.invalidPassword') })
@@ -38,7 +38,7 @@ export const ChangePasswordForm: React.FC = () => {
     }
   }, [])
 
-  const onChangePasswordFormSubmit = React.useCallback(async (formData: FormData) => {
+  const onChangePasswordFormSubmit = useCallback(async (formData: FormData) => {
     setIsChangePasswordLoading(true)
     setChangePasswordFormErrors(null)
 
@@ -79,13 +79,9 @@ export const ChangePasswordForm: React.FC = () => {
         />
       </FieldSet>
 
-      <Button
-        isPending={isChangePasswordLoading}
-        type='submit'
-        variant='filled'
-      >
+      <SubmitButton isPending={isChangePasswordLoading}>
         {({ isPending }) => t(`auth.changePassword.form.submit.${isPending ? 'loading' : 'label'}`)}
-      </Button>
+      </SubmitButton>
     </Form>
   )
 }

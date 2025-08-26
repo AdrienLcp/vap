@@ -1,8 +1,11 @@
 import type z from 'zod'
 
+import type { ValidationErrors } from '@/domain/entities'
 import type { Forbidden, Unauthorized } from '@/helpers/result'
 import type { BadRequestResponse, CreatedResponse, ForbiddenResponse, NoContentResponse, NotFoundResponse, OkResponse, Response, UnauthorizedResponse } from '@/infrastructure/api/http-response'
+import type { PRODUCT_FORM_FIELDS } from '@/product/domain/product-constants'
 import type { ProductCreationSchema, ProductDTOSchema, ProductPublicDTOSchema, ProductStatusSchema, ProductUpdateSchema } from '@/product/domain/product-schemas'
+import type { ValueOf } from '@/utils/object-utils'
 import type { Issues } from '@/utils/validation-utils'
 
 export type ProductStatus = z.infer<typeof ProductStatusSchema>
@@ -59,3 +62,5 @@ export type ProductDeleteResponse = Response<
   | UnauthorizedResponse
   | ForbiddenResponse
 >
+
+export type ProductValidationErrors = ValidationErrors<ValueOf<typeof PRODUCT_FORM_FIELDS>>

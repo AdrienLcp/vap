@@ -2,12 +2,13 @@
 
 import { LogInIcon } from 'lucide-react'
 import { redirect } from 'next/navigation'
-import React from 'react'
+import { useCallback, useState } from 'react'
 
 import { useAuth } from '@/auth/application/use-auth'
 import { AUTH_FORM_FIELDS } from '@/auth/domain/auth-constants'
 import type { AuthUserDTO, SignInInfo } from '@/auth/domain/auth-entities'
 import { AuthClient } from '@/auth/infrastructure/auth-client'
+import type { ValidationErrors } from '@/domain/entities'
 import { DEFAULT_ROUTE } from '@/domain/navigation'
 import { BAD_REQUEST_STATUS, OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
@@ -15,8 +16,7 @@ import { FieldSet } from '@/presentation/components/forms/field-set'
 import { Form } from '@/presentation/components/forms/form'
 import { FormError } from '@/presentation/components/forms/form-error'
 import { RequiredFieldsMessage } from '@/presentation/components/forms/required-fields-message'
-import { Button } from '@/presentation/components/ui/pressables/button'
-import type { ValidationErrors } from '@/presentation/utils/react-aria-utils'
+import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import { UserEmailField } from '@/user/presentation/user-email-field'
 import { UserPasswordField } from '@/user/presentation/user-password-field'
 import type { ValueOf } from '@/utils/object-utils'
@@ -24,17 +24,17 @@ import type { ValueOf } from '@/utils/object-utils'
 type SignInFormErrors = ValidationErrors<ValueOf<typeof AUTH_FORM_FIELDS>>
 
 export const SignInForm: React.FC = () => {
-  const [isUserAuthenticationLoading, setIsUserAuthenticationLoading] = React.useState(false)
-  const [signInFormErrors, setSignInFormErrors] = React.useState<SignInFormErrors>(null)
+  const [isUserAuthenticationLoading, setIsUserAuthenticationLoading] = useState(false)
+  const [signInFormErrors, setSignInFormErrors] = useState<SignInFormErrors>(null)
 
   const { setUser } = useAuth()
 
-  const onSignInSuccess = React.useCallback((authenticatedUser: AuthUserDTO) => {
+  const onSignInSuccess = useCallback((authenticatedUser: AuthUserDTO) => {
     setUser(authenticatedUser)
     redirect(DEFAULT_ROUTE)
   }, [setUser])
 
-  const onSignInFormSubmit = React.useCallback(async (formData: FormData) => {
+  const onSignInFormSubmit = useCallback(async (formData: FormData) => {
     setIsUserAuthenticationLoading(true)
     setSignInFormErrors(null)
 
@@ -70,16 +70,11 @@ export const SignInForm: React.FC = () => {
 
       <RequiredFieldsMessage />
 
-      <FormError validationErrors={signInFormErrors} />
+      <FormError errors={signInFormErrors?.form} />
 
-      <Button
-        Icon={<LogInIcon />}
-        isPending={isUserAuthenticationLoading}
-        type='submit'
-        variant='filled'
-      >
-        {({ isPending }) => t(`auth.signIn.form.submit.${isPending ? 'loading' : 'label'}`)}
-      </Button>
+      <SubmitButton Icon={<LogInIcon aria-hidden />} isPending={isUserAuthenticationLoading}>
+        {({ isPending }) => t(`auth.signIn.submit.${isPending ? 'loading' : 'label'}`)}
+      </SubmitButton>
     </Form>
   )
 }

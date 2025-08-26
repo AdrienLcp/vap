@@ -19,7 +19,7 @@ const renderButtonIcon = (Icon: ButtonProps['Icon'], variant: ButtonProps['varia
   }
 
   return (
-    <div className='icon' role='presentation'>
+    <div className='icon'>
       {isPending && Icon != null ? <Spinner /> : Icon}
     </div>
   )

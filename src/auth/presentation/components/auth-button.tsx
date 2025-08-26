@@ -2,7 +2,6 @@
 
 import { LogInIcon } from 'lucide-react'
 import { usePathname } from 'next/navigation'
-import React from 'react'
 
 import { useAuth } from '@/auth/application/use-auth'
 import { PersonaMenu } from '@/auth/presentation/components/persona-menu'
@@ -29,7 +28,7 @@ export const AuthButton: React.FC = () => {
     return (
       <Link
         className='auth-link'
-        Icon={<LogInIcon />}
+        Icon={<LogInIcon aria-hidden />}
         href={ROUTES.signIn}
         variant='filled'
       >

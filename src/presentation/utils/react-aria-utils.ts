@@ -3,7 +3,10 @@ import type {
   ButtonRenderProps,
   FieldErrorRenderProps,
   LinkRenderProps,
+  ListBoxItemRenderProps,
   MenuItemRenderProps,
+  NumberFieldRenderProps,
+  SelectRenderProps,
   TextFieldRenderProps,
   TooltipRenderProps
 } from 'react-aria-components'
@@ -12,7 +15,10 @@ export type ReactAriaComponentRenderProps =
   | ButtonRenderProps
   | FieldErrorRenderProps
   | LinkRenderProps
+  | ListBoxItemRenderProps
   | MenuItemRenderProps
+  | NumberFieldRenderProps
+  | SelectRenderProps
   | TextFieldRenderProps
   | TooltipRenderProps
 
@@ -36,11 +42,6 @@ export const reactAriaClassNames = <T extends ReactAriaComponentRenderProps> (
 
   return classNames(...baseClassName, classNameOverride)
 }
-
-export type ValidationErrors <T extends PropertyKey> =
-  | Partial<Record<T | 'form', string | string[]>>
-  | null
-  | undefined
 
 type ReactAriaComponentChildrenValues <T extends ReactAriaComponentRenderProps> = T & { defaultChildren: React.ReactNode | undefined }
 

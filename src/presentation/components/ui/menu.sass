@@ -1,14 +1,11 @@
 @use '@/presentation/styles/accessibility'
+@use '@/presentation/styles/interactive'
 @use '@/presentation/styles/selectors'
 @use '@/presentation/styles/sizes'
 @use '@/presentation/styles/typography'
 
 .menu
-  background: var(--neutral-background)
-  border: var(--stroke-s, 0.25rem) solid var(--neutral-border)
-  border-radius: var(--radius-m, 0.25rem)
-  inline-size: min(15.625rem, 100vw - var(--size-80, 0.5rem))
-  padding-block: var(--size-80, 0.5rem)
+  @include interactive.popover
 
   & .item
     @include accessibility.focus-outline
@@ -17,14 +14,20 @@
       @include typography.label-medium
 
     &
+      @include interactive.transparent
+
+    &
       align-items: center
-      border-radius: var(--radius-s, 0.125rem)
+      border-radius: var(--radius-xs, 0.125rem)
       block-size: var(--size-360, 2rem)
       cursor: pointer
       display: flex
       gap: var(--size-80, 0.5rem)
       line-height: 1.25
       padding: var(--size-80, 0.5rem) var(--size-120, 0.75rem)
+
+    @include selectors.disabled
+      cursor: default
 
     & .text
       @include typography.text-ellipsis
@@ -35,9 +38,3 @@
 
       & .icon
         @include sizes.square(1rem)
-
-    @include selectors.hovered
-      background-color: var(--neutral-background-hovered)
-
-    @include selectors.pressed
-      background-color: var(--neutral-background-pressed)

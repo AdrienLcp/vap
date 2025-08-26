@@ -1,0 +1,14 @@
+@use '@/presentation/styles/forms'
+
+.text-area
+  @include forms.field
+
+  & textarea
+    @include forms.field-input
+
+    &
+      block-size: 6em
+      inline-size: 100%
+      min-block-size: 2em
+      min-inline-size: 5ch
+      padding-block: var(--size-80, 0.5rem)

@@ -10,8 +10,9 @@ export const ProductNameSchema = z.string().min(1)
 export const ProductStockSchema = z.int().min(PRODUCT_CONSTANTS.MIN_STOCK)
 
 export const ProductCategoryDTOSchema = CategoryDTOSchema.pick({
-  name: true,
-  imageUrl: true
+  id: true,
+  imageUrl: true,
+  name: true
 })
 
 export const ProductSKU = z
