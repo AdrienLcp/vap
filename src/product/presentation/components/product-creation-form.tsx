@@ -88,7 +88,7 @@ export const ProductCreationForm: React.FC<ProductCreationFormProps> = ({ catego
 
       <FormError errors={productCreationFormErrors?.form} />
 
-      <SubmitButton isDisabled isPending={isProductCreationLoading}>
+      <SubmitButton isPending={isProductCreationLoading}>
         {({ isPending }) => t(`product.creation.submit.${isPending ? 'creating' : 'label'}`)}
       </SubmitButton>
     </Form>

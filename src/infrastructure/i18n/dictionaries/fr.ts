@@ -117,7 +117,7 @@ export const fr = {
     }
   },
   category: {
-    create: {
+    creation: {
       errors: {
         categoryNameAlreadyExists: 'Une catégorie avec ce nom existe déjà.',
         categoryNameTooLong: 'Le nom de la catégorie ne doit pas dépasser {max:number} caractères.'
@@ -125,7 +125,8 @@ export const fr = {
       submit: {
         creating: 'Création en cours...',
         label: 'Créer'
-      }
+      },
+      title: 'Créer une catégorie'
     },
     fields: {
       description: {
@@ -187,7 +188,8 @@ export const fr = {
         creating: 'Création en cours...',
         label: 'Créer le produit'
       },
-      success: '"{productName}" a été créé avec succès.'
+      success: '"{productName}" a été créé avec succès.',
+      title: 'Créer un produit'
     },
     fields: {
       category: {
