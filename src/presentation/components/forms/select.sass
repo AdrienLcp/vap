@@ -1,3 +1,4 @@
+@use '@/presentation/styles/accessibility'
 @use '@/presentation/styles/forms'
 @use '@/presentation/styles/interactive'
 @use '@/presentation/styles/selectors'
@@ -21,8 +22,12 @@
     @include interactive.transparent
 
     &
+      @include accessibility.focus-border
+
+    &
       align-items: center
       block-size: var(--size-360, 2rem)
+      border-radius: var(--element-radius, 0.25rem)
       cursor: pointer
       display: flex
       gap: var(--size-80, 0.5rem)
