@@ -27,7 +27,7 @@ export function Menu <T>({ Trigger, ...menuRestProps }: MenuProps<T>) {
     <MenuTrigger>
       {Trigger}
 
-      <Popover className='menu-popover'>
+      <Popover>
         <ReactAriaMenu className='menu' {...menuRestProps}>
           {({ className, Icon, textValue, ...restItemProps }) => (
             <ReactAriaMenuItem

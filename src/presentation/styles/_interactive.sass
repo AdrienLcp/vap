@@ -5,9 +5,6 @@
 @mixin common-interactive
   @include animations.color-transitions
 
-  &
-    @include accessibility.focus-outline
-
 @mixin filled
   @include common-interactive
 
@@ -48,6 +45,7 @@
   border-radius: var(--element-radius, 0.25rem)
   inline-size: min(15.625rem, 100vw - var(--size-80, 0.5rem))
   max-block-size: min(20rem, 100svh - var(--size-80, 0.5rem))
+  outline: none
   overflow-y: auto
   padding-block: var(--size-80, 0.5rem)
 

@@ -1,3 +1,5 @@
+@use '@/presentation/styles/accessibility'
+
 .admin-nav
   align-items: center
   background-color: var(--neutral-background-muted)
@@ -5,6 +7,9 @@
   display: flex
   justify-content: center
   padding-inline: var(--size-120, 0.75rem)
+  position: sticky
+  top: var(--header-height, 3.625rem)
 
   & .pressable
+    margin: var(--size-40, 0.25rem)
     padding: var(--size-80, 0.5rem) var(--size-120, 1.5rem)

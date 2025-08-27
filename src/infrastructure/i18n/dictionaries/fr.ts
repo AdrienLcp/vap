@@ -170,7 +170,10 @@ export const fr = {
         tooShortValue: 'La valeur saisie doit faire au moins {min:number} caractères.',
         valueMissing: 'Ce champ est requis.'
       },
-      requiredFields: 'Les champs marqués d\'un * sont requis.'
+      requiredFields: 'Les champs marqués d\'un * sont requis.',
+      select: {
+        defaultPlaceholder: 'Sélectionnez une option'
+      }
     },
     spinner: {
       label: 'Chargement en cours...'
@@ -193,7 +196,8 @@ export const fr = {
     },
     fields: {
       category: {
-        label: 'Catégorie'
+        label: 'Catégorie',
+        placeholder: 'Sélectionnez une catégorie'
       },
       description: {
         label: 'Description',

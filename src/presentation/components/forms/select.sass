@@ -2,6 +2,8 @@
 @use '@/presentation/styles/forms'
 @use '@/presentation/styles/interactive'
 @use '@/presentation/styles/selectors'
+@use '@/presentation/styles/sizes'
+@use '@/presentation/styles/typography'
 
 .select
   @include forms.field
@@ -10,13 +12,39 @@
     @include forms.field-input
 
     &
-      align-items: center
-      display: flex
+      display: grid
+      grid-template-columns: 1fr auto
       gap: var(--size-80, 0.5rem)
-      justify-content: space-between
+
+    & .value
+      @include typography.body-medium
+
+      &
+        @include typography.text-ellipsis
+
+      &
+        text-align: left
+
+      & .content
+        align-items: center
+        display: flex
+        gap: var(--size-80, 0.5rem)
+
+        &:has(.icon)
+          display: grid
+          grid-template-columns: auto 1fr
+
+        & .text
+          @include typography.text-ellipsis
+
+        & .icon
+          @include sizes.square(1rem)
 
 .select-popover
   @include interactive.popover
+
+  &
+    min-inline-size: var(--trigger-width, min(40ch, 100vw - var(--size-80, 0.5rem)))
 
   & .item
     @include interactive.transparent
@@ -29,9 +57,32 @@
       block-size: var(--size-360, 2rem)
       border-radius: var(--element-radius, 0.25rem)
       cursor: pointer
-      display: flex
+      display: grid
       gap: var(--size-80, 0.5rem)
+      grid-template-columns: 1fr auto
+      justify-content: space-between
       padding: var(--size-80, 0.5rem) var(--size-120, 0.75rem)
 
     @include selectors.disabled
       cursor: default
+
+    & .content
+      @include typography.text-ellipsis
+
+      &
+        align-items: center
+        display: flex
+        gap: var(--size-80, 0.5rem)
+
+      &:has(.icon)
+        display: grid
+        grid-template-columns: auto 1fr
+
+      & .text
+        @include typography.text-ellipsis
+
+      & .icon
+        @include sizes.square(1rem)
+
+    & .check-icon
+      @include sizes.square(1rem)

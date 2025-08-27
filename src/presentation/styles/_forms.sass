@@ -1,3 +1,4 @@
+@use '@/presentation/styles/accessibility'
 @use '@/presentation/styles/interactive'
 @use '@/presentation/styles/typography'
 
@@ -6,6 +7,9 @@
 
   &
     @include typography.text-ellipsis
+
+  &
+    @include accessibility.focus-outline
 
   &
     background: transparent

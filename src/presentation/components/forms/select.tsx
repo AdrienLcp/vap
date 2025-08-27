@@ -1,4 +1,4 @@
-import { ChevronDown } from 'lucide-react'
+import { CheckIcon, ChevronDown } from 'lucide-react'
 import {
   type Key,
   Label,
@@ -11,6 +11,7 @@ import {
   SelectValue
 } from 'react-aria-components'
 
+import { t } from '@/infrastructure/i18n'
 import { Button } from '@/presentation/components/ui/pressables/button'
 import { reactAriaClassNames } from '@/presentation/utils/react-aria-utils'
 
@@ -28,31 +29,49 @@ export type SelectProps<K extends Key = string> = ReactAriaSelectProps<SelectIte
   label: string
 }
 
-export function Select <K extends Key = string> ({ className, label, items, ...selectRestProps }: SelectProps<K>) {
+export function Select <K extends Key = string> ({ className, label, items, placeholder, ...selectRestProps }: SelectProps<K>) {
   return (
     <ReactAriaSelect
       {...selectRestProps}
       className={values => reactAriaClassNames(values, className, 'select')}
+      placeholder={placeholder}
     >
       <Label>{label}</Label>
 
       <Button className='trigger'>
-        <SelectValue />
+        <SelectValue className='value'>
+          {({ defaultChildren, isPlaceholder }) => {
+            if (isPlaceholder) {
+              return placeholder ?? t('components.forms.select.defaultPlaceholder')
+            }
+
+            return defaultChildren
+          }}
+        </SelectValue>
 
         <ChevronDown aria-hidden />
       </Button>
 
-      <Popover className='select-popover'>
-        <ListBox className='list' items={items}>
+      <Popover>
+        <ListBox className='select-popover' items={items}>
           {({ className, Icon, textValue, ...selectItemRestProps }) => (
             <ListBoxItem
               {...selectItemRestProps}
               className={values => reactAriaClassNames(values, className, 'item')}
               textValue={textValue}
             >
-              {Icon && <span aria-hidden className='icon'>{Icon}</span>}
+              {({ isSelected }) => (
+                <>
+                  <div className='content'>
+                    {Icon && <span aria-hidden className='icon'>{Icon}</span>}
 
-              <span className='text'>{textValue}</span>
+                    <span className='text'>{textValue}</span>
+                  </div>
+
+                  {isSelected && <CheckIcon aria-hidden className='check-icon' />}
+                </>
+              )}
+
             </ListBoxItem>
           )}
         </ListBox>
