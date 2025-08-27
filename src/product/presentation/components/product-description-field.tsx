@@ -9,11 +9,10 @@ export const ProductDescriptionField: React.FC<Partial<TextAreaProps>> = ({
   ...productDescriptionFieldProps
 }) => (
   <TextArea
-    isRequired
+    {...productDescriptionFieldProps}
     label={label}
     maxLength={PRODUCT_CONSTANTS.DESCRIPTION_MAX_LENGTH}
     name={name}
     placeholder={placeholder}
-    {...productDescriptionFieldProps}
   />
 )

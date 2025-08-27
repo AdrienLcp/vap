@@ -6,7 +6,6 @@ const productPriceFormatOptions: Intl.NumberFormatOptions = {
   currency: 'EUR',
   maximumFractionDigits: 2,
   minimumFractionDigits: 2,
-  signDisplay: 'exceptZero',
   style: 'currency'
 }
 
