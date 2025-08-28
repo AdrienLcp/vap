@@ -3,7 +3,7 @@
 import { useCallback, useState } from 'react'
 
 import type { CategoryDTO } from '@/category/domain/category-entities'
-import { CREATED_STATUS } from '@/infrastructure/api/http-response'
+import { BAD_REQUEST_STATUS, CREATED_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
 import { Form } from '@/presentation/components/forms/form'
@@ -22,6 +22,7 @@ import { ProductPriceField } from '@/product/presentation/components/product-pri
 import { ProductSkuField } from '@/product/presentation/components/product-sku-field'
 import { ProductStatusSelect } from '@/product/presentation/components/product-status-select'
 import { ProductStockField } from '@/product/presentation/components/product-stock-field'
+import type { Issues } from '@/utils/validation-utils'
 
 type ProductCreationFormProps = {
   categories: CategoryDTO[]
@@ -30,6 +31,11 @@ type ProductCreationFormProps = {
 export const ProductCreationForm: React.FC<ProductCreationFormProps> = ({ categories }) => {
   const [isProductCreationLoading, setIsProductCreationLoading] = useState<boolean>(false)
   const [productCreationFormErrors, setProductCreationFormErrors] = useState<ProductValidationErrors>(null)
+
+  const onProductCreationBadRequest = useCallback((issues: Issues<ProductCreationData>) => {
+    console.log(issues)
+
+  }, [])
 
   const onProductCreationSuccess = useCallback((createdProduct: ProductDTO) => {
     ToastService.success(t('product.creation.success', { productName: createdProduct.name }))
@@ -59,10 +65,12 @@ export const ProductCreationForm: React.FC<ProductCreationFormProps> = ({ catego
       case CREATED_STATUS:
         onProductCreationSuccess(productCreationResponse.data)
         break
+      case BAD_REQUEST_STATUS:
+        onProductCreationBadRequest(productCreationResponse.issues)
       default:
         ToastService.error(t('product.creation.errors.unknown'))
     }
-  }, [onProductCreationSuccess])
+  }, [onProductCreationBadRequest, onProductCreationSuccess])
 
   return (
     <Form onSubmit={onProductCreationFormSubmit} validationErrors={productCreationFormErrors}>

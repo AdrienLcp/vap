@@ -25,9 +25,30 @@ export type ConflictStatus = typeof CONFLICT_STATUS
 export type UnprocessableEntityStatus = typeof UNPROCESSABLE_ENTITY_STATUS
 export type InternalServerErrorStatus = typeof INTERNAL_SERVER_ERROR_STATUS
 
-export type BaseResponse<Status extends number, T = null> = T extends null | undefined
-  ? { headers?: HeadersInit, status: Status }
-  : { headers?: HeadersInit, status: Status } & T
+export type SuccessStatus =
+  | OkStatus
+  | CreatedStatus
+  | NoContentStatus
+
+export type ErrorStatus =
+  | BadRequestStatus
+  | UnauthorizedStatus
+  | ForbiddenStatus
+  | NotFoundStatus
+  | ConflictStatus
+  | UnprocessableEntityStatus
+  | InternalServerErrorStatus
+
+export type HttpStatus = ErrorStatus | SuccessStatus
+
+type CommonResponse<Status extends HttpStatus> = {
+  headers?: HeadersInit
+  status: Status
+}
+
+export type BaseResponse<Status extends HttpStatus, T = null> = T extends null | undefined
+  ? CommonResponse<Status>
+  : CommonResponse<Status> & T
 
 export type OkResponse<Data> = BaseResponse<OkStatus, { data: Data }>
 export type CreatedResponse<Data> = BaseResponse<CreatedStatus, { data: Data }>
@@ -40,15 +61,6 @@ export type ForbiddenResponse = BaseResponse<ForbiddenStatus>
 export type ConflictResponse<Error> = BaseResponse<ConflictStatus, { error: Error }>
 export type UnprocessableEntityResponse<Error> = BaseResponse<UnprocessableEntityStatus, { error: Error }>
 export type InternalServerErrorResponse = BaseResponse<InternalServerErrorStatus>
-
-export type ErrorStatus =
-  | BadRequestStatus
-  | UnauthorizedStatus
-  | ForbiddenStatus
-  | NotFoundStatus
-  | ConflictStatus
-  | UnprocessableEntityStatus
-  | InternalServerErrorStatus
 
 export type Response<T> = T | InternalServerErrorResponse
 

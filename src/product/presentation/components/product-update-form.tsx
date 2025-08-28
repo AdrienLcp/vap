@@ -70,21 +70,21 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({ categories
       <FieldSet isDisabled={isProductUpdateLoading}>
         <ProductNameField defaultValue={product.name} />
 
-        <ProductDescriptionField defaultValue={product.description ?? undefined} />
+        <ProductSkuField defaultValue={product.sku} />
 
         <ProductPriceField defaultValue={product.price} />
 
-        <ProductImagePreviewField imageUrl={product.imageUrl ?? undefined} />
-
         <ProductDiscountedPriceField defaultValue={product.discountedPrice ?? undefined} />
-
-        <ProductSkuField defaultValue={product.sku} />
 
         <ProductStockField defaultValue={product.stock} />
 
+        <ProductCategorySelect categories={categories} />
+
         <ProductStatusSelect defaultSelectedKey={product.category?.id} />
 
-        <ProductCategorySelect categories={categories} />
+        <ProductDescriptionField defaultValue={product.description ?? undefined} />
+
+        <ProductImagePreviewField imageUrl={product.imageUrl ?? undefined} />
       </FieldSet>
 
       <FormError errors={productUpdateFormErrors?.form} />
