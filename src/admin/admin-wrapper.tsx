@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 
 import { AdminNav } from '@/admin/admin-nav'
-import { AuthController } from '@/auth/presentation/auth-controller'
+import { AuthController } from '@/auth/presentation/controllers/auth-controller'
 import { ROUTES } from '@/domain/navigation'
 import { OK_STATUS } from '@/infrastructure/api/http-response'
 

@@ -126,6 +126,7 @@ export const fr = {
         creating: 'Création en cours...',
         label: 'Créer'
       },
+      success: 'La catégorie "{categoryName}" a été créée avec succès.',
       title: 'Créer une catégorie'
     },
     fields: {
@@ -151,7 +152,8 @@ export const fr = {
       submit: {
         label: 'Mettre à jour',
         updating: 'Mise à jour en cours...'
-      }
+      },
+      success: 'La catégorie "{categoryName}" a été mise à jour avec succès.'
     }
   },
   components: {

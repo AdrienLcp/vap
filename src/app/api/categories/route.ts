@@ -1,6 +1,6 @@
 import type { NextRequest } from 'next/server'
 
-import { CategoryController } from '@/category/presentation/category-controller'
+import { CategoryController } from '@/category/presentation/controllers/category-controller'
 import { nextResponse } from '@/infrastructure/api/api-lib'
 
 export const GET = async () => {

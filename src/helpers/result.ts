@@ -1,15 +1,14 @@
+export const STATUS_ERROR = 'ERROR'
+export const STATUS_SUCCESS = 'SUCCESS'
+export const UNEXPECTED_ERROR = 'UNEXPECTED_ERROR'
+
 export type NotFound = 'NOT_FOUND'
 export type Unauthorized = 'UNAUTHORIZED'
 export type BadRequest = 'BAD_REQUEST'
 export type Forbidden = 'FORBIDDEN'
 export type Conflict = 'CONFLICT'
 export type InternalServerError = 'INTERNAL_SERVER_ERROR'
-export type UnexpectedError = 'UNEXPECTED_ERROR'
-
-export const STATUS_ERROR = 'ERROR'
-export const STATUS_SUCCESS = 'SUCCESS'
-
-export const UNEXPECTED_ERROR: UnexpectedError = 'UNEXPECTED_ERROR'
+export type UnexpectedError = typeof UNEXPECTED_ERROR
 
 export function failure(): { errors: UnexpectedError, status: typeof STATUS_ERROR }
 export function failure<Errors>(errors: Errors): { errors: Errors, status: typeof STATUS_ERROR }

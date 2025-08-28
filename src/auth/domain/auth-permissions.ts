@@ -5,6 +5,7 @@ const USER_RIGHTS = [] as const
 
 const ADMIN_RIGHTS = [
   ...USER_RIGHTS,
+
   'admin:read',
 
   'category:create',
@@ -37,8 +38,8 @@ export const getAuthUserPermissionsByRole = (role: UserRole): AuthPermissions =>
     canUpdateCategory: rights.includes('category:update'),
     canDeleteCategory: rights.includes('category:delete'),
 
-    canReadProduct: rights.includes('product:read'),
     canCreateProduct: rights.includes('product:create'),
+    canReadProduct: rights.includes('product:read'),
     canUpdateProduct: rights.includes('product:update'),
     canDeleteProduct: rights.includes('product:delete')
   }

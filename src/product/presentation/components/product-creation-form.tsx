@@ -69,21 +69,21 @@ export const ProductCreationForm: React.FC<ProductCreationFormProps> = ({ catego
       <FieldSet isDisabled={isProductCreationLoading}>
         <ProductNameField />
 
-        <ProductDescriptionField />
+        <ProductSkuField />
 
         <ProductPriceField />
 
-        <ProductImagePreviewField />
-
         <ProductDiscountedPriceField />
-
-        <ProductSkuField />
 
         <ProductStockField />
 
+        <ProductCategorySelect categories={categories} />
+
         <ProductStatusSelect />
 
-        <ProductCategorySelect categories={categories} />
+        <ProductDescriptionField />
+
+        <ProductImagePreviewField />
       </FieldSet>
 
       <FormError errors={productCreationFormErrors?.form} />

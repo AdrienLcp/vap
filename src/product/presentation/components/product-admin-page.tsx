@@ -1,17 +1,14 @@
-import { CategoryController } from '@/category/presentation/category-controller'
+import { CategoryController } from '@/category/presentation/controllers/category-controller'
 import { ROUTES } from '@/domain/navigation'
 import { errorRedirectByStatus, OK_STATUS } from '@/infrastructure/api/http-response'
 import { ProductUpdateForm } from '@/product/presentation/components/product-update-form'
-import { ProductController } from '@/product/presentation/product-controller'
-import type { Params } from '@/utils/next-utils'
+import { ProductController } from '@/product/presentation/controllers/product-controller'
 
 export type ProductAdminPageProps = {
-  params: Params<'productId'>
+  productId: string
 }
 
-export const ProductAdminPage: React.FC<ProductAdminPageProps> = async ({ params }) => {
-  const { productId } = await params
-
+export const ProductAdminPage: React.FC<ProductAdminPageProps> = async ({ productId }) => {
   const productResponse = await ProductController.findProduct(productId)
   const categoriesResponse = await CategoryController.findCategories()
 

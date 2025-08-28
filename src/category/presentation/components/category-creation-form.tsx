@@ -14,6 +14,7 @@ import { FieldSet } from '@/presentation/components/forms/field-set'
 import { Form } from '@/presentation/components/forms/form'
 import { FormError } from '@/presentation/components/forms/form-error'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
+import { ToastService } from '@/presentation/services/toast-service'
 import type { Issues } from '@/utils/validation-utils'
 
 export const CategoryCreationForm: React.FC = () => {
@@ -53,12 +54,12 @@ export const CategoryCreationForm: React.FC = () => {
   }, [])
 
   const onCategoryCreationSuccess = useCallback((createdCategory: CategoryDTO) => {
-    console.log(createdCategory)
-    setCategoryCreationFormErrors(null)
+    ToastService.success(t('category.creation.success', { categoryName: createdCategory.name }))
   }, [])
 
   const onCategoryCreationFormSubmit = useCallback(async (formData: FormData) => {
     setIsCategoryCreationLoading(true)
+    setCategoryCreationFormErrors(null)
 
     const categoryCreationData: CategoryCreationData = {
       name: formData.get(CATEGORY_FORM_FIELDS.NAME) as string,

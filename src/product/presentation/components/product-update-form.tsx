@@ -63,7 +63,7 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({ categories
       default:
         ToastService.error(t('product.update.errors.unknown'))
     }
-  }, [onProductUpdateSuccess])
+  }, [onProductUpdateSuccess, product.id])
 
   return (
     <Form onSubmit={onProductUpdateFormSubmit} validationErrors={productUpdateFormErrors}>

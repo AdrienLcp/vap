@@ -14,6 +14,7 @@ import { FieldSet } from '@/presentation/components/forms/field-set'
 import { Form } from '@/presentation/components/forms/form'
 import { FormError } from '@/presentation/components/forms/form-error'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
+import { ToastService } from '@/presentation/services/toast-service'
 import type { Issues } from '@/utils/validation-utils'
 
 type CategoryUpdateFormProps = {
@@ -57,7 +58,7 @@ export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = ({ category
   }, [])
 
   const onCategoryUpdateSuccess = useCallback((updatedCategory: CategoryDTO) => {
-    console.log(updatedCategory)
+    ToastService.success(t('category.update.success', { categoryName: updatedCategory.name }))
   }, [])
 
   const onCategoryUpdateFormSubmit = useCallback(async (formData: FormData) => {
