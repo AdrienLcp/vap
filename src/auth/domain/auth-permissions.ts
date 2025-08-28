@@ -5,14 +5,16 @@ const USER_RIGHTS = [] as const
 
 const ADMIN_RIGHTS = [
   ...USER_RIGHTS,
-  'read:admin',
-  'create:category',
-  'update:category',
-  'delete:category',
-  'read:product',
-  'create:product',
-  'update:product',
-  'delete:product'
+  'admin:read',
+
+  'category:create',
+  'category:update',
+  'category:delete',
+
+  'product:create',
+  'product:read',
+  'product:update',
+  'product:delete'
 ] as const
 
 const SUPER_ADMIN_RIGHTS = [...ADMIN_RIGHTS] as const
@@ -29,16 +31,16 @@ export const getAuthUserPermissionsByRole = (role: UserRole): AuthPermissions =>
   const rights = ROLE_RIGHTS[role] ?? ROLE_RIGHTS.USER
 
   const permissions: AuthPermissions = {
-    canAccessAdmin: rights.includes('read:admin'),
+    canAccessAdmin: rights.includes('admin:read'),
 
-    canCreateCategory: rights.includes('create:category'),
-    canUpdateCategory: rights.includes('update:category'),
-    canDeleteCategory: rights.includes('delete:category'),
+    canCreateCategory: rights.includes('category:create'),
+    canUpdateCategory: rights.includes('category:update'),
+    canDeleteCategory: rights.includes('category:delete'),
 
-    canReadProduct: rights.includes('read:product'),
-    canCreateProduct: rights.includes('create:product'),
-    canUpdateProduct: rights.includes('update:product'),
-    canDeleteProduct: rights.includes('delete:product')
+    canReadProduct: rights.includes('product:read'),
+    canCreateProduct: rights.includes('product:create'),
+    canUpdateProduct: rights.includes('product:update'),
+    canDeleteProduct: rights.includes('product:delete')
   }
 
   return permissions
