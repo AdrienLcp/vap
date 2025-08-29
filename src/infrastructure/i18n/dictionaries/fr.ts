@@ -186,15 +186,13 @@ export const fr = {
   },
   product: {
     creation: {
-      errors: {
-        unknown: 'Une erreur inconnue est survenue.'
-      },
       submit: {
         creating: 'Création en cours...',
         label: 'Créer le produit'
       },
       success: '"{productName}" a été créé avec succès.',
-      title: 'Créer un produit'
+      title: 'Créer un produit',
+      unknownError: 'Une erreur inconnue est survenue durant la création du produit.'
     },
     fields: {
       category: {
@@ -202,25 +200,48 @@ export const fr = {
         placeholder: 'Sélectionnez une catégorie'
       },
       description: {
+        errors: {
+          tooLong: 'La description du produit ne doit pas dépasser {max:number} caractères.'
+        },
         label: 'Description',
         placeholder: 'Décrivez le produit'
       },
       discountedPrice: {
         description: 'Ajouter un prix ici pour créer une réduction',
+        errors: {
+          tooHigh: 'Le prix réduit du produit ne doit pas dépasser {max:number}.',
+          tooLow: 'Le prix réduit du produit doit être au moins de {min:number}.'
+        },
         label: 'Prix réduit'
       },
       imageUrl: {
+        errors: {
+          invalidUrl: 'L\'URL de l\'image n\'est pas valide.'
+        },
         label: 'URL de l\'image'
       },
       name: {
+        errors: {
+          required: 'Le nom du produit est requis.',
+          tooLong: 'Le nom du produit ne doit pas dépasser {max:number} caractères.'
+        },
         label: 'Nom',
         placeholder: 'Nom du produit'
       },
       price: {
+        errors: {
+          tooHigh: 'Le prix du produit ne doit pas dépasser {max:number}.',
+          tooLow: 'Le prix du produit doit être au moins de {min:number}.'
+        },
         label: 'Prix'
       },
       sku: {
         description: 'Code unique du produit',
+        errors: {
+          alreadyExists: 'Un produit avec ce SKU existe déjà.',
+          required: 'Le SKU du produit est requis.',
+          tooLong: 'Le SKU du produit ne doit pas dépasser {max:number} caractères.'
+        },
         label: 'SKU'
       },
       status: {
@@ -228,6 +249,9 @@ export const fr = {
       },
       stock: {
         description: 'Quantité en stock',
+        errors: {
+          tooLow: 'Le stock du produit doit être au moins de {min:number}.'
+        },
         label: 'Stock'
       }
     },
@@ -237,15 +261,14 @@ export const fr = {
       featured: 'En vedette',
       inactive: 'Inactif'
     },
+    unknownError: 'Une erreur inconnue est survenue.',
     update: {
-      errors: {
-        unknown: 'Une erreur inconnue est survenue.'
-      },
       submit: {
         label: 'Mettre à jour le produit',
         updating: 'Mise à jour en cours...'
       },
-      success: '"{productName}" a été mis à jour avec succès.'
+      success: '"{productName}" a été mis à jour avec succès.',
+      unknownError: 'Une erreur inconnue est survenue durant la mise à jour du produit.'
     }
   },
   user: {

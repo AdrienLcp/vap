@@ -3,7 +3,7 @@
 import { useCallback, useState } from 'react'
 
 import type { CategoryDTO } from '@/category/domain/category-entities'
-import { BAD_REQUEST_STATUS, CREATED_STATUS } from '@/infrastructure/api/http-response'
+import { BAD_REQUEST_STATUS, CONFLICT_STATUS, CREATED_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
 import { Form } from '@/presentation/components/forms/form'
@@ -11,7 +11,7 @@ import { FormError } from '@/presentation/components/forms/form-error'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import { ToastService } from '@/presentation/services/toast-service'
 import { PRODUCT_FORM_FIELDS } from '@/product/domain/product-constants'
-import type { ProductCreationData, ProductDTO, ProductStatus, ProductValidationErrors } from '@/product/domain/product-entities'
+import type { ProductCreationData, ProductStatus, ProductValidationErrors } from '@/product/domain/product-entities'
 import { ProductClient } from '@/product/infrastructure/product-client'
 import { ProductCategorySelect } from '@/product/presentation/components/product-category-select'
 import { ProductDescriptionField } from '@/product/presentation/components/product-description-field'
@@ -22,7 +22,7 @@ import { ProductPriceField } from '@/product/presentation/components/product-pri
 import { ProductSkuField } from '@/product/presentation/components/product-sku-field'
 import { ProductStatusSelect } from '@/product/presentation/components/product-status-select'
 import { ProductStockField } from '@/product/presentation/components/product-stock-field'
-import type { Issues } from '@/utils/validation-utils'
+import { getBadRequestProductFormErrors, getConflictProductFormErrors } from '@/product/presentation/validation/product-form-validation'
 
 type ProductCreationFormProps = {
   categories: CategoryDTO[]
@@ -31,15 +31,6 @@ type ProductCreationFormProps = {
 export const ProductCreationForm: React.FC<ProductCreationFormProps> = ({ categories }) => {
   const [isProductCreationLoading, setIsProductCreationLoading] = useState<boolean>(false)
   const [productCreationFormErrors, setProductCreationFormErrors] = useState<ProductValidationErrors>(null)
-
-  const onProductCreationBadRequest = useCallback((issues: Issues<ProductCreationData>) => {
-    console.log(issues)
-
-  }, [])
-
-  const onProductCreationSuccess = useCallback((createdProduct: ProductDTO) => {
-    ToastService.success(t('product.creation.success', { productName: createdProduct.name }))
-  }, [])
 
   const onProductCreationFormSubmit = useCallback(async (formData: FormData) => {
     setIsProductCreationLoading(true)
@@ -63,14 +54,21 @@ export const ProductCreationForm: React.FC<ProductCreationFormProps> = ({ catego
 
     switch (productCreationResponse.status) {
       case CREATED_STATUS:
-        onProductCreationSuccess(productCreationResponse.data)
+        ToastService.success(t('product.creation.success', { productName: productCreationResponse.data.name }))
         break
       case BAD_REQUEST_STATUS:
-        onProductCreationBadRequest(productCreationResponse.issues)
+        const badRequestProductFormErrors = getBadRequestProductFormErrors(productCreationResponse.issues)
+        setProductCreationFormErrors(badRequestProductFormErrors)
+        break
+      case CONFLICT_STATUS:
+        const conflictProductFormErrors = getConflictProductFormErrors(productCreationResponse.error)
+        setProductCreationFormErrors(conflictProductFormErrors)
+        break
       default:
-        ToastService.error(t('product.creation.errors.unknown'))
+        console.error('Unhandled product update response status:', productCreationResponse)
+        ToastService.error(t('product.creation.unknownError'))
     }
-  }, [onProductCreationBadRequest, onProductCreationSuccess])
+  }, [])
 
   return (
     <Form onSubmit={onProductCreationFormSubmit} validationErrors={productCreationFormErrors}>

@@ -3,7 +3,7 @@
 import { useCallback, useState } from 'react'
 
 import type { CategoryDTO } from '@/category/domain/category-entities'
-import { OK_STATUS } from '@/infrastructure/api/http-response'
+import { BAD_REQUEST_STATUS, CONFLICT_STATUS, OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
 import { Form } from '@/presentation/components/forms/form'
@@ -22,6 +22,7 @@ import { ProductPriceField } from '@/product/presentation/components/product-pri
 import { ProductSkuField } from '@/product/presentation/components/product-sku-field'
 import { ProductStatusSelect } from '@/product/presentation/components/product-status-select'
 import { ProductStockField } from '@/product/presentation/components/product-stock-field'
+import { getBadRequestProductFormErrors, getConflictProductFormErrors } from '@/product/presentation/validation/product-form-validation'
 
 type ProductUpdateFormProps = {
   categories: CategoryDTO[]
@@ -31,10 +32,6 @@ type ProductUpdateFormProps = {
 export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({ categories, product }) => {
   const [isProductUpdateLoading, setIsProductUpdateLoading] = useState<boolean>(false)
   const [productUpdateFormErrors, setProductUpdateFormErrors] = useState<ProductValidationErrors>(null)
-
-  const onProductUpdateSuccess = useCallback((updatedProduct: ProductDTO) => {
-    ToastService.success(t('product.update.success', { productName: updatedProduct.name }))
-  }, [])
 
   const onProductUpdateFormSubmit = useCallback(async (formData: FormData) => {
     setIsProductUpdateLoading(true)
@@ -58,12 +55,20 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({ categories
 
     switch (productUpdateResponse.status) {
       case OK_STATUS:
-        onProductUpdateSuccess(productUpdateResponse.data)
+        ToastService.success(t('product.update.success', { productName: productUpdateResponse.data.name }))
         break
+      case BAD_REQUEST_STATUS:
+        const badRequestProductFormErrors = getBadRequestProductFormErrors(productUpdateResponse.issues)
+        setProductUpdateFormErrors(badRequestProductFormErrors)
+        break
+      case CONFLICT_STATUS:
+        const conflictProductFormErrors = getConflictProductFormErrors(productUpdateResponse.error)
+        setProductUpdateFormErrors(conflictProductFormErrors)
       default:
-        ToastService.error(t('product.update.errors.unknown'))
+        console.error('Unhandled product update response status:', productUpdateResponse)
+        ToastService.error(t('product.update.unknownError'))
     }
-  }, [onProductUpdateSuccess, product.id])
+  }, [product.id])
 
   return (
     <Form onSubmit={onProductUpdateFormSubmit} validationErrors={productUpdateFormErrors}>

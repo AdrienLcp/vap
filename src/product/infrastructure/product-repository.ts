@@ -2,7 +2,7 @@ import 'server-only'
 
 import { failure, type NotFound, type Result, success } from '@/helpers/result'
 import { ProductDatabase } from '@/infrastructure/database'
-import type { ProductCreationData, ProductDTO, ProductUpdateData } from '@/product/domain/product-entities'
+import type { ProductCreationData, ProductDTO, ProductSKUAlreadyExists, ProductUpdateData } from '@/product/domain/product-entities'
 
 const productSelect = {
   id: true,
@@ -24,7 +24,7 @@ const productSelect = {
   }
 }
 
-const createProduct = async (productCreationData: ProductCreationData): Promise<Result<null, ProductDTO>> => {
+const createProduct = async (productCreationData: ProductCreationData): Promise<Result<ProductSKUAlreadyExists, ProductDTO>> => {
   try {
     const createdProduct = await ProductDatabase.create({
       data: {

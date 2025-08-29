@@ -2,7 +2,7 @@ import type z from 'zod'
 
 import type { ValidationErrors } from '@/domain/entities'
 import type { Forbidden, Unauthorized } from '@/helpers/result'
-import type { BadRequestResponse, CreatedResponse, ForbiddenResponse, NoContentResponse, NotFoundResponse, OkResponse, Response, UnauthorizedResponse } from '@/infrastructure/api/http-response'
+import type { BadRequestResponse, ConflictResponse, CreatedResponse, ForbiddenResponse, NoContentResponse, NotFoundResponse, OkResponse, Response, UnauthorizedResponse } from '@/infrastructure/api/http-response'
 import type { PRODUCT_FORM_FIELDS } from '@/product/domain/product-constants'
 import type { ProductCreationSchema, ProductDTOSchema, ProductPublicDTOSchema, ProductStatusSchema, ProductUpdateSchema } from '@/product/domain/product-schemas'
 import type { ValueOf } from '@/utils/object-utils'
@@ -18,7 +18,14 @@ export type ProductDTO = z.infer<typeof ProductDTOSchema>
 
 export type ProductPublicDTO = z.infer<typeof ProductPublicDTOSchema>
 
-export type ProductError = Forbidden | Unauthorized
+export type ProductSKUAlreadyExists = 'PRODUCT_SKU_ALREADY_EXISTS'
+
+export type ProductConflictError = ProductSKUAlreadyExists
+
+export type ProductError =
+  | ProductConflictError
+  | Forbidden
+  | Unauthorized
 
 export type ProductListResponse = Response<
   | OkResponse<ProductDTO[]>
@@ -47,6 +54,7 @@ export type ProductCreationResponse = Response<
   | BadRequestResponse<Issues<ProductCreationData>>
   | UnauthorizedResponse
   | ForbiddenResponse
+  | ConflictResponse<ProductConflictError>
 >
 
 export type ProductUpdateResponse = Response<
@@ -54,6 +62,7 @@ export type ProductUpdateResponse = Response<
   | BadRequestResponse<Issues<ProductUpdateData | string>>
   | UnauthorizedResponse
   | ForbiddenResponse
+  | ConflictResponse<ProductConflictError>
 >
 
 export type ProductDeleteResponse = Response<
