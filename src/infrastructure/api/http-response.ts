@@ -117,7 +117,7 @@ export const HttpResponse = {
   internalServerError
 }
 
-export const errorRedirectByStatus = (status: ErrorStatus, fallbackRoute?: ValueOf<typeof ROUTES>) => {
+export const redirectByErrorStatus = (status: ErrorStatus, fallbackRoute?: ValueOf<typeof ROUTES>): ReturnType<typeof redirect> => {
   switch (status) {
     case UNAUTHORIZED_STATUS:
       redirect(ROUTES.unauthorized)
