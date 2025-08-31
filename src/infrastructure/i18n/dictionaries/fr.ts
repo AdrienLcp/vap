@@ -184,8 +184,18 @@ export const fr = {
       closeButtonLabel: 'Fermer'
     }
   },
+  errors: {
+    unknown: 'Une erreur inconnue est survenue.'
+  },
   product: {
+    card: {
+      delete: 'Supprimer',
+      edit: 'Éditer',
+      menuAriaLabel: 'Menu du produit',
+      showProductSheet: 'Voir la fiche produit'
+    },
     creation: {
+      link: 'Créer un produit',
       submit: {
         creating: 'Création en cours...',
         label: 'Créer le produit'
@@ -261,7 +271,6 @@ export const fr = {
       featured: 'En vedette',
       inactive: 'Inactif'
     },
-    unknownError: 'Une erreur inconnue est survenue.',
     update: {
       submit: {
         label: 'Mettre à jour le produit',

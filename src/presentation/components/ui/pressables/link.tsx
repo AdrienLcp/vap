@@ -6,7 +6,7 @@ import { Tooltip, type TooltipProps } from '@/presentation/components/ui/tooltip
 
 import { type DefaultChildrenProps, type PressableProps, reactAriaPressableClassNames } from './pressable'
 
-type LinkProps = PressableProps & ReactAriaLinkProps
+export type LinkProps = PressableProps & ReactAriaLinkProps
 
 type LinkRenderPropsValues = LinkRenderProps & DefaultChildrenProps
 

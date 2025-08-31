@@ -1,7 +1,7 @@
 import 'server-only'
 
 import { CategoryService } from '@/category/application/category-service'
-import { CATEGORY_API_BASE_URL, CATEGORY_CONSTANTS } from '@/category/domain/category-constants'
+import { CATEGORY_API_BASE_URL, CATEGORY_ERRORS } from '@/category/domain/category-constants'
 import type { CategoryCreationResponse, CategoryDeletionResponse, CategoryListResponse, CategoryResponse, CategoryUpdateResponse } from '@/category/domain/category-entities'
 import { CategoryCreationSchema, CategoryDTOSchema, CategoryIdSchema, CategoryUpdateSchema } from '@/category/domain/category-schemas'
 import { HttpResponse } from '@/infrastructure/api/http-response'
@@ -20,8 +20,8 @@ const createCategory = async (categoryCreationRequest: Request): Promise<Categor
 
     if (createdCategoryResult.status === 'ERROR') {
       switch (createdCategoryResult.errors) {
-        case CATEGORY_CONSTANTS.NAME_ALREADY_EXISTS:
-          return HttpResponse.conflict(CATEGORY_CONSTANTS.NAME_ALREADY_EXISTS)
+        case CATEGORY_ERRORS.NAME_ALREADY_EXISTS:
+          return HttpResponse.conflict(CATEGORY_ERRORS.NAME_ALREADY_EXISTS)
         case 'FORBIDDEN':
           return HttpResponse.forbidden()
         case 'UNAUTHORIZED':
@@ -152,8 +152,8 @@ const updateCategory = async (categoryId: unknown, categoryUpdateRequest: Reques
 
     if (updatedCategoryResult.status === 'ERROR') {
       switch (updatedCategoryResult.errors) {
-        case CATEGORY_CONSTANTS.NAME_ALREADY_EXISTS:
-          return HttpResponse.conflict(CATEGORY_CONSTANTS.NAME_ALREADY_EXISTS)
+        case CATEGORY_ERRORS.NAME_ALREADY_EXISTS:
+          return HttpResponse.conflict(CATEGORY_ERRORS.NAME_ALREADY_EXISTS)
         case 'FORBIDDEN':
           return HttpResponse.forbidden()
         case 'UNAUTHORIZED':

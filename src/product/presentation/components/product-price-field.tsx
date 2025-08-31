@@ -1,13 +1,7 @@
 import { t } from '@/infrastructure/i18n'
 import { NumberField, type NumberFieldProps } from '@/presentation/components/forms/number-field'
 import { PRODUCT_CONSTANTS, PRODUCT_FORM_FIELDS } from '@/product/domain/product-constants'
-
-const productPriceFormatOptions: Intl.NumberFormatOptions = {
-  currency: 'EUR',
-  maximumFractionDigits: 2,
-  minimumFractionDigits: 2,
-  style: 'currency'
-}
+import { defaultPriceFormatOptions } from '@/utils/format-utils'
 
 export const ProductPriceField: React.FC<Partial<NumberFieldProps>> = ({
   isRequired = true,
@@ -17,7 +11,7 @@ export const ProductPriceField: React.FC<Partial<NumberFieldProps>> = ({
 }) => (
   <NumberField
     {...productPriceFieldProps}
-    formatOptions={productPriceFormatOptions}
+    formatOptions={defaultPriceFormatOptions}
     isRequired={isRequired}
     label={label}
     maxValue={PRODUCT_CONSTANTS.MAX_PRICE}

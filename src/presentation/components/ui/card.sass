@@ -1,0 +1,21 @@
+@use '@/presentation/styles/typography'
+
+.card
+  background-color: var(--neutral-background)
+  border-radius: var(--radius-m, 0.5rem)
+  box-shadow: var(--shadow-m)
+  display: grid
+  inline-size: 100%
+  overflow: hidden
+
+.card-body
+  aspect-ratio: 1
+
+.card-footer
+  align-items: center
+  display: flex
+  gap: var(--size-160, 1rem)
+  justify-content: space-between
+
+.card-title
+  @include typography.text-ellipsis

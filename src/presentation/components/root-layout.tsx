@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { lang } from '@/infrastructure/i18n'
+import { locale } from '@/infrastructure/i18n'
 import { fontBody, fontTitle } from '@/presentation/assets/fonts'
 import { Header } from '@/presentation/components/header'
 import { Providers } from '@/presentation/components/providers'
@@ -11,7 +11,7 @@ import './root-layout.sass'
 
 export const RootLayout: React.FC<React.PropsWithChildren> = async ({ children }) => (
   <Providers>
-    <html data-scroll-behavior='smooth' lang={lang}>
+    <html data-scroll-behavior='smooth' lang={locale.slice(0, 2)}>
       <body className={classNames(fontBody.variable, fontTitle.variable)}>
         <Header />
 

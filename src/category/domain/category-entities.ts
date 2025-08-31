@@ -1,6 +1,6 @@
 import type z from 'zod'
 
-import type { CATEGORY_CONSTANTS, CATEGORY_FORM_FIELDS } from '@/category/domain/category-constants'
+import type { CATEGORY_ERRORS, CATEGORY_FORM_FIELDS } from '@/category/domain/category-constants'
 import type { CategoryCreationSchema, CategoryDTOSchema, CategoryUpdateSchema } from '@/category/domain/category-schemas'
 import type { ValidationErrors } from '@/domain/entities'
 import type { Forbidden, Unauthorized } from '@/helpers/result'
@@ -14,7 +14,7 @@ export type CategoryUpdateData = z.infer<typeof CategoryUpdateSchema>
 
 export type CategoryDTO = z.infer<typeof CategoryDTOSchema>
 
-export type CategoryNameAlreadyExists = typeof CATEGORY_CONSTANTS.NAME_ALREADY_EXISTS
+export type CategoryNameAlreadyExists = typeof CATEGORY_ERRORS.NAME_ALREADY_EXISTS
 export type CategoryConflictError = CategoryNameAlreadyExists
 
 export type CategoryCreationError =

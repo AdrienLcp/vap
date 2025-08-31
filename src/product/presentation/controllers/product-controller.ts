@@ -25,6 +25,8 @@ const createProduct = async (productCreationRequest: Request): Promise<ProductCr
           return HttpResponse.forbidden()
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
+        case 'PRODUCT_SKU_ALREADY_EXISTS':
+          return HttpResponse.conflict('PRODUCT_SKU_ALREADY_EXISTS')
         default:
           console.error('Unknown error in ProductController.createProduct:', createdProductResult.errors)
           return HttpResponse.internalServerError()
@@ -226,6 +228,8 @@ const updateProduct = async (productId: string, productUpdateRequest: Request): 
           return HttpResponse.forbidden()
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
+        case 'PRODUCT_SKU_ALREADY_EXISTS':
+          return HttpResponse.conflict('PRODUCT_SKU_ALREADY_EXISTS')
         default:
           console.error('Unknown error in ProductController.updateProduct:', updatedProductResult.errors)
           return HttpResponse.internalServerError()

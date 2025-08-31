@@ -1,7 +1,8 @@
 import 'server-only'
 
-import { failure, type NotFound, type Result, success } from '@/helpers/result'
+import { type ErrorResult, failure, type NotFound, type Result, success } from '@/helpers/result'
 import { ProductDatabase } from '@/infrastructure/database'
+import { getDatabaseError } from '@/infrastructure/database/database-helpers'
 import type { ProductCreationData, ProductDTO, ProductSKUAlreadyExists, ProductUpdateData } from '@/product/domain/product-entities'
 
 const productSelect = {
@@ -24,6 +25,15 @@ const productSelect = {
   }
 }
 
+const onProductDuplicateError = (duplicatedKeys: string[]): ErrorResult<ProductSKUAlreadyExists> => {
+  if (duplicatedKeys.includes('sku')) {
+    return failure('PRODUCT_SKU_ALREADY_EXISTS')
+  }
+
+  console.error('Duplicate key error in CategoryRepository:', duplicatedKeys)
+  return failure()
+}
+
 const createProduct = async (productCreationData: ProductCreationData): Promise<Result<ProductSKUAlreadyExists, ProductDTO>> => {
   try {
     const createdProduct = await ProductDatabase.create({
@@ -43,8 +53,15 @@ const createProduct = async (productCreationData: ProductCreationData): Promise<
 
     return success(createdProduct)
   } catch (error) {
-    console.error('Unknown error in ProductRepository.createProduct:', error)
-    return failure()
+    const databaseError = getDatabaseError(error)
+
+    switch (databaseError.code) {
+      case 'DUPLICATE':
+        return onProductDuplicateError(databaseError.duplicatedKeys)
+      default:
+        console.error('Unknown error in ProductRepository.createProduct:', error)
+        return failure()
+    }
   }
 }
 
@@ -87,7 +104,7 @@ const findProducts = async (): Promise<Result<null, ProductDTO[]>> => {
   }
 }
 
-const updateProduct = async (productId: string, productData: ProductUpdateData): Promise<Result<null, ProductDTO>> => {
+const updateProduct = async (productId: string, productData: ProductUpdateData): Promise<Result<ProductSKUAlreadyExists, ProductDTO>> => {
   try {
     const updatedProduct = await ProductDatabase.update({
       where: { id: productId },
@@ -108,8 +125,15 @@ const updateProduct = async (productId: string, productData: ProductUpdateData):
 
     return success(updatedProduct)
   } catch (error) {
-    console.error('Unknown error in ProductRepository.updateProduct:', error)
-    return failure()
+    const databaseError = getDatabaseError(error)
+
+    switch (databaseError.code) {
+      case 'DUPLICATE':
+        return onProductDuplicateError(databaseError.duplicatedKeys)
+      default:
+        console.error('Unknown error in ProductRepository.updateProduct:', error)
+        return failure()
+    }
   }
 }
 

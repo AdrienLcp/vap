@@ -44,7 +44,7 @@
   @include interactive.popover
 
   &
-    min-inline-size: var(--trigger-width, min(40ch, 100vw - var(--size-80, 0.5rem)))
+    min-inline-size: var(--trigger-width, var(--content-inline-size))
 
   & .item
     @include interactive.transparent

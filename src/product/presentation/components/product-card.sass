@@ -1,0 +1,31 @@
+@use '@/presentation/styles/selectors'
+@use '@/presentation/styles/sizes'
+
+.product-card
+
+  & .product-image
+    @include sizes.square(100%)
+
+    & svg
+      @include sizes.square(3rem)
+
+  & .footer
+    background-color: var(--neutral-background-secondary)
+    padding: var(--size-40, 0.25rem) var(--size-40, 0.25rem) var(--size-40, 0.25rem) var(--size-80, 0.5rem)
+
+    & .content
+      display: grid
+
+  @include selectors.hovered
+    & .footer
+      background-color: var(--neutral-background-secondary-hovered)
+
+  @include selectors.pressed
+    & .footer
+      background-color: var(--neutral-background-secondary-pressed)
+
+  @include selectors.disabled
+    color: var(--neutral-foreground-muted)
+
+    & .footer
+      background-color: var(--neutral-background-muted)

@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { CATEGORY_CONSTANTS } from '@/category/domain/category-constants'
+import { CATEGORY_CONSTANTS, CATEGORY_ERRORS } from '@/category/domain/category-constants'
 
 export const CategoryIdSchema = z.cuid()
 
@@ -10,7 +10,7 @@ export const CategoryImageUrlSchema = z
 
 export const CategoryNameSchema = z
   .string()
-  .max(CATEGORY_CONSTANTS.NAME_MAX_LENGTH, { message: CATEGORY_CONSTANTS.NAME_TOO_LONG })
+  .max(CATEGORY_CONSTANTS.NAME_MAX_LENGTH, { message: CATEGORY_ERRORS.NAME_TOO_LONG })
 
 export const CategoryDescriptionSchema = z
   .string()

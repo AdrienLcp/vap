@@ -10,7 +10,7 @@ import { Form } from '@/presentation/components/forms/form'
 import { FormError } from '@/presentation/components/forms/form-error'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import { ToastService } from '@/presentation/services/toast-service'
-import { PRODUCT_FORM_FIELDS } from '@/product/domain/product-constants'
+import { PRODUCT_CONSTANTS, PRODUCT_FORM_FIELDS } from '@/product/domain/product-constants'
 import type { ProductCreationData, ProductStatus, ProductValidationErrors } from '@/product/domain/product-entities'
 import { ProductClient } from '@/product/infrastructure/product-client'
 import { ProductCategorySelect } from '@/product/presentation/components/product-category-select'
@@ -23,6 +23,7 @@ import { ProductSkuField } from '@/product/presentation/components/product-sku-f
 import { ProductStatusSelect } from '@/product/presentation/components/product-status-select'
 import { ProductStockField } from '@/product/presentation/components/product-stock-field'
 import { getBadRequestProductFormErrors, getConflictProductFormErrors } from '@/product/presentation/validation/product-form-validation'
+import { getOptionalNumber, getOptionalString, getRequiredNumber } from '@/utils/form-utils'
 
 type ProductCreationFormProps = {
   categories: CategoryDTO[]
@@ -38,18 +39,17 @@ export const ProductCreationForm: React.FC<ProductCreationFormProps> = ({ catego
 
     const productCreationData: ProductCreationData = {
       categoryId: formData.get(PRODUCT_FORM_FIELDS.CATEGORY_ID) as string,
-      description: formData.get(PRODUCT_FORM_FIELDS.DESCRIPTION) as string,
-      discountedPrice: parseInt(formData.get(PRODUCT_FORM_FIELDS.DISCOUNTED_PRICE) as string),
-      imageUrl: formData.get(PRODUCT_FORM_FIELDS.IMAGE_URL) as string,
+      description: getOptionalString(formData.get(PRODUCT_FORM_FIELDS.DESCRIPTION)),
+      discountedPrice: getOptionalNumber(formData.get(PRODUCT_FORM_FIELDS.DISCOUNTED_PRICE)),
+      imageUrl: getOptionalString(formData.get(PRODUCT_FORM_FIELDS.IMAGE_URL)),
       name: formData.get(PRODUCT_FORM_FIELDS.NAME) as string,
       price: parseInt(formData.get(PRODUCT_FORM_FIELDS.PRICE) as string),
       sku: formData.get(PRODUCT_FORM_FIELDS.SKU) as string,
       status: formData.get(PRODUCT_FORM_FIELDS.STATUS) as ProductStatus,
-      stock: parseInt(formData.get(PRODUCT_FORM_FIELDS.STOCK) as string)
+      stock: getRequiredNumber(formData.get(PRODUCT_FORM_FIELDS.STOCK), PRODUCT_CONSTANTS.MIN_STOCK)
     }
 
     const productCreationResponse = await ProductClient.createProduct(productCreationData)
-
     setIsProductCreationLoading(false)
 
     switch (productCreationResponse.status) {

@@ -7,9 +7,9 @@ import type { CSSVariables } from '@/presentation/utils/styles-utils'
 
 import './image.sass'
 
-type ImageProps = Omit<NextImageProps, 'src'> & {
+export type ImageProps = Omit<NextImageProps, 'src'> & {
   Fallback?: React.ReactNode
-  src?: NextImageProps['src']
+  src?: NextImageProps['src'] | null
 }
 
 type ImageDefaultFallbackProps = Pick<ImageProps, 'className' | 'height' | 'width'>

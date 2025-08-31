@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from 'react'
 
-import { CATEGORY_CONSTANTS, CATEGORY_FORM_FIELDS } from '@/category/domain/category-constants'
+import { CATEGORY_CONSTANTS, CATEGORY_ERRORS, CATEGORY_FORM_FIELDS } from '@/category/domain/category-constants'
 import type { CategoryConflictError, CategoryCreationData, CategoryDTO, CategoryValidationErrors } from '@/category/domain/category-entities'
 import { CategoryClient } from '@/category/infrastructure/category-client'
 import { CategoryDescriptionField } from '@/category/presentation/components/category-description-field'
@@ -27,7 +27,7 @@ export const CategoryCreationForm: React.FC = () => {
 
     for (const issue of issues) {
       switch (issue.message) {
-        case CATEGORY_CONSTANTS.NAME_TOO_LONG:
+        case CATEGORY_ERRORS.NAME_TOO_LONG:
           nameErrors.push(t('category.creation.errors.categoryNameTooLong', { max: CATEGORY_CONSTANTS.NAME_MAX_LENGTH }))
           break
         default:
@@ -44,7 +44,7 @@ export const CategoryCreationForm: React.FC = () => {
 
   const onCategoryCreationConflictError = useCallback((error: CategoryConflictError) => {
     switch (error) {
-      case CATEGORY_CONSTANTS.NAME_ALREADY_EXISTS:
+      case CATEGORY_ERRORS.NAME_ALREADY_EXISTS:
         setCategoryCreationFormErrors({ [CATEGORY_FORM_FIELDS.NAME]: t('category.creation.errors.categoryNameAlreadyExists') })
         break
       default:

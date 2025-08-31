@@ -49,7 +49,7 @@ export const getBadRequestProductFormErrors = (issues: Issues): ProductValidatio
         break
       default:
         console.error('Unhandled bad request product validation error:', issue)
-        formErrors.push(t('product.unknownError'))
+        formErrors.push(t('errors.unknown'))
     }
   }
 
@@ -71,6 +71,6 @@ export const getConflictProductFormErrors = (conflictError: ProductConflictError
       return { [PRODUCT_FORM_FIELDS.SKU]: t('product.fields.sku.errors.alreadyExists') }
     default:
       console.error('Unhandled conflict product validation error:', conflictError)
-      return { form: t('product.unknownError') }
+      return { form: t('errors.unknown') }
   }
 }

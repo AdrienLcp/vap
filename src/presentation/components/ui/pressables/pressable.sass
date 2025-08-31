@@ -30,6 +30,10 @@
     &.has-icon-on-right
       padding-inline: var(--size-80, 0.5rem) var(--size-60, 0.375rem)
 
+  &.is-icon-button
+    padding: 0
+    inline-size: var(--element-size, 2.5rem)
+
   @include breakpoints.is-desktop
     inline-size: fit-content
 
@@ -51,10 +55,6 @@
 
   &.small
     @include typography.label-small
-
-  &.is-icon-button
-    padding: 0
-    inline-size: var(--element-size, 2.5rem)
 
   @include selectors.disabled
     cursor: default
