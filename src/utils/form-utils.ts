@@ -3,6 +3,7 @@ export const getOptionalNumber = (value: FormDataEntryValue | null): number | un
     const parsed = Number(value)
     return isNaN(parsed) ? undefined : parsed
   }
+
   return undefined
 }
 
@@ -15,5 +16,6 @@ export const getRequiredNumber = (value: FormDataEntryValue | null, fallback = 0
     const parsed = Number(value)
     return isNaN(parsed) ? fallback : parsed
   }
+
   return fallback
 }
