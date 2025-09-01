@@ -1,7 +1,7 @@
 'use client'
 
 import classNames from 'classnames'
-import { CircleXIcon } from 'lucide-react'
+import { CheckIcon, CircleXIcon } from 'lucide-react'
 import {
   Text,
   UNSTABLE_Toast as Toast,
@@ -23,7 +23,10 @@ export const Toaster: React.FC = () => (
         style={{ viewTransitionName: toast.key }}
         toast={toast}
       >
-        {toast.content.Icon}
+        <span aria-hidden className='icon'>
+          {toast.content.Icon}
+          <CheckIcon />
+        </span>
 
         <ToastContent className='content'>
           <Text slot='title'>{toast.content.title}</Text>
@@ -31,9 +34,12 @@ export const Toaster: React.FC = () => (
           {toast.content.description && <Text slot='description'>{toast.content.description}</Text>}
         </ToastContent>
 
-        <Button slot='close'>
+        <Button
+          aria-label={t('components.toaster.closeButtonLabel')}
+          className='close-button'
+          slot='close'
+        >
           <CircleXIcon aria-hidden />
-          <span className='sr-only'>{t('components.toaster.closeButtonLabel')}</span>
         </Button>
       </Toast>
     )}

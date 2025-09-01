@@ -4,7 +4,7 @@ import { locale } from '@/infrastructure/i18n'
 import { fontBody, fontTitle } from '@/presentation/assets/fonts'
 import { Header } from '@/presentation/components/header'
 import { Providers } from '@/presentation/components/providers'
-import { Toaster } from '@/presentation/components/ui/toaster'
+import { Toaster } from '@/presentation/components/toaster'
 
 import '@/presentation/styles/base.sass'
 import './root-layout.sass'

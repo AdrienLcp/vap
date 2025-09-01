@@ -1,0 +1,92 @@
+@use '@/presentation/styles/breakpoints'
+@use '@/presentation/styles/selectors'
+
+::view-transition-new(.toast-desktop):only-child
+  animation: toast-slide-desktop-up var(--transition-150)
+
+::view-transition-old(.toast-desktop):only-child
+  animation: toast-slide-desktop-down var(--transition-150)
+
+::view-transition-new(.toast-mobile):only-child
+  animation: toast-slide-mobile-down var(--transition-150)
+
+::view-transition-old(.toast-mobile):only-child
+  animation: toast-slide-mobile-up var(--transition-150)
+
+@keyframes toast-slide-desktop-down
+  to
+    opacity: 0
+    translate: 0 100%
+
+@keyframes toast-slide-desktop-up
+  from
+    opacity: 0
+    translate: 0 100%
+
+@keyframes toast-slide-mobile-down
+  from
+    opacity: 0
+    translate: -50% -100%
+
+@keyframes toast-slide-mobile-up
+  to
+    opacity: 0
+    translate: -50% -100%
+
+.toaster
+  --toaster-padding: var(--size-80, 0.5rem)
+  display: grid
+  gap: var(--size-80, 0.5rem)
+  inset: var(--toaster-padding) auto auto 50%
+  position: fixed
+  translate: -50% 0
+
+  & .toast
+    --toast-close-button-size: var(--size-240, 1.5rem)
+    align-items: center
+    background-color: var(--neutral-background)
+    border-radius: var(--element-radius, 0.25rem)
+    box-shadow: var(--shadow-s)
+    display: grid
+    gap: var(--size-80, 0.5rem)
+    grid-template-columns: 1fr var(--toast-close-button-size)
+    padding: var(--size-120, 0.75rem) var(--size-160, 1rem)
+    view-transition-class: toast-mobile
+
+    // inline-size: clamp(5rem, 100%, 100vw - var(--toaster-padding) * 2)
+    // inline-size: min(100%, 100vw - var(--toaster-padding) * 2)
+    max-inline-size: calc(100vw - var(--toaster-padding) * 2)
+    margin-inline: auto
+
+    &:has(.icon)
+      grid-template-columns: auto 1fr var(--toast-close-button-size)
+
+    &.error
+      background-color: var(--status-error-background)
+      color: var(--status-error-foreground)
+
+    &.success
+      background-color: var(--status-success-background)
+      color: var(--status-success-foreground)
+
+    &.warning
+      background-color: var(--status-warning-background)
+      color: var(--status-warning-foreground)
+
+    & .close-button
+      aspect-ratio: 1
+      block-size: var(--toast-close-button-size)
+      border-radius: var(--circular, 99rem)
+      justify-content: center
+
+      @include selectors.hovered
+        background-color: oklch(var(--black-oklch) / var(--alpha-xs))
+
+      @include selectors.pressed
+        background-color: oklch(var(--black-oklch) / var(--alpha-s))
+      
+  @include breakpoints.is-desktop
+    inset: auto auto var(--toaster-padding) 50%
+
+    & .toast
+      view-transition-class: toast-desktop
