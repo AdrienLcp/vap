@@ -37,7 +37,9 @@
   --toaster-padding: var(--size-80, 0.5rem)
   display: grid
   gap: var(--size-80, 0.5rem)
+  inline-size: calc(100vw - var(--toaster-padding, 0.5rem) * 2)
   inset: var(--toaster-padding) auto auto 50%
+  pointer-events: none
   position: fixed
   translate: -50% 0
 
@@ -50,13 +52,14 @@
     display: grid
     gap: var(--size-80, 0.5rem)
     grid-template-columns: 1fr var(--toast-close-button-size)
-    padding: var(--size-120, 0.75rem) var(--size-160, 1rem)
-    view-transition-class: toast-mobile
-
-    // inline-size: clamp(5rem, 100%, 100vw - var(--toaster-padding) * 2)
-    // inline-size: min(100%, 100vw - var(--toaster-padding) * 2)
-    max-inline-size: calc(100vw - var(--toaster-padding) * 2)
+    inline-size: fit-content
     margin-inline: auto
+    max-inline-size: 50ch
+    min-inline-size: 100px
+    padding: var(--size-120, 0.75rem) var(--size-160, 1rem)
+    pointer-events: initial
+    view-transition-class: toast-mobile
+    view-transition-name: var(--toast-view-transition-name, none)
 
     &:has(.icon)
       grid-template-columns: auto 1fr var(--toast-close-button-size)
@@ -89,4 +92,5 @@
     inset: auto auto var(--toaster-padding) 50%
 
     & .toast
+      max-inline-size: 60ch
       view-transition-class: toast-desktop

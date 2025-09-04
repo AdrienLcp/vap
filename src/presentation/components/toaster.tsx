@@ -12,36 +12,43 @@ import {
 import { t } from '@/infrastructure/i18n'
 import { Button } from '@/presentation/components/ui/pressables/button'
 import { toastQueue } from '@/presentation/services/toast-service'
+import type { CSSVariables } from '@/presentation/utils/styles-utils'
 
 import './toaster.sass'
 
 export const Toaster: React.FC = () => (
   <ToastRegion className='toaster' queue={toastQueue}>
-    {({ toast }) => (
-      <Toast
-        className={classNames('toast', toast.content.type)}
-        style={{ viewTransitionName: toast.key }}
-        toast={toast}
-      >
-        <span aria-hidden className='icon'>
-          {toast.content.Icon}
-          <CheckIcon />
-        </span>
+    {({ toast }) => {
+      const toastStyle: CSSVariables = {
+        '--toast-view-transition-name': toast.key
+      }
 
-        <ToastContent className='content'>
-          <Text slot='title'>{toast.content.title}</Text>
-
-          {toast.content.description && <Text slot='description'>{toast.content.description}</Text>}
-        </ToastContent>
-
-        <Button
-          aria-label={t('components.toaster.closeButtonLabel')}
-          className='close-button'
-          slot='close'
+      return (
+        <Toast
+          className={classNames('toast', toast.content.type)}
+          style={toastStyle}
+          toast={toast}
         >
-          <CircleXIcon aria-hidden />
-        </Button>
-      </Toast>
-    )}
+          <span aria-hidden className='icon'>
+            {toast.content.Icon}
+            <CheckIcon />
+          </span>
+
+          <ToastContent className='content'>
+            <Text slot='title'>{toast.content.title}</Text>
+
+            {toast.content.description && <Text slot='description'>{toast.content.description}</Text>}
+          </ToastContent>
+
+          <Button
+            aria-label={t('components.toaster.closeButtonLabel')}
+            className='close-button'
+            slot='close'
+          >
+            <CircleXIcon aria-hidden />
+          </Button>
+        </Toast>
+      )
+    }}
   </ToastRegion>
 )
