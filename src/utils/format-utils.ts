@@ -20,7 +20,7 @@ type FormatPriceOptions = {
  * @param options - Additional formatting options
  * @returns The formatted price as a string
  */
-export function formatPrice(value: number, options?: FormatPriceOptions): string {
+export const formatPrice = (value: number, options?: FormatPriceOptions): string => {
   const formatOptions: FormatPriceOptions = {
     ...defaultPriceFormatOptions,
     ...options
