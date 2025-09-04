@@ -1,6 +1,6 @@
 import 'server-only'
 
-import type { CategoryCreationData, CategoryDTO, CategoryNameAlreadyExists, CategoryUpdateData } from '@/category/domain/category-entities'
+import type { CategoryConflictError, CategoryCreationData, CategoryDTO, CategoryUpdateData } from '@/category/domain/category-entities'
 import { type ErrorResult, failure, type NotFound, type Result, success } from '@/helpers/result'
 import { CategoryDatabase } from '@/infrastructure/database'
 import { getDatabaseError } from '@/infrastructure/database/database-helpers'
@@ -12,7 +12,7 @@ const categorySelect = {
   imageUrl: true
 }
 
-const onCategoryDuplicateError = (duplicatedKeys: string[]): ErrorResult<CategoryNameAlreadyExists> => {
+const onCategoryDuplicateError = (duplicatedKeys: string[]): ErrorResult<CategoryConflictError> => {
   if (duplicatedKeys.includes('name')) {
     return failure('CATEGORY_NAME_ALREADY_EXISTS')
   }
@@ -21,7 +21,7 @@ const onCategoryDuplicateError = (duplicatedKeys: string[]): ErrorResult<Categor
   return failure()
 }
 
-const createCategory = async (categoryCreationData: CategoryCreationData): Promise<Result<CategoryNameAlreadyExists, CategoryDTO>> => {
+const createCategory = async (categoryCreationData: CategoryCreationData): Promise<Result<CategoryConflictError, CategoryDTO>> => {
   try {
     const createdCategory = await CategoryDatabase.create({
       data: {
@@ -84,7 +84,7 @@ const findCategory = async (categoryId: string): Promise<Result<NotFound, Catego
   }
 }
 
-const updateCategory = async (categoryId: string, categoryData: CategoryUpdateData): Promise<Result<CategoryNameAlreadyExists, CategoryDTO>> => {
+const updateCategory = async (categoryId: string, categoryData: CategoryUpdateData): Promise<Result<CategoryConflictError, CategoryDTO>> => {
   try {
     const updatedCategory = await CategoryDatabase.update({
       where: { id: categoryId },

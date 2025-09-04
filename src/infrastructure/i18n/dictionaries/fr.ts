@@ -118,16 +118,16 @@ export const fr = {
   },
   category: {
     creation: {
-      errors: {
-        categoryNameAlreadyExists: 'Une catégorie avec ce nom existe déjà.',
-        categoryNameTooLong: 'Le nom de la catégorie ne doit pas dépasser {max:number} caractères.'
-      },
       submit: {
         creating: 'Création en cours...',
         label: 'Créer'
       },
       success: 'La catégorie "{categoryName}" a été créée avec succès.',
       title: 'Créer une catégorie'
+    },
+    errors: {
+      categoryNameAlreadyExists: 'Une catégorie avec ce nom existe déjà.',
+      categoryNameTooLong: 'Le nom de la catégorie ne doit pas dépasser {max:number} caractères.'
     },
     fields: {
       description: {
@@ -145,10 +145,6 @@ export const fr = {
     },
     imageAlt: 'Image de la catégorie',
     update: {
-      errors: {
-        categoryNameAlreadyExists: 'Une catégorie avec ce nom existe déjà.',
-        categoryNameTooLong: 'Le nom de la catégorie ne doit pas dépasser {max:number} caractères.'
-      },
       submit: {
         label: 'Mettre à jour',
         updating: 'Mise à jour en cours...'

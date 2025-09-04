@@ -3,7 +3,7 @@ import 'server-only'
 import { type ErrorResult, failure, type NotFound, type Result, success } from '@/helpers/result'
 import { ProductDatabase } from '@/infrastructure/database'
 import { getDatabaseError } from '@/infrastructure/database/database-helpers'
-import type { ProductCreationData, ProductDTO, ProductSKUAlreadyExists, ProductUpdateData } from '@/product/domain/product-entities'
+import type { ProductConflictError, ProductCreationData, ProductDTO, ProductUpdateData } from '@/product/domain/product-entities'
 
 const productSelect = {
   id: true,
@@ -25,7 +25,7 @@ const productSelect = {
   }
 }
 
-const onProductDuplicateError = (duplicatedKeys: string[]): ErrorResult<ProductSKUAlreadyExists> => {
+const onProductDuplicateError = (duplicatedKeys: string[]): ErrorResult<ProductConflictError> => {
   if (duplicatedKeys.includes('sku')) {
     return failure('PRODUCT_SKU_ALREADY_EXISTS')
   }
@@ -34,7 +34,7 @@ const onProductDuplicateError = (duplicatedKeys: string[]): ErrorResult<ProductS
   return failure()
 }
 
-const createProduct = async (productCreationData: ProductCreationData): Promise<Result<ProductSKUAlreadyExists, ProductDTO>> => {
+const createProduct = async (productCreationData: ProductCreationData): Promise<Result<ProductConflictError, ProductDTO>> => {
   try {
     const createdProduct = await ProductDatabase.create({
       data: {
@@ -104,7 +104,7 @@ const findProducts = async (): Promise<Result<null, ProductDTO[]>> => {
   }
 }
 
-const updateProduct = async (productId: string, productData: ProductUpdateData): Promise<Result<ProductSKUAlreadyExists, ProductDTO>> => {
+const updateProduct = async (productId: string, productData: ProductUpdateData): Promise<Result<ProductConflictError, ProductDTO>> => {
   try {
     const updatedProduct = await ProductDatabase.update({
       where: { id: productId },

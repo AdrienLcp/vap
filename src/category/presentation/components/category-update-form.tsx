@@ -32,7 +32,7 @@ export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = ({ category
     for (const issue of issues) {
       switch (issue.message) {
         case CATEGORY_ERRORS.NAME_TOO_LONG:
-          nameErrors.push(t('category.update.errors.categoryNameTooLong', { max: CATEGORY_CONSTANTS.NAME_MAX_LENGTH }))
+          nameErrors.push(t('category.errors.categoryNameTooLong', { max: CATEGORY_CONSTANTS.NAME_MAX_LENGTH }))
           break
         default:
           formErrors.push(t('components.forms.formValidationErrorDefaultMessage'))
@@ -49,7 +49,7 @@ export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = ({ category
   const onCategoryUpdateConflictError = useCallback((error: CategoryConflictError) => {
     switch (error) {
       case CATEGORY_ERRORS.NAME_ALREADY_EXISTS:
-        setCategoryUpdateFormErrors({ [CATEGORY_FORM_FIELDS.NAME]: t('category.update.errors.categoryNameAlreadyExists') })
+        setCategoryUpdateFormErrors({ [CATEGORY_FORM_FIELDS.NAME]: t('category.errors.categoryNameAlreadyExists') })
         break
       default:
         setCategoryUpdateFormErrors({ form: t('components.forms.formValidationErrorDefaultMessage') })
