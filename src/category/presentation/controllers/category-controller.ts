@@ -19,7 +19,7 @@ const createCategory = async (categoryCreationRequest: Request): Promise<Categor
     const createdCategoryResult = await CategoryService.createCategory(categoryCreationValidation.data)
 
     if (createdCategoryResult.status === 'ERROR') {
-      switch (createdCategoryResult.errors) {
+      switch (createdCategoryResult.error) {
         case CATEGORY_ERRORS.NAME_ALREADY_EXISTS:
           return HttpResponse.conflict(CATEGORY_ERRORS.NAME_ALREADY_EXISTS)
         case 'FORBIDDEN':
@@ -27,7 +27,7 @@ const createCategory = async (categoryCreationRequest: Request): Promise<Categor
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
         default:
-          console.error('Unknown error in CategoryController.createCategory:', createdCategoryResult.errors)
+          console.error('Unknown error in CategoryController.createCategory:', createdCategoryResult.error)
           return HttpResponse.internalServerError()
       }
     }
@@ -60,13 +60,13 @@ const deleteCategory = async (categoryId: unknown): Promise<CategoryDeletionResp
     const categoryDeletionResult = await CategoryService.deleteCategory(categoryIdValidation.data)
 
     if (categoryDeletionResult.status === 'ERROR') {
-      switch (categoryDeletionResult.errors) {
+      switch (categoryDeletionResult.error) {
         case 'FORBIDDEN':
           return HttpResponse.forbidden()
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
         default:
-          console.error('Unknown error in CategoryController.deleteCategory:', categoryDeletionResult.errors)
+          console.error('Unknown error in CategoryController.deleteCategory:', categoryDeletionResult.error)
           return HttpResponse.internalServerError()
       }
     }
@@ -83,7 +83,7 @@ const findCategories = async (): Promise<CategoryListResponse> => {
     const categoriesResult = await CategoryService.findCategories()
 
     if (categoriesResult.status === 'ERROR') {
-      console.error('Unknown error in CategoryController.findCategories:', categoriesResult.errors)
+      console.error('Unknown error in CategoryController.findCategories:', categoriesResult.error)
       return HttpResponse.internalServerError()
     }
 
@@ -112,10 +112,10 @@ const findCategory = async (categoryId: unknown): Promise<CategoryResponse> => {
     const categoryResult = await CategoryService.findCategory(categoryIdValidation.data)
 
     if (categoryResult.status === 'ERROR') {
-      if (categoryResult.errors === 'NOT_FOUND') {
+      if (categoryResult.error === 'NOT_FOUND') {
         return HttpResponse.notFound()
       }
-      console.error('Unknown error in CategoryController.findCategory:', categoryResult.errors)
+      console.error('Unknown error in CategoryController.findCategory:', categoryResult.error)
       return HttpResponse.internalServerError()
     }
 
@@ -151,7 +151,7 @@ const updateCategory = async (categoryId: unknown, categoryUpdateRequest: Reques
     const updatedCategoryResult = await CategoryService.updateCategory(categoryIdValidation.data, categoryUpdateValidation.data)
 
     if (updatedCategoryResult.status === 'ERROR') {
-      switch (updatedCategoryResult.errors) {
+      switch (updatedCategoryResult.error) {
         case CATEGORY_ERRORS.NAME_ALREADY_EXISTS:
           return HttpResponse.conflict(CATEGORY_ERRORS.NAME_ALREADY_EXISTS)
         case 'FORBIDDEN':
@@ -159,7 +159,7 @@ const updateCategory = async (categoryId: unknown, categoryUpdateRequest: Reques
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
         default:
-          console.error('Unknown error in CategoryController.updateCategory:', updatedCategoryResult.errors)
+          console.error('Unknown error in CategoryController.updateCategory:', updatedCategoryResult.error)
           return HttpResponse.internalServerError()
       }
     }

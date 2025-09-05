@@ -27,9 +27,9 @@ export const NumberField: React.FC<NumberFieldProps> = ({
     {...numberFieldRestProps}
     className={values => reactAriaClassNames(values, className, 'number-field')}
   >
-    {({ isInvalid, isRequired }) => (
+    {({ isInvalid }) => (
       <>
-        <Label>{label}{isRequired && ' *'}</Label>
+        <Label className='label'>{label}</Label>
 
         <Input />
 

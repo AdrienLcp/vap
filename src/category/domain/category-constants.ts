@@ -1,3 +1,5 @@
+export const CATEGORY_API_BASE_URL = 'categories'
+
 export const CATEGORY_CONSTANTS = {
   DESCRIPTION_MAX_LENGTH: 500,
 
@@ -17,5 +19,3 @@ export const CATEGORY_FORM_FIELDS = {
   DESCRIPTION: 'category-description',
   IMAGE_URL: 'category-image-url'
 } as const
-
-export const CATEGORY_API_BASE_URL = 'categories'

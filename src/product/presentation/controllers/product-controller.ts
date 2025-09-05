@@ -20,7 +20,7 @@ const createProduct = async (productCreationRequest: Request): Promise<ProductCr
     const createdProductResult = await ProductService.createProduct(productCreationValidation.data)
 
     if (createdProductResult.status === 'ERROR') {
-      switch (createdProductResult.errors) {
+      switch (createdProductResult.error) {
         case 'FORBIDDEN':
           return HttpResponse.forbidden()
         case 'UNAUTHORIZED':
@@ -28,7 +28,7 @@ const createProduct = async (productCreationRequest: Request): Promise<ProductCr
         case 'PRODUCT_SKU_ALREADY_EXISTS':
           return HttpResponse.conflict('PRODUCT_SKU_ALREADY_EXISTS')
         default:
-          console.error('Unknown error in ProductController.createProduct:', createdProductResult.errors)
+          console.error('Unknown error in ProductController.createProduct:', createdProductResult.error)
           return HttpResponse.internalServerError()
       }
     }
@@ -61,13 +61,13 @@ const deleteProduct = async (productId: string): Promise<ProductDeleteResponse> 
     const deleteResult = await ProductService.deleteProduct(productIdValidation.data)
 
     if (deleteResult.status === 'ERROR') {
-      switch (deleteResult.errors) {
+      switch (deleteResult.error) {
         case 'FORBIDDEN':
           return HttpResponse.forbidden()
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
         default:
-          console.error('Unknown error in ProductController.deleteProduct:', deleteResult.errors)
+          console.error('Unknown error in ProductController.deleteProduct:', deleteResult.error)
           return HttpResponse.internalServerError()
       }
     }
@@ -90,7 +90,7 @@ const findProduct = async (productId: string): Promise<ProductResponse> => {
     const productResult = await ProductService.findProduct(productIdValidation.data)
 
     if (productResult.status === 'ERROR') {
-      switch (productResult.errors) {
+      switch (productResult.error) {
         case 'FORBIDDEN':
           return HttpResponse.forbidden()
         case 'UNAUTHORIZED':
@@ -98,7 +98,7 @@ const findProduct = async (productId: string): Promise<ProductResponse> => {
         case 'NOT_FOUND':
           return HttpResponse.notFound()
         default:
-          console.error('Unknown error in ProductController.findProduct:', productResult.errors)
+          console.error('Unknown error in ProductController.findProduct:', productResult.error)
           return HttpResponse.internalServerError()
       }
     }
@@ -122,13 +122,13 @@ const findProducts = async (): Promise<ProductListResponse> => {
     const productsResult = await ProductService.findProducts()
 
     if (productsResult.status === 'ERROR') {
-      switch (productsResult.errors) {
+      switch (productsResult.error) {
         case 'FORBIDDEN':
           return HttpResponse.forbidden()
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
         default:
-          console.error('Unknown error in ProductController.findPublicProducts:', productsResult.errors)
+          console.error('Unknown error in ProductController.findPublicProducts:', productsResult.error)
           return HttpResponse.internalServerError()
       }
     }
@@ -158,11 +158,11 @@ const findPublicProduct = async (productId: string): Promise<ProductPublicRespon
     const productResult = await ProductService.findPublicProduct(productIdValidation.data)
 
     if (productResult.status === 'ERROR') {
-      switch (productResult.errors) {
+      switch (productResult.error) {
         case 'NOT_FOUND':
           return HttpResponse.notFound()
         default:
-          console.error('Unknown error in ProductController.findPublicProduct:', productResult.errors)
+          console.error('Unknown error in ProductController.findPublicProduct:', productResult.error)
           return HttpResponse.internalServerError()
       }
     }
@@ -186,7 +186,7 @@ const findPublicProducts = async (): Promise<ProductPublicListResponse> => {
     const productsResult = await ProductService.findPublicProducts()
 
     if (productsResult.status === 'ERROR') {
-      console.error('Unknown error in ProductController.findPublicProducts:', productsResult.errors)
+      console.error('Unknown error in ProductController.findPublicProducts:', productsResult.error)
       return HttpResponse.internalServerError()
     }
 
@@ -223,7 +223,7 @@ const updateProduct = async (productId: string, productUpdateRequest: Request): 
     const updatedProductResult = await ProductService.updateProduct(productIdValidation.data, productUpdateValidation.data)
 
     if (updatedProductResult.status === 'ERROR') {
-      switch (updatedProductResult.errors) {
+      switch (updatedProductResult.error) {
         case 'FORBIDDEN':
           return HttpResponse.forbidden()
         case 'UNAUTHORIZED':
@@ -231,7 +231,7 @@ const updateProduct = async (productId: string, productUpdateRequest: Request): 
         case 'PRODUCT_SKU_ALREADY_EXISTS':
           return HttpResponse.conflict('PRODUCT_SKU_ALREADY_EXISTS')
         default:
-          console.error('Unknown error in ProductController.updateProduct:', updatedProductResult.errors)
+          console.error('Unknown error in ProductController.updateProduct:', updatedProductResult.error)
           return HttpResponse.internalServerError()
       }
     }

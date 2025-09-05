@@ -10,11 +10,11 @@ const findUser = async (): Promise<AuthUserResponse> => {
     const userResult = await AuthService.findUser()
 
     if (userResult.status === 'ERROR') {
-      switch (userResult.errors) {
+      switch (userResult.error) {
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
         default:
-          console.error('Unknown error in AuthController.findUser:', userResult.errors)
+          console.error('Unknown error in AuthController.findUser:', userResult.error)
           return HttpResponse.internalServerError()
       }
     }

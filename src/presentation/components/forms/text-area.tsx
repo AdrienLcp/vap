@@ -25,13 +25,11 @@ export const TextArea: React.FC<TextAreaProps> = ({
     maxLength={maxLength}
     minLength={minLength}
   >
-    {({ isInvalid, isRequired }) => (
+    {({ isInvalid }) => (
       <>
-        <Label className='label'>
-          {label}{isRequired && ' *'}
-        </Label>
+        <Label className='label'>{label}</Label>
 
-        <ReactAriaTextArea className='input' />
+        <ReactAriaTextArea />
 
         {isInvalid
           ? <FieldError maxLength={maxLength} minLength={minLength} />

@@ -57,11 +57,11 @@
     color: var(--neutral-foreground)
 
   @include selectors.hovered
-    background-color: var(--neutral-background-hovered)
+    background-color: oklch(var(--neutral-foreground-oklch) / var(--alpha-xs, 0.125))
     color: var(--neutral-foreground-hovered)
 
   @include selectors.pressed
-    background-color: var(--neutral-background-pressed)
+    background-color: oklch(var(--neutral-foreground-oklch) / var(--alpha-s, 0.25))
     color: var(--neutral-foreground-pressed)
 
   @include selectors.disabled

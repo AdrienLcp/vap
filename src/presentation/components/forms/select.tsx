@@ -36,7 +36,7 @@ export function Select <K extends Key = string> ({ className, label, items, plac
       className={values => reactAriaClassNames(values, className, 'select')}
       placeholder={placeholder}
     >
-      <Label>{label}</Label>
+      <Label className='label'>{label}</Label>
 
       <Button className='trigger'>
         <SelectValue className='value'>

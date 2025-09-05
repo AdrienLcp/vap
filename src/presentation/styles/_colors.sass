@@ -5,13 +5,14 @@
   --black: oklch(var(--black-oklch))
   --white: oklch(var(--white-oklch))
 
-  --alpha-xs: 0.125
-  --alpha-s: 0.25
+  --alpha-xs: 0.08
+  --alpha-s: 0.16
   --alpha-m: 0.5
-  --alpha-l: 0.75
-  --alpha-xl: 0.875
+  --alpha-l: 0.84
+  --alpha-xl: 0.92
 
-  --neutral-background: var(--white)
+  --neutral-background-oklch: var(--white-oklch)
+  --neutral-background: oklch(var(--neutral-background-oklch))
   --neutral-background-hovered: oklch(92% 0.002 286.03)
   --neutral-background-pressed: oklch(87% 0.004 286.03)
 
@@ -23,7 +24,8 @@
   --neutral-background-muted-hovered: oklch(82% 0.003 286.03)
   --neutral-background-muted-pressed: oklch(77% 0.002 286.03)
 
-  --neutral-foreground: var(--black)
+  --neutral-foreground-oklch: var(--black-oklch)
+  --neutral-foreground: oklch(var(--neutral-foreground-oklch))
   --neutral-foreground-hovered: oklch(20% 0.002 0)
   --neutral-foreground-pressed: oklch(25% 0.004 0)
 

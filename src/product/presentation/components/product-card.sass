@@ -2,6 +2,11 @@
 @use '@/presentation/styles/sizes'
 
 .product-card
+  @include selectors.hovered
+    background-color: oklch(var(--neutral-foreground-oklch) / var(--alpha-xs, 0.125))
+
+  @include selectors.pressed
+    background-color: oklch(var(--neutral-foreground-oklch) / var(--alpha-s, 0.25))
 
   & .product-image
     @include sizes.square(100%)
@@ -10,22 +15,7 @@
       @include sizes.square(3rem)
 
   & .footer
-    background-color: var(--neutral-background-secondary)
     padding: var(--size-40, 0.25rem) var(--size-40, 0.25rem) var(--size-40, 0.25rem) var(--size-80, 0.5rem)
 
     & .content
       display: grid
-
-  @include selectors.hovered
-    & .footer
-      background-color: var(--neutral-background-secondary-hovered)
-
-  @include selectors.pressed
-    & .footer
-      background-color: var(--neutral-background-secondary-pressed)
-
-  @include selectors.disabled
-    color: var(--neutral-foreground-muted)
-
-    & .footer
-      background-color: var(--neutral-background-muted)

@@ -16,8 +16,8 @@ type ProductCardProps = {
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => (
-  <Link className='product-card' href={getAdminProductRoute(product.id)}>
-    <Card title={t('product.card.showProductSheet')}>
+  <Link href={getAdminProductRoute(product.id)}>
+    <Card className='product-card' title={t('product.card.showProductSheet')}>
       <CardBody>
         <ProductImage className='product-image' src={product.imageUrl} />
       </CardBody>

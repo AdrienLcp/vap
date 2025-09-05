@@ -25,9 +25,9 @@ export const TextField: React.FC<TextFieldProps> = ({
     maxLength={maxLength}
     minLength={minLength}
   >
-    {({ isInvalid, isRequired }) => (
+    {({ isInvalid }) => (
       <>
-        <Label>{label}{isRequired && ' *'}</Label>
+        <Label className='label'>{label}</Label>
 
         <Input />
 

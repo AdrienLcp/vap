@@ -83,10 +83,10 @@
       justify-content: center
 
       @include selectors.hovered
-        background-color: oklch(var(--black-oklch) / var(--alpha-xs))
+        background-color: oklch(var(--neutral-foreground-oklch) / var(--alpha-xs))
 
       @include selectors.pressed
-        background-color: oklch(var(--black-oklch) / var(--alpha-s))
+        background-color: oklch(var(--neutral-foreground-oklch) / var(--alpha-s))
       
   @include breakpoints.is-desktop
     inset: auto auto var(--toaster-padding) 50%

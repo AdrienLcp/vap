@@ -1,5 +1,7 @@
 import type { ProductStatus } from '@prisma/client'
 
+export const PRODUCT_API_BASE_URL = 'products'
+
 export const PRODUCT_CONSTANTS = {
   NAME_MAX_LENGTH: 100,
 
@@ -38,8 +40,6 @@ export const PRODUCT_ERRORS = {
 
   STOCK_TOO_LOW: 'STOCK_TOO_LOW'
 } as const
-
-export const PRODUCT_API_BASE_URL = 'products'
 
 export const PRODUCT_FORM_FIELDS = {
   CATEGORY_ID: 'product-category-id',
