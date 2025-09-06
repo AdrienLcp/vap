@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { RouterProvider } from 'react-aria-components'
 
-import { AuthProvider } from '@/auth/presentation/context/auth-provider'
+import { AuthProvider } from '@/features/auth/presentation/context/auth-provider'
 
 export const Providers: React.FC<React.PropsWithChildren> = ({ children }) => {
   const router = useRouter()

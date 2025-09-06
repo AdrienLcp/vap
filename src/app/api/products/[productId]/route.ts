@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server'
 
+import { ProductController } from '@/features/product/presentation/controllers/product-controller'
 import { nextResponse } from '@/infrastructure/api/api-lib'
-import { ProductController } from '@/product/presentation/controllers/product-controller'
 
 type ProductIdContext = RouteContext<'/api/products/[productId]'>
 

@@ -1,4 +1,4 @@
-import { SignInPage } from '@/auth/presentation/components/sign-in-page'
+import { SignInPage } from '@/features/auth/presentation/components/sign-in-page'
 
 const Page: React.FC = () => <SignInPage />
 

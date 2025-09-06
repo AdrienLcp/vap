@@ -1,7 +1,7 @@
 'use client'
 
-import { AuthButton } from '@/auth/presentation/components/auth-button'
 import { DEFAULT_ROUTE } from '@/domain/navigation'
+import { AuthButton } from '@/features/auth/presentation/components/auth-button'
 import { Logo } from '@/presentation/components/ui/logo'
 import { Link } from '@/presentation/components/ui/pressables/link'
 

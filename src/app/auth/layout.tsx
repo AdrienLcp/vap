@@ -1,4 +1,4 @@
-import { AuthWrapper } from '@/auth/presentation/components/auth-wrapper'
+import { AuthWrapper } from '@/features/auth/presentation/components/auth-wrapper'
 
 const AuthLayout: React.FC<React.PropsWithChildren> = ({ children }) => (
   <AuthWrapper>

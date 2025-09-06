@@ -1,4 +1,4 @@
-import { ProductCreationPage } from '@/product/presentation/components/product-creation-page'
+import { ProductCreationPage } from '@/features/product/presentation/components/product-creation-page'
 
 const Page: React.FC = () => <ProductCreationPage />
 

@@ -1,4 +1,0 @@
-export type ValidationErrors <T extends PropertyKey> =
-  | Partial<Record<T | 'form', string | string[]>>
-  | null
-  | undefined

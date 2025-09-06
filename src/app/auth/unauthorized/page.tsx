@@ -1,4 +1,4 @@
-import { Unauthorized } from '@/auth/presentation/components/unauthorized'
+import { Unauthorized } from '@/features/auth/presentation/components/unauthorized'
 
 const Page: React.FC = () => <Unauthorized />
 

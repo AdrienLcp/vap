@@ -1,4 +1,4 @@
-import { AdminWrapper } from '@/admin/admin-wrapper'
+import { AdminWrapper } from '@/features/admin/admin-wrapper'
 
 const AdminLayout: React.FC<React.PropsWithChildren> = ({ children }) => (
   <AdminWrapper>
