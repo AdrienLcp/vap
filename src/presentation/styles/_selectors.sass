@@ -42,6 +42,11 @@
   &[data-pressed]
     @content
 
+@mixin required
+  &[required]:not([data-rac]),
+  &[data-required]
+    @content
+
 @mixin selected
   &.selected:not([data-rac]),
   &[data-selected]

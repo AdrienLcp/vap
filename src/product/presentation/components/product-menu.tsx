@@ -5,6 +5,8 @@ import { t } from '@/infrastructure/i18n'
 import { Menu, type MenuItem } from '@/presentation/components/ui/menu'
 import { Button } from '@/presentation/components/ui/pressables/button'
 
+import './product-menu.sass'
+
 type ProductMenuProps = {
   productId: string
 }
@@ -12,6 +14,7 @@ type ProductMenuProps = {
 const ProductMenuTrigger: React.FC = () => (
   <Button
     aria-label={t('product.card.menuAriaLabel')}
+    className='product-menu-trigger'
     Icon={<MenuIcon />}
     variant='transparent'
   />

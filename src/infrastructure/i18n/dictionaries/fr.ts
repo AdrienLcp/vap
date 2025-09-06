@@ -64,7 +64,7 @@ export const fr = {
       }
     },
     persona: {
-      admin: 'Admin',
+      admin: 'Administration',
       profile: 'Profil',
       signOut: 'Se déconnecter'
     },
@@ -139,7 +139,7 @@ export const fr = {
         placeholder: 'URL de l\'image'
       },
       name: {
-        label: 'Nom *',
+        label: 'Nom',
         placeholder: 'Nom de la catégorie'
       }
     },
@@ -168,7 +168,10 @@ export const fr = {
         tooShortValue: 'La valeur saisie doit faire au moins {min:number} caractères.',
         valueMissing: 'Ce champ est requis.'
       },
-      requiredFields: 'Les champs marqués d\'un * sont requis.',
+      requiredFields: {
+        mark: '*',
+        message: 'Les champs marqués d\'un {mark} sont requis.'
+      },
       select: {
         defaultPlaceholder: 'Sélectionnez une option'
       }
@@ -231,7 +234,7 @@ export const fr = {
           required: 'Le nom du produit est requis.',
           tooLong: 'Le nom du produit ne doit pas dépasser {max:number} caractères.'
         },
-        label: 'Nom *',
+        label: 'Nom',
         placeholder: 'Nom du produit'
       },
       price: {
@@ -239,7 +242,7 @@ export const fr = {
           tooHigh: 'Le prix du produit ne doit pas dépasser {max:number}.',
           tooLow: 'Le prix du produit doit être au moins de {min:number}.'
         },
-        label: 'Prix *'
+        label: 'Prix'
       },
       sku: {
         description: 'Code unique du produit',
@@ -248,17 +251,17 @@ export const fr = {
           required: 'Le SKU du produit est requis.',
           tooLong: 'Le SKU du produit ne doit pas dépasser {max:number} caractères.'
         },
-        label: 'SKU *'
+        label: 'SKU'
       },
       status: {
-        label: 'Statut *'
+        label: 'Statut'
       },
       stock: {
         description: 'Quantité en stock',
         errors: {
           tooLow: 'Le stock du produit doit être au moins de {min:number}.'
         },
-        label: 'Stock *'
+        label: 'Stock'
       }
     },
     imageAlt: 'Image du produit',

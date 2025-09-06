@@ -36,46 +36,52 @@ export function Select <K extends Key = string> ({ className, label, items, plac
       className={values => reactAriaClassNames(values, className, 'select')}
       placeholder={placeholder}
     >
-      <Label className='label'>{label}</Label>
+      {({ isRequired }) => (
+        <>
+          <Label className='label'>
+            {label} {isRequired && t('components.forms.requiredFields.mark')}
+          </Label>
 
-      <Button className='trigger'>
-        <SelectValue className='value'>
-          {({ defaultChildren, isPlaceholder }) => {
-            if (isPlaceholder) {
-              return placeholder ?? t('components.forms.select.defaultPlaceholder')
-            }
+          <Button className='trigger'>
+            <SelectValue className='value'>
+              {({ defaultChildren, isPlaceholder }) => {
+                if (isPlaceholder) {
+                  return placeholder ?? t('components.forms.select.defaultPlaceholder')
+                }
 
-            return defaultChildren
-          }}
-        </SelectValue>
+                return defaultChildren
+              }}
+            </SelectValue>
 
-        <ChevronDown aria-hidden />
-      </Button>
+            <ChevronDown aria-hidden />
+          </Button>
 
-      <Popover>
-        <ListBox className='select-popover' items={items}>
-          {({ className, Icon, textValue, ...selectItemRestProps }) => (
-            <ListBoxItem
-              {...selectItemRestProps}
-              className={values => reactAriaClassNames(values, className, 'item')}
-              textValue={textValue}
-            >
-              {({ isSelected }) => (
-                <>
-                  <div className='content'>
-                    {Icon && <span aria-hidden className='icon'>{Icon}</span>}
+          <Popover>
+            <ListBox className='select-popover' items={items}>
+              {({ className, Icon, textValue, ...selectItemRestProps }) => (
+                <ListBoxItem
+                  {...selectItemRestProps}
+                  className={values => reactAriaClassNames(values, className, 'item')}
+                  textValue={textValue}
+                >
+                  {({ isSelected }) => (
+                    <>
+                      <div className='content'>
+                        {Icon && <span aria-hidden className='icon'>{Icon}</span>}
 
-                    <span className='text'>{textValue}</span>
-                  </div>
+                        <span className='text'>{textValue}</span>
+                      </div>
 
-                  {isSelected && <CheckIcon aria-hidden className='check-icon' />}
-                </>
+                      {isSelected && <CheckIcon aria-hidden className='check-icon' />}
+                    </>
+                  )}
+
+                </ListBoxItem>
               )}
-
-            </ListBoxItem>
-          )}
-        </ListBox>
-      </Popover>
+            </ListBox>
+          </Popover>
+        </>
+      )}
     </ReactAriaSelect>
   )
 }

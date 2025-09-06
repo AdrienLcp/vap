@@ -1,5 +1,6 @@
 import { Input, Label, TextField as ReactAriaTextField, type TextFieldProps as ReactAriaTextFieldProps, Text } from 'react-aria-components'
 
+import { t } from '@/infrastructure/i18n'
 import { FieldError } from '@/presentation/components/forms/field-error'
 import { reactAriaClassNames } from '@/presentation/utils/react-aria-utils'
 
@@ -7,7 +8,7 @@ import './text-field.sass'
 
 export type TextFieldProps = ReactAriaTextFieldProps & {
   description?: string
-  label: string
+  label: React.ReactNode
   placeholder?: string
 }
 
@@ -25,9 +26,11 @@ export const TextField: React.FC<TextFieldProps> = ({
     maxLength={maxLength}
     minLength={minLength}
   >
-    {({ isInvalid }) => (
+    {({ isInvalid, isRequired }) => (
       <>
-        <Label className='label'>{label}</Label>
+        <Label className='label'>
+          {label} {isRequired && t('components.forms.requiredFields.mark')}
+        </Label>
 
         <Input />
 
