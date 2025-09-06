@@ -1,5 +1,5 @@
 import { ProfilePage } from '@/auth/presentation/components/profile-page'
 
-const Profile: React.FC = () => <ProfilePage />
+const Page: React.FC = () => <ProfilePage />
 
-export default Profile
+export default Page

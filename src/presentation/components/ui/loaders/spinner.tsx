@@ -1,11 +1,13 @@
 import { LoaderCircleIcon } from 'lucide-react'
+import { VisuallyHidden } from 'react-aria-components'
+
+import { t } from '@/infrastructure/i18n'
 
 import './spinner.sass'
-import { t } from '@/infrastructure/i18n'
 
 export const Spinner: React.FC = () => (
   <>
     <LoaderCircleIcon className='spinner' />
-    <span className='sr-only'>{t('components.spinner.label')}</span>
+    <VisuallyHidden>{t('components.spinner.label')}</VisuallyHidden>
   </>
 )

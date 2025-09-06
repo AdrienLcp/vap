@@ -10,7 +10,7 @@ export const ROUTES = {
   adminCategories: '/admin/categories',
   adminCategory: `/admin/categories/:${PARAMS.categoryId}`,
   adminProducts: '/admin/products',
-  adminProductCreation: '/admin/create-product',
+  adminProductCreation: '/admin/products/create',
   adminProduct: `/admin/products/:${PARAMS.productId}`,
 
   profile: '/auth/profile',

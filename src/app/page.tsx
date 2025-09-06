@@ -1,8 +1,8 @@
-const HomePage: React.FC = () => {
+const Page: React.FC = () => {
   return (
     <main>
     </main>
   )
 }
 
-export default HomePage
+export default Page

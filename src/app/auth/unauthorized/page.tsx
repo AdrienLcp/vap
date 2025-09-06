@@ -1,7 +1,5 @@
-const UnauthorizedPage = () => {
-  return (
-    <>Unauthorized</>
-  )
-}
+import { Unauthorized } from '@/auth/presentation/components/unauthorized'
 
-export default UnauthorizedPage
+const Page: React.FC = () => <Unauthorized />
+
+export default Page

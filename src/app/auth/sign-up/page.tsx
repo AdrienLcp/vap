@@ -1,5 +1,5 @@
 import { SignUpPage } from '@/auth/presentation/components/sign-up-page'
 
-const SignUp: React.FC = () => <SignUpPage />
+const Page: React.FC = () => <SignUpPage />
 
-export default SignUp
+export default Page

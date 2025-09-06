@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import { RefreshCwIcon } from 'lucide-react'
+import { VisuallyHidden } from 'react-aria-components'
 
 import { t } from '@/infrastructure/i18n'
 import { Button } from '@/presentation/components/ui/pressables/button'
@@ -40,9 +41,9 @@ export const Error: React.FC<ErrorProps> = ({ reset }) => (
     >
       {t('components.error.resetButton')}
 
-      <span className='sr-only'>
+      <VisuallyHidden>
         {t('components.error.title')}
-      </span>
+      </VisuallyHidden>
     </Button>
   </ErrorWrapper>
 )

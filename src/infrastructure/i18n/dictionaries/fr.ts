@@ -63,6 +63,11 @@ export const fr = {
         placeholder: 'Entrez votre mot de passe'
       }
     },
+    forbidden: {
+      description: 'Vous n\'avez pas la permission d\'accéder à cette page.',
+      linkLabel: 'Retour à l\'accueil',
+      title: 'Accès interdit'
+    },
     persona: {
       admin: 'Administration',
       profile: 'Profil',

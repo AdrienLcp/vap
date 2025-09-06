@@ -5,21 +5,21 @@ import { t } from '@/infrastructure/i18n'
 import { ErrorDescription, ErrorTitle, ErrorWrapper } from '@/presentation/components/ui/error'
 import { Link } from '@/presentation/components/ui/pressables/link'
 
-export const Unauthorized: React.FC = () => (
+export const Forbidden: React.FC = () => (
   <ErrorWrapper>
     <ErrorTitle>
-      {t('auth.unauthorized.title')}
+      {t('auth.forbidden.title')}
     </ErrorTitle>
 
     <ErrorDescription>
-      {t('auth.unauthorized.description')}
+      {t('auth.forbidden.description')}
     </ErrorDescription>
 
     <Link className='error-button' href={DEFAULT_ROUTE}>
-      {t('auth.unauthorized.linkLabel')}
+      {t('auth.forbidden.linkLabel')}
 
       <VisuallyHidden>
-        {t('auth.unauthorized.title')}
+        {t('auth.forbidden.title')}
       </VisuallyHidden>
     </Link>
   </ErrorWrapper>

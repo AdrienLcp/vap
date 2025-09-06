@@ -1,5 +1,5 @@
 import { AdminPage } from '@/admin/admin-page'
 
-const Admin: React.FC = () => <AdminPage />
+const Page: React.FC = () => <AdminPage />
 
-export default Admin
+export default Page
