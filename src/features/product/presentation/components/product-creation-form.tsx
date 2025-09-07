@@ -1,5 +1,6 @@
 'use client'
 
+import { SaveIcon } from 'lucide-react'
 import { useCallback, useState } from 'react'
 
 import type { CategoryDTO } from '@/features/category/domain/category-entities'
@@ -94,7 +95,7 @@ export const ProductCreationForm: React.FC<ProductCreationFormProps> = ({ catego
 
       <FormError errors={productCreationFormErrors?.form} />
 
-      <SubmitButton isPending={isProductCreationLoading}>
+      <SubmitButton Icon={<SaveIcon />} isPending={isProductCreationLoading}>
         {({ isPending }) => t(`product.creation.submit.${isPending ? 'creating' : 'label'}`)}
       </SubmitButton>
     </Form>

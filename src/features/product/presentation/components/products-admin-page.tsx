@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation'
 import { ROUTES } from '@/domain/navigation'
 import { AuthController } from '@/features/auth/presentation/controllers/auth-controller'
 import { ProductCreationLink } from '@/features/product/presentation/components/product-creation-link'
-import { ProductsList } from '@/features/product/presentation/components/products-list'
+import { ProductList } from '@/features/product/presentation/components/product-list'
 import { ProductController } from '@/features/product/presentation/controllers/product-controller'
 import { OK_STATUS } from '@/infrastructure/api/http-response'
 
@@ -32,7 +32,7 @@ export const ProductsAdminPage: React.FC = async () => {
     <div className='products-admin-page'>
       <ProductCreationLink />
 
-      <ProductsList products={productsResponse.data} />
+      <ProductList products={productsResponse.data} />
     </div>
   )
 }

@@ -44,7 +44,8 @@
   --element-size: var(--size-400, 2.5rem)
   --element-stroke: var(--stroke-m, 0.125rem)
 
-  --content-inline-size: min(50ch, min(100%, 100vw - var(--size-40, 0.25rem)))
+  --max-inline-size: min(100%, 100vw - var(--size-160, 1rem))
+  --content-inline-size: min(50ch, var(--max-inline-size))
   --header-height: var(--size-520, 3.625rem)
 
 @mixin square($size)

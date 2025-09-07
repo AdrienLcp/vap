@@ -83,7 +83,7 @@ export const SignUpForm: React.FC = () => {
 
       <FormError errors={signUpFormErrors?.form} />
 
-      <SubmitButton Icon={<LogInIcon aria-hidden />} isPending={isUserCreationLoading}>
+      <SubmitButton Icon={<LogInIcon />} isPending={isUserCreationLoading}>
         {({ isPending }) => t(`auth.signUp.submit.${isPending ? 'creating' : 'label'}`)}
       </SubmitButton>
     </Form>

@@ -1,5 +1,6 @@
 'use client'
 
+import { SaveIcon } from 'lucide-react'
 import { useCallback, useState } from 'react'
 
 import { CATEGORY_CONSTANTS, CATEGORY_ERRORS, CATEGORY_FORM_FIELDS } from '@/features/category/domain/category-constants'
@@ -96,7 +97,7 @@ export const CategoryCreationForm: React.FC = () => {
 
       <FormError errors={categoryCreationFormErrors?.form} />
 
-      <SubmitButton isPending={isCategoryCreationLoading}>
+      <SubmitButton Icon={<SaveIcon />} isPending={isCategoryCreationLoading}>
         {({ isPending }) => t(`category.creation.submit.${isPending ? 'creating' : 'label'}`)}
       </SubmitButton>
     </Form>

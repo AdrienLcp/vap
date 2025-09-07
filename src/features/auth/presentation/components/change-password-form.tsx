@@ -1,5 +1,6 @@
 'use client'
 
+import { SaveIcon } from 'lucide-react'
 import { useCallback, useState } from 'react'
 
 import { AUTH_CONSTANTS, AUTH_FORM_FIELDS } from '@/features/auth/domain/auth-constants'
@@ -79,7 +80,7 @@ export const ChangePasswordForm: React.FC = () => {
         />
       </FieldSet>
 
-      <SubmitButton isPending={isChangePasswordLoading}>
+      <SubmitButton Icon={<SaveIcon />} isPending={isChangePasswordLoading}>
         {({ isPending }) => t(`auth.changePassword.form.submit.${isPending ? 'loading' : 'label'}`)}
       </SubmitButton>
     </Form>

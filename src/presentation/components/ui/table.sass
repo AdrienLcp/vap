@@ -1,0 +1,20 @@
+table
+  position: relative
+  overflow: auto
+
+  tr
+    block-size: var(--size-480, 3rem)
+
+  thead tr
+    block-size: var(--size-320, 2rem)
+
+  td, th
+    block-size: 100%
+    border-block-end: var(--stroke-s, 0.0625rem) solid var(--neutral-border)
+    padding-inline: var(--size-80, 0.5rem)
+    text-align: start
+
+  th
+    border-width: var(--stroke-m, 0.125rem)
+    position: sticky
+    top: 0

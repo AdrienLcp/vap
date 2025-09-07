@@ -72,7 +72,7 @@ export const SignInForm: React.FC = () => {
 
       <FormError errors={signInFormErrors?.form} />
 
-      <SubmitButton Icon={<LogInIcon aria-hidden />} isPending={isUserAuthenticationLoading}>
+      <SubmitButton Icon={<LogInIcon />} isPending={isUserAuthenticationLoading}>
         {({ isPending }) => t(`auth.signIn.submit.${isPending ? 'loading' : 'label'}`)}
       </SubmitButton>
     </Form>

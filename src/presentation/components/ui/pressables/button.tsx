@@ -19,7 +19,7 @@ const renderButtonIcon = (Icon: ButtonProps['Icon'], variant: ButtonProps['varia
   }
 
   return (
-    <div className='icon'>
+    <div aria-hidden className='icon'>
       {isPending && Icon != null ? <Spinner /> : Icon}
     </div>
   )

@@ -4,11 +4,13 @@ import { ProductUpdateForm } from '@/features/product/presentation/components/pr
 import { ProductController } from '@/features/product/presentation/controllers/product-controller'
 import { OK_STATUS, redirectByErrorStatus } from '@/infrastructure/api/http-response'
 
-export type ProductAdminPageProps = {
+import './product-page.sass'
+
+export type ProductPageProps = {
   productId: string
 }
 
-export const ProductAdminPage: React.FC<ProductAdminPageProps> = async ({ productId }) => {
+export const ProductPage: React.FC<ProductPageProps> = async ({ productId }) => {
   const [categoriesResponse, productResponse] = await Promise.all([
     CategoryController.findCategories(),
     ProductController.findProduct(productId)
@@ -24,5 +26,11 @@ export const ProductAdminPage: React.FC<ProductAdminPageProps> = async ({ produc
     return null
   }
 
-  return <ProductUpdateForm categories={categoriesResponse.data} product={productResponse.data} />
+  return (
+    <div className='product-page'>
+      <h1>titre</h1>
+
+      <ProductUpdateForm categories={categoriesResponse.data} product={productResponse.data} />
+    </div>
+  )
 }

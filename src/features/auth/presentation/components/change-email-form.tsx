@@ -1,5 +1,6 @@
 'use client'
 
+import { SaveIcon } from 'lucide-react'
 import { useCallback, useState } from 'react'
 
 import { AUTH_FORM_FIELDS } from '@/features/auth/domain/auth-constants'
@@ -49,7 +50,7 @@ export const ChangeEmailForm: React.FC = () => {
         placeholder={t('auth.fields.email.placeholder')}
       />
 
-      <SubmitButton isPending={isChangeEmailLoading}>
+      <SubmitButton Icon={<SaveIcon />} isPending={isChangeEmailLoading}>
         {({ isPending }) => t(`auth.changeEmail.submit.${isPending ? 'loading' : 'label'}`)}
       </SubmitButton>
     </Form>
