@@ -8,12 +8,17 @@ import {
   Table as ReactAriaTable,
   type TableProps as ReactAriaTableProps,
   Row,
+  type RowProps,
   TableBody,
   type TableBodyProps,
   TableHeader
 } from 'react-aria-components'
 
 import './table.sass'
+
+export type TableRow <RowData extends object> =
+  & Omit<RowProps<RowData>, 'children' | 'className' | 'columns' | 'id'>
+  & { className?: string, id: string, item: RowData }
 
 export type TableColumn <ColumnKey extends Key = string> = Omit<ColumnProps, 'className' | 'id'> & {
   className?: string
@@ -24,7 +29,7 @@ type TableProps <RowData extends object, ColumnKey extends Key = string> = React
   columns: TableColumn<ColumnKey>[]
   renderCell: (row: RowData, column: TableColumn<ColumnKey>) => React.ReactNode
   renderEmptyState?: TableBodyProps<RowData>['renderEmptyState']
-  rows: TableBodyProps<RowData>['items']
+  rows: TableRow<RowData>[]
 }
 
 export function Table <RowData extends object, ColumnKey extends Key = string> ({
@@ -41,9 +46,9 @@ export function Table <RowData extends object, ColumnKey extends Key = string> (
       </TableHeader>
 
       <TableBody items={rows} renderEmptyState={renderEmptyState}>
-        {row => (
-          <Row columns={columns}>
-            {column => <Cell className={column.className}>{renderCell(row, column)}</Cell>}
+        {({ item, value: _value, ...row }) => (
+          <Row {...row} columns={columns}>
+            {column => <Cell className={column.className}>{renderCell(item, column)}</Cell>}
           </Row>
         )}
       </TableBody>

@@ -3,7 +3,7 @@
 // import { PRODUCT_CONSTANTS } from '@/features/product/domain/product-constants'
 import type { ProductDTO } from '@/features/product/domain/product-entities'
 // import { ProductCard } from '@/features/product/presentation/components/product-card'
-import { Table, type TableColumn } from '@/presentation/components/ui/table'
+import { Table, type TableColumn, type TableRow } from '@/presentation/components/ui/table'
 // import type { CSSVariables } from '@/presentation/utils/styles-utils'
 
 import './product-list.sass'
@@ -29,7 +29,7 @@ type ProductListProps = {
 type ProductColumnKey = 'name' | 'price' | 'category' | 'actions'
 type ProductColumn = TableColumn<ProductColumnKey>
 
-const productTableColumn: ProductColumn[] = [
+const productTableColumns: ProductColumn[] = [
   { id: 'name', children: 'Name', className: 'column-name', isRowHeader: true },
   { id: 'price', children: 'Price', className: 'column-price' },
   { id: 'category', children: 'Category', className: 'column-category' },
@@ -42,7 +42,7 @@ export const ProductList: React.FC<ProductListProps> = ({ products }) => {
       case 'name':
         return product.name
       case 'price':
-        return `$${product.price.toFixed(2)}`
+        return `$${product.price?.toFixed(2)}`
       case 'category':
         return product.category?.name
       case 'actions':
@@ -50,12 +50,18 @@ export const ProductList: React.FC<ProductListProps> = ({ products }) => {
     }
   }
 
+  const productRows: TableRow<ProductDTO>[] = products.map(product => ({
+    id: product.id,
+    item: product,
+    textValue: product.name
+  }))
+
   return (
     <Table
       aria-label='test'
-      columns={productTableColumn}
+      columns={productTableColumns}
       renderCell={renderProductCell}
-      rows={products}
+      rows={productRows}
     />
   )
 }
