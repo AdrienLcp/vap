@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import type {
   ButtonRenderProps,
   FieldErrorRenderProps,
+  GridListRenderProps,
   LinkRenderProps,
   ListBoxItemRenderProps,
   MenuItemRenderProps,
@@ -14,6 +15,7 @@ import type {
 export type ReactAriaComponentRenderProps =
   | ButtonRenderProps
   | FieldErrorRenderProps
+  | GridListRenderProps
   | LinkRenderProps
   | ListBoxItemRenderProps
   | MenuItemRenderProps

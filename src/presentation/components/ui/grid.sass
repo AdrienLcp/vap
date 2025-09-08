@@ -1,3 +1,5 @@
+@use '@/presentation/styles/accessibility'
+
 .grid
   --grid-max-column-count: 8
   --grid-min-column-size: 220px
@@ -9,3 +11,9 @@
   display: grid
   gap: var(--size-160, 1rem)
   grid-template-columns: repeat(auto-fill, minmax(var(--grid-column-min-size-calc), 1fr))
+
+  &-item
+    @include accessibility.focus-outline
+
+    &
+      border-radius: var(--radius-m, 0.5rem)

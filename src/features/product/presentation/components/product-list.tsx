@@ -1,10 +1,9 @@
 'use client'
 
-// import { PRODUCT_CONSTANTS } from '@/features/product/domain/product-constants'
+import { getAdminProductRoute } from '@/domain/navigation'
 import type { ProductDTO } from '@/features/product/domain/product-entities'
-// import { ProductCard } from '@/features/product/presentation/components/product-card'
-import { Table, type TableColumn, type TableRow } from '@/presentation/components/ui/table'
-// import type { CSSVariables } from '@/presentation/utils/styles-utils'
+import { ProductCard } from '@/features/product/presentation/components/product-card'
+import { Grid, type GridItem } from '@/presentation/components/ui/grid'
 
 import './product-list.sass'
 
@@ -12,56 +11,18 @@ type ProductListProps = {
   products: ProductDTO[]
 }
 
-// const productListStyle: CSSVariables = {
-//   '--product-list-card-min-size': `${PRODUCT_CONSTANTS.IMAGE_SIZE_IN_PX}px`
-// }
-
-// export const ProductList: React.FC<ProductListProps> = ({ products }) => (
-//   <ul className='product-list' style={productListStyle}>
-//     {products.map(product => (
-//       <li key={product.id}>
-//         <ProductCard product={product} />
-//       </li>
-//     ))}
-//   </ul>
-// )
-
-type ProductColumnKey = 'name' | 'price' | 'category' | 'actions'
-type ProductColumn = TableColumn<ProductColumnKey>
-
-const productTableColumns: ProductColumn[] = [
-  { id: 'name', children: 'Name', className: 'column-name', isRowHeader: true },
-  { id: 'price', children: 'Price', className: 'column-price' },
-  { id: 'category', children: 'Category', className: 'column-category' },
-  { id: 'actions', children: 'Actions', className: 'column-actions' }
-]
-
 export const ProductList: React.FC<ProductListProps> = ({ products }) => {
-  const renderProductCell = (product: ProductDTO, productColumn: ProductColumn) => {
-    switch (productColumn.id) {
-      case 'name':
-        return product.name
-      case 'price':
-        return `$${product.price?.toFixed(2)}`
-      case 'category':
-        return product.category?.name
-      case 'actions':
-        return 'actions'
-    }
-  }
+  const renderProductCard = (productItem: GridItem<ProductDTO>) => (
+    <ProductCard product={productItem} />
+  )
 
-  const productRows: TableRow<ProductDTO>[] = products.map(product => ({
-    id: product.id,
-    item: product,
+  const productGridItems: GridItem<ProductDTO>[] = products.map(product => ({
+    ...product,
+    href: getAdminProductRoute(product.id),
     textValue: product.name
   }))
 
   return (
-    <Table
-      aria-label='test'
-      columns={productTableColumns}
-      renderCell={renderProductCell}
-      rows={productRows}
-    />
+    <Grid items={productGridItems} renderItem={renderProductCard} />
   )
 }
