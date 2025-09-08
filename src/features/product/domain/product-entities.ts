@@ -22,9 +22,12 @@ export type ProductSKUAlreadyExists = 'PRODUCT_SKU_ALREADY_EXISTS'
 export type ProductConflictError = ProductSKUAlreadyExists
 
 export type ProductError =
-  | ProductConflictError
   | Forbidden
   | Unauthorized
+
+export type ProductEditError =
+  | ProductError
+  | ProductConflictError
 
 export type ProductListResponse = Response<
   | OkResponse<ProductDTO[]>

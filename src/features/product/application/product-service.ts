@@ -1,12 +1,12 @@
 import 'server-only'
 
 import { AuthService } from '@/features/auth/application/auth-service'
-import type { ProductCreationData, ProductDTO, ProductError, ProductPublicDTO, ProductUpdateData } from '@/features/product/domain/product-entities'
+import type { ProductCreationData, ProductDTO, ProductEditError, ProductError, ProductPublicDTO, ProductUpdateData } from '@/features/product/domain/product-entities'
 import { toProductPublicDTO } from '@/features/product/domain/product-mappers'
 import { ProductRepository } from '@/features/product/infrastructure/product-repository'
 import { failure, type NotFound, type Result, success } from '@/helpers/result'
 
-const createProduct = async (productCreationData: ProductCreationData): Promise<Result<ProductError, ProductDTO>>  => {
+const createProduct = async (productCreationData: ProductCreationData): Promise<Result<ProductEditError, ProductDTO>>  => {
   const userResult = await AuthService.findUser()
 
   if (userResult.status === 'ERROR') {
@@ -74,7 +74,7 @@ const findProducts = async (): Promise<Result<ProductError, ProductDTO[]>> => {
   return await ProductRepository.findProducts()
 }
 
-const findPublicProduct = async (productId: string): Promise<Result<ProductError | NotFound, ProductPublicDTO>> => {
+const findPublicProduct = async (productId: string): Promise<Result<NotFound, ProductPublicDTO>> => {
   const productResult = await ProductRepository.findProduct(productId)
 
   if (productResult.status === 'ERROR') {
@@ -106,7 +106,7 @@ const findPublicProducts = async (): Promise<Result<null, ProductPublicDTO[]>> =
   return success(publicProducts)
 }
 
-const updateProduct = async (productId: string, productUpdateData: ProductUpdateData): Promise<Result<ProductError, ProductDTO>> => {
+const updateProduct = async (productId: string, productUpdateData: ProductUpdateData): Promise<Result<ProductEditError, ProductDTO>> => {
   const userResult = await AuthService.findUser()
 
   if (userResult.status === 'ERROR') {

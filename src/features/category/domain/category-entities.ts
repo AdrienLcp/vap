@@ -16,12 +16,7 @@ export type CategoryDTO = z.infer<typeof CategoryDTOSchema>
 export type CategoryNameAlreadyExists = typeof CATEGORY_ERRORS.NAME_ALREADY_EXISTS
 export type CategoryConflictError = CategoryNameAlreadyExists
 
-export type CategoryCreationError =
-  | CategoryNameAlreadyExists
-  | Forbidden
-  | Unauthorized
-
-export type CategoryUpdateError =
+export type CategoryEditError =
   | CategoryNameAlreadyExists
   | Forbidden
   | Unauthorized

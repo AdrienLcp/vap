@@ -13,6 +13,7 @@ type GridProps<Data extends object> = Omit<GridListProps<Data>, 'children' | 'it
 
 export function Grid <Data extends object> ({
   className,
+  layout = 'grid',
   renderItem,
   ...gridRestProps
 }: GridProps<Data>) {
@@ -20,6 +21,7 @@ export function Grid <Data extends object> ({
     <GridList
       {...gridRestProps}
       className={values => reactAriaClassNames(values, className, 'grid')}
+      layout={layout}
     >
       {item => (
         <GridListItem

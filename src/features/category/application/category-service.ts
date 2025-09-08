@@ -1,11 +1,11 @@
 import 'server-only'
 
 import { AuthService } from '@/features/auth/application/auth-service'
-import type { CategoryCreationData, CategoryCreationError, CategoryDTO, CategoryUpdateData } from '@/features/category/domain/category-entities'
+import type { CategoryCreationData, CategoryDTO, CategoryEditError, CategoryUpdateData } from '@/features/category/domain/category-entities'
 import { CategoryRepository } from '@/features/category/infrastructure/category-repository'
 import { failure, type NotFound, type Result } from '@/helpers/result'
 
-const createCategory = async (categoryCreationData: CategoryCreationData): Promise<Result<CategoryCreationError, CategoryDTO>> => {
+const createCategory = async (categoryCreationData: CategoryCreationData): Promise<Result<CategoryEditError, CategoryDTO>> => {
   const userResult = await AuthService.findUser()
 
   if (userResult.status === 'ERROR') {
@@ -41,7 +41,7 @@ const findCategory = async (categoryId: string): Promise<Result<NotFound, Catego
   return await CategoryRepository.findCategory(categoryId)
 }
 
-const updateCategory = async (categoryId: string, categoryUpdateData: CategoryUpdateData) => {
+const updateCategory = async (categoryId: string, categoryUpdateData: CategoryUpdateData): Promise<Result<CategoryEditError, CategoryDTO>> => {
   const userResult = await AuthService.findUser()
 
   if (userResult.status === 'ERROR') {
