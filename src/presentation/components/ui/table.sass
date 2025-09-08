@@ -1,3 +1,5 @@
+@use '@/presentation/styles/accessibility'
+
 table
   position: relative
   overflow: auto
@@ -18,3 +20,9 @@ table
     border-width: var(--stroke-m, 0.125rem)
     position: sticky
     top: 0
+
+  td, tr
+    @include accessibility.focus-outline
+
+    &
+      border-radius: var(--radius-s, 0.25rem)
