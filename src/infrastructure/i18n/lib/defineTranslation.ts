@@ -45,9 +45,6 @@ export type ParamOptions = {
   list?: Record<string, Intl.ListFormatOptions>
 }
 
-export function defineTranslation<
-  S extends string,
-  O extends ExtractParamOptions<S>
->(string: S, options: O): [S, O] {
+export const defineTranslation = <S extends string, O extends ExtractParamOptions<S>>(string: S, options: O): [S, O] => {
   return [string, options]
 }

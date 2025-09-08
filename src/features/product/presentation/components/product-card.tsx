@@ -1,5 +1,7 @@
 'use client'
 
+import classNames from 'classnames'
+
 import type { ProductDTO } from '@/features/product/domain/product-entities'
 import { ProductImage } from '@/features/product/presentation/components/product-image'
 import { ProductMenu } from '@/features/product/presentation/components/product-menu'
@@ -10,11 +12,15 @@ import { formatPrice } from '@/utils/format-utils'
 import './product-card.sass'
 
 type ProductCardProps = {
+  isDisabled?: boolean
   product: ProductDTO
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({ product }) => (
-  <Card className='product-card' title={t('product.card.showProductSheet')}>
+export const ProductCard: React.FC<ProductCardProps> = ({ isDisabled, product }) => (
+  <Card
+    className={classNames('product-card', isDisabled && 'is-disabled')}
+    title={t('product.card.showProductSheet')}
+  >
     <CardBody>
       <ProductImage className='product-image' src={product.imageUrl} />
     </CardBody>
