@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation'
 
 import { ROUTES } from '@/domain/navigation'
 import { CategoryController } from '@/features/category/presentation/controllers/category-controller'
-import { ProductCreationForm } from '@/features/product/presentation/components/product-creation-form'
+import { ProductCreationForm } from '@/features/product/presentation/components/forms/product-creation-form'
 import { OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 

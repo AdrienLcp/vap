@@ -1,14 +1,14 @@
 'use client'
 
 import { SaveIcon } from 'lucide-react'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { CATEGORY_CONSTANTS, CATEGORY_ERRORS, CATEGORY_FORM_FIELDS } from '@/features/category/domain/category-constants'
 import type { CategoryConflictError, CategoryDTO, CategoryUpdateData, CategoryValidationErrors } from '@/features/category/domain/category-entities'
 import { CategoryClient } from '@/features/category/infrastructure/category-client'
-import { CategoryDescriptionField } from '@/features/category/presentation/components/category-description-field'
-import { CategoryImagePreviewField } from '@/features/category/presentation/components/category-image-preview-field'
-import { CategoryNameField } from '@/features/category/presentation/components/category-name-field'
+import { CategoryDescriptionField } from '@/features/category/presentation/components/forms/category-description-field'
+import { CategoryImagePreviewField } from '@/features/category/presentation/components/forms/category-image-preview-field'
+import { CategoryNameField } from '@/features/category/presentation/components/forms/category-name-field'
 import { BAD_REQUEST_STATUS, CONFLICT_STATUS, OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
@@ -25,6 +25,15 @@ type CategoryUpdateFormProps = {
 export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = ({ category }) => {
   const [isCategoryUpdateLoading, setIsCategoryUpdateLoading] = useState(false)
   const [categoryUpdateFormErrors, setCategoryUpdateFormErrors] = useState<CategoryValidationErrors>()
+
+  const formRef = useRef<HTMLFormElement>(null)
+  const initialFormDataRef = useRef<FormData>(new FormData())
+
+  useEffect(() => {
+    if (formRef.current) {
+      initialFormDataRef.current = new FormData(formRef.current)
+    }
+  }, [])
 
   const onCategoryUpdateBadRequestError = useCallback((issues: Issues<CategoryUpdateData>) => {
     const nameErrors: string[] = []
@@ -63,6 +72,16 @@ export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = ({ category
   }, [])
 
   const onCategoryUpdateFormSubmit = useCallback(async (formData: FormData) => {
+    const newFormData = JSON.stringify(Object.fromEntries(formData.entries()))
+    const initialFormData = JSON.stringify(Object.fromEntries(initialFormDataRef.current.entries()))
+
+    console.log({ newFormData, initialFormData })
+
+    if (newFormData === initialFormData) {
+      console.log('same')
+      return
+    }
+
     setCategoryUpdateFormErrors(null)
     setIsCategoryUpdateLoading(true)
 
@@ -90,7 +109,7 @@ export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = ({ category
   }, [category.id, onCategoryUpdateBadRequestError, onCategoryUpdateConflictError, onCategoryUpdateSuccess])
 
   return (
-    <Form onSubmit={onCategoryUpdateFormSubmit} validationErrors={categoryUpdateFormErrors}>
+    <Form onSubmit={onCategoryUpdateFormSubmit} ref={formRef} validationErrors={categoryUpdateFormErrors}>
       <FieldSet isDisabled={isCategoryUpdateLoading}>
         <CategoryNameField defaultValue={category.name} />
 

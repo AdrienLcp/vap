@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { CATEGORY_CONSTANTS } from '@/features/category/domain/category-constants'
-import { CategoryImageUrlField } from '@/features/category/presentation/components/category-image-url-field'
+import { CategoryImageUrlField } from '@/features/category/presentation/components/forms/category-image-url-field'
 import { t } from '@/infrastructure/i18n'
 import { Image } from '@/presentation/components/ui/image'
 

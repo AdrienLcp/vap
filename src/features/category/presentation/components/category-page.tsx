@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 
 import { ROUTES } from '@/domain/navigation'
-import { CategoryUpdateForm } from '@/features/category/presentation/components/category-update-form'
+import { CategoryUpdateForm } from '@/features/category/presentation/components/forms/category-update-form'
 import { CategoryController } from '@/features/category/presentation/controllers/category-controller'
 
 type CategoryPageProps = {

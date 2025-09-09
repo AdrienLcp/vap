@@ -1,3 +1,5 @@
+'use client'
+
 import classNames from 'classnames'
 import { ImageOffIcon } from 'lucide-react'
 import NextImage, { type ImageProps as NextImageProps } from 'next/image'
@@ -34,6 +36,7 @@ export const Image: React.FC<ImageProps> = ({
   className,
   Fallback,
   height,
+  priority = true,
   src,
   width,
   ...imageRestProps
@@ -50,6 +53,7 @@ export const Image: React.FC<ImageProps> = ({
       className={className}
       height={height}
       onError={() => setHasImageError(true)}
+      priority={priority}
       src={src}
       width={width}
     />

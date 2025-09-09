@@ -1,3 +1,5 @@
+'use client'
+
 import { GridList, GridListItem, type GridListItemProps, type GridListProps } from 'react-aria-components'
 
 import { reactAriaClassNames } from '@/presentation/utils/react-aria-utils'

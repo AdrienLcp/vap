@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
+import { ProductImageUrlField } from '@/features/product/presentation/components/forms/product-image-url-field'
 import { ProductImage } from '@/features/product/presentation/components/product-image'
-import { ProductImageUrlField } from '@/features/product/presentation/components/product-image-url-field'
 
 import './product-image-preview-field.sass'
 

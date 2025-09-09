@@ -123,6 +123,7 @@ export const fr = {
   },
   category: {
     creation: {
+      link: 'Créer une catégorie',
       submit: {
         creating: 'Création en cours...',
         label: 'Créer'
@@ -149,6 +150,10 @@ export const fr = {
       }
     },
     imageAlt: 'Image de la catégorie',
+    list: {
+      ariaLabel: 'Liste des catégories',
+      empty: 'Aucune catégorie disponible.'
+    },
     update: {
       submit: {
         label: 'Mettre à jour',
@@ -270,6 +275,10 @@ export const fr = {
       }
     },
     imageAlt: 'Image du produit',
+    list: {
+      ariaLabel: 'Liste des produits',
+      empty: 'Aucun produit disponible.'
+    },
     status: {
       active: 'Actif',
       featured: 'En vedette',
@@ -281,6 +290,7 @@ export const fr = {
         updating: 'Mise à jour en cours...'
       },
       success: '"{productName}" a été mis à jour avec succès.',
+      title: 'Mettre à jour le produit',
       unknownError: 'Une erreur inconnue est survenue durant la mise à jour du produit.'
     }
   },

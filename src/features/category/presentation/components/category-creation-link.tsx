@@ -6,13 +6,13 @@ import { ROUTES } from '@/domain/navigation'
 import { t } from '@/infrastructure/i18n'
 import { Link, type LinkProps } from '@/presentation/components/ui/pressables/link'
 
-export const ProductCreationLink: React.FC<Partial<LinkProps>> = (productCreationLinkProps) => (
+export const CategoryCreationLink: React.FC<Partial<LinkProps>> = (categoryCreationLinkProps) => (
   <Link
-    href={ROUTES.adminProductCreation}
+    href={ROUTES.adminCategoryCreation}
     Icon={<PlusIcon />}
     variant='filled'
-    {...productCreationLinkProps}
+    {...categoryCreationLinkProps}
   >
-    {t('product.creation.link')}
+    {t('category.creation.link')}
   </Link>
 )

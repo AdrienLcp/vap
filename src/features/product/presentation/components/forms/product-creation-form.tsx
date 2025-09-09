@@ -1,21 +1,23 @@
 'use client'
 
 import { SaveIcon } from 'lucide-react'
+import { redirect } from 'next/navigation'
 import { useCallback, useState } from 'react'
 
+import { getAdminProductRoute } from '@/domain/navigation'
 import type { CategoryDTO } from '@/features/category/domain/category-entities'
 import { PRODUCT_CONSTANTS, PRODUCT_FORM_FIELDS } from '@/features/product/domain/product-constants'
-import type { ProductCreationData, ProductStatus, ProductValidationErrors } from '@/features/product/domain/product-entities'
+import type { ProductCreationData, ProductDTO, ProductStatus, ProductValidationErrors } from '@/features/product/domain/product-entities'
 import { ProductClient } from '@/features/product/infrastructure/product-client'
-import { ProductCategorySelect } from '@/features/product/presentation/components/product-category-select'
-import { ProductDescriptionField } from '@/features/product/presentation/components/product-description-field'
-import { ProductDiscountedPriceField } from '@/features/product/presentation/components/product-discounted-price-field'
-import { ProductImagePreviewField } from '@/features/product/presentation/components/product-image-preview-field'
-import { ProductNameField } from '@/features/product/presentation/components/product-name-field'
-import { ProductPriceField } from '@/features/product/presentation/components/product-price-field'
-import { ProductSkuField } from '@/features/product/presentation/components/product-sku-field'
-import { ProductStatusSelect } from '@/features/product/presentation/components/product-status-select'
-import { ProductStockField } from '@/features/product/presentation/components/product-stock-field'
+import { ProductCategorySelect } from '@/features/product/presentation/components/forms/product-category-select'
+import { ProductDescriptionField } from '@/features/product/presentation/components/forms/product-description-field'
+import { ProductDiscountedPriceField } from '@/features/product/presentation/components/forms/product-discounted-price-field'
+import { ProductImagePreviewField } from '@/features/product/presentation/components/forms/product-image-preview-field'
+import { ProductNameField } from '@/features/product/presentation/components/forms/product-name-field'
+import { ProductPriceField } from '@/features/product/presentation/components/forms/product-price-field'
+import { ProductSkuField } from '@/features/product/presentation/components/forms/product-sku-field'
+import { ProductStatusSelect } from '@/features/product/presentation/components/forms/product-status-select'
+import { ProductStockField } from '@/features/product/presentation/components/forms/product-stock-field'
 import { getBadRequestProductFormErrors, getConflictProductFormErrors } from '@/features/product/presentation/validation/product-form-validation'
 import { BAD_REQUEST_STATUS, CONFLICT_STATUS, CREATED_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
@@ -33,6 +35,11 @@ type ProductCreationFormProps = {
 export const ProductCreationForm: React.FC<ProductCreationFormProps> = ({ categories }) => {
   const [isProductCreationLoading, setIsProductCreationLoading] = useState<boolean>(false)
   const [productCreationFormErrors, setProductCreationFormErrors] = useState<ProductValidationErrors>(null)
+
+  const onProductCreationSuccess = useCallback((createdProduct: ProductDTO) => {
+    ToastService.success(t('product.creation.success', { productName: createdProduct.name }))
+    redirect(getAdminProductRoute(createdProduct.id))
+  }, [])
 
   const onProductCreationFormSubmit = useCallback(async (formData: FormData) => {
     setIsProductCreationLoading(true)
@@ -55,7 +62,7 @@ export const ProductCreationForm: React.FC<ProductCreationFormProps> = ({ catego
 
     switch (productCreationResponse.status) {
       case CREATED_STATUS:
-        ToastService.success(t('product.creation.success', { productName: productCreationResponse.data.name }))
+        onProductCreationSuccess(productCreationResponse.data)
         break
       case BAD_REQUEST_STATUS:
         const badRequestProductFormErrors = getBadRequestProductFormErrors(productCreationResponse.issues)
@@ -69,7 +76,7 @@ export const ProductCreationForm: React.FC<ProductCreationFormProps> = ({ catego
         console.error('Unhandled product update response status:', productCreationResponse)
         ToastService.error(t('product.creation.unknownError'))
     }
-  }, [])
+  }, [onProductCreationSuccess])
 
   return (
     <Form onSubmit={onProductCreationFormSubmit} validationErrors={productCreationFormErrors}>
