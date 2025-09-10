@@ -1,3 +1,1 @@
-export type CSSVariables = {
-  [key: `--${string}`]: string | number
-}
+export type Style = Record<string, string | number>

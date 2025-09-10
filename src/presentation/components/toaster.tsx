@@ -12,14 +12,14 @@ import {
 import { t } from '@/infrastructure/i18n'
 import { Button } from '@/presentation/components/ui/pressables/button'
 import { toastQueue } from '@/presentation/services/toast-service'
-import type { CSSVariables } from '@/presentation/utils/styles-utils'
+import type { Style } from '@/presentation/utils/styles-utils'
 
 import './toaster.sass'
 
 export const Toaster: React.FC = () => (
   <ToastRegion className='toaster' queue={toastQueue}>
     {({ toast }) => {
-      const toastStyle: CSSVariables = {
+      const toastStyle: Style = {
         '--toast-view-transition-name': toast.key
       }
 

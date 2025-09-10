@@ -5,7 +5,7 @@ import { ImageOffIcon } from 'lucide-react'
 import NextImage, { type ImageProps as NextImageProps } from 'next/image'
 import { useState } from 'react'
 
-import type { CSSVariables } from '@/presentation/utils/styles-utils'
+import type { Style } from '@/presentation/utils/styles-utils'
 
 import './image.sass'
 
@@ -17,7 +17,7 @@ export type ImageProps = Omit<NextImageProps, 'src'> & {
 type ImageDefaultFallbackProps = Pick<ImageProps, 'className' | 'height' | 'width'>
 
 const ImageDefaultFallback: React.FC<ImageDefaultFallbackProps> = ({ className, height, width }) => {
-  const imageDefaultFallbackStyle: CSSVariables = {
+  const imageDefaultFallbackStyle: Style = {
     '--image-default-fallback-height': `${height}px`,
     '--image-default-fallback-width': `${width}px`
   }

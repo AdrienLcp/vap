@@ -6,14 +6,9 @@ import type { CategoryDTO } from '@/features/category/domain/category-entities'
 import { CategoryCard } from '@/features/category/presentation/components/category-card'
 import { t } from '@/infrastructure/i18n'
 import { Grid, type GridItem } from '@/presentation/components/ui/grid'
-import type { CSSVariables } from '@/presentation/utils/styles-utils'
 
 type CategoryListProps = {
   categories: CategoryDTO[]
-}
-
-const categoryListStyle: CSSVariables = {
-  '--category-list-card-min-size': `${CATEGORY_CONSTANTS.IMAGE_SIZE_IN_PX}px`
 }
 
 const renderCategoryItem = (categoryItem: GridItem<CategoryDTO>) => (
@@ -30,10 +25,10 @@ export const CategoryList: React.FC<CategoryListProps> = ({ categories }) => {
   return (
     <Grid
       aria-label={t('category.list.ariaLabel')}
+      cardSize={CATEGORY_CONSTANTS.IMAGE_SIZE_IN_PX}
       items={categoryGridItems}
       renderEmptyState={() => <p>{t('category.list.empty')}</p>}
       renderItem={renderCategoryItem}
-      style={categoryListStyle}
     />
   )
 }
