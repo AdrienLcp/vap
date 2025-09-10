@@ -7,7 +7,6 @@ export type FormTarget = EventTarget & HTMLFormElement
 export type FormProps = Omit<ReactAriaFormProps, 'onSubmit' | 'validationErrors'> & {
   hasResetAfterSubmit?: boolean
   onSubmit?: (data: FormData, currentTarget: FormTarget) => void
-  ref: React.RefObject<HTMLFormElement | null>
   validationErrors?: ReactAriaFormProps['validationErrors'] | null
 }
 

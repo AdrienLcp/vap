@@ -1,7 +1,7 @@
 'use client'
 
 import { SaveIcon } from 'lucide-react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { CATEGORY_CONSTANTS, CATEGORY_ERRORS, CATEGORY_FORM_FIELDS } from '@/features/category/domain/category-constants'
 import type { CategoryConflictError, CategoryDTO, CategoryUpdateData, CategoryValidationErrors } from '@/features/category/domain/category-entities'
@@ -25,15 +25,6 @@ type CategoryUpdateFormProps = {
 export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = ({ category }) => {
   const [isCategoryUpdateLoading, setIsCategoryUpdateLoading] = useState(false)
   const [categoryUpdateFormErrors, setCategoryUpdateFormErrors] = useState<CategoryValidationErrors>()
-
-  const formRef = useRef<HTMLFormElement>(null)
-  const initialFormDataRef = useRef<FormData>(new FormData())
-
-  useEffect(() => {
-    if (formRef.current) {
-      initialFormDataRef.current = new FormData(formRef.current)
-    }
-  }, [])
 
   const onCategoryUpdateBadRequestError = useCallback((issues: Issues<CategoryUpdateData>) => {
     const nameErrors: string[] = []
@@ -72,16 +63,6 @@ export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = ({ category
   }, [])
 
   const onCategoryUpdateFormSubmit = useCallback(async (formData: FormData) => {
-    const newFormData = JSON.stringify(Object.fromEntries(formData.entries()))
-    const initialFormData = JSON.stringify(Object.fromEntries(initialFormDataRef.current.entries()))
-
-    console.log({ newFormData, initialFormData })
-
-    if (newFormData === initialFormData) {
-      console.log('same')
-      return
-    }
-
     setCategoryUpdateFormErrors(null)
     setIsCategoryUpdateLoading(true)
 
@@ -109,13 +90,13 @@ export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = ({ category
   }, [category.id, onCategoryUpdateBadRequestError, onCategoryUpdateConflictError, onCategoryUpdateSuccess])
 
   return (
-    <Form onSubmit={onCategoryUpdateFormSubmit} ref={formRef} validationErrors={categoryUpdateFormErrors}>
+    <Form onSubmit={onCategoryUpdateFormSubmit} validationErrors={categoryUpdateFormErrors}>
       <FieldSet isDisabled={isCategoryUpdateLoading}>
         <CategoryNameField defaultValue={category.name} />
 
-        <CategoryDescriptionField defaultValue={category.description ?? undefined} />
+        <CategoryDescriptionField defaultValue={category.description} />
 
-        <CategoryImagePreviewField imageUrl={category.imageUrl ?? undefined} />
+        <CategoryImagePreviewField imageUrl={category.imageUrl} />
       </FieldSet>
 
       <FormError errors={categoryUpdateFormErrors?.form} />

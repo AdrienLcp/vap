@@ -6,7 +6,7 @@ import { ProductImage } from '@/features/product/presentation/components/product
 import './product-image-preview-field.sass'
 
 type ProductImagePreviewFieldProps = {
-  imageUrl?: string
+  imageUrl?: string | null
 }
 
 export const ProductImagePreviewField: React.FC<ProductImagePreviewFieldProps> = ({ imageUrl }) => {

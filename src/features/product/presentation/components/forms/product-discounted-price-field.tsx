@@ -3,17 +3,26 @@ import { ProductPriceField } from '@/features/product/presentation/components/fo
 import { t } from '@/infrastructure/i18n'
 import type { NumberFieldProps } from '@/presentation/components/forms/number-field'
 
-export const ProductDiscountedPriceField: React.FC<Partial<NumberFieldProps>> = ({
+type ProductDiscountedPriceFieldProps = Omit<Partial<NumberFieldProps>, 'defaultValue' | 'value'> & {
+  defaultValue?: number | null
+  value?: number | null
+}
+
+export const ProductDiscountedPriceField: React.FC<ProductDiscountedPriceFieldProps> = ({
+  defaultValue,
   description = t('product.fields.discountedPrice.description'),
   label = t('product.fields.discountedPrice.label'),
   name = PRODUCT_FORM_FIELDS.DISCOUNTED_PRICE,
+  value,
   ...productDiscountedPriceFieldRestProps
 }) => (
   <ProductPriceField
-    {...productDiscountedPriceFieldRestProps}
+    defaultValue={defaultValue ?? undefined}
     description={description}
     isRequired={false}
     label={label}
     name={name}
+    value={value ?? undefined}
+    {...productDiscountedPriceFieldRestProps}
   />
 )

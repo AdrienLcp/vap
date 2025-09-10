@@ -8,7 +8,7 @@ import { Image } from '@/presentation/components/ui/image'
 import './category-image-preview-field.sass'
 
 type CategoryImagePreviewFieldProps = {
-  imageUrl?: string
+  imageUrl?: string | null
 }
 
 export const CategoryImagePreviewField: React.FC<CategoryImagePreviewFieldProps> = ({ imageUrl }) => {

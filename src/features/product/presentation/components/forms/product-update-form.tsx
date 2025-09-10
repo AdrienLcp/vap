@@ -80,7 +80,7 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({ categories
 
         <ProductPriceField defaultValue={product.price} />
 
-        <ProductDiscountedPriceField defaultValue={product.discountedPrice ?? undefined} />
+        <ProductDiscountedPriceField defaultValue={product.discountedPrice} />
 
         <ProductStockField defaultValue={product.stock} />
 
@@ -88,9 +88,9 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({ categories
 
         <ProductStatusSelect defaultSelectedKey={product.category?.id} />
 
-        <ProductDescriptionField defaultValue={product.description ?? undefined} />
+        <ProductDescriptionField defaultValue={product.description} />
 
-        <ProductImagePreviewField imageUrl={product.imageUrl ?? undefined} />
+        <ProductImagePreviewField imageUrl={product.imageUrl} />
       </FieldSet>
 
       <FormError errors={productUpdateFormErrors?.form} />
