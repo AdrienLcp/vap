@@ -36,7 +36,7 @@
     border-color: var(--neutral-border-pressed)
 
   @include selectors.disabled
-    border-color: var(--neutral-background-muted)
+    border-color: var(--neutral-border-muted)
     color: var(--neutral-foreground-muted)
 
 @mixin popover
@@ -57,12 +57,10 @@
     color: var(--neutral-foreground)
 
   @include selectors.hovered
-    background-color: oklch(var(--neutral-foreground-oklch) / var(--alpha-xs, 0.125))
-    color: var(--neutral-foreground-hovered)
+    background-color: oklch(from var(--neutral-foreground) l c h / var(--alpha-xs, 0.125))
 
   @include selectors.pressed
-    background-color: oklch(var(--neutral-foreground-oklch) / var(--alpha-s, 0.25))
-    color: var(--neutral-foreground-pressed)
+    background-color: oklch(from var(--neutral-foreground) l c h / var(--alpha-s, 0.25))
 
   @include selectors.disabled
     background-color: transparent
@@ -76,11 +74,9 @@
     text-decoration: none
 
   @include selectors.hovered
-    color: var(--neutral-foreground-hovered)
     text-decoration: underline
   
   @include selectors.pressed
-    color: var(--neutral-foreground-pressed)
     text-decoration: underline
 
   @include selectors.disabled

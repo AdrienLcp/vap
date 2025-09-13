@@ -10,13 +10,6 @@
     --transition-150: 0
     --transition-1000: 0
 
-@keyframes spin
-  to
-    transform: rotate(360deg)
-
-@mixin spin
-  animation: spin var(--transition-1000) var(--ease-gentle) infinite
-
 @mixin color-transitions
   transition-duration: var(--transition-150)
   transition-property: background-color, border-color, color

@@ -1,4 +1,5 @@
 @use '@/presentation/styles/breakpoints'
+@use '@/presentation/styles/interactive'
 @use '@/presentation/styles/selectors'
 
 ::view-transition-new(.toast-desktop):only-child
@@ -77,16 +78,13 @@
       color: var(--status-warning-foreground)
 
     & .close-button
-      aspect-ratio: 1
-      block-size: var(--toast-close-button-size)
-      border-radius: var(--circular, 99rem)
-      justify-content: center
+      @include interactive.transparent
 
-      @include selectors.hovered
-        background-color: oklch(var(--neutral-foreground-oklch) / var(--alpha-xs))
-
-      @include selectors.pressed
-        background-color: oklch(var(--neutral-foreground-oklch) / var(--alpha-s))
+      &
+        aspect-ratio: 1
+        block-size: var(--toast-close-button-size)
+        border-radius: var(--circular, 99rem)
+        justify-content: center
       
   @include breakpoints.is-desktop
     inset: auto auto var(--toaster-padding) 50%

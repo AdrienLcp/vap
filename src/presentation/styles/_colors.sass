@@ -1,9 +1,6 @@
 :root
-  --black-oklch: 15% 0 0
-  --white-oklch: 97% 0 0
-
-  --black: oklch(var(--black-oklch))
-  --white: oklch(var(--white-oklch))
+  --black: oklch(15% 0 0)
+  --white: oklch(97% 0 0)
 
   --alpha-xs: 0.08
   --alpha-s: 0.16
@@ -11,129 +8,145 @@
   --alpha-l: 0.84
   --alpha-xl: 0.92
 
-  --neutral-background-oklch: var(--white-oklch)
-  --neutral-background: oklch(var(--neutral-background-oklch))
-  --neutral-background-hovered: oklch(92% 0.002 286.03)
-  --neutral-background-pressed: oklch(87% 0.004 286.03)
+  --lightness-hovered: 0.1
+  --lightness-pressed: 0.2
 
-  --neutral-background-secondary: oklch(90% 0.002 286.03)
-  --neutral-background-secondary-hovered: oklch(85% 0.003 286.03)
-  --neutral-background-secondary-pressed: oklch(80% 0.004 286.03)
+  // Dark theme
 
-  --neutral-background-muted: oklch(87% 0.004 286.03)
-  --neutral-background-muted-hovered: oklch(82% 0.003 286.03)
-  --neutral-background-muted-pressed: oklch(77% 0.002 286.03)
+  --dark-brand-background: var(--white)
+  --dark-brand-background-hovered: oklch(from var(--dark-brand-background) clamp(0, l - var(--lightness-hovered), 1) c h)
+  --dark-brand-background-pressed: oklch(from var(--dark-brand-background) clamp(0, l - var(--lightness-pressed), 1) c h)
 
-  --neutral-foreground-oklch: var(--black-oklch)
-  --neutral-foreground: oklch(var(--neutral-foreground-oklch))
-  --neutral-foreground-hovered: oklch(20% 0.002 0)
-  --neutral-foreground-pressed: oklch(25% 0.004 0)
+  --dark-brand-foreground: var(--white)
 
-  --neutral-foreground-light: oklch(35% 0.002 0)
-  --neutral-foreground-light-hovered: oklch(30% 0.003 0)
-  --neutral-foreground-light-pressed: oklch(25% 0.004 0)
+  --dark-neutral-background: var(--black)
+  --dark-neutral-background-hovered: oklch(from var(--dark-neutral-background) clamp(0, l + var(--lightness-hovered), 1) c h)
+  --dark-neutral-background-pressed: oklch(from var(--dark-neutral-background) clamp(0, l + var(--lightness-pressed), 1) c h)
+  --dark-neutral-background-muted: oklch(27.41% 0.006 286.03)
 
-  --neutral-foreground-muted: oklch(45% 0.008 286.07)
-  --neutral-foreground-muted-hovered: oklch(40% 0.007 286.07)
-  --neutral-foreground-muted-pressed: oklch(35% 0.006 286.07)
+  --dark-neutral-border: oklch(27.41% 0.006 286.03)
+  --dark-neutral-border-hovered: oklch(from var(--dark-neutral-border) clamp(0, l + var(--lightness-hovered), 1) c h)
+  --dark-neutral-border-pressed: oklch(from var(--dark-neutral-border) clamp(0, l + var(--lightness-pressed), 1) c h)
+  --dark-neutral-border-muted: oklch(21.29% 0.003 286.03)
 
-  --neutral-border: oklch(75% 0.005 286.03)
-  --neutral-border-hovered: oklch(70% 0.007 286.03)
-  --neutral-border-pressed: oklch(65% 0.008 286.03)
+  --dark-neutral-foreground: var(--white)
+  --dark-neutral-foreground-soft: oklch(74.89% 0 0)
+  --dark-neutral-foreground-muted: oklch(71.19% 0.013 286.07)
 
-  --neutral-ring: oklch(27% 0.006 286.29)
+  --dark-neutral-ring: oklch(87.09% 0.006 286.29)
 
-  --brand-background: var(--black)
-  --brand-background-hovered: oklch(25% 0.002 0)
-  --brand-background-pressed: oklch(35% 0.004 0)
+  --dark-status-destructive-background: oklch(39.59% 0.133 25.72)
+  --dark-status-destructive-foreground: var(--white)
 
-  --brand-foreground: var(--black)
-  --brand-foreground-hovered: oklch(25% 0.002 0)
-  --brand-foreground-pressed: oklch(35% 0.004 0)
+  --dark-status-error-background: oklch(90.98% 0.036 10.98)
+  --dark-status-error-border: oklch(54.61% 0.185 20.83)
+  --dark-status-error-foreground: oklch(54.61% 0.185 20.83)
 
-  --status-destructive-background: oklch(65% 0.133 25.72)
-  --status-destructive-foreground: var(--white)
+  --dark-status-gold-background: oklch(94% 0.045 85.67)
+  --dark-status-gold-border: oklch(81.53% 0.165 85.67)
+  --dark-status-gold-foreground: oklch(81.53% 0.165 85.67)
 
-  --status-error-background: oklch(96% 0.025 10.98)
-  --status-error-border: oklch(60% 0.185 20.83)
-  --status-error-foreground: oklch(45% 0.185 20.83)
+  --dark-status-info-background: oklch(91.33% 0.0315 264.41)
+  --dark-status-info-border: oklch(51.68% 0.165 262.27)
+  --dark-status-info-foreground: oklch(51.68% 0.165 262.27)
 
-  --status-gold-background: oklch(97% 0.035 85.67)
-  --status-gold-border: oklch(75% 0.155 85.67)
-  --status-gold-foreground: oklch(50% 0.165 85.67)
+  --dark-status-success-background: oklch(95.14% 0.041 160.72)
+  --dark-status-success-border: oklch(49.23% 0.113 153.53)
+  --dark-status-success-foreground: oklch(49.23% 0.113 153.53)
 
-  --status-info-background: oklch(96% 0.025 264.41)
-  --status-info-border: oklch(60% 0.155 262.27)
-  --status-info-foreground: oklch(45% 0.165 262.27)
+  --dark-status-warning-background: oklch(93.45% 0.027 57.96)
+  --dark-status-warning-border: oklch(66.59% 0.146 52.41)
+  --dark-status-warning-foreground: oklch(66.59% 0.146 52.41)
 
-  --status-success-background: oklch(97% 0.03 160.72)
-  --status-success-border: oklch(55% 0.103 153.53)
-  --status-success-foreground: oklch(40% 0.113 153.53)
+  // Light theme
 
-  --status-warning-background: oklch(97% 0.02 57.96)
-  --status-warning-border: oklch(70% 0.136 52.41)
-  --status-warning-foreground: oklch(45% 0.146 52.41)
+  --light-brand-background: var(--black)
+  --light-brand-background-hovered: oklch(from var(--light-brand-background) clamp(0, l + var(--lightness-hovered), 1) c h)
+  --light-brand-background-pressed: oklch(from var(--light-brand-background) clamp(0, l + var(--lightness-pressed), 1) c h)
 
-:root[data-theme='dark']
-  --black-oklch: 15% 0 0
-  --white-oklch: 97% 0 0
+  --light-brand-foreground: var(--black)
 
-  --black: oklch(var(--black-oklch))
-  --white: oklch(var(--white-oklch))
+  --light-neutral-background: var(--white)
+  --light-neutral-background-hovered: oklch(from var(--light-neutral-background) clamp(0, l - var(--lightness-hovered), 1) c h)
+  --light-neutral-background-pressed: oklch(from var(--light-neutral-background) clamp(0, l - var(--lightness-pressed), 1) c h)
+  --light-neutral-background-muted: oklch(87% 0.004 286.03)
 
-  --neutral-background: var(--black)
-  --neutral-background-hovered: oklch(22% 0.004 286.03)
-  --neutral-background-pressed: oklch(27% 0.008 286.03)
+  --light-neutral-border: oklch(75% 0.005 286.03)
+  --light-neutral-border-hovered: oklch(from var(--light-neutral-border) clamp(0, l - var(--lightness-hovered), 1) c h)
+  --light-neutral-border-pressed: oklch(from var(--light-neutral-border) clamp(0, l - var(--lightness-pressed), 1) c h)
+  --light-neutral-border-muted: oklch(85% 0.008 286.03)
 
-  --neutral-background-muted: oklch(27.41% 0.006 286.03)
-  --neutral-background-muted-hovered: oklch(23.5% 0.008 286.03)
-  --neutral-background-muted-pressed: oklch(20% 0.004 286.03)
+  --light-neutral-foreground: var(--black)
+  --light-neutral-foreground-soft: oklch(35% 0.002 0)
+  --light-neutral-foreground-muted: oklch(45% 0.008 286.07)
 
-  --neutral-foreground: var(--white)
-  --neutral-foreground-hovered: oklch(85% 0 0)
-  --neutral-foreground-pressed: oklch(80% 0 0)
+  --light-neutral-ring: oklch(27% 0.006 286.29)
 
-  --neutral-foreground-light: oklch(74.89% 0 0)
-  --neutral-foreground-light-hovered: oklch(70% 0 0)
-  --neutral-foreground-light-pressed: oklch(65% 0 0)
+  --light-status-destructive-background: oklch(65% 0.133 25.72)
+  --light-status-destructive-foreground: var(--white)
 
-  --neutral-foreground-muted: oklch(71.19% 0.013 286.07)
-  --neutral-foreground-muted-hovered: oklch(65% 0.012 286.07)
-  --neutral-foreground-muted-pressed: oklch(60% 0.011 286.07)
+  --light-status-error-background: oklch(96% 0.025 10.98)
+  --light-status-error-border: oklch(60% 0.185 20.83)
+  --light-status-error-foreground: oklch(45% 0.185 20.83)
 
-  --neutral-border: oklch(27.41% 0.006 286.03)
-  --neutral-border-hovered: oklch(35% 0.008 286.03)
-  --neutral-border-pressed: oklch(40% 0.010 286.03)
+  --light-status-gold-background: oklch(97% 0.035 85.67)
+  --light-status-gold-border: oklch(75% 0.155 85.67)
+  --light-status-gold-foreground: oklch(50% 0.165 85.67)
 
-  --neutral-ring: oklch(87.09% 0.006 286.29)
+  --light-status-info-background: oklch(96% 0.025 264.41)
+  --light-status-info-border: oklch(60% 0.155 262.27)
+  --light-status-info-foreground: oklch(45% 0.165 262.27)
 
-  --brand-background: var(--white)
-  --brand-background-hovered: oklch(90% 0 0)
-  --brand-background-pressed: oklch(85% 0 0)
+  --light-status-success-background: oklch(97% 0.03 160.72)
+  --light-status-success-border: oklch(55% 0.103 153.53)
+  --light-status-success-foreground: oklch(40% 0.113 153.53)
 
-  --brand-foreground: var(--white)
-  --brand-foreground-hovered: oklch(85% 0 0)
-  --brand-foreground-pressed: oklch(80% 0 0)
+  --light-status-warning-background: oklch(97% 0.02 57.96)
+  --light-status-warning-border: oklch(70% 0.136 52.41)
+  --light-status-warning-foreground: oklch(45% 0.146 52.41)
 
-  --status-destructive-background: oklch(39.59% 0.133 25.72)
-  --status-destructive-foreground: var(--white)
+  // Final colors
 
-  --status-error-background: oklch(90.98% 0.036 10.98)
-  --status-error-border: oklch(54.61% 0.185 20.83)
-  --status-error-foreground: oklch(54.61% 0.185 20.83)
+  --neutral-background: light-dark(var(--light-neutral-background), var(--dark-neutral-background))
+  --neutral-background-hovered: light-dark(var(--light-neutral-background-hovered), var(--dark-neutral-background-hovered))
+  --neutral-background-pressed: light-dark(var(--light-neutral-background-pressed), var(--dark-neutral-background-pressed))
+  --neutral-background-muted: light-dark(var(--light-neutral-background-muted), var(--dark-neutral-background-muted))
 
-  --status-gold-background: oklch(94% 0.045 85.67)
-  --status-gold-border: oklch(81.53% 0.165 85.67)
-  --status-gold-foreground: oklch(81.53% 0.165 85.67)
+  --neutral-border: light-dark(var(--light-neutral-border), var(--dark-neutral-border))
+  --neutral-border-hovered: light-dark(var(--light-neutral-border-hovered), var(--dark-neutral-border-hovered))
+  --neutral-border-pressed: light-dark(var(--light-neutral-border-pressed), var(--dark-neutral-border-pressed))
+  --neutral-border-muted: light-dark(var(--light-neutral-border-muted), var(--dark-neutral-border-muted))
 
-  --status-info-background: oklch(91.33% 0.0315 264.41)
-  --status-info-border: oklch(51.68% 0.165 262.27)
-  --status-info-foreground: oklch(51.68% 0.165 262.27)
+  --neutral-foreground: light-dark(var(--light-neutral-foreground), var(--dark-neutral-foreground))
+  --neutral-foreground-soft: light-dark(var(--light-neutral-foreground-soft), var(--dark-neutral-foreground-soft))
+  --neutral-foreground-muted: light-dark(var(--light-neutral-foreground-muted), var(--dark-neutral-foreground-muted))
 
-  --status-success-background: oklch(95.14% 0.041 160.72)
-  --status-success-border: oklch(49.23% 0.113 153.53)
-  --status-success-foreground: oklch(49.23% 0.113 153.53)
+  --neutral-ring: light-dark(var(--light-neutral-ring), var(--dark-neutral-ring))
 
-  --status-warning-background: oklch(93.45% 0.027 57.96)
-  --status-warning-border: oklch(66.59% 0.146 52.41)
-  --status-warning-foreground: oklch(66.59% 0.146 52.41)
+  --brand-background: light-dark(var(--light-brand-background), var(--dark-brand-background))
+  --brand-background-hovered: light-dark(var(--light-brand-background-hovered), var(--dark-brand-background-hovered))
+  --brand-background-pressed: light-dark(var(--light-brand-background-pressed), var(--dark-brand-background-pressed))
+  --brand-foreground: light-dark(var(--light-brand-foreground), var(--dark-brand-foreground))
+
+  --status-destructive-background: light-dark(var(--light-status-destructive-background), var(--dark-status-destructive-background))
+  --status-destructive-foreground: light-dark(var(--light-status-destructive-foreground), var(--dark-status-destructive-foreground))
+
+  --status-error-background: light-dark(var(--light-status-error-background), var(--dark-status-error-background))
+  --status-error-border: light-dark(var(--light-status-error-border), var(--dark-status-error-border))
+  --status-error-foreground: light-dark(var(--light-status-error-foreground), var(--dark-status-error-foreground))
+
+  --status-gold-background: light-dark(var(--light-status-gold-background), var(--dark-status-gold-background))
+  --status-gold-border: light-dark(var(--light-status-gold-border), var(--dark-status-gold-border))
+  --status-gold-foreground: light-dark(var(--light-status-gold-foreground), var(--dark-status-gold-foreground))
+
+  --status-info-background: light-dark(var(--light-status-info-background), var(--dark-status-info-background))
+  --status-info-border: light-dark(var(--light-status-info-border), var(--dark-status-info-border))
+  --status-info-foreground: light-dark(var(--light-status-info-foreground), var(--dark-status-info-foreground))
+
+  --status-success-background: light-dark(var(--light-status-success-background), var(--dark-status-success-background))
+  --status-success-border: light-dark(var(--light-status-success-border), var(--dark-status-success-border))
+  --status-success-foreground: light-dark(var(--light-status-success-foreground), var(--dark-status-success-foreground))
+
+  --status-warning-background: light-dark(var(--light-status-warning-background), var(--dark-status-warning-background))
+  --status-warning-border: light-dark(var(--light-status-warning-border), var(--dark-status-warning-border))
+  --status-warning-foreground: light-dark(var(--light-status-warning-foreground), var(--dark-status-warning-foreground))

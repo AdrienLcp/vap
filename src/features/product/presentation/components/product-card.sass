@@ -1,13 +1,9 @@
-@use '@/presentation/styles/selectors'
+@use '@/presentation/styles/interactive'
 @use '@/presentation/styles/sizes'
 
 .product-card
   &:not(.is-disabled)
-    @include selectors.hovered
-      background-color: oklch(var(--neutral-foreground-oklch) / var(--alpha-xs, 0.125))
-
-    @include selectors.pressed
-      background-color: oklch(var(--neutral-foreground-oklch) / var(--alpha-s, 0.25))
+    @include interactive.transparent
 
   & .product-image
     @include sizes.square(100%)

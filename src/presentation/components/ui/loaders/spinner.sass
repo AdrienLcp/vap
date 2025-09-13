@@ -1,4 +1,12 @@
-@use '@/presentation/styles/animations'
+@property --rotation-angle
+  inherits: false
+  initial-value: 0deg
+  syntax: '<angle>'
+
+@keyframes rotate-continuous
+  to
+    --rotation-angle: 360deg
 
 .spinner
-  @include animations.spin
+  animation: rotate-continuous var(--transition-1000) var(--ease-gentle, ease-in-out) infinite
+  transform: rotate(var(--rotation-angle))
