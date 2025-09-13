@@ -10,6 +10,7 @@ export type PressableIconSide = 'left' | 'right'
 export type PressableSize = 'medium' | 'small'
 
 export type PressableVariant =
+  | 'destructive'
   | 'filled'
   | 'outlined'
   | 'transparent'

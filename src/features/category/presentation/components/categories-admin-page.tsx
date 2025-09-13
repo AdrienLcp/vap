@@ -10,7 +10,7 @@ import { OK_STATUS } from '@/infrastructure/api/http-response'
 
 import './categories-admin-page.sass'
 
-export const ProductsAdminPage: React.FC = async () => {
+export const CategoriesAdminPage: React.FC = async () => {
   const categoriesResponse = await CategoryController.findCategories()
 
   if (categoriesResponse.status !== OK_STATUS) {

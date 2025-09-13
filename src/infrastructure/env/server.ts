@@ -3,7 +3,7 @@ import 'server-only'
 import { createEnv } from '@t3-oss/env-nextjs'
 import { z } from 'zod'
 
-export const serverEnvVariables = createEnv({
+export const SERVER_ENV = createEnv({
   emptyStringAsUndefined: true,
   runtimeEnv: {
     AUTH_GOOGLE_CLIENT_ID: process.env.AUTH_GOOGLE_CLIENT_ID,

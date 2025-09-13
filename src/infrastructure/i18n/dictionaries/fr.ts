@@ -134,6 +134,11 @@ export const fr = {
       success: 'La catégorie "{categoryName}" a été créée avec succès.',
       title: 'Créer une catégorie'
     },
+    delete: {
+      error: 'Une erreur est survenue lors de la suppression de la catégorie.',
+      label: 'Supprimer la catégorie',
+      success: 'La catégorie a été supprimée avec succès.'
+    },
     errors: {
       categoryNameAlreadyExists: 'Une catégorie avec ce nom existe déjà.',
       categoryNameTooLong: 'Le nom de la catégorie ne doit pas dépasser {max:number} caractères.'
@@ -216,6 +221,11 @@ export const fr = {
       title: 'Créer un produit',
       unknownError: 'Une erreur inconnue est survenue durant la création du produit.'
     },
+    delete: {
+      error: 'Une erreur est survenue lors de la suppression du produit.',
+      label: 'Supprimer le produit',
+      success: 'Le produit a été supprimé avec succès.'
+    },
     fields: {
       category: {
         label: 'Catégorie *',
@@ -293,7 +303,6 @@ export const fr = {
         updating: 'Mise à jour en cours...'
       },
       success: '"{productName}" a été mis à jour avec succès.',
-      title: 'Mettre à jour le produit',
       unknownError: 'Une erreur inconnue est survenue durant la mise à jour du produit.'
     }
   },

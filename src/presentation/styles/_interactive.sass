@@ -5,6 +5,23 @@
 @mixin common-interactive
   @include animations.color-transitions
 
+@mixin destructive
+  @include common-interactive
+
+  &
+    background-color: var(--destructive-background)
+    color: var(--destructive-foreground)
+
+  @include selectors.hovered
+    background-color: var(--destructive-background-hovered)
+
+  @include selectors.pressed
+    background-color: var(--destructive-background-pressed)
+
+  @include selectors.disabled
+    background-color: var(--neutral-background-muted)
+    color: var(--neutral-foreground-muted)
+
 @mixin filled
   @include common-interactive
 

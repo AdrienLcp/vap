@@ -1,7 +1,7 @@
 import { createEnv } from '@t3-oss/env-nextjs'
 import { z } from 'zod'
 
-export const clientEnvVariables = createEnv({
+export const CLIENT_ENV = createEnv({
   client: {
     NEXT_PUBLIC_APP_URL: z.string().min(1, 'NEXT_PUBLIC_APP_URL is required')
   },
@@ -12,5 +12,5 @@ export const clientEnvVariables = createEnv({
 })
 
 export const buildLocationUrl = (basePath: string, resourceKey: string): string => {
-  return `${clientEnvVariables.NEXT_PUBLIC_APP_URL}/api/${basePath}/${encodeURIComponent(resourceKey)}`
+  return `${CLIENT_ENV.NEXT_PUBLIC_APP_URL}/api/${basePath}/${encodeURIComponent(resourceKey)}`
 }

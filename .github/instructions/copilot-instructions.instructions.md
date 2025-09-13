@@ -7,3 +7,4 @@ Feature architecture & clean architecture project: First, I want to follow the f
 I want no cast of types
 Use Result type for error handling
 React components should follow Single Responsibility Principle
+Next.js project with app directory structure

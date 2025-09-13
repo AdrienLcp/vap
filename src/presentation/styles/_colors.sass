@@ -35,8 +35,10 @@
 
   --dark-neutral-ring: oklch(87.09% 0.006 286.29)
 
-  --dark-status-destructive-background: oklch(39.59% 0.133 25.72)
-  --dark-status-destructive-foreground: var(--white)
+  --dark-destructive-background: oklch(39.59% 0.133 25.72)
+  --dark-destructive-background-hovered: oklch(from var(--dark-destructive-background) clamp(0, l + var(--lightness-hovered), 1) c h)
+  --dark-destructive-background-pressed: oklch(from var(--dark-destructive-background) clamp(0, l + var(--lightness-pressed), 1) c h)
+  --dark-destructive-foreground: var(--white)
 
   --dark-status-error-background: oklch(90.98% 0.036 10.98)
   --dark-status-error-border: oklch(54.61% 0.185 20.83)
@@ -82,8 +84,10 @@
 
   --light-neutral-ring: oklch(27% 0.006 286.29)
 
-  --light-status-destructive-background: oklch(65% 0.133 25.72)
-  --light-status-destructive-foreground: var(--white)
+  --light-destructive-background: oklch(65% 0.133 25.72)
+  --light-destructive-background-hovered: oklch(from var(--light-destructive-background) clamp(0, l - var(--lightness-hovered), 1) c h)
+  --light-destructive-background-pressed: oklch(from var(--light-destructive-background) clamp(0, l - var(--lightness-pressed), 1) c h)
+  --light-destructive-foreground: var(--white)
 
   --light-status-error-background: oklch(96% 0.025 10.98)
   --light-status-error-border: oklch(60% 0.185 20.83)
@@ -128,8 +132,10 @@
   --brand-background-pressed: light-dark(var(--light-brand-background-pressed), var(--dark-brand-background-pressed))
   --brand-foreground: light-dark(var(--light-brand-foreground), var(--dark-brand-foreground))
 
-  --status-destructive-background: light-dark(var(--light-status-destructive-background), var(--dark-status-destructive-background))
-  --status-destructive-foreground: light-dark(var(--light-status-destructive-foreground), var(--dark-status-destructive-foreground))
+  --destructive-background: light-dark(var(--light-destructive-background), var(--dark-destructive-background))
+  --destructive-background-hovered: light-dark(var(--light-destructive-background-hovered), var(--dark-destructive-background-hovered))
+  --destructive-background-pressed: light-dark(var(--light-destructive-background-pressed), var(--dark-destructive-background-pressed))
+  --destructive-foreground: light-dark(var(--light-destructive-foreground), var(--dark-destructive-foreground))
 
   --status-error-background: light-dark(var(--light-status-error-background), var(--dark-status-error-background))
   --status-error-border: light-dark(var(--light-status-error-border), var(--dark-status-error-border))

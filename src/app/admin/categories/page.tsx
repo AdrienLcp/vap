@@ -1,5 +1,5 @@
-import { ProductsAdminPage } from '@/features/category/presentation/components/categories-admin-page'
+import { CategoriesAdminPage } from '@/features/category/presentation/components/categories-admin-page'
 
-const Page: React.FC = () => <ProductsAdminPage />
+const Page: React.FC = () => <CategoriesAdminPage />
 
 export default Page

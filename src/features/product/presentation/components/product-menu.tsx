@@ -1,4 +1,4 @@
-import { EyeIcon, MenuIcon, PenIcon, TrashIcon } from 'lucide-react'
+import { EyeIcon, MenuIcon, PenIcon, Trash2Icon } from 'lucide-react'
 import { useMemo } from 'react'
 
 import { getAdminProductRoute } from '@/domain/navigation'
@@ -36,7 +36,7 @@ export const ProductMenu: React.FC<ProductMenuProps> = ({ productId }) => {
       textValue: t('product.card.edit')
     },
     {
-      Icon: <TrashIcon />,
+      Icon: <Trash2Icon />,
       id: 'delete',
       textValue: t('product.card.delete')
     }

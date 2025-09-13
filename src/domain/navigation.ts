@@ -1,7 +1,7 @@
-export const PARAMS = {
+const PARAMS = {
   categoryId: 'categoryId',
   productId: 'productId'
-} as const
+}
 
 export const ROUTES = {
   home: '/',

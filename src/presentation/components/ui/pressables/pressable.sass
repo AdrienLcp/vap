@@ -59,6 +59,12 @@
   @include selectors.disabled
     cursor: default
 
+  &.destructive
+    @include interactive.destructive
+
+    &
+      @include common-button
+
   &.filled
     @include interactive.filled
 
