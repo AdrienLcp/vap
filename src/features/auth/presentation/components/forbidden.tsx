@@ -1,3 +1,5 @@
+'use client'
+
 import { VisuallyHidden } from 'react-aria-components'
 
 import { DEFAULT_ROUTE } from '@/domain/navigation'
