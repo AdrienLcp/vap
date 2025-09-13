@@ -11,9 +11,7 @@ const compat = new FlatCompat({
 })
 
 const eslintConfig = [
-  {
-    ignores: ['.next/**', 'next-env.d.ts']
-  },
+  { ignores: ['.next/**', 'next-env.d.ts'] },
   ...compat.config({
     extends: ['next/core-web-vitals', 'next/typescript'],
     plugins: ['@stylistic/eslint-plugin'],
@@ -84,8 +82,7 @@ const eslintConfig = [
       {
         files: ['**/*.d.ts'],
         rules: {
-          '@typescript-eslint/consistent-type-definitions': 'off',
-          '@typescript-eslint/no-empty-object-type': 'off'
+          '@typescript-eslint/consistent-type-definitions': 'off'
         }
       }
     ]

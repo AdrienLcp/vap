@@ -1,5 +1,7 @@
+import type { fr } from '@/infrastructure/i18n/dictionaries/fr'
 import type { defineTranslation, ParamOptions } from '@/infrastructure/i18n/lib/defineTranslation'
-import type { Register } from '@/infrastructure/i18n/lib/register'
+
+type Register = { translations: typeof fr }
 
 export type RegisteredTranslations = Register extends { translations: infer T }
   ? T extends infer Translations

@@ -38,7 +38,8 @@ export const ProductCreationForm: React.FC<ProductCreationFormProps> = ({ catego
 
   const onProductCreationSuccess = useCallback((createdProduct: ProductDTO) => {
     ToastService.success(t('product.creation.success', { productName: createdProduct.name }))
-    redirect(getAdminProductRoute(createdProduct.id))
+    const createdProductRoute = getAdminProductRoute(createdProduct.id)
+    redirect(createdProductRoute)
   }, [])
 
   const onProductCreationFormSubmit = useCallback(async (formData: FormData) => {

@@ -1,8 +1,10 @@
 'use client'
 
 import { SaveIcon } from 'lucide-react'
+import { redirect } from 'next/navigation'
 import { useCallback, useState } from 'react'
 
+import { getAdminCategoryRoute } from '@/domain/navigation'
 import { CATEGORY_CONSTANTS, CATEGORY_ERRORS, CATEGORY_FORM_FIELDS } from '@/features/category/domain/category-constants'
 import type { CategoryConflictError, CategoryCreationData, CategoryDTO, CategoryValidationErrors } from '@/features/category/domain/category-entities'
 import { CategoryClient } from '@/features/category/infrastructure/category-client'
@@ -56,6 +58,8 @@ export const CategoryCreationForm: React.FC = () => {
 
   const onCategoryCreationSuccess = useCallback((createdCategory: CategoryDTO) => {
     ToastService.success(t('category.creation.success', { categoryName: createdCategory.name }))
+    const createdCategoryRoute = getAdminCategoryRoute(createdCategory.id)
+    redirect(createdCategoryRoute)
   }, [])
 
   const onCategoryCreationFormSubmit = useCallback(async (formData: FormData) => {
