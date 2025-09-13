@@ -1,7 +1,5 @@
-const ForbiddenPage = () => {
-  return (
-    <>Forbidden</>
-  )
-}
+import { Forbidden } from '@/features/auth/presentation/components/forbidden'
 
-export default ForbiddenPage
+const Page: React.FC = () => <Forbidden />
+
+export default Page

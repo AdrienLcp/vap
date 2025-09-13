@@ -1,4 +1,5 @@
 import { EyeIcon, MenuIcon, PenIcon, TrashIcon } from 'lucide-react'
+import { useMemo } from 'react'
 
 import { getAdminProductRoute } from '@/domain/navigation'
 import { t } from '@/infrastructure/i18n'
@@ -21,7 +22,7 @@ const ProductMenuTrigger: React.FC = () => (
 )
 
 export const ProductMenu: React.FC<ProductMenuProps> = ({ productId }) => {
-  const productMenuItems: MenuItem[] = [
+  const productMenuItems: MenuItem[] = useMemo(() => [
     {
       href: getAdminProductRoute(productId),
       Icon: <EyeIcon />,
@@ -39,7 +40,7 @@ export const ProductMenu: React.FC<ProductMenuProps> = ({ productId }) => {
       id: 'delete',
       textValue: t('product.card.delete')
     }
-  ]
+  ], [productId])
 
   return (
     <Menu

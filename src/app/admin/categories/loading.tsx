@@ -2,6 +2,6 @@
 
 import { Loader } from '@/presentation/components/ui/loaders/loader'
 
-const AdminProductsPageLoading: React.FC = () => <Loader />
+const Loading: React.FC = () => <Loader />
 
-export default AdminProductsPageLoading
+export default Loading

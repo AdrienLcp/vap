@@ -122,6 +122,9 @@ export const fr = {
     }
   },
   category: {
+    card: {
+      showCategorySheet: 'Voir la fiche catégorie'
+    },
     creation: {
       link: 'Créer une catégorie',
       submit: {

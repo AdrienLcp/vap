@@ -1,0 +1,20 @@
+@use '@/presentation/styles/interactive'
+@use '@/presentation/styles/sizes'
+
+.category-card
+  &:not(.is-disabled)
+    @include interactive.transparent
+
+  & .category-image
+    @include sizes.square(100%)
+
+    & svg
+      @include sizes.square(3rem)
+
+  & .footer
+    display: grid
+    align-items: center
+    padding: var(--size-80, 0.5rem) var(--size-120, 0.75rem)
+
+    & .card-title
+      block-size: 1lh
