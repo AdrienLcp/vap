@@ -4,17 +4,18 @@ import { TextField, type TextFieldProps } from '@/presentation/components/forms/
 
 export const ProductSkuField: React.FC<Partial<TextFieldProps>> = ({
   description = t('product.fields.sku.description'),
+  isRequired = true,
   label = t('product.fields.sku.label'),
   name = PRODUCT_FORM_FIELDS.SKU,
   ...productSkuFieldRestProps
 }) => (
   <TextField
-    {...productSkuFieldRestProps}
     description={description}
-    isRequired
+    isRequired={isRequired}
     label={label}
     maxLength={PRODUCT_CONSTANTS.SKU_MAX_LENGTH}
     minLength={PRODUCT_CONSTANTS.SKU_MIN_LENGTH}
     name={name}
+    {...productSkuFieldRestProps}
   />
 )

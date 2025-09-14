@@ -1,5 +1,7 @@
 'use client'
 
+import { useCallback, useState } from 'react'
+
 import { getAdminCategoryRoute } from '@/domain/navigation'
 import { CATEGORY_CONSTANTS } from '@/features/category/domain/category-constants'
 import type { CategoryDTO } from '@/features/category/domain/category-entities'
@@ -11,23 +13,27 @@ type CategoryListProps = {
   categories: CategoryDTO[]
 }
 
-const renderCategoryItem = (categoryItem: GridItem<CategoryDTO>) => (
-  <CategoryCard category={categoryItem} />
-)
+const renderCategoryListEmptyState = () => <p>{t('category.list.empty')}</p>
 
 export const CategoryList: React.FC<CategoryListProps> = ({ categories }) => {
-  const categoryGridItems: GridItem<CategoryDTO>[] = categories.map(category => ({
+  const [categoryList, setCategoryList] = useState<CategoryDTO[]>(categories)
+
+  const categoryGridItems: GridItem<CategoryDTO>[] = categoryList.map(category => ({
     ...category,
     href: getAdminCategoryRoute(category.id),
     textValue: category.name
   }))
+
+  const renderCategoryItem = useCallback((categoryItem: GridItem<CategoryDTO>) => (
+    <CategoryCard category={categoryItem} setCategoryList={setCategoryList} />
+  ), [])
 
   return (
     <Grid
       aria-label={t('category.list.ariaLabel')}
       cardSize={CATEGORY_CONSTANTS.IMAGE_SIZE_IN_PX}
       items={categoryGridItems}
-      renderEmptyState={() => <p>{t('category.list.empty')}</p>}
+      renderEmptyState={renderCategoryListEmptyState}
       renderItem={renderCategoryItem}
     />
   )

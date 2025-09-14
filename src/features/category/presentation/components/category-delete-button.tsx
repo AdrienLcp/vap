@@ -16,9 +16,9 @@ type CategoryDeleteButtonProps = Partial<ButtonProps> & {
 
 export const CategoryDeleteButton: React.FC<CategoryDeleteButtonProps> = ({ categoryId, ...categoryDeleteButtonRestProps }) => {
   const deleteCategory = useCallback(async () => {
-    const deletedCategoryResponse = await CategoryClient.deleteCategory(categoryId)
+    const categoryDeletionResponse = await CategoryClient.deleteCategory(categoryId)
 
-    if (deletedCategoryResponse.status !== 204) {
+    if (categoryDeletionResponse.status !== 204) {
       ToastService.error(t('category.delete.error'))
       return
     }

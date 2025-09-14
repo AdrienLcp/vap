@@ -14,9 +14,10 @@ import './product-card.sass'
 type ProductCardProps = {
   isDisabled?: boolean
   product: ProductDTO
+  setProductList: React.Dispatch<React.SetStateAction<ProductDTO[]>>
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({ isDisabled, product }) => (
+export const ProductCard: React.FC<ProductCardProps> = ({ isDisabled, product, setProductList }) => (
   <Card
     className={classNames('product-card', isDisabled && 'is-disabled')}
     title={t('product.card.showProductSheet')}
@@ -32,7 +33,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ isDisabled, product })
         <span>{formatPrice(product.price)}</span>
       </div>
 
-      <ProductMenu productId={product.id} />
+      <ProductMenu productId={product.id} setProductList={setProductList} />
     </CardFooter>
   </Card>
 )

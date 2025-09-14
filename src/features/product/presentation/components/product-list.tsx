@@ -1,5 +1,7 @@
 'use client'
 
+import { useCallback, useState } from 'react'
+
 import { getAdminProductRoute } from '@/domain/navigation'
 import { PRODUCT_CONSTANTS } from '@/features/product/domain/product-constants'
 import type { ProductDTO } from '@/features/product/domain/product-entities'
@@ -13,23 +15,27 @@ type ProductListProps = {
   products: ProductDTO[]
 }
 
-const renderProductItem = (productItem: GridItem<ProductDTO>) => (
-  <ProductCard product={productItem} />
-)
+const renderProductListEmptyState = () => <p>{t('product.list.empty')}</p>
 
 export const ProductList: React.FC<ProductListProps> = ({ products }) => {
-  const productGridItems: GridItem<ProductDTO>[] = products.map(product => ({
+  const [productList, setProductList] = useState<ProductDTO[]>(products)
+
+  const productGridItems: GridItem<ProductDTO>[] = productList.map(product => ({
     ...product,
     href: getAdminProductRoute(product.id),
     textValue: product.name
   }))
+
+  const renderProductItem = useCallback((productItem: GridItem<ProductDTO>) => (
+    <ProductCard product={productItem} setProductList={setProductList} />
+  ), [])
 
   return (
     <Grid
       aria-label={t('product.list.ariaLabel')}
       cardSize={PRODUCT_CONSTANTS.IMAGE_SIZE_IN_PX}
       items={productGridItems}
-      renderEmptyState={() => <p>{t('product.list.empty')}</p>}
+      renderEmptyState={renderProductListEmptyState}
       renderItem={renderProductItem}
     />
   )

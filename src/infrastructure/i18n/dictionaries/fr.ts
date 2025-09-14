@@ -123,6 +123,9 @@ export const fr = {
   },
   category: {
     card: {
+      delete: 'Supprimer',
+      edit: 'Éditer',
+      menuAriaLabel: 'Menu de la catégorie',
       showCategorySheet: 'Voir la fiche catégorie'
     },
     creation: {
@@ -228,7 +231,7 @@ export const fr = {
     },
     fields: {
       category: {
-        label: 'Catégorie *',
+        label: 'Catégorie',
         placeholder: 'Sélectionnez une catégorie'
       },
       description: {

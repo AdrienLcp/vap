@@ -13,7 +13,8 @@ export const ProductCategorySelect: React.FC<ProductCategorySelectProps> = ({
   categories,
   label = t('product.fields.category.label'),
   name = PRODUCT_FORM_FIELDS.CATEGORY_ID,
-  placeholder = t('product.fields.category.placeholder')
+  placeholder = t('product.fields.category.placeholder'),
+  ...productCategorySelectRestProps
 }) => {
   const categorySelectItems: SelectItem[] = useMemo(() => {
     return categories.map(category => ({
@@ -28,6 +29,7 @@ export const ProductCategorySelect: React.FC<ProductCategorySelectProps> = ({
       label={label}
       name={name}
       placeholder={placeholder}
+      {...productCategorySelectRestProps}
     />
   )
 }

@@ -24,6 +24,7 @@ import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
 import { Form } from '@/presentation/components/forms/form'
 import { FormError } from '@/presentation/components/forms/form-error'
+import { RequiredFieldsMessage } from '@/presentation/components/forms/required-fields-message'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import { ToastService } from '@/presentation/services/toast-service'
 import { getOptionalNumber, getOptionalString, getRequiredNumber } from '@/utils/form-utils'
@@ -47,7 +48,7 @@ export const ProductCreationForm: React.FC<ProductCreationFormProps> = ({ catego
     setProductCreationFormErrors(null)
 
     const productCreationData: ProductCreationData = {
-      categoryId: formData.get(PRODUCT_FORM_FIELDS.CATEGORY_ID) as string,
+      categoryId: getOptionalString(formData.get(PRODUCT_FORM_FIELDS.CATEGORY_ID)),
       description: getOptionalString(formData.get(PRODUCT_FORM_FIELDS.DESCRIPTION)),
       discountedPrice: getOptionalNumber(formData.get(PRODUCT_FORM_FIELDS.DISCOUNTED_PRICE)),
       imageUrl: getOptionalString(formData.get(PRODUCT_FORM_FIELDS.IMAGE_URL)),
@@ -102,6 +103,8 @@ export const ProductCreationForm: React.FC<ProductCreationFormProps> = ({ catego
       </FieldSet>
 
       <FormError errors={productCreationFormErrors?.form} />
+
+      <RequiredFieldsMessage />
 
       <SubmitButton Icon={<SaveIcon />} isPending={isProductCreationLoading}>
         {({ isPending }) => t(`product.creation.submit.${isPending ? 'creating' : 'label'}`)}

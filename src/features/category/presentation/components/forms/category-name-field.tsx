@@ -10,11 +10,11 @@ export const CategoryNameField: React.FC<Partial<TextFieldProps>> = ({
   ...categoryNameFieldRestProps
 }) => (
   <TextField
-    {...categoryNameFieldRestProps}
     isRequired={isRequired}
     label={label}
     maxLength={CATEGORY_CONSTANTS.NAME_MAX_LENGTH}
     name={name}
     placeholder={placeholder}
+    {...categoryNameFieldRestProps}
   />
 )

@@ -1,6 +1,7 @@
 import { PRODUCT_CONSTANTS, PRODUCT_ERRORS, PRODUCT_FORM_FIELDS } from '@/features/product/domain/product-constants'
 import type { ProductConflictError, ProductValidationErrors } from '@/features/product/domain/product-entities'
 import { t } from '@/infrastructure/i18n'
+import { getUniqueStringsArray } from '@/utils/array-utils'
 import type { Issues } from '@/utils/validation-utils'
 
 export const getBadRequestProductFormErrors = (issues: Issues): ProductValidationErrors => {
@@ -54,14 +55,14 @@ export const getBadRequestProductFormErrors = (issues: Issues): ProductValidatio
   }
 
   return {
-    form: formErrors,
-    [PRODUCT_FORM_FIELDS.NAME]: nameErrors,
-    [PRODUCT_FORM_FIELDS.SKU]: skuErrors,
-    [PRODUCT_FORM_FIELDS.PRICE]: priceErrors,
-    [PRODUCT_FORM_FIELDS.DISCOUNTED_PRICE]: discountedPriceErrors,
-    [PRODUCT_FORM_FIELDS.STOCK]: stockErrors,
-    [PRODUCT_FORM_FIELDS.DESCRIPTION]: descriptionErrors,
-    [PRODUCT_FORM_FIELDS.IMAGE_URL]: imageUrlErrors
+    form: getUniqueStringsArray(formErrors),
+    [PRODUCT_FORM_FIELDS.NAME]: getUniqueStringsArray(nameErrors),
+    [PRODUCT_FORM_FIELDS.SKU]: getUniqueStringsArray(skuErrors),
+    [PRODUCT_FORM_FIELDS.PRICE]: getUniqueStringsArray(priceErrors),
+    [PRODUCT_FORM_FIELDS.DISCOUNTED_PRICE]: getUniqueStringsArray(discountedPriceErrors),
+    [PRODUCT_FORM_FIELDS.STOCK]: getUniqueStringsArray(stockErrors),
+    [PRODUCT_FORM_FIELDS.DESCRIPTION]: getUniqueStringsArray(descriptionErrors),
+    [PRODUCT_FORM_FIELDS.IMAGE_URL]: getUniqueStringsArray(imageUrlErrors)
   }
 }
 

@@ -10,12 +10,12 @@ export const ProductPriceField: React.FC<Partial<NumberFieldProps>> = ({
   ...productPriceFieldProps
 }) => (
   <NumberField
-    {...productPriceFieldProps}
     formatOptions={defaultPriceFormatOptions}
     isRequired={isRequired}
     label={label}
     maxValue={PRODUCT_CONSTANTS.MAX_PRICE}
     minValue={PRODUCT_CONSTANTS.MIN_PRICE}
     name={name}
+    {...productPriceFieldProps}
   />
 )

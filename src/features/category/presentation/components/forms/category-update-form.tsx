@@ -14,8 +14,10 @@ import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
 import { Form } from '@/presentation/components/forms/form'
 import { FormError } from '@/presentation/components/forms/form-error'
+import { RequiredFieldsMessage } from '@/presentation/components/forms/required-fields-message'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import { ToastService } from '@/presentation/services/toast-service'
+import { getUniqueStringsArray } from '@/utils/array-utils'
 import type { Issues } from '@/utils/validation-utils'
 
 type CategoryUpdateFormProps = {
@@ -42,8 +44,8 @@ export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = ({ category
     }
 
     setCategoryUpdateFormErrors({
-      form: formErrors,
-      [CATEGORY_FORM_FIELDS.NAME]: nameErrors
+      form: getUniqueStringsArray(formErrors),
+      [CATEGORY_FORM_FIELDS.NAME]: getUniqueStringsArray(nameErrors)
     })
   }, [])
 
@@ -100,6 +102,8 @@ export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = ({ category
       </FieldSet>
 
       <FormError errors={categoryUpdateFormErrors?.form} />
+
+      <RequiredFieldsMessage />
 
       <SubmitButton Icon={<SaveIcon />} isPending={isCategoryUpdateLoading}>
         {({ isPending }) => t(`category.update.submit.${isPending ? 'updating' : 'label'}`)}

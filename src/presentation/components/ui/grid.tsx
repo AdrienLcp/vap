@@ -1,7 +1,7 @@
 'use client'
 
-import { useMemo } from 'react'
-import { GridList, GridListItem, type GridListItemProps, type GridListProps } from 'react-aria-components'
+import { useCallback, useMemo } from 'react'
+import { GridList, GridListItem, type GridListItemProps, type GridListProps, type GridListRenderProps } from 'react-aria-components'
 
 import { reactAriaClassNames } from '@/presentation/utils/react-aria-utils'
 import type { Style } from '@/presentation/utils/styles-utils'
@@ -20,6 +20,7 @@ export function Grid <Data extends object> ({
   className,
   cardSize = 200,
   layout = 'grid',
+  renderEmptyState,
   renderItem,
   style,
   ...gridRestProps
@@ -29,11 +30,24 @@ export function Grid <Data extends object> ({
     ...style
   }), [cardSize, style])
 
+  const renderGridEmptyState = useCallback((gridListRenderProps: GridListRenderProps) => {
+    if (!renderEmptyState) {
+      return null
+    }
+
+    return (
+      <div className='grid-empty-state'>
+        {renderEmptyState(gridListRenderProps)}
+      </div>
+    )
+  }, [renderEmptyState])
+
   return (
     <GridList
       {...gridRestProps}
       className={values => reactAriaClassNames(values, className, 'grid')}
       layout={layout}
+      renderEmptyState={renderGridEmptyState}
       style={gridStyle}
     >
       {gridItem => (

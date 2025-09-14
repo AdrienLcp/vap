@@ -1,16 +1,22 @@
 @use '@/presentation/styles/accessibility'
 
 .grid
-  --grid-max-column-count: 8
-  --grid-min-column-size: var(--grid-card-size, 200px)
-  --grid-gap: var(--size-160, 1rem)
+  display: flex
+  flex-direction: column
+  flex: 1
 
-  --grid-column-size-calc: calc((100% - var(--grid-gap) * var(--grid-max-column-count) - var(--grid-gap)) / var(--grid-max-column-count))
-  --grid-column-min-size-calc: min(100%, max(var(--grid-column-size-calc), var(--grid-min-column-size)))
+  &:not(:has(.grid-empty-state))
+    --grid-max-column-count: 8
+    --grid-min-column-size: var(--grid-card-size, 200px)
+    --grid-gap: var(--size-160, 1rem)
 
-  display: grid
-  gap: var(--size-160, 1rem)
-  grid-template-columns: repeat(auto-fill, minmax(var(--grid-column-min-size-calc), 1fr))
+    --grid-column-size-calc: calc((100% - var(--grid-gap) * var(--grid-max-column-count) - var(--grid-gap)) / var(--grid-max-column-count))
+    --grid-column-min-size-calc: min(100%, max(var(--grid-column-size-calc), var(--grid-min-column-size)))
+
+    display: grid
+    gap: var(--size-160, 1rem)
+    grid-auto-rows: min-content
+    grid-template-columns: repeat(auto-fill, minmax(var(--grid-column-min-size-calc), 1fr))
 
   &-item
     @include accessibility.focus-outline
@@ -20,3 +26,10 @@
 
     &:not([data-disabled])
       cursor: pointer
+
+  &-empty-state
+    align-content: center
+    block-size: 100%
+    flex: 1
+    justify-items: center
+    padding-block-end: 10%
