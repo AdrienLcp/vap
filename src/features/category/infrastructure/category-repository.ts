@@ -1,16 +1,24 @@
 import 'server-only'
 
-import type { CategoryConflictError, CategoryCreationData, CategoryDTO, CategoryUpdateData } from '@/features/category/domain/category-entities'
-import { type ErrorResult, failure, type NotFound, type Result, success } from '@/helpers/result'
+import type { NotFound } from '@/domain/entities'
+import type { CategoryConflictError, CategoryCreationData, CategoryUpdateData } from '@/features/category/domain/category-entities'
+import { type ErrorResult, failure, type Result, success } from '@/helpers/result'
 import { CategoryDatabase } from '@/infrastructure/database'
 import { getDatabaseError } from '@/infrastructure/database/database-helpers'
+
+export type CategoryRepositoryEntity = {
+  id: string
+  name: string
+  description: string | null
+  imageUrl: string | null
+}
 
 const categorySelect = {
   id: true,
   name: true,
   description: true,
   imageUrl: true
-}
+} satisfies Record<keyof CategoryRepositoryEntity, boolean>
 
 const onCategoryDuplicateError = (duplicatedKeys: string[]): ErrorResult<CategoryConflictError> => {
   if (duplicatedKeys.includes('name')) {
@@ -21,7 +29,7 @@ const onCategoryDuplicateError = (duplicatedKeys: string[]): ErrorResult<Categor
   return failure()
 }
 
-const createCategory = async (categoryCreationData: CategoryCreationData): Promise<Result<CategoryConflictError, CategoryDTO>> => {
+const createCategory = async (categoryCreationData: CategoryCreationData): Promise<Result<CategoryConflictError, CategoryRepositoryEntity>> => {
   try {
     const createdCategory = await CategoryDatabase.create({
       data: {
@@ -56,7 +64,7 @@ const deleteCategory = async (categoryId: string): Promise<Result> => {
   }
 }
 
-const findCategories = async (): Promise<Result<null, CategoryDTO[]>> => {
+const findCategories = async (): Promise<Result<null, CategoryRepositoryEntity[]>> => {
   try {
     const categories = await CategoryDatabase.findMany({ select: categorySelect })
     return success(categories)
@@ -66,7 +74,7 @@ const findCategories = async (): Promise<Result<null, CategoryDTO[]>> => {
   }
 }
 
-const findCategory = async (categoryId: string): Promise<Result<NotFound, CategoryDTO>> => {
+const findCategory = async (categoryId: string): Promise<Result<NotFound, CategoryRepositoryEntity>> => {
   try {
     const category = await CategoryDatabase.findUnique({
       where: { id: categoryId },
@@ -84,7 +92,7 @@ const findCategory = async (categoryId: string): Promise<Result<NotFound, Catego
   }
 }
 
-const updateCategory = async (categoryId: string, categoryData: CategoryUpdateData): Promise<Result<CategoryConflictError, CategoryDTO>> => {
+const updateCategory = async (categoryId: string, categoryData: CategoryUpdateData): Promise<Result<CategoryConflictError, CategoryRepositoryEntity>> => {
   try {
     const updatedCategory = await CategoryDatabase.update({
       where: { id: categoryId },

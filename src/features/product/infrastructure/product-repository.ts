@@ -1,7 +1,8 @@
 import 'server-only'
 
+import type { NotFound } from '@/domain/entities'
 import type { ProductConflictError, ProductCreationData, ProductDTO, ProductUpdateData } from '@/features/product/domain/product-entities'
-import { type ErrorResult, failure, type NotFound, type Result, success } from '@/helpers/result'
+import { type ErrorResult, failure, type Result, success } from '@/helpers/result'
 import { ProductDatabase } from '@/infrastructure/database'
 import { getDatabaseError } from '@/infrastructure/database/database-helpers'
 
@@ -104,6 +105,30 @@ const findProducts = async (): Promise<Result<null, ProductDTO[]>> => {
   }
 }
 
+const getCategoryProductCount = async (categoryId: string): Promise<Result<null, number>> => {
+  try {
+    const categoryProductCount = await ProductDatabase.count({ where: { categoryId } })
+    return success(categoryProductCount)
+  } catch (error) {
+    console.error('Unknown error in ProductRepository.getCategoryProductCount:', error)
+    return failure()
+  }
+}
+
+const removeProductsCategory = async (categoryId: string): Promise<Result> => {
+  try {
+    await ProductDatabase.updateMany({
+      where: { categoryId },
+      data: { categoryId: null }
+    })
+
+    return success()
+  } catch (error) {
+    console.error('Unknown error in ProductRepository.removeProductsCategory:', error)
+    return failure()
+  }
+}
+
 const updateProduct = async (productId: string, productData: ProductUpdateData): Promise<Result<ProductConflictError, ProductDTO>> => {
   try {
     const updatedProduct = await ProductDatabase.update({
@@ -142,5 +167,7 @@ export const ProductRepository = {
   deleteProduct,
   findProduct,
   findProducts,
+  getCategoryProductCount,
+  removeProductsCategory,
   updateProduct
 }

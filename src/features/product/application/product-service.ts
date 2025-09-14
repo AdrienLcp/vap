@@ -1,10 +1,11 @@
 import 'server-only'
 
+import type { Forbidden, NotFound, Unauthorized } from '@/domain/entities'
 import { AuthService } from '@/features/auth/application/auth-service'
 import type { ProductCreationData, ProductDTO, ProductEditError, ProductError, ProductPublicDTO, ProductUpdateData } from '@/features/product/domain/product-entities'
 import { toProductPublicDTO } from '@/features/product/domain/product-mappers'
 import { ProductRepository } from '@/features/product/infrastructure/product-repository'
-import { failure, type NotFound, type Result, success } from '@/helpers/result'
+import { failure, type Result, success } from '@/helpers/result'
 
 const createProduct = async (productCreationData: ProductCreationData): Promise<Result<ProductEditError, ProductDTO>>  => {
   const userResult = await AuthService.findUser()
@@ -106,6 +107,24 @@ const findPublicProducts = async (): Promise<Result<null, ProductPublicDTO[]>> =
   return success(publicProducts)
 }
 
+const getCategoryProductCount = async (categoryId: string): Promise<Result<null, number>> => {
+  return await ProductRepository.getCategoryProductCount(categoryId)
+}
+
+const removeProductsCategory = async (categoryId: string): Promise<Result<Forbidden | Unauthorized>> => {
+  const userResult = await AuthService.findUser()
+
+  if (userResult.status === 'ERROR') {
+    return userResult
+  }
+
+  if (!userResult.data.permissions.canUpdateProduct) {
+    return failure('FORBIDDEN')
+  }
+
+  return await ProductRepository.removeProductsCategory(categoryId)
+}
+
 const updateProduct = async (productId: string, productUpdateData: ProductUpdateData): Promise<Result<ProductEditError, ProductDTO>> => {
   const userResult = await AuthService.findUser()
 
@@ -133,5 +152,7 @@ export const ProductService = {
   findProducts,
   findPublicProduct,
   findPublicProducts,
+  getCategoryProductCount,
+  removeProductsCategory,
   updateProduct
 }

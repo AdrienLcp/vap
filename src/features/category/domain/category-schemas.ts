@@ -32,6 +32,7 @@ export const CategoryUpdateSchema = z.object({
 export const CategoryDTOSchema = z.object({
   id: CategoryIdSchema,
   name: CategoryNameSchema,
-  description: CategoryDescriptionSchema.nullable().catch(null),
-  imageUrl: CategoryImageUrlSchema.nullable().catch(null)
+  description: CategoryDescriptionSchema.nullable(),
+  imageUrl: CategoryImageUrlSchema.nullable(),
+  productCount: z.number()
 })

@@ -1,8 +1,8 @@
 import type z from 'zod'
 
+import type { Forbidden, Unauthorized } from '@/domain/entities'
 import type { PRODUCT_FORM_FIELDS } from '@/features/product/domain/product-constants'
 import type { ProductCreationSchema, ProductDTOSchema, ProductPublicDTOSchema, ProductStatusSchema, ProductUpdateSchema } from '@/features/product/domain/product-schemas'
-import type { Forbidden, Unauthorized } from '@/helpers/result'
 import type { BadRequestResponse, ConflictResponse, CreatedResponse, ForbiddenResponse, NoContentResponse, NotFoundResponse, OkResponse, Response, UnauthorizedResponse } from '@/infrastructure/api/http-response'
 import type { ValueOf } from '@/utils/object-utils'
 import type { Issues, ValidationErrors } from '@/utils/validation-utils'

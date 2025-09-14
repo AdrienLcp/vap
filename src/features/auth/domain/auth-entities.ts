@@ -1,9 +1,9 @@
 import type { z } from 'zod'
 
+import type { Unauthorized } from '@/domain/entities'
 import type { AUTH_CONSTANTS } from '@/features/auth/domain/auth-constants'
 import type { AuthPermissionsSchema, AuthUserDTOSchema } from '@/features/auth/domain/auth-schemas'
 import type { UserRole } from '@/features/user/domain/user-entities'
-import type { Unauthorized } from '@/helpers/result'
 import type { BadRequestResponse, ConflictResponse, CreatedResponse, NoContentResponse, OkResponse, Response, UnauthorizedResponse } from '@/infrastructure/api/http-response'
 
 export type AuthPermissions = z.infer<typeof AuthPermissionsSchema>

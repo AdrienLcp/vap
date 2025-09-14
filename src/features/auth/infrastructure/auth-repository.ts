@@ -2,9 +2,10 @@ import 'server-only'
 
 import { headers as getHeaders } from 'next/headers'
 
+import type { Unauthorized } from '@/domain/entities'
 import type { AuthUser } from '@/features/auth/domain/auth-entities'
 import { auth } from '@/features/auth/infrastructure/auth-lib'
-import { failure, type Result, success, type Unauthorized } from '@/helpers/result'
+import { failure, type Result, success } from '@/helpers/result'
 
 const findUser = async (): Promise<Result<Unauthorized, AuthUser>> => {
   const headers = await getHeaders()
