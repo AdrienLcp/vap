@@ -5,7 +5,12 @@ import { useCallback, useState } from 'react'
 
 import type { CategoryDTO } from '@/features/category/domain/category-entities'
 import { PRODUCT_CONSTANTS, PRODUCT_FORM_FIELDS } from '@/features/product/domain/product-constants'
-import type { ProductDTO, ProductStatus, ProductUpdateData, ProductValidationErrors } from '@/features/product/domain/product-entities'
+import type {
+  ProductDTO,
+  ProductStatus,
+  ProductUpdateData,
+  ProductValidationErrors
+} from '@/features/product/domain/product-entities'
 import { ProductClient } from '@/features/product/infrastructure/product-client'
 import { ProductCategorySelect } from '@/features/product/presentation/components/forms/product-category-select'
 import { ProductDescriptionField } from '@/features/product/presentation/components/forms/product-description-field'
@@ -16,7 +21,10 @@ import { ProductPriceField } from '@/features/product/presentation/components/fo
 import { ProductSkuField } from '@/features/product/presentation/components/forms/product-sku-field'
 import { ProductStatusSelect } from '@/features/product/presentation/components/forms/product-status-select'
 import { ProductStockField } from '@/features/product/presentation/components/forms/product-stock-field'
-import { getBadRequestProductFormErrors, getConflictProductFormErrors } from '@/features/product/presentation/validation/product-form-validation'
+import {
+  getBadRequestProductFormErrors,
+  getConflictProductFormErrors
+} from '@/features/product/presentation/validation/product-form-validation'
 import { BAD_REQUEST_STATUS, CONFLICT_STATUS, OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
@@ -34,44 +42,59 @@ type ProductUpdateFormProps = {
 
 export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({ categories, product }) => {
   const [isProductUpdateLoading, setIsProductUpdateLoading] = useState<boolean>(false)
-  const [productUpdateFormErrors, setProductUpdateFormErrors] = useState<ProductValidationErrors>(null)
+  const [productUpdateFormErrors, setProductUpdateFormErrors] =
+    useState<ProductValidationErrors>(null)
 
-  const onProductUpdateFormSubmit = useCallback(async (formData: FormData) => {
-    setIsProductUpdateLoading(true)
-    setProductUpdateFormErrors(null)
+  const onProductUpdateFormSubmit = useCallback(
+    async (formData: FormData) => {
+      setIsProductUpdateLoading(true)
+      setProductUpdateFormErrors(null)
 
-    const productUpdateData: ProductUpdateData = {
-      categoryId: getOptionalString(formData.get(PRODUCT_FORM_FIELDS.CATEGORY_ID)),
-      description: getOptionalString(formData.get(PRODUCT_FORM_FIELDS.DESCRIPTION)),
-      discountedPrice: getOptionalNumber(formData.get(PRODUCT_FORM_FIELDS.DISCOUNTED_PRICE)),
-      imageUrl: getOptionalString(formData.get(PRODUCT_FORM_FIELDS.IMAGE_URL)),
-      name: formData.get(PRODUCT_FORM_FIELDS.NAME) as string,
-      price: parseInt(formData.get(PRODUCT_FORM_FIELDS.PRICE) as string),
-      sku: formData.get(PRODUCT_FORM_FIELDS.SKU) as string,
-      status: formData.get(PRODUCT_FORM_FIELDS.STATUS) as ProductStatus,
-      stock: getRequiredNumber(formData.get(PRODUCT_FORM_FIELDS.STOCK), PRODUCT_CONSTANTS.MIN_STOCK)
-    }
+      const productUpdateData: ProductUpdateData = {
+        categoryId: getOptionalString(formData.get(PRODUCT_FORM_FIELDS.CATEGORY_ID)),
+        description: getOptionalString(formData.get(PRODUCT_FORM_FIELDS.DESCRIPTION)),
+        discountedPrice: getOptionalNumber(formData.get(PRODUCT_FORM_FIELDS.DISCOUNTED_PRICE)),
+        imageUrl: getOptionalString(formData.get(PRODUCT_FORM_FIELDS.IMAGE_URL)),
+        name: formData.get(PRODUCT_FORM_FIELDS.NAME) as string,
+        price: parseInt(formData.get(PRODUCT_FORM_FIELDS.PRICE) as string, 10),
+        sku: formData.get(PRODUCT_FORM_FIELDS.SKU) as string,
+        status: formData.get(PRODUCT_FORM_FIELDS.STATUS) as ProductStatus,
+        stock: getRequiredNumber(
+          formData.get(PRODUCT_FORM_FIELDS.STOCK),
+          PRODUCT_CONSTANTS.MIN_STOCK
+        )
+      }
 
-    const productUpdateResponse = await ProductClient.updateProduct(product.id, productUpdateData)
+      const productUpdateResponse = await ProductClient.updateProduct(product.id, productUpdateData)
 
-    setIsProductUpdateLoading(false)
+      setIsProductUpdateLoading(false)
 
-    switch (productUpdateResponse.status) {
-      case OK_STATUS:
-        ToastService.success(t('product.update.success', { productName: productUpdateResponse.data.name }))
-        break
-      case BAD_REQUEST_STATUS:
-        const badRequestProductFormErrors = getBadRequestProductFormErrors(productUpdateResponse.issues)
-        setProductUpdateFormErrors(badRequestProductFormErrors)
-        break
-      case CONFLICT_STATUS:
-        const conflictProductFormErrors = getConflictProductFormErrors(productUpdateResponse.error)
-        setProductUpdateFormErrors(conflictProductFormErrors)
-      default:
-        console.error('Unhandled product update response status:', productUpdateResponse)
-        ToastService.error(t('product.update.unknownError'))
-    }
-  }, [product.id])
+      switch (productUpdateResponse.status) {
+        case OK_STATUS:
+          ToastService.success(
+            t('product.update.success', { productName: productUpdateResponse.data.name })
+          )
+          break
+        case BAD_REQUEST_STATUS:
+          const badRequestProductFormErrors = getBadRequestProductFormErrors(
+            productUpdateResponse.issues
+          )
+          setProductUpdateFormErrors(badRequestProductFormErrors)
+          break
+        case CONFLICT_STATUS: {
+          const conflictProductFormErrors = getConflictProductFormErrors(
+            productUpdateResponse.error
+          )
+          setProductUpdateFormErrors(conflictProductFormErrors)
+          break
+        }
+        default:
+          console.error('Unhandled product update response status:', productUpdateResponse)
+          ToastService.error(t('product.update.unknownError'))
+      }
+    },
+    [product.id]
+  )
 
   return (
     <Form onSubmit={onProductUpdateFormSubmit} validationErrors={productUpdateFormErrors}>

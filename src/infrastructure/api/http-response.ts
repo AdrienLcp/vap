@@ -25,10 +25,7 @@ export type ConflictStatus = typeof CONFLICT_STATUS
 export type UnprocessableEntityStatus = typeof UNPROCESSABLE_ENTITY_STATUS
 export type InternalServerErrorStatus = typeof INTERNAL_SERVER_ERROR_STATUS
 
-export type SuccessStatus =
-  | OkStatus
-  | CreatedStatus
-  | NoContentStatus
+export type SuccessStatus = OkStatus | CreatedStatus | NoContentStatus
 
 export type ErrorStatus =
   | BadRequestStatus
@@ -59,7 +56,10 @@ export type NotFoundResponse = BaseResponse<NotFoundStatus>
 export type UnauthorizedResponse = BaseResponse<UnauthorizedStatus>
 export type ForbiddenResponse = BaseResponse<ForbiddenStatus>
 export type ConflictResponse<Error> = BaseResponse<ConflictStatus, { error: Error }>
-export type UnprocessableEntityResponse<Error> = BaseResponse<UnprocessableEntityStatus, { error: Error }>
+export type UnprocessableEntityResponse<Error> = BaseResponse<
+  UnprocessableEntityStatus,
+  { error: Error }
+>
 export type InternalServerErrorResponse = BaseResponse<InternalServerErrorStatus>
 
 export type Response<T> = T | InternalServerErrorResponse
@@ -96,7 +96,10 @@ const notFound = (headers?: HeadersInit): NotFoundResponse => {
   return { headers, status: NOT_FOUND_STATUS }
 }
 
-const unprocessableEntity = <Error>(error: Error, headers?: HeadersInit): UnprocessableEntityResponse<Error> => {
+const unprocessableEntity = <Error>(
+  error: Error,
+  headers?: HeadersInit
+): UnprocessableEntityResponse<Error> => {
   return { error, headers, status: UNPROCESSABLE_ENTITY_STATUS }
 }
 
@@ -117,7 +120,10 @@ export const HttpResponse = {
   internalServerError
 }
 
-export const redirectByErrorStatus = (status: ErrorStatus, fallbackRoute?: ValueOf<typeof ROUTES>): ReturnType<typeof redirect> => {
+export const redirectByErrorStatus = (
+  status: ErrorStatus,
+  fallbackRoute?: ValueOf<typeof ROUTES>
+): ReturnType<typeof redirect> => {
   switch (status) {
     case UNAUTHORIZED_STATUS:
       redirect(ROUTES.unauthorized)
@@ -125,6 +131,7 @@ export const redirectByErrorStatus = (status: ErrorStatus, fallbackRoute?: Value
       redirect(ROUTES.forbidden)
     case NOT_FOUND_STATUS:
       redirect(ROUTES.notFound)
+      break
     default:
       redirect(fallbackRoute ?? DEFAULT_ROUTE)
   }

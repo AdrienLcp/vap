@@ -8,9 +8,7 @@ export const metadata: Metadata = {
 }
 
 const Layout: React.FC<React.PropsWithChildren> = async ({ children }) => (
-  <RootLayout>
-    {children}
-  </RootLayout>
+  <RootLayout>{children}</RootLayout>
 )
 
 export default Layout
