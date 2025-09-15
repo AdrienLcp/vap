@@ -61,12 +61,11 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({ categories
         ToastService.success(t('product.update.success', { productName: productUpdateResponse.data.name }))
         break
       case BAD_REQUEST_STATUS:
-        const badRequestProductFormErrors = getBadRequestProductFormErrors(productUpdateResponse.issues)
-        setProductUpdateFormErrors(badRequestProductFormErrors)
+        setProductUpdateFormErrors(getBadRequestProductFormErrors(productUpdateResponse.issues))
         break
       case CONFLICT_STATUS:
-        const conflictProductFormErrors = getConflictProductFormErrors(productUpdateResponse.error)
-        setProductUpdateFormErrors(conflictProductFormErrors)
+        setProductUpdateFormErrors(getConflictProductFormErrors(productUpdateResponse.error))
+        break
       default:
         console.error('Unhandled product update response status:', productUpdateResponse)
         ToastService.error(t('product.update.unknownError'))

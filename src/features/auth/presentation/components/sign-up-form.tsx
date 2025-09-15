@@ -52,6 +52,7 @@ export const SignUpForm: React.FC = () => {
     switch (signUpResponse.status) {
       case CREATED_STATUS:
         onSignUpSuccess(signUpResponse.data)
+        break
       case BAD_REQUEST_STATUS:
         setSignUpFormErrors({
           [AUTH_FORM_FIELDS.PASSWORD]: t('auth.signUp.errors.invalidPasswordLength', {

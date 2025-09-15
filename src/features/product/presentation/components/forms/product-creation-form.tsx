@@ -67,12 +67,10 @@ export const ProductCreationForm: React.FC<ProductCreationFormProps> = ({ catego
         onProductCreationSuccess(productCreationResponse.data)
         break
       case BAD_REQUEST_STATUS:
-        const badRequestProductFormErrors = getBadRequestProductFormErrors(productCreationResponse.issues)
-        setProductCreationFormErrors(badRequestProductFormErrors)
+        setProductCreationFormErrors(getBadRequestProductFormErrors(productCreationResponse.issues))
         break
       case CONFLICT_STATUS:
-        const conflictProductFormErrors = getConflictProductFormErrors(productCreationResponse.error)
-        setProductCreationFormErrors(conflictProductFormErrors)
+        setProductCreationFormErrors(getConflictProductFormErrors(productCreationResponse.error))
         break
       default:
         console.error('Unhandled product update response status:', productCreationResponse)

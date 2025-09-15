@@ -26,6 +26,7 @@ export const ChangePasswordForm: React.FC = () => {
     switch (errorCode) {
       case 'INVALID_PASSWORD':
         setChangePasswordFormErrors({ [AUTH_FORM_FIELDS.NEW_PASSWORD]: t('auth.changePassword.errors.invalidPassword') })
+        break
       case 'PASSWORD_TOO_SHORT':
         setChangePasswordFormErrors({
           [AUTH_FORM_FIELDS.NEW_PASSWORD]: t('auth.changePassword.errors.invalidPasswordLength', {
@@ -33,6 +34,7 @@ export const ChangePasswordForm: React.FC = () => {
             maxLength: AUTH_CONSTANTS.PASSWORD_MAX_LENGTH
           })
         })
+        break
       default:
         setChangePasswordFormErrors({ form: t('auth.changePassword.errors.unknown') })
         break
