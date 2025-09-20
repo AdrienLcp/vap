@@ -29,10 +29,13 @@ export const CategoryUpdateSchema = z.object({
   imageUrl: CategoryImageUrlSchema.optional().catch(undefined)
 })
 
-export const CategoryDTOSchema = z.object({
+export const CategorySchema = z.object({
   id: CategoryIdSchema,
   name: CategoryNameSchema,
   description: CategoryDescriptionSchema.nullable(),
-  imageUrl: CategoryImageUrlSchema.nullable(),
+  imageUrl: CategoryImageUrlSchema.nullable()
+})
+
+export const CategoryDTOSchema = CategorySchema.extend({
   productCount: z.number()
 })

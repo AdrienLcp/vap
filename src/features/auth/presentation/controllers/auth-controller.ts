@@ -7,7 +7,7 @@ import { HttpResponse } from '@/infrastructure/api/http-response'
 
 const findUser = async (): Promise<AuthUserResponse> => {
   try {
-    const userResult = await AuthService.findUser()
+    const userResult = await AuthService.findUserDTO()
 
     if (userResult.status === 'ERROR') {
       switch (userResult.error) {

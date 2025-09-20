@@ -8,11 +8,20 @@ import type { BadRequestResponse, ConflictResponse, CreatedResponse, NoContentRe
 
 export type AuthPermissions = z.infer<typeof AuthPermissionsSchema>
 
-export type AuthUser = {
+export type User = {
+  id: string
   email: string
   image?: string | null
   name: string
   role: UserRole
+}
+
+export type AuthUser = {
+  id: string
+  email: string
+  image?: string | null
+  name: string
+  permissions: AuthPermissions
 }
 
 export type AuthUserDTO = z.infer<typeof AuthUserDTOSchema>

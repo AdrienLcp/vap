@@ -1,12 +1,12 @@
 import 'server-only'
 
 import type { NotFound } from '@/domain/entities'
-import type { ProductConflictError, ProductCreationData, ProductDTO, ProductUpdateData } from '@/features/product/domain/product-entities'
+import type { Product, ProductCategoryDTO, ProductConflictError, ProductCreationData, ProductDTO, ProductUpdateData } from '@/features/product/domain/product-entities'
 import { type ErrorResult, failure, type Result, success } from '@/helpers/result'
-import { ProductDatabase } from '@/infrastructure/database'
+import { type EntitySelectedFields, ProductDatabase } from '@/infrastructure/database'
 import { getDatabaseError } from '@/infrastructure/database/database-helpers'
 
-const productSelect = {
+const PRODUCT_SELECTED_FIELDS = {
   id: true,
   name: true,
   price: true,
@@ -16,12 +16,20 @@ const productSelect = {
   sku: true,
   discountedPrice: true,
   stock: true,
-  salesCount: true,
+  salesCount: true
+} satisfies EntitySelectedFields<Product>
+
+const PRODUCT_CATEGORY_SELECTED_FIELDS = {
+  id: true,
+  name: true,
+  imageUrl: true
+} satisfies EntitySelectedFields<ProductCategoryDTO>
+
+const productSelectedFields = {
+  ...PRODUCT_SELECTED_FIELDS,
   category: {
     select: {
-      id: true,
-      name: true,
-      imageUrl: true
+      ...PRODUCT_CATEGORY_SELECTED_FIELDS
     }
   }
 }
@@ -35,7 +43,7 @@ const onProductDuplicateError = (duplicatedKeys: string[]): ErrorResult<ProductC
   return failure()
 }
 
-const createProduct = async (productCreationData: ProductCreationData): Promise<Result<ProductConflictError, ProductDTO>> => {
+const createProduct = async (productCreationData: ProductCreationData): Promise<Result<ProductDTO, ProductConflictError>> => {
   try {
     const createdProduct = await ProductDatabase.create({
       data: {
@@ -49,7 +57,7 @@ const createProduct = async (productCreationData: ProductCreationData): Promise<
         stock: productCreationData.stock,
         categoryId: productCreationData.categoryId
       },
-      select: productSelect
+      select: productSelectedFields
     })
 
     return success(createdProduct)
@@ -76,11 +84,11 @@ const deleteProduct = async (productId: string): Promise<Result> => {
   }
 }
 
-const findProduct = async (productId: string): Promise<Result<NotFound, ProductDTO>> => {
+const findProduct = async (productId: string): Promise<Result<ProductDTO, NotFound>> => {
   try {
     const product = await ProductDatabase.findUnique({
       where: { id: productId },
-      select: productSelect
+      select: productSelectedFields
     })
 
     if (!product) {
@@ -94,9 +102,9 @@ const findProduct = async (productId: string): Promise<Result<NotFound, ProductD
   }
 }
 
-const findProducts = async (): Promise<Result<null, ProductDTO[]>> => {
+const findProducts = async (): Promise<Result<ProductDTO[]>> => {
   try {
-    const products = await ProductDatabase.findMany({ select: productSelect })
+    const products = await ProductDatabase.findMany({ select: productSelectedFields })
 
     return success(products)
   } catch (error) {
@@ -105,7 +113,7 @@ const findProducts = async (): Promise<Result<null, ProductDTO[]>> => {
   }
 }
 
-const getCategoryProductCount = async (categoryId: string): Promise<Result<null, number>> => {
+const getCategoryProductCount = async (categoryId: string): Promise<Result<number>> => {
   try {
     const categoryProductCount = await ProductDatabase.count({ where: { categoryId } })
     return success(categoryProductCount)
@@ -129,7 +137,7 @@ const removeProductsCategory = async (categoryId: string): Promise<Result> => {
   }
 }
 
-const updateProduct = async (productId: string, productData: ProductUpdateData): Promise<Result<ProductConflictError, ProductDTO>> => {
+const updateProduct = async (productId: string, productData: ProductUpdateData): Promise<Result<ProductDTO, ProductConflictError>> => {
   try {
     const updatedProduct = await ProductDatabase.update({
       where: { id: productId },
@@ -145,7 +153,7 @@ const updateProduct = async (productId: string, productData: ProductUpdateData):
         categoryId: productData.categoryId,
         salesCount: productData.salesCount
       },
-      select: productSelect
+      select: productSelectedFields
     })
 
     return success(updatedProduct)

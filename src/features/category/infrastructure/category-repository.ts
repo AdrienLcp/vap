@@ -1,24 +1,17 @@
 import 'server-only'
 
 import type { NotFound } from '@/domain/entities'
-import type { CategoryConflictError, CategoryCreationData, CategoryUpdateData } from '@/features/category/domain/category-entities'
+import type { Category, CategoryConflictError, CategoryCreationData, CategoryUpdateData } from '@/features/category/domain/category-entities'
 import { type ErrorResult, failure, type Result, success } from '@/helpers/result'
-import { CategoryDatabase } from '@/infrastructure/database'
+import { CategoryDatabase, type EntitySelectedFields } from '@/infrastructure/database'
 import { getDatabaseError } from '@/infrastructure/database/database-helpers'
 
-export type CategoryRepositoryEntity = {
-  id: string
-  name: string
-  description: string | null
-  imageUrl: string | null
-}
-
-const categorySelect = {
+const categorySelectedFields = {
   id: true,
   name: true,
   description: true,
   imageUrl: true
-} satisfies Record<keyof CategoryRepositoryEntity, boolean>
+} satisfies EntitySelectedFields<Category>
 
 const onCategoryDuplicateError = (duplicatedKeys: string[]): ErrorResult<CategoryConflictError> => {
   if (duplicatedKeys.includes('name')) {
@@ -29,7 +22,7 @@ const onCategoryDuplicateError = (duplicatedKeys: string[]): ErrorResult<Categor
   return failure()
 }
 
-const createCategory = async (categoryCreationData: CategoryCreationData): Promise<Result<CategoryConflictError, CategoryRepositoryEntity>> => {
+const createCategory = async (categoryCreationData: CategoryCreationData): Promise<Result<Category, CategoryConflictError>> => {
   try {
     const createdCategory = await CategoryDatabase.create({
       data: {
@@ -37,7 +30,7 @@ const createCategory = async (categoryCreationData: CategoryCreationData): Promi
         description: categoryCreationData.description,
         imageUrl: categoryCreationData.imageUrl
       },
-      select: categorySelect
+      select: categorySelectedFields
     })
 
     return success(createdCategory)
@@ -64,9 +57,9 @@ const deleteCategory = async (categoryId: string): Promise<Result> => {
   }
 }
 
-const findCategories = async (): Promise<Result<null, CategoryRepositoryEntity[]>> => {
+const findCategories = async (): Promise<Result<Category[]>> => {
   try {
-    const categories = await CategoryDatabase.findMany({ select: categorySelect })
+    const categories = await CategoryDatabase.findMany({ select: categorySelectedFields })
     return success(categories)
   } catch (error) {
     console.error('Unknown error in CategoryRepository.findCategories:', error)
@@ -74,11 +67,11 @@ const findCategories = async (): Promise<Result<null, CategoryRepositoryEntity[]
   }
 }
 
-const findCategory = async (categoryId: string): Promise<Result<NotFound, CategoryRepositoryEntity>> => {
+const findCategory = async (categoryId: string): Promise<Result<Category, NotFound>> => {
   try {
     const category = await CategoryDatabase.findUnique({
       where: { id: categoryId },
-      select: categorySelect
+      select: categorySelectedFields
     })
 
     if (!category) {
@@ -92,7 +85,7 @@ const findCategory = async (categoryId: string): Promise<Result<NotFound, Catego
   }
 }
 
-const updateCategory = async (categoryId: string, categoryData: CategoryUpdateData): Promise<Result<CategoryConflictError, CategoryRepositoryEntity>> => {
+const updateCategory = async (categoryId: string, categoryData: CategoryUpdateData): Promise<Result<Category, CategoryConflictError>> => {
   try {
     const updatedCategory = await CategoryDatabase.update({
       where: { id: categoryId },
@@ -101,7 +94,7 @@ const updateCategory = async (categoryId: string, categoryData: CategoryUpdateDa
         description: categoryData.description,
         imageUrl: categoryData.imageUrl
       },
-      select: categorySelect
+      select: categorySelectedFields
     })
 
     return success(updatedCategory)

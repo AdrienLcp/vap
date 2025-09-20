@@ -2,16 +2,12 @@ import 'server-only'
 
 import type { Forbidden, NotFound, Unauthorized } from '@/domain/entities'
 import { AuthService } from '@/features/auth/application/auth-service'
-import type { CategoryCreationData, CategoryDTO, CategoryEditError, CategoryUpdateData } from '@/features/category/domain/category-entities'
-import { CategoryRepository, type CategoryRepositoryEntity } from '@/features/category/infrastructure/category-repository'
+import type { Category, CategoryCreationData, CategoryDTO, CategoryEditError, CategoryUpdateData } from '@/features/category/domain/category-entities'
+import { CategoryRepository } from '@/features/category/infrastructure/category-repository'
 import { ProductService } from '@/features/product/application/product-service'
 import { failure, type Result, success } from '@/helpers/result'
 
-/**
- * Enriches category data with product count
- * Single Responsibility: Augment category with computed productCount
- */
-const enrichCategoryWithProductCount = async (category: CategoryRepositoryEntity): Promise<CategoryDTO> => {
+const enrichCategoryWithProductCount = async (category: Category): Promise<CategoryDTO> => {
   const categoryProductCountResult = await ProductService.getCategoryProductCount(category.id)
 
   const productCount = categoryProductCountResult.status === 'SUCCESS'
@@ -19,13 +15,16 @@ const enrichCategoryWithProductCount = async (category: CategoryRepositoryEntity
     : 0
 
   return {
-    ...category,
+    id: category.id,
+    name: category.name,
+    description: category.description,
+    imageUrl: category.imageUrl,
     productCount
   } satisfies CategoryDTO
 }
 
-const createCategory = async (categoryCreationData: CategoryCreationData): Promise<Result<CategoryEditError, CategoryDTO>> => {
-  const userResult = await AuthService.findUser()
+const createCategory = async (categoryCreationData: CategoryCreationData): Promise<Result<CategoryDTO, CategoryEditError>> => {
+  const userResult = await AuthService.findUserDTO()
 
   if (userResult.status === 'ERROR') {
     return failure('UNAUTHORIZED')
@@ -49,8 +48,8 @@ const createCategory = async (categoryCreationData: CategoryCreationData): Promi
   return success(categoryDTO)
 }
 
-const deleteCategory = async (categoryId: string): Promise<Result<Forbidden | Unauthorized>> => {
-  const userResult = await AuthService.findUser()
+const deleteCategory = async (categoryId: string): Promise<Result<null, Forbidden | Unauthorized>> => {
+  const userResult = await AuthService.findUserDTO()
 
   if (userResult.status === 'ERROR') {
     return failure('UNAUTHORIZED')
@@ -69,7 +68,7 @@ const deleteCategory = async (categoryId: string): Promise<Result<Forbidden | Un
   return await CategoryRepository.deleteCategory(categoryId)
 }
 
-const findCategories = async (): Promise<Result<null, CategoryDTO[]>> => {
+const findCategories = async (): Promise<Result<CategoryDTO[]>> => {
   const categoryListResult = await CategoryRepository.findCategories()
 
   if (categoryListResult.status === 'ERROR') {
@@ -86,7 +85,7 @@ const findCategories = async (): Promise<Result<null, CategoryDTO[]>> => {
   return success(categoryListDTO)
 }
 
-const findCategory = async (categoryId: string): Promise<Result<NotFound, CategoryDTO>> => {
+const findCategory = async (categoryId: string): Promise<Result<CategoryDTO, NotFound>> => {
   const categoryResult = await CategoryRepository.findCategory(categoryId)
 
   if (categoryResult.status === 'ERROR') {
@@ -98,8 +97,8 @@ const findCategory = async (categoryId: string): Promise<Result<NotFound, Catego
   return success(categoryDTO)
 }
 
-const updateCategory = async (categoryId: string, categoryUpdateData: CategoryUpdateData): Promise<Result<CategoryEditError, CategoryDTO>> => {
-  const userResult = await AuthService.findUser()
+const updateCategory = async (categoryId: string, categoryUpdateData: CategoryUpdateData): Promise<Result<CategoryDTO, CategoryEditError>> => {
+  const userResult = await AuthService.findUserDTO()
 
   if (userResult.status === 'ERROR') {
     return failure('UNAUTHORIZED')

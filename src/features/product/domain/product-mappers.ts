@@ -3,7 +3,6 @@ import type { ProductDTO, ProductPublicDTO } from '@/features/product/domain/pro
 export const toProductPublicDTO = (product: ProductDTO): ProductPublicDTO => ({
   id: product.id,
   name: product.name,
-  sku: product.sku,
   description: product.description,
   price: product.price,
   discountedPrice: product.discountedPrice,

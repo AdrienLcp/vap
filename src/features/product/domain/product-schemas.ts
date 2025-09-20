@@ -44,53 +44,55 @@ export const ProductStockSchema = z
   .min(PRODUCT_CONSTANTS.MIN_STOCK, PRODUCT_ERRORS.STOCK_TOO_LOW)
 
 export const ProductCreationSchema = z.object({
+  categoryId: CategoryIdSchema.optional(),
+  description: ProductDescriptionSchema.optional(),
+  discountedPrice: ProductPriceSchema.optional(),
+  imageUrl: ProductImageUrlSchema.optional(),
   name: ProductNameSchema,
+  price: ProductPriceSchema,
   sku: ProductSKU,
   status: ProductStatusSchema.catch(PRODUCT_CONSTANTS.DEFAULT_STATUS),
-  price: ProductPriceSchema,
-  discountedPrice: ProductPriceSchema.optional(),
-  description: ProductDescriptionSchema.optional(),
-  stock: ProductStockSchema.optional(),
-  imageUrl: ProductImageUrlSchema.optional(),
-  categoryId: CategoryIdSchema.optional()
+  stock: ProductStockSchema.optional()
 })
 
 export const ProductUpdateSchema = z.object({
+  categoryId: CategoryIdSchema.optional(),
+  description: ProductDescriptionSchema.optional(),
+  discountedPrice: ProductPriceSchema.optional(),
+  imageUrl: ProductImageUrlSchema.optional(),
   name: ProductNameSchema.optional(),
+  price: ProductPriceSchema.optional(),
+  salesCount: z.number().optional(),
   sku: ProductSKU.optional(),
   status: ProductStatusSchema.optional(),
-  price: ProductPriceSchema.optional(),
-  discountedPrice: ProductPriceSchema.optional(),
-  description: ProductDescriptionSchema.optional(),
-  stock: ProductStockSchema.optional(),
-  imageUrl: ProductImageUrlSchema.optional(),
-  categoryId: CategoryIdSchema.optional(),
-  salesCount: z.number().optional()
+  stock: ProductStockSchema.optional()
 })
 
-export const ProductDTOSchema = z.object({
-  id: ProductIdSchema,
-  name: ProductNameSchema,
-  sku: ProductSKU,
+export const ProductSchema = z.object({
   description: ProductDescriptionSchema.nullable(),
-  price: ProductPriceSchema,
   discountedPrice: ProductPriceSchema.nullish(),
-  status: ProductStatusSchema.catch(PRODUCT_CONSTANTS.DEFAULT_STATUS),
-  stock: ProductStockSchema.catch(0),
+  id: ProductIdSchema,
   imageUrl: ProductImageUrlSchema.nullable(),
-  category: ProductCategoryDTOSchema.nullable(),
-  salesCount: z.number().catch(0)
+  name: ProductNameSchema,
+  price: ProductPriceSchema,
+  salesCount: z.number().catch(0),
+  sku: ProductSKU,
+  status: ProductStatusSchema.catch(PRODUCT_CONSTANTS.DEFAULT_STATUS),
+  stock: ProductStockSchema.catch(0)
+})
+
+export const ProductDTOSchema = ProductSchema.extend({
+  category: ProductCategoryDTOSchema.nullable()
 })
 
 export const ProductPublicDTOSchema = ProductDTOSchema.pick({
-  id: true,
-  name: true,
-  sku: true,
+  category: true,
   description: true,
-  price: true,
   discountedPrice: true,
-  status: true,
-  stock: true,
+  id: true,
   imageUrl: true,
-  category: true
+  name: true,
+  price: true,
+  status: true,
+  stock: true
 })

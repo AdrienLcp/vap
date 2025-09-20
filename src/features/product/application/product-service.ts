@@ -7,8 +7,8 @@ import { toProductPublicDTO } from '@/features/product/domain/product-mappers'
 import { ProductRepository } from '@/features/product/infrastructure/product-repository'
 import { failure, type Result, success } from '@/helpers/result'
 
-const createProduct = async (productCreationData: ProductCreationData): Promise<Result<ProductEditError, ProductDTO>>  => {
-  const userResult = await AuthService.findUser()
+const createProduct = async (productCreationData: ProductCreationData): Promise<Result<ProductDTO, ProductEditError>>  => {
+  const userResult = await AuthService.findUserDTO()
 
   if (userResult.status === 'ERROR') {
     return userResult
@@ -27,8 +27,8 @@ const createProduct = async (productCreationData: ProductCreationData): Promise<
   return success(productCreationResult.data)
 }
 
-const deleteProduct = async (productId: string): Promise<Result<ProductError>> => {
-  const userResult = await AuthService.findUser()
+const deleteProduct = async (productId: string): Promise<Result<null, ProductError>> => {
+  const userResult = await AuthService.findUserDTO()
 
   if (userResult.status === 'ERROR') {
     return userResult
@@ -47,8 +47,8 @@ const deleteProduct = async (productId: string): Promise<Result<ProductError>> =
   return success()
 }
 
-const findProduct = async (productId: string): Promise<Result<ProductError | NotFound, ProductDTO>> => {
-  const userResult = await AuthService.findUser()
+const findProduct = async (productId: string): Promise<Result<ProductDTO, ProductError | NotFound>> => {
+  const userResult = await AuthService.findUserDTO()
 
   if (userResult.status === 'ERROR') {
     return userResult
@@ -61,8 +61,8 @@ const findProduct = async (productId: string): Promise<Result<ProductError | Not
   return await ProductRepository.findProduct(productId)
 }
 
-const findProducts = async (): Promise<Result<ProductError, ProductDTO[]>> => {
-  const userResult = await AuthService.findUser()
+const findProducts = async (): Promise<Result<ProductDTO[], ProductError>> => {
+  const userResult = await AuthService.findUserDTO()
 
   if (userResult.status === 'ERROR') {
     return userResult
@@ -75,7 +75,7 @@ const findProducts = async (): Promise<Result<ProductError, ProductDTO[]>> => {
   return await ProductRepository.findProducts()
 }
 
-const findPublicProduct = async (productId: string): Promise<Result<NotFound, ProductPublicDTO>> => {
+const findPublicProduct = async (productId: string): Promise<Result<ProductPublicDTO, NotFound>> => {
   const productResult = await ProductRepository.findProduct(productId)
 
   if (productResult.status === 'ERROR') {
@@ -93,7 +93,7 @@ const findPublicProduct = async (productId: string): Promise<Result<NotFound, Pr
   return success(productPublicDTO)
 }
 
-const findPublicProducts = async (): Promise<Result<null, ProductPublicDTO[]>> => {
+const findPublicProducts = async (): Promise<Result<ProductPublicDTO[]>> => {
   const productsResult = await ProductRepository.findProducts()
 
   if (productsResult.status === 'ERROR') {
@@ -107,12 +107,12 @@ const findPublicProducts = async (): Promise<Result<null, ProductPublicDTO[]>> =
   return success(publicProducts)
 }
 
-const getCategoryProductCount = async (categoryId: string): Promise<Result<null, number>> => {
+const getCategoryProductCount = async (categoryId: string): Promise<Result<number>> => {
   return await ProductRepository.getCategoryProductCount(categoryId)
 }
 
-const removeProductsCategory = async (categoryId: string): Promise<Result<Forbidden | Unauthorized>> => {
-  const userResult = await AuthService.findUser()
+const removeProductsCategory = async (categoryId: string): Promise<Result<null, Forbidden | Unauthorized>> => {
+  const userResult = await AuthService.findUserDTO()
 
   if (userResult.status === 'ERROR') {
     return userResult
@@ -125,8 +125,8 @@ const removeProductsCategory = async (categoryId: string): Promise<Result<Forbid
   return await ProductRepository.removeProductsCategory(categoryId)
 }
 
-const updateProduct = async (productId: string, productUpdateData: ProductUpdateData): Promise<Result<ProductEditError, ProductDTO>> => {
-  const userResult = await AuthService.findUser()
+const updateProduct = async (productId: string, productUpdateData: ProductUpdateData): Promise<Result<ProductDTO, ProductEditError>> => {
+  const userResult = await AuthService.findUserDTO()
 
   if (userResult.status === 'ERROR') {
     return userResult
