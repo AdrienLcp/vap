@@ -1,7 +1,7 @@
 @use '@/presentation/styles/interactive'
 
 .cart-button
-  @include interactive.filled
+  @include interactive.outlined
 
   &
     aspect-ratio: 1
@@ -13,11 +13,11 @@
   & .item-count
     align-content: center
     aspect-ratio: 1
-    background-color: var(--accent-background)
+    background-color: var(--brand-background)
     block-size: 1.75em
     border-radius: var(--circular, 99rem)
     color: var(--neutral-background)
     font-size: 0.75em
-    inset: auto -0.25em -0.25em auto
+    inset: auto -0.5em -0.5em auto
     justify-items: center
     position: absolute
