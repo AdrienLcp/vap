@@ -17,8 +17,8 @@ export const FieldError: React.FC<FieldErrorProps> = ({ className, maxLength, mi
   >
     {({ defaultChildren, validationDetails, validationErrors }) => {
       if (validationDetails.customError) {
-        return validationErrors.map((errorMessage, index) => (
-          <span key={index}>
+        return validationErrors.map(errorMessage => (
+          <span key={errorMessage}>
             {errorMessage}
           </span>
         ))

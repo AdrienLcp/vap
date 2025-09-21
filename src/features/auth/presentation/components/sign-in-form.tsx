@@ -14,7 +14,7 @@ import { UserPasswordField } from '@/features/user/presentation/user-password-fi
 import { BAD_REQUEST_STATUS, OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
-import { Form } from '@/presentation/components/forms/form'
+import { Form, type FormValues } from '@/presentation/components/forms/form'
 import { FormError } from '@/presentation/components/forms/form-error'
 import { RequiredFieldsMessage } from '@/presentation/components/forms/required-fields-message'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
@@ -34,13 +34,13 @@ export const SignInForm: React.FC = () => {
     redirect(DEFAULT_ROUTE)
   }, [setUser])
 
-  const onSignInFormSubmit = useCallback(async (formData: FormData) => {
+  const onSignInFormSubmit = useCallback(async (formValues: FormValues) => {
     setIsUserAuthenticationLoading(true)
     setSignInFormErrors(null)
 
     const credentials: SignInInfo = {
-      email: formData.get(AUTH_FORM_FIELDS.EMAIL) as string,
-      password: formData.get(AUTH_FORM_FIELDS.PASSWORD) as string
+      email: formValues.getString(AUTH_FORM_FIELDS.EMAIL),
+      password: formValues.getString(AUTH_FORM_FIELDS.PASSWORD)
     }
 
     const signInResponse = await AuthClient.emailSignIn(credentials)

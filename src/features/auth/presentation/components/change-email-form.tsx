@@ -8,7 +8,7 @@ import { AuthClient } from '@/features/auth/infrastructure/auth-client'
 import { UserEmailField } from '@/features/user/presentation/user-email-field'
 import { NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
-import { Form } from '@/presentation/components/forms/form'
+import { Form, type FormValues } from '@/presentation/components/forms/form'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import { ToastService } from '@/presentation/services/toast-service'
 import type { ValueOf } from '@/utils/object-utils'
@@ -20,11 +20,11 @@ export const ChangeEmailForm: React.FC = () => {
   const [isChangeEmailLoading, setIsChangeEmailLoading] = useState(false)
   const [changeEmailFormErrors, setChangeEmailFormErrors] = useState<ChangeEmailFormErrors>(null)
 
-  const onChangeEmailFormSubmit = useCallback(async (formData: FormData) => {
+  const onChangeEmailFormSubmit = useCallback(async (formValues: FormValues) => {
     setIsChangeEmailLoading(true)
     setChangeEmailFormErrors(null)
 
-    const newEmail = formData.get(AUTH_FORM_FIELDS.EMAIL) as string
+    const newEmail = formValues.getString(AUTH_FORM_FIELDS.EMAIL)
 
     const changeEmailResponse = await AuthClient.changeEmail(newEmail)
 

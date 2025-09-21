@@ -1,5 +1,7 @@
 import { CircleAlertIcon } from 'lucide-react'
 
+import { getUniqueStringsArray } from '@/utils/array-utils'
+
 import './form-error.sass'
 
 type FormErrorProps = {
@@ -19,7 +21,7 @@ export const FormError: React.FC<FormErrorProps> = ({ errors }) => {
 
       <p>
         {isErrorsArray
-          ? errors.map((error, index) => <span key={index}>{error}</span>)
+          ? getUniqueStringsArray(errors).map(error => <span key={error}>{error}</span>)
           : errors
         }
       </p>

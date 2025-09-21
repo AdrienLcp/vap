@@ -4,25 +4,25 @@ import { VisuallyHidden } from 'react-aria-components'
 
 import { DEFAULT_ROUTE } from '@/domain/navigation'
 import { t } from '@/infrastructure/i18n'
-import { ErrorDescription, ErrorTitle, ErrorWrapper } from '@/presentation/components/ui/error'
+import { FallbackDescription, FallbackTitle, FallbackWrapper } from '@/presentation/components/ui/fallback'
 import { Link } from '@/presentation/components/ui/pressables/link'
 
 export const Unauthorized: React.FC = () => (
-  <ErrorWrapper>
-    <ErrorTitle>
+  <FallbackWrapper>
+    <FallbackTitle>
       {t('auth.unauthorized.title')}
-    </ErrorTitle>
+    </FallbackTitle>
 
-    <ErrorDescription>
+    <FallbackDescription>
       {t('auth.unauthorized.description')}
-    </ErrorDescription>
+    </FallbackDescription>
 
-    <Link className='error-button' href={DEFAULT_ROUTE}>
+    <Link className='fallback-button' href={DEFAULT_ROUTE}>
       {t('auth.unauthorized.linkLabel')}
 
       <VisuallyHidden>
         {t('auth.unauthorized.title')}
       </VisuallyHidden>
     </Link>
-  </ErrorWrapper>
+  </FallbackWrapper>
 )

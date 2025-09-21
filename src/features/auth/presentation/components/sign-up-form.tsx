@@ -15,7 +15,7 @@ import { UserPasswordField } from '@/features/user/presentation/user-password-fi
 import { BAD_REQUEST_STATUS, CONFLICT_STATUS, CREATED_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
-import { Form } from '@/presentation/components/forms/form'
+import { Form, type FormValues } from '@/presentation/components/forms/form'
 import { FormError } from '@/presentation/components/forms/form-error'
 import { RequiredFieldsMessage } from '@/presentation/components/forms/required-fields-message'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
@@ -35,14 +35,14 @@ export const SignUpForm: React.FC = () => {
     redirect(DEFAULT_ROUTE)
   }, [setUser])
 
-  const onSignUpFormSubmit = useCallback(async (formData: FormData) => {
+  const onSignUpFormSubmit = useCallback(async (formValues: FormValues) => {
     setIsUserCreationLoading(true)
     setSignUpFormErrors(null)
 
     const credentials: SignUpInfo = {
-      email: formData.get(AUTH_FORM_FIELDS.EMAIL) as string,
-      name: formData.get(AUTH_FORM_FIELDS.NAME) as string,
-      password: formData.get(AUTH_FORM_FIELDS.PASSWORD) as string
+      email: formValues.getString(AUTH_FORM_FIELDS.EMAIL),
+      name: formValues.getString(AUTH_FORM_FIELDS.NAME),
+      password: formValues.getString(AUTH_FORM_FIELDS.PASSWORD)
     }
 
     const signUpResponse = await AuthClient.emailSignUp(credentials)

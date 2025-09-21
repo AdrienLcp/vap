@@ -24,6 +24,7 @@ const signOut = async () => {
   switch (signOutResponse.status) {
     case NO_CONTENT_STATUS:
       redirect(DEFAULT_ROUTE)
+      break
     default:
       ToastService.error(t('auth.signOut.errors.unknown'))
   }

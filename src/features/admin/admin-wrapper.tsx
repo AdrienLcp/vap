@@ -19,12 +19,10 @@ export const AdminWrapper: React.FC<React.PropsWithChildren> = async ({ children
   }
 
   return (
-    <>
-      <main className='admin-main'>
-        <AdminNav />
+    <main className='admin-main'>
+      <AdminNav />
 
-        {children}
-      </main>
-    </>
+      {children}
+    </main>
   )
 }

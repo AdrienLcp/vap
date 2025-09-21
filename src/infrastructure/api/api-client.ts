@@ -10,7 +10,7 @@ type RequestOptions = {
 
 const hasBody = (response: Response) => {
   const contentType = response.headers.get('Content-Type')
-  return contentType && contentType.includes('application/json')
+  return contentType?.includes('application/json')
 }
 
 const request = async <Response, RequestBody = undefined>(

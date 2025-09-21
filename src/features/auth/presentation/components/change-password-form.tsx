@@ -10,7 +10,7 @@ import { UserPasswordField } from '@/features/user/presentation/user-password-fi
 import { BAD_REQUEST_STATUS, NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
-import { Form } from '@/presentation/components/forms/form'
+import { Form, type FormValues } from '@/presentation/components/forms/form'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import { ToastService } from '@/presentation/services/toast-service'
 import type { ValueOf } from '@/utils/object-utils'
@@ -41,13 +41,13 @@ export const ChangePasswordForm: React.FC = () => {
     }
   }, [])
 
-  const onChangePasswordFormSubmit = useCallback(async (formData: FormData) => {
+  const onChangePasswordFormSubmit = useCallback(async (formValues: FormValues) => {
     setIsChangePasswordLoading(true)
     setChangePasswordFormErrors(null)
 
     const changePasswordInfo = {
-      currentPassword: formData.get(AUTH_FORM_FIELDS.PASSWORD) as string,
-      newPassword: formData.get(AUTH_FORM_FIELDS.NEW_PASSWORD) as string
+      currentPassword: formValues.getString(AUTH_FORM_FIELDS.PASSWORD),
+      newPassword: formValues.getString(AUTH_FORM_FIELDS.NEW_PASSWORD)
     }
 
     const changePasswordResponse = await AuthClient.changePassword(changePasswordInfo)

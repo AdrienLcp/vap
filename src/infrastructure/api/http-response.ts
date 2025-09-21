@@ -121,10 +121,13 @@ export const redirectByErrorStatus = (status: ErrorStatus, fallbackRoute?: Value
   switch (status) {
     case UNAUTHORIZED_STATUS:
       redirect(ROUTES.unauthorized)
+      break
     case FORBIDDEN_STATUS:
       redirect(ROUTES.forbidden)
+      break
     case NOT_FOUND_STATUS:
       redirect(ROUTES.notFound)
+      break
     default:
       redirect(fallbackRoute ?? DEFAULT_ROUTE)
   }
