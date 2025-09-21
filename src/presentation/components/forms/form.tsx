@@ -3,7 +3,7 @@ import { Form as ReactAriaForm, type FormProps as ReactAriaFormProps } from 'rea
 import './form.sass'
 
 export class FormValues extends FormData {
-  /** 
+  /**
    * Gets a string value from form data as a specific type (e.g. enum)
    * @template T Type to cast the string value to (typically an enum or string literal union)
    * @param key The key of the form field
@@ -24,8 +24,8 @@ export class FormValues extends FormData {
     const value = this.get(key)
     return Number(value)
   }
-  
-  /** 
+
+  /**
    * Gets an optional string value from form data as a specific type
    * @template T Type to cast the string value to (typically an enum or string literal union)
    * @param key The key of the form field
@@ -39,11 +39,11 @@ export class FormValues extends FormData {
   /** Gets an optional number value from the form data */
   getOptionalNumber(key: string): number | undefined {
     const value = this.get(key)
-    
+
     if (!value || typeof value !== 'string' || value.trim() === '') {
       return undefined
     }
-    
+
     const parsed = Number(value)
     return Number.isNaN(parsed) ? undefined : parsed
   }

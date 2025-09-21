@@ -25,7 +25,7 @@ export const getRequiredNumber = (value: FormDataEntryValue | null, fallback: nu
  * @param value Form data value to parse
  * @returns number or undefined if invalid and no fallback provided
  */
-export function parseNumber(value: FormDataEntryValue | null): number | undefined;
+export function parseNumber(value: FormDataEntryValue | null): number | undefined
 
 /**
  * Extracts a number from form data value with required fallback
@@ -33,7 +33,7 @@ export function parseNumber(value: FormDataEntryValue | null): number | undefine
  * @param fallback Default value to use if parsing fails
  * @returns number (never undefined)
  */
-export function parseNumber(value: FormDataEntryValue | null, fallback: number): number;
+export function parseNumber(value: FormDataEntryValue | null, fallback: number): number
 
 // Implementation
 export function parseNumber(value: FormDataEntryValue | null, fallback?: number): number | undefined {
@@ -43,6 +43,6 @@ export function parseNumber(value: FormDataEntryValue | null, fallback?: number)
       return parsed
     }
   }
-  
+
   return fallback
 }
