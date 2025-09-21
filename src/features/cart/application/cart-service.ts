@@ -14,6 +14,16 @@ const addItemToUserCart = async (cartItemCreationData: CartItemCreationData) => 
   return await CartRepository.addItemToUserCart(authUserResult.data.id, cartItemCreationData)
 }
 
+const clearUserCart = async () => {
+  const authUserResult = await AuthService.findUser()
+
+  if (authUserResult.status === 'ERROR') {
+    return authUserResult
+  }
+
+  return await CartRepository.clearUserCart(authUserResult.data.id)
+}
+
 const findUserCartItems = async () => {
   const authUserResult = await AuthService.findUser()
 
@@ -50,6 +60,7 @@ const updateUserCartItemQuantity = async (cartItemId: string, quantity: number) 
 
 export const CartService = {
   addItemToUserCart,
+  clearUserCart,
   findUserCartItems,
   removeItemFromUserCart,
   updateUserCartItemQuantity

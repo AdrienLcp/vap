@@ -10,7 +10,6 @@ import { buildLocationUrl } from '@/infrastructure/env/client'
 const createProduct = async (productCreationRequest: Request): Promise<ProductCreationResponse> => {
   try {
     const productCreationData = await productCreationRequest.json()
-
     const productCreationValidation = ProductCreationSchema.safeParse(productCreationData)
 
     if (productCreationValidation.error) {

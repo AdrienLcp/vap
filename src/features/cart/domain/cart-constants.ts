@@ -1,3 +1,5 @@
+export const CART_API_BASE_URL = 'cart'
+
 export const CART_CONSTANTS = {
   MAX_ITEM_QUANTITY: 10,
   MIN_ITEM_QUANTITY: 1

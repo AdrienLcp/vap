@@ -8,23 +8,15 @@ import type { BadRequestResponse, ConflictResponse, CreatedResponse, NoContentRe
 
 export type AuthPermissions = z.infer<typeof AuthPermissionsSchema>
 
-export type User = {
+export type AuthUserDTO = z.infer<typeof AuthUserDTOSchema>
+
+export type AuthUser = AuthUserDTO & {
   id: string
-  email: string
-  image?: string | null
-  name: string
+}
+
+export type User = Omit<AuthUser, 'permissions'> & {
   role: UserRole
 }
-
-export type AuthUser = {
-  id: string
-  email: string
-  image?: string | null
-  name: string
-  permissions: AuthPermissions
-}
-
-export type AuthUserDTO = z.infer<typeof AuthUserDTOSchema>
 
 export type AuthUserError = Unauthorized
 
@@ -41,16 +33,14 @@ export type SignInInfo = {
   password: string
 }
 
+export type SignUpInfo = SignInInfo & {
+  name: string
+}
+
 export type EmailSignInResponse = Response<
   | OkResponse<AuthUserDTO>
   | BadRequestResponse<InvalidCredentials>
 >
-
-export type SignUpInfo = {
-  email: string
-  name: string
-  password: string
-}
 
 export type SignUpResponse =
   | CreatedResponse<AuthUserDTO>

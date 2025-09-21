@@ -44,6 +44,16 @@ const addItemToUserCart = async (userId: string, cartItemCreationData: CartItemC
   }
 }
 
+const clearUserCart = async (userId: string): Promise<Result> => {
+  try {
+    await CartDatabase.deleteMany({ where: { userId } })
+    return success()
+  } catch (error) {
+    console.error('Unknown error in CartRepository.clearUserCart:', error)
+    return failure()
+  }
+}
+
 const findUserCartItems = async (userId: string): Promise<Result<CartItemDTO[]>> => {
   try {
     const userCartItems = await CartDatabase.findMany({
@@ -58,11 +68,14 @@ const findUserCartItems = async (userId: string): Promise<Result<CartItemDTO[]>>
   }
 }
 
-const removeItemFromUserCart = async (userId: string, cartItemId: string): Promise<Result> => {
+const removeItemFromUserCart = async (userId: string, cartItemId: string): Promise<Result<CartItemDTO>> => {
   try {
-    await CartDatabase.delete({ where: { id: cartItemId, userId } })
+    const deletedCartItem = await CartDatabase.delete({
+      where: { id: cartItemId, userId },
+      select: cartItemSelectedFields
+    })
 
-    return success()
+    return success(deletedCartItem)
   } catch (error) {
     console.error('Unknown error in CartRepository.removeItemFromUserCart:', error)
     return failure()
@@ -86,6 +99,7 @@ const updateUserCartItemQuantity = async (userId: string, cartItemId: string, qu
 
 export const CartRepository = {
   addItemToUserCart,
+  clearUserCart,
   findUserCartItems,
   removeItemFromUserCart,
   updateUserCartItemQuantity

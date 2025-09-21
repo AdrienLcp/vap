@@ -1,39 +1,162 @@
-import type { CartItemCreationData, CartItemCreationResponse, CartItemListResponse, CartItemQuantityUpdateResponse, CartItemUpdateData } from '@/features/cart/domain/cart-entities'
-import { HttpResponse } from '@/infrastructure/api/http-response'
+import 'server-only'
 
-const addItemToUserCart = async (cartItemCreationData: CartItemCreationData): Promise<CartItemCreationResponse> => {
+import { CartService } from '@/features/cart/application/cart-service'
+import { CART_API_BASE_URL } from '@/features/cart/domain/cart-constants'
+import type { CartClearResponse, CartItemCreationResponse, CartItemDeletionResponse, CartItemListResponse, CartItemQuantityUpdateResponse } from '@/features/cart/domain/cart-entities'
+import { CartItemCreationDataSchema, CartItemDTOSchema, CartItemIdSchema, CartItemUpdateDataSchema } from '@/features/cart/domain/cart-schemas'
+import { HttpResponse } from '@/infrastructure/api/http-response'
+import { buildLocationUrl } from '@/infrastructure/env/client'
+
+const addItemToUserCart = async (cartItemCreationRequest: Request): Promise<CartItemCreationResponse> => {
   try {
-    console.log(cartItemCreationData)
-    return HttpResponse.internalServerError()
+    const cartItemCreationData = await cartItemCreationRequest.json()
+    const cartItemCreationValidation = CartItemCreationDataSchema.safeParse(cartItemCreationData)
+
+    if (cartItemCreationValidation.error) {
+      return HttpResponse.badRequest(cartItemCreationValidation.error.issues)
+    }
+
+    const cartItemCreationResult = await CartService.addItemToUserCart(cartItemCreationValidation.data)
+
+    if (cartItemCreationResult.status === 'ERROR') {
+      switch (cartItemCreationResult.error) {
+        case 'UNAUTHORIZED':
+          return HttpResponse.unauthorized()
+        default:
+          console.error('Unknown error in CartController.addItemToUserCart:', cartItemCreationResult.error)
+          return HttpResponse.internalServerError()
+      }
+    }
+
+    const cartItemDTOValidation = CartItemDTOSchema.safeParse(cartItemCreationResult.data)
+
+    if (cartItemDTOValidation.error) {
+      console.error('Validation error in CartController.addItemToUserCart:', cartItemDTOValidation.error)
+      return HttpResponse.internalServerError()
+    }
+
+    const cratedCartItem = cartItemDTOValidation.data
+    const createdCartItemLocationUrl = buildLocationUrl(CART_API_BASE_URL, cratedCartItem.id)
+
+    return HttpResponse.created(cratedCartItem, { 'Location': createdCartItemLocationUrl })
   } catch (error) {
     console.error('Unknown error in CartRepository.addItemToUserCart:', error)
     return HttpResponse.internalServerError()
   }
 }
 
+const clearUserCart = async (): Promise<CartClearResponse> => {
+  try {
+    const clearCartResult = await CartService.clearUserCart()
+
+    if (clearCartResult.status === 'ERROR') {
+      switch (clearCartResult.error) {
+        case 'UNAUTHORIZED':
+          return HttpResponse.unauthorized()
+        default:
+          console.error('Unknown error in CartController.clearUserCart:', clearCartResult.error)
+          return HttpResponse.internalServerError()
+      }
+    }
+
+    return HttpResponse.noContent()
+  } catch (error) {
+    console.error('Unknown error in CartRepository.clearUserCart:', error)
+    return HttpResponse.internalServerError()
+  }
+}
+
 const findUserCartItems = async (): Promise<CartItemListResponse> => {
   try {
-    return HttpResponse.internalServerError()
+    const cartResult = await CartService.findUserCartItems()
+
+    if (cartResult.status === 'ERROR') {
+      switch (cartResult.error) {
+        case 'UNAUTHORIZED':
+          return HttpResponse.unauthorized()
+        default:
+          console.error('Unknown error in CartController.findUserCartItems:', cartResult.error)
+          return HttpResponse.internalServerError()
+      }
+    }
+
+    const cartValidation = CartItemDTOSchema.array().safeParse(cartResult.data)
+
+    if (cartValidation.error) {
+      console.error('Validation error in CartController.findUserCartItems:', cartValidation.error)
+      return HttpResponse.internalServerError()
+    }
+
+    return HttpResponse.ok(cartValidation.data)
   } catch (error) {
     console.error('Unknown error in CartRepository.findCartByUserId:', error)
     return HttpResponse.internalServerError()
   }
 }
 
-const removeItemFromUserCart = async (cartItemId: string) => {
+const removeItemFromUserCart = async (cartItemId: string): Promise<CartItemDeletionResponse> => {
   try {
-    console.log(cartItemId)
-    return HttpResponse.internalServerError()
+    const cartItemIdValidation = CartItemIdSchema.safeParse(cartItemId)
+
+    if (cartItemIdValidation.error) {
+      return HttpResponse.badRequest(cartItemIdValidation.error.issues)
+    }
+
+    const cartItemDeletionResult = await CartService.removeItemFromUserCart(cartItemIdValidation.data)
+
+    if (cartItemDeletionResult.status === 'ERROR') {
+      switch (cartItemDeletionResult.error) {
+        case 'UNAUTHORIZED':
+          return HttpResponse.unauthorized()
+        default:
+          console.error('Unknown error in CartController.removeItemFromUserCart:', cartItemDeletionResult.error)
+          return HttpResponse.internalServerError()
+      }
+    }
+
+    return HttpResponse.noContent()
   } catch (error) {
     console.error('Unknown error in CartRepository.removeItemFromUserCart:', error)
     return HttpResponse.internalServerError()
   }
 }
 
-const updateUserCartItemQuantity = async (cartItemId: string, cartItemUpdateData: CartItemUpdateData): Promise<CartItemQuantityUpdateResponse> => {
+const updateUserCartItemQuantity = async (cartItemId: string, request: Request): Promise<CartItemQuantityUpdateResponse> => {
   try {
-    console.log(cartItemId, cartItemUpdateData)
-    return HttpResponse.internalServerError()
+    const cartItemIdValidation = CartItemIdSchema.safeParse(cartItemId)
+
+    if (cartItemIdValidation.error) {
+      return HttpResponse.badRequest(cartItemIdValidation.error.issues)
+    }
+
+    const cartItemUpdateData = await request.json()
+    const cartItemUpdateDataValidation = CartItemUpdateDataSchema.safeParse(cartItemUpdateData)
+
+    if (cartItemUpdateDataValidation.error) {
+      return HttpResponse.badRequest(cartItemUpdateDataValidation.error.issues)
+    }
+
+    const cartItemUpdateResult = await CartService.updateUserCartItemQuantity(cartItemIdValidation.data, cartItemUpdateDataValidation.data.quantity)
+
+    if (cartItemUpdateResult.status === 'ERROR') {
+      switch (cartItemUpdateResult.error) {
+        case 'UNAUTHORIZED':
+          return HttpResponse.unauthorized()
+        default:
+          console.error('Unknown error in CartController.updateUserCartItemQuantity:', cartItemUpdateResult.error)
+          return HttpResponse.internalServerError()
+      }
+    }
+
+    // If quantity is 0, we delete item, so we don't receive any data to validate
+    const cartItemDTOValidation = CartItemDTOSchema.safeParse(cartItemUpdateResult.data)
+
+    if (cartItemDTOValidation.error) {
+      console.error('Validation error in CartController.updateUserCartItemQuantity:', cartItemDTOValidation.error)
+      return HttpResponse.internalServerError()
+    }
+
+    return HttpResponse.ok(cartItemDTOValidation.data)
   } catch (error) {
     console.error('Unknown error in CartRepository.updateCartItemQuantity:', error)
     return HttpResponse.internalServerError()
@@ -42,6 +165,7 @@ const updateUserCartItemQuantity = async (cartItemId: string, cartItemUpdateData
 
 export const CartController = {
   addItemToUserCart,
+  clearUserCart,
   findUserCartItems,
   removeItemFromUserCart,
   updateUserCartItemQuantity

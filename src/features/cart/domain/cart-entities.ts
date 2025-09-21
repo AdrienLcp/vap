@@ -1,7 +1,7 @@
 import type z from 'zod'
 
 import type { CartItemCreationDataSchema, CartItemDTOSchema, CartItemProduct, CartItemSchema, CartItemUpdateDataSchema } from '@/features/cart/domain/cart-schemas'
-import type { BadRequestResponse, CreatedResponse, ForbiddenResponse, OkResponse, Response, UnauthorizedResponse } from '@/infrastructure/api/http-response'
+import type { BadRequestResponse, CreatedResponse, ForbiddenResponse, NoContentResponse, OkResponse, Response, UnauthorizedResponse } from '@/infrastructure/api/http-response'
 import type { Issues } from '@/utils/validation-utils'
 
 export type CartItem = z.infer<typeof CartItemSchema>
@@ -25,9 +25,21 @@ export type CartItemCreationResponse = Response<
   | UnauthorizedResponse
 >
 
+export type CartItemDeletionResponse = Response<
+  | NoContentResponse
+  | BadRequestResponse<Issues<string>>
+  | UnauthorizedResponse
+  | ForbiddenResponse
+>
+
 export type CartItemQuantityUpdateResponse = Response<
   | OkResponse<CartItemDTO>
   | BadRequestResponse<Issues<CartItemUpdateData>>
   | UnauthorizedResponse
   | ForbiddenResponse
+>
+
+export type CartClearResponse = Response<
+  | NoContentResponse
+  | UnauthorizedResponse
 >
