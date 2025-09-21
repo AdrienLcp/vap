@@ -121,6 +121,14 @@ export const fr = {
       title: 'Accès non autorisé'
     }
   },
+  cart: {
+    button: {
+      ariaLabel: 'Panier',
+      itemCountTooltip: dt('{itemCount:plural} dans le panier', {
+        plural: { itemCount: { zero: 'Aucun article', one: '1 article', other: '{?} articles' } }
+      })
+    }
+  },
   category: {
     card: {
       delete: 'Supprimer',

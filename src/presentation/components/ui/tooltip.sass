@@ -1,0 +1,17 @@
+@use '@/presentation/styles/typography'
+
+.tooltip
+  @include typography.body-small
+
+  &
+    background-color: var(--neutral-foreground)
+    border-radius: var(--radius-m, 0.5rem)
+    color: var(--neutral-background)
+    padding: var(--size-80, 0.5rem) var(--size-120, 0.75rem)
+    transform-origin: var(--trigger-anchor-point)
+    transition: opacity var(--transition-150, 0) var(--ease-gentle), scale var(--transition-150, 0) var(--ease-gentle)
+
+    &[data-entering],
+    &[data-exiting]
+      opacity: 0
+      scale: 0.85
