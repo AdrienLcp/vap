@@ -2,6 +2,10 @@ import { dt, type LanguageMessages } from '@/infrastructure/i18n/lib'
 
 export const fr = {
   admin: {
+    links: {
+      categories: 'Catégories',
+      products: 'Produits'
+    },
     nav: {
       admin: 'Administration',
       products: 'Produits',
