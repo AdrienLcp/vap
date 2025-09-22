@@ -19,8 +19,6 @@
 
   --dark-brand-foreground: var(--white)
 
-  --dark-accent-background: oklch(50% 0.1 290)
-
   --dark-neutral-background: var(--black)
   --dark-neutral-background-hovered: oklch(from var(--dark-neutral-background) clamp(0, l + var(--lightness-hovered), 1) c h)
   --dark-neutral-background-pressed: oklch(from var(--dark-neutral-background) clamp(0, l + var(--lightness-pressed), 1) c h)
@@ -69,8 +67,6 @@
   --light-brand-background-pressed: oklch(from var(--light-brand-background) clamp(0, l + var(--lightness-pressed), 1) c h)
 
   --light-brand-foreground: var(--black)
-
-  --light-accent-background: oklch(80% 0.1 290)
 
   --light-neutral-background: var(--white)
   --light-neutral-background-hovered: oklch(from var(--light-neutral-background) clamp(0, l - var(--lightness-hovered), 1) c h)
@@ -136,8 +132,6 @@
   --brand-background-pressed: light-dark(var(--light-brand-background-pressed), var(--dark-brand-background-pressed))
 
   --brand-foreground: light-dark(var(--light-brand-foreground), var(--dark-brand-foreground))
-
-  --accent-background: light-dark(var(--light-accent-background), var(--dark-accent-background))
 
   --destructive-background: light-dark(var(--light-destructive-background), var(--dark-destructive-background))
   --destructive-background-hovered: light-dark(var(--light-destructive-background-hovered), var(--dark-destructive-background-hovered))

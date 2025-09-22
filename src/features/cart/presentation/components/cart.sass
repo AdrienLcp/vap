@@ -1,0 +1,35 @@
+.cart-modal
+  backdrop-filter: blur(0.125rem)
+  inset: 0
+  position: fixed
+
+  &[data-entering]
+    animation: cart-modal-fade var(--transition-150, 0) var(--ease-gentle, ease-in-out)
+
+    & .cart-panel
+      animation: cart-panel-slide var(--transition-150, 0) var(--ease-gentle, ease-in-out)
+
+  &[data-exiting]
+    animation: cart-modal-fade var(--transition-150, 0) reverse var(--ease-gentle, ease-in-out)
+
+    & .cart-panel
+      animation: cart-panel-slide var(--transition-150, 0) reverse var(--ease-gentle, ease-in-out)
+
+.cart-panel
+  background-color: var(--neutral-background)
+  border-inline-start: var(--element-stroke, 0.125rem) solid var(--neutral-border)
+  inline-size: 500px
+  inset: 0 0 0 auto
+  position: fixed
+
+@keyframes cart-modal-fade
+  from
+    opacity: 0
+  to
+    opacity: 1
+
+@keyframes cart-panel-slide
+  from
+    translate: 100% 0
+  to
+    translate: 0 0

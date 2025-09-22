@@ -2,7 +2,7 @@
 
 import { DEFAULT_ROUTE } from '@/domain/navigation'
 import { AuthButton } from '@/features/auth/presentation/components/auth-button'
-import { CartButton } from '@/features/cart/presentation/components/cart-button'
+import { Cart } from '@/features/cart/presentation/components/cart'
 import { Logo } from '@/presentation/components/ui/logo'
 import { Link } from '@/presentation/components/ui/pressables/link'
 
@@ -15,7 +15,7 @@ export const Header: React.FC = () => (
     </Link>
 
     <div className='buttons'>
-      <CartButton itemCount={0} />
+      <Cart />
 
       <AuthButton />
     </div>

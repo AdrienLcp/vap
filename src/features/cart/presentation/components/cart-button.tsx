@@ -7,12 +7,14 @@ import './cart-button.sass'
 
 type CartButtonProps = {
   itemCount: number
+  onPress?: () => void
 }
 
-export const CartButton: React.FC<CartButtonProps> = ({ itemCount }) => (
+export const CartButton: React.FC<CartButtonProps> = ({ itemCount, onPress }) => (
   <Button
     aria-label={t('cart.button.ariaLabel')}
     className='cart-button'
+    onPress={onPress}
     tooltip={t('cart.button.itemCountTooltip', { itemCount })}
   >
     <ShoppingCartIcon aria-hidden />
