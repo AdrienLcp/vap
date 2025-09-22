@@ -13,7 +13,7 @@ export const CartButton: React.FC<CartButtonProps> = ({ itemCount }) => (
   <Button
     aria-label={t('cart.button.ariaLabel')}
     className='cart-button'
-    tooltip={t('cart.button.itemCountTooltip', { itemCount: 0 })}
+    tooltip={t('cart.button.itemCountTooltip', { itemCount })}
   >
     <ShoppingCartIcon aria-hidden />
 

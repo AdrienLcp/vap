@@ -2,6 +2,7 @@
 
 import classNames from 'classnames'
 
+import { CartPanel } from '@/features/cart/presentation/components/cart-panel'
 import { locale } from '@/infrastructure/i18n'
 import { fontBody, fontTitle } from '@/presentation/assets/fonts'
 import { Header } from '@/presentation/components/header'
@@ -16,6 +17,8 @@ export const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => (
     <html data-scroll-behavior='smooth' lang={locale.slice(0, 2)}>
       <body className={classNames(fontBody.variable, fontTitle.variable)}>
         <Header />
+
+        <CartPanel />
 
         {children}
 
