@@ -6,7 +6,7 @@ import { Dialog, DialogTrigger, Modal, ModalOverlay } from 'react-aria-component
 import type { CartItemDTO } from '@/features/cart/domain/cart-entities'
 import { CartClient } from '@/features/cart/infrastructure/cart-client'
 import { CartButton } from '@/features/cart/presentation/components/cart-button'
-import { CartPanel } from '@/features/cart/presentation/components/cart-panel'
+import { CartPanelHeader } from '@/features/cart/presentation/components/cart-panel-header'
 import { t } from '@/infrastructure/i18n'
 import { Spinner } from '@/presentation/components/ui/loaders/spinner'
 import { ToastService } from '@/presentation/services/toast-service'
@@ -45,8 +45,10 @@ export const Cart: React.FC = () => {
 
       <ModalOverlay className='cart-overlay' isDismissable>
         <Modal className='cart-modal'>
-          <Dialog>
-            <CartPanel items={cartItems} />
+          <Dialog className='cart-panel'>
+            <CartPanelHeader />
+
+            {/* item list */}
           </Dialog>
         </Modal>
       </ModalOverlay>
