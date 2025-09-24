@@ -1,0 +1,14 @@
+@use '@/presentation/styles/typography'
+
+.cart-panel-header
+  align-items: center
+  display: grid
+  gap: var(--size-120, 0.75rem)
+  grid-template-columns: 1fr auto
+  padding: var(--size-120, 0.75rem) var(--size-160, 1rem)
+
+  & .cart-title
+    @include typography.body-large
+
+    &
+      @include typography.text-ellipsis

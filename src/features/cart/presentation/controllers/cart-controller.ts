@@ -148,7 +148,6 @@ const updateUserCartItemQuantity = async (cartItemId: string, request: Request):
       }
     }
 
-    // If quantity is 0, we delete item, so we don't receive any data to validate
     const cartItemDTOValidation = CartItemDTOSchema.safeParse(cartItemUpdateResult.data)
 
     if (cartItemDTOValidation.error) {

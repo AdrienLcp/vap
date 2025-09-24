@@ -131,7 +131,11 @@ export const fr = {
       itemCountTooltip: dt('{itemCount:plural} dans le panier', {
         plural: { itemCount: { zero: 'Aucun article', one: '1 article', other: '{?} articles' } }
       })
-    }
+    },
+    list: {
+      error: 'Une erreur est survenue lors du chargement des articles du panier.'
+    },
+    title: 'Votre panier'
   },
   category: {
     card: {

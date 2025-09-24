@@ -1,32 +1,55 @@
-import classNames from 'classnames'
-import { XIcon } from 'lucide-react'
-import { Dialog, DialogTrigger, Modal } from 'react-aria-components'
+'use client'
 
+import { useCallback, useEffect, useState } from 'react'
+import { Dialog, DialogTrigger, Modal, ModalOverlay } from 'react-aria-components'
+
+import type { CartItemDTO } from '@/features/cart/domain/cart-entities'
+import { CartClient } from '@/features/cart/infrastructure/cart-client'
 import { CartButton } from '@/features/cart/presentation/components/cart-button'
-import { Button } from '@/presentation/components/ui/pressables/button'
+import { CartPanel } from '@/features/cart/presentation/components/cart-panel'
+import { t } from '@/infrastructure/i18n'
+import { Spinner } from '@/presentation/components/ui/loaders/spinner'
+import { ToastService } from '@/presentation/services/toast-service'
 
 import './cart.sass'
 
-const itemCount = 0
+export const Cart: React.FC = () => {
+  const [cartItems, setCartItems] = useState<CartItemDTO[]>([])
+  const [isLoadingCart, setIsLoadingCart] = useState(true)
 
-export const Cart: React.FC = () => (
-  <DialogTrigger>
-    <CartButton itemCount={itemCount}  />
+  const loadUserCart = useCallback(async () => {
+    setIsLoadingCart(true)
+    const cartResponse = await CartClient.findUserCartItems()
+    setIsLoadingCart(false)
 
-    <Modal className='cart-modal'>
-      {({ isEntering, isExiting }) => (
-        <Dialog>
-          {({ close }) => (
-            <aside className={classNames('cart-panel', isEntering && 'entering', isExiting && 'exiting')}>
-              <Button
-                Icon={<XIcon />}
-                onPress={close}
-                variant='transparent'
-              />
-            </aside>
-          )}
-        </Dialog>
-      )}
-    </Modal>
-  </DialogTrigger>
-)
+    if (cartResponse.status === 200) {
+      setCartItems(cartResponse.data)
+      return
+    }
+
+    setCartItems([])
+    ToastService.error(t('cart.list.error'))
+  }, [])
+
+  useEffect(() => {
+    loadUserCart()
+  }, [loadUserCart])
+
+  if (isLoadingCart) {
+    return <Spinner />
+  }
+
+  return (
+    <DialogTrigger>
+      <CartButton itemCount={cartItems.length}  />
+
+      <ModalOverlay className='cart-overlay' isDismissable>
+        <Modal className='cart-modal'>
+          <Dialog>
+            <CartPanel items={cartItems} />
+          </Dialog>
+        </Modal>
+      </ModalOverlay>
+    </DialogTrigger>
+  )
+}
