@@ -34,15 +34,14 @@
 ### 🛒 **E-commerce Core**
 - ✅ Product catalog with categories and filtering
 - ✅ Shopping cart with persistent state
-- ✅ User authentication (Google OAuth + credentials)
+- ✅ User authentication (Google auth + credentials)
 - ✅ Order management system
 - ✅ Admin dashboard for product management
 
 ### 🎨 **User Experience**
 - ✅ Responsive design with mobile-first approach
-- ✅ Dark/light mode support
+- ✅ Dark/light mode support (only light for now)
 - ✅ Smooth animations and transitions
-- ✅ Optimistic UI updates
 - ✅ Toast notifications
 
 ### ♿ **Accessibility First**
@@ -53,10 +52,8 @@
 - ✅ Focus management
 
 ### 🌍 **Internationalization**
-- ✅ Multi-language support (French/English)
-- ✅ RTL text direction support
+- ✅ Multi-language support (only French for now)
 - ✅ Locale-based formatting
-- ✅ Server-side language detection
 
 ---
 
@@ -92,15 +89,15 @@ This project uses a clear separation between **Server Components** and **Client 
 #### 🖥️ **Server Components** (Async Functions)
 ```typescript
 // ✅ Server Component - Direct controller access
-export default async function ProductsPage() {
+export const ProductsServerComponent: React.FC = async () => {
   // Server components can be async and call controllers directly
-  const result = await ProductController.findProducts()
+  const productListResponse = await ProductController.findProducts()
   
-  if (result.isFailure) {
-    return <ErrorPage error={result.error} />
+  if (productListResponse.status !== 200) {
+    return 'Error while fetching products'
   }
   
-  return <ProductList products={result.value} />
+  return <ProductList products={productListResponse.data} />
 }
 ```
 
@@ -109,24 +106,25 @@ export default async function ProductsPage() {
 'use client'
 
 // ✅ Client Component - Use client services with hooks
-export function ProductSearch() {
-  const [products, setProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState(false)
-  
-  const searchProducts = useCallback(async (query: string) => {
-    setLoading(true)
+export const ProductsClientComponent: React.FC = () => {
+  const [productList, setProductList] = useState<ProductDTO[]>([])
+  const [isLoadingProducts, setIsLoadingProducts] = useState(false)
+
+  const loadProducts = useCallback(async () => {
+    setIsLoadingProducts(true)
     // Client components use client services via API calls
-    const result = await ProductClient.findProducts({ search: query })
+    const productListResult = await ProductClient.findProducts()
     
-    if (result.isSuccess) {
-      setProducts(result.value)
+    if (productListResult.status === 'SUCCESS') {
+      setProducts(productListResult.data)
     }
-    setLoading(false)
+    setIsLoadingProducts(false)
   }, [])
+
+  // in server component, don't forget to add a loading.tsx file or wrap <Suspense> fallback
+  if (isLoadingProducts) return <Loader />
   
-  return (
-    <SearchInput onSearch={searchProducts} loading={loading} />
-  )
+  return <ProductList products={productList} />
 }
 ```
 
