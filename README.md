@@ -113,9 +113,9 @@ export const ProductsClientComponent: React.FC = () => {
   const loadProducts = useCallback(async () => {
     setIsLoadingProducts(true)
     // Client components use client services via API calls
-    const productListResult = await ProductClient.findProducts()
+    const productListResponse = await ProductClient.findProducts()
     
-    if (productListResult.status === 'SUCCESS') {
+    if (productListResponse.status === 200) {
       setProducts(productListResult.data)
     }
     setIsLoadingProducts(false)
