@@ -116,7 +116,7 @@ export const ProductsClientComponent: React.FC = () => {
     const productListResponse = await ProductClient.findProducts()
     
     if (productListResponse.status === 200) {
-      setProducts(productListResult.data)
+      setProducts(productListResponse.data)
     }
     setIsLoadingProducts(false)
   }, [])
