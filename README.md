@@ -71,6 +71,128 @@ This project follows a **feature-first** + **clean architecture** approach for m
 - **Result pattern**: Functional error handling without exceptions
 - **Single Responsibility**: Each component has one clear purpose
 
+### 🔄 **Data Flow Architecture**
+```mermaid
+graph TD
+    A[Client Components] --> B[Client Services]
+    B --> C[API Routes]
+    C --> D[Controllers]
+    D --> E[Domain Services]
+    E --> F[Infrastructure Layer]
+    
+    G[Server Components] --> H[Controllers Direct]
+    H --> E
+    F --> I[Database/External APIs]
+```
+
+### 🎯 **Server vs Client Components Pattern**
+
+This project uses a clear separation between **Server Components** and **Client Components** with dedicated data access patterns:
+
+#### 🖥️ **Server Components** (Async Functions)
+```typescript
+// ✅ Server Component - Direct controller access
+export default async function ProductsPage() {
+  // Server components can be async and call controllers directly
+  const result = await ProductController.findProducts()
+  
+  if (result.isFailure) {
+    return <ErrorPage error={result.error} />
+  }
+  
+  return <ProductList products={result.value} />
+}
+```
+
+#### 🌐 **Client Components** (Interactive UI)
+```typescript
+'use client'
+
+// ✅ Client Component - Use client services with hooks
+export function ProductSearch() {
+  const [products, setProducts] = useState<Product[]>([])
+  const [loading, setLoading] = useState(false)
+  
+  const searchProducts = useCallback(async (query: string) => {
+    setLoading(true)
+    // Client components use client services via API calls
+    const result = await ProductClient.findProducts({ search: query })
+    
+    if (result.isSuccess) {
+      setProducts(result.value)
+    }
+    setLoading(false)
+  }, [])
+  
+  return (
+    <SearchInput onSearch={searchProducts} loading={loading} />
+  )
+}
+```
+
+#### 📋 **Component Pattern Guidelines**
+
+| Component Type | Data Access | Use Cases | Benefits |
+|----------------|-------------|-----------|----------|
+| **Server Component** | `Controller.method()` | Static data, SEO content, Initial page loads | • Better performance<br>• SEO optimization<br>• Reduced client JS bundle |
+| **Client Component** | `Client.method()` | Interactive features, User actions, Real-time updates | • Immediate user feedback<br>• Optimistic updates<br>• Rich interactions |
+
+#### 🔧 **Implementation Examples**
+
+**Server Component Data Fetching:**
+```typescript
+// app/products/page.tsx
+export default async function ProductsPage({
+  searchParams
+}: {
+  searchParams: { category?: string }
+}) {
+  // Direct controller call in server component
+  const productsResult = await ProductController.findProducts({
+    categoryId: searchParams.category
+  })
+  
+  const categoriesResult = await CategoryController.findAll()
+  
+  return (
+    <div>
+      <ProductFilters categories={categoriesResult.value} />
+      <ProductGrid products={productsResult.value} />
+    </div>
+  )
+}
+```
+
+**Client Component with API Integration:**
+```typescript
+// features/product/presentation/components/product-favorites.tsx
+'use client'
+
+export function ProductFavorites() {
+  const [favorites, setFavorites] = useState<Product[]>([])
+  
+  const toggleFavorite = useCallback(async (productId: string) => {
+    // Optimistic update
+    setFavorites(prev => 
+      prev.some(p => p.id === productId)
+        ? prev.filter(p => p.id !== productId)
+        : [...prev, product]
+    )
+    
+    // API call through client service
+    const result = await ProductClient.toggleFavorite(productId)
+    
+    if (result.isFailure) {
+      // Revert optimistic update on error
+      setFavorites(prev => /* revert logic */)
+      toast.error(result.error.message)
+    }
+  }, [])
+  
+  return <FavoritesList items={favorites} onToggle={toggleFavorite} />
+}
+```
+
 ---
 
 ## 🚀 Getting Started
@@ -273,24 +395,96 @@ vap/
 
 ### 🏛️ **Feature Architecture Example**
 
-Each feature follows clean architecture principles:
+Each feature follows clean architecture principles with clear separation between server and client data access:
 
 ```
 features/product/
 ├── 📁 domain/
-│   ├── product-constants.ts      # Product constants
+│   ├── product-constants.ts      # Product constants & enums
 │   ├── product-entities.ts       # Product business entities
-│   └── product-schemas.ts        # Product Zod schemas
+│   └── product-schemas.ts        # Zod validation schemas
 ├── 📁 application/
-│   ├── hooks/                    # Application hooks
-│   └── product-service.ts        # Application services
+│   ├── hooks/                    # Client-side React hooks
+│   └── product-service.ts        # Core business logic
 ├── 📁 infrastructure/
-│   ├── product-repository.ts     # Database implementations
-│   └── product-client.ts         # API calls from client
+│   ├── product-repository.ts     # Database layer (Prisma)
+│   └── product-client.ts         # 🌐 Client API service
 └── 📁 presentation/
-    ├── components/               # Product UI components
-    ├── hooks/                    # Product-specific hooks
-    └── product-controller.ts     # Presentation controllers
+    ├── components/               # React UI components
+    ├── hooks/                    # UI-specific hooks
+    └── product-controller.ts     # 🖥️ Server controller
+```
+
+#### 🔍 **Controller vs Client Pattern**
+
+```typescript
+// 🖥️ Server Controller (presentation/product-controller.ts)
+export class ProductController {
+  static async findProducts(params?: ProductFilters): Promise<Result<Product[], Error>> {
+    // Direct access to application services in server components
+    return await ProductService.findProducts(params)
+  }
+  
+  static async findById(id: string): Promise<Result<Product, Error>> {
+    return await ProductService.findById(id)
+  }
+}
+
+// 🌐 Client Service (infrastructure/product-client.ts) 
+export class ProductClient {
+  static async findProducts(params?: ProductFilters): Promise<Result<Product[], Error>> {
+    // HTTP calls to API routes for client components
+    const response = await ApiClient.get('/api/products', { params })
+    return Result.fromApiResponse(response)
+  }
+  
+  static async toggleFavorite(productId: string): Promise<Result<void, Error>> {
+    const response = await ApiClient.post(`/api/products/${productId}/favorite`)
+    return Result.fromApiResponse(response)
+  }
+}
+```
+
+#### 📱 **Usage in Components**
+
+**Server Component Example:**
+```typescript
+// app/products/[id]/page.tsx
+export default async function ProductPage({ params }: { params: { id: string } }) {
+  // ✅ Use Controller in Server Components
+  const result = await ProductController.findById(params.id)
+  
+  if (result.isFailure) {
+    notFound()
+  }
+  
+  return <ProductDetail product={result.value} />
+}
+```
+
+**Client Component Example:**
+```typescript
+// features/product/presentation/components/product-favorites-button.tsx
+'use client'
+
+export function ProductFavoritesButton({ productId }: { productId: string }) {
+  const [isFavorite, setIsFavorite] = useState(false)
+  
+  const handleToggle = useCallback(async () => {
+    // ✅ Use Client in Client Components
+    const result = await ProductClient.toggleFavorite(productId)
+    
+    if (result.isSuccess) {
+      setIsFavorite(!isFavorite)
+    }
+  }, [productId, isFavorite])
+  
+  return (
+    <Button onPress={handleToggle}>
+      {isFavorite ? <HeartFilled /> : <Heart />}
+    </Button>
+  )
+}
 ```
 
 ---
