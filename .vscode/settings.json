@@ -6,10 +6,12 @@
     }
   ],
   "cSpell.words": [
+    "Adrien",
     "Cantarell",
     "cuid",
     "dismissable",
     "grayscale",
+    "Lacourpaille",
     "minmax",
     "Neue",
     "nowrap",
@@ -17,7 +19,8 @@
     "pressables",
     "Roboto",
     "Segoe",
-    "turbopack"
+    "turbopack",
+    "WCAG"
   ],
   "peacock.color": "#bad4bd",
   "workbench.colorCustomizations": {

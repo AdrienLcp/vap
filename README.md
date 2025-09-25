@@ -4,14 +4,12 @@
 
 <div align="center">
 
-![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-3178C6?style=for-the-badge&logo=typescript&logoColor=blue)
 ![Next.js](https://img.shields.io/badge/Next.js-15.5.4-000000?style=for-the-badge&logo=next.js&logoColor=white)
-![React](https://img.shields.io/badge/React-19.1.1-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![React](https://img.shields.io/badge/React-19.1.1-61DAFB?style=for-the-badge&logo=react&logoColor=lightblue)
 ![Prisma](https://img.shields.io/badge/Prisma-6.16.2-2D3748?style=for-the-badge&logo=prisma&logoColor=white)
 ![Better Auth](https://img.shields.io/badge/Better_Auth-1.3.17-FF6B6B?style=for-the-badge)
-![React Aria](https://img.shields.io/badge/React_Aria-1.12.2-E056FD?style=for-the-badge&logo=adobe&logoColor=white)
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+![React Aria Components](https://img.shields.io/badge/React_Aria-1.12.2-E056FD?style=for-the-badge&logo=adobe&logoColor=white)
 
 </div>
 
@@ -73,18 +71,6 @@ This project follows a **feature-first** + **clean architecture** approach for m
 - **Result pattern**: Functional error handling without exceptions
 - **Single Responsibility**: Each component has one clear purpose
 
-### 🔄 **Data Flow**
-```mermaid
-graph TD
-    A[UI Components] --> B[Application Services]
-    B --> C[Domain Entities]
-    C --> D[Infrastructure Layer]
-    D --> E[Database/External APIs]
-    
-    F[Server Components] --> G[Direct Database Access]
-    G --> H[Prisma ORM]
-```
-
 ---
 
 ## 🚀 Getting Started
@@ -116,10 +102,7 @@ graph TD
 4. **Database setup**
    ```bash
    # Run migrations
-   pnpm db:migrate
-   
-   # Seed database (optional)
-   pnpm db:seed
+   pnpx prisma migrate dev
    ```
 
 5. **Start development server**
@@ -135,11 +118,7 @@ graph TD
 |---------|-------------|
 | `pnpm dev` | Start development server with Turbopack |
 | `pnpm build` | Build for production |
-| `pnpm start` | Start production server |
 | `pnpm lint` | Run ESLint |
-| `pnpm type-check` | Run TypeScript compiler |
-| `pnpm db:migrate` | Run Prisma migrations |
-| `pnpm db:studio` | Open Prisma Studio |
 
 ---
 
@@ -149,33 +128,23 @@ The project supports multiple languages using a custom i18n implementation.
 
 ### 🗺️ **Supported Locales**
 - 🇫🇷 **French** (default)
-- 🇺🇸 **English**
 
 ### 📝 **Adding Translations**
 
 1. **Add dictionary files**
    ```
    src/infrastructure/i18n/dictionaries/
-   ├── fr.json
-   └── en.json
+   ├── fr.ts
+   └── en.ts
    ```
 
 2. **Use in components**
    ```typescript
-   import { getDictionary } from '@/infrastructure/i18n'
+   import { t } from '@/infrastructure/i18n'
    
-   export async function MyComponent({ locale }: { locale: string }) {
-     const t = await getDictionary(locale)
-     
-     return <h1>{t.welcome.title}</h1>
+   export const MyComponent: React.FC = () => {
+     return <h1>{t('welcome.title')}</h1>
    }
-   ```
-
-3. **URL structure**
-   ```
-   /                    # French (default)
-   /en                  # English
-   /en/products         # English products page
    ```
 
 ---
@@ -250,7 +219,6 @@ vap/
 │   ├── 📁 app/                   # Next.js App Router
 │   │   ├── layout.tsx
 │   │   ├── page.tsx
-│   │   ├── 📁 [locale]/          # Internationalized routes
 │   │   ├── 📁 api/               # API routes
 │   │   ├── 📁 auth/              # Auth pages
 │   │   └── 📁 admin/             # Admin dashboard
@@ -293,7 +261,6 @@ vap/
 │   │
 │   └── 📁 utils/                 # General utilities
 │       ├── array-utils.ts
-│       ├── form-utils.ts
 │       ├── format-utils.ts
 │       ├── object-utils.ts
 │       └── validation-utils.ts
@@ -312,19 +279,19 @@ Each feature follows clean architecture principles:
 ```
 features/product/
 ├── 📁 domain/
-│   ├── entities.ts               # Product business entities
-│   ├── repositories.ts           # Repository interfaces
-│   └── services.ts               # Domain services
+│   ├── product-constants.ts      # Product constants
+│   ├── product-entities.ts       # Product business entities
+│   └── product-schemas.ts        # Product Zod schemas
 ├── 📁 application/
-│   ├── use-cases/                # Application use cases
-│   └── services.ts               # Application services
+│   ├── hooks/                    # Application hooks
+│   └── product-service.ts        # Application services
 ├── 📁 infrastructure/
-│   ├── repositories.ts           # Database implementations
-│   └── services.ts               # External service integrations
+│   ├── product-repository.ts     # Database implementations
+│   └── product-client.ts         # API calls from client
 └── 📁 presentation/
     ├── components/               # Product UI components
     ├── hooks/                    # Product-specific hooks
-    └── controllers.ts            # Presentation controllers
+    └── product-controller.ts     # Presentation controllers
 ```
 
 ---
@@ -337,7 +304,7 @@ We welcome contributions! Please follow these guidelines:
 
 1. **Fork & Clone**
    ```bash
-   git clone https://github.com/yourusername/vap.git
+   git clone https://github.com/AdrienLcp/vap.git
    ```
 
 2. **Create Feature Branch**
@@ -372,12 +339,6 @@ We welcome contributions! Please follow these guidelines:
 
 ---
 
-## 📄 License
-
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
----
-
 <div align="center">
 
 **Made with ❤️ by [Adrien Lacourpaille](https://github.com/AdrienLcp)**
@@ -385,65 +346,3 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 *Building accessible, modern e-commerce experiences*
 
 </div>
-
-## Installation
-
-Vous aurez besoin de
-
-- NodeJS
-- pnpm
-- postgresql
-
-
-## Initialiser l'application
-
-### Ajouter un .env avec les bonnes valeurs
-
-```
-AUTH_GOOGLE_CLIENT_ID="google-client-id"
-AUTH_GOOGLE_CLIENT_SECRET="google-client-secret"
-
-BETTER_AUTH_SECRET="better-auth-secret"
-
-DATABASE_URL="database-url"
-
-NEXT_PUBLIC_APP_URL="http://localhost:3000"
-
-```
-
-### Installer les dépendances
-
-```
-pnpm install
-```
-
-### Base de données
-
-```
-pnpm prisma migrate dev
-```
-
-Pour voir les données de la base:
-
-```
-pnpx prisma studio
-```
-
-## Linting
-
-```
-pnpm lint
-```
-
-## Build
-
-```
-pnpm build
-```
-
-
-## Lancer l'application
-
-```
-pnpm dev
-```
