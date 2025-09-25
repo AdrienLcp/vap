@@ -134,8 +134,7 @@ The project supports multiple languages using a custom i18n implementation.
 1. **Add dictionary files**
    ```
    src/infrastructure/i18n/dictionaries/
-   ├── fr.ts
-   └── en.ts
+   └── fr.ts
    ```
 
 2. **Use in components**
