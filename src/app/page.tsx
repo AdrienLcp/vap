@@ -1,8 +1,5 @@
-const Page: React.FC = () => {
-  return (
-    <main>
-    </main>
-  )
-}
+import { HomePage } from '@/features/home/home-page'
+
+const Page: React.FC = () => <HomePage />
 
 export default Page

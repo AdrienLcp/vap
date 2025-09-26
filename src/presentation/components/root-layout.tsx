@@ -11,9 +11,11 @@ import { Toaster } from '@/presentation/components/toaster'
 import '@/presentation/styles/base.sass'
 import './root-layout.sass'
 
+const lang = locale.slice(0, 2)
+
 export const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => (
   <Providers>
-    <html data-scroll-behavior='smooth' lang={locale.slice(0, 2)}>
+    <html data-scroll-behavior='smooth' lang={lang}>
       <body className={classNames(fontBody.variable, fontTitle.variable)}>
         <Header />
 
