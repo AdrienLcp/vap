@@ -93,7 +93,7 @@ export const ProductsServerComponent: React.FC = async () => {
   // Server components can be async and call controllers directly
   const productListResponse = await ProductController.findProducts()
   
-  if (productListResponse.status !== 200) {
+  if (productListResponse.status !== OK_STATUS) {
     return 'Error while fetching products'
   }
   
@@ -115,7 +115,7 @@ export const ProductsClientComponent: React.FC = () => {
     // Client components use client services via API calls
     const productListResponse = await ProductClient.findProducts()
     
-    if (productListResponse.status === 200) {
+    if (productListResponse.status === OK_STATUS) {
       setProducts(productListResponse.data)
     }
     setIsLoadingProducts(false)
@@ -348,78 +348,6 @@ features/product/
     ├── components/               # React UI components
     ├── hooks/                    # UI-specific hooks
     └── product-controller.ts     # 🖥️ Server controller
-```
-
-#### 🔍 **Controller vs Client Pattern**
-
-```typescript
-// 🖥️ Server Controller (presentation/product-controller.ts)
-export class ProductController {
-  static async findProducts(params?: ProductFilters): Promise<Result<Product[], Error>> {
-    // Direct access to application services in server components
-    return await ProductService.findProducts(params)
-  }
-  
-  static async findById(id: string): Promise<Result<Product, Error>> {
-    return await ProductService.findById(id)
-  }
-}
-
-// 🌐 Client Service (infrastructure/product-client.ts) 
-export class ProductClient {
-  static async findProducts(params?: ProductFilters): Promise<Result<Product[], Error>> {
-    // HTTP calls to API routes for client components
-    const response = await ApiClient.get('/api/products', { params })
-    return Result.fromApiResponse(response)
-  }
-  
-  static async toggleFavorite(productId: string): Promise<Result<void, Error>> {
-    const response = await ApiClient.post(`/api/products/${productId}/favorite`)
-    return Result.fromApiResponse(response)
-  }
-}
-```
-
-#### 📱 **Usage in Components**
-
-**Server Component Example:**
-```typescript
-// app/products/[id]/page.tsx
-export default async function ProductPage({ params }: { params: { id: string } }) {
-  // ✅ Use Controller in Server Components
-  const result = await ProductController.findById(params.id)
-  
-  if (result.isFailure) {
-    notFound()
-  }
-  
-  return <ProductDetail product={result.value} />
-}
-```
-
-**Client Component Example:**
-```typescript
-// features/product/presentation/components/product-favorites-button.tsx
-'use client'
-
-export function ProductFavoritesButton({ productId }: { productId: string }) {
-  const [isFavorite, setIsFavorite] = useState(false)
-  
-  const handleToggle = useCallback(async () => {
-    // ✅ Use Client in Client Components
-    const result = await ProductClient.toggleFavorite(productId)
-    
-    if (result.isSuccess) {
-      setIsFavorite(!isFavorite)
-    }
-  }, [productId, isFavorite])
-  
-  return (
-    <Button onPress={handleToggle}>
-      {isFavorite ? <HeartFilled /> : <Heart />}
-    </Button>
-  )
-}
 ```
 
 ---

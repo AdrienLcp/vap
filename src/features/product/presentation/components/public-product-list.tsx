@@ -1,6 +1,9 @@
+'use client'
+
 import { getProductRoute } from '@/domain/navigation'
 import { PRODUCT_CONSTANTS } from '@/features/product/domain/product-constants'
 import type { ProductPublicDTO } from '@/features/product/domain/product-entities'
+import { PublicProductCard } from '@/features/product/presentation/components/public-product-card'
 import { t } from '@/infrastructure/i18n'
 import { Grid, type GridItem } from '@/presentation/components/ui/grid'
 
@@ -11,9 +14,7 @@ type PublicProductListProps = {
 const renderProductListEmptyState = () => <p>{t('product.list.empty')}</p>
 
 const renderProductItem = (productItem: GridItem<ProductPublicDTO>) => (
-  <>
-    {productItem}
-  </>
+  <PublicProductCard product={productItem} />
 )
 
 export const PublicProductList: React.FC<PublicProductListProps> = ({ products }) => {
@@ -23,15 +24,11 @@ export const PublicProductList: React.FC<PublicProductListProps> = ({ products }
     textValue: product.name
   }))
 
-  const item = productItems[0]
-
-  // Check if received props are public
-  console.log(item)
-
   return (
     <Grid
       aria-label={t('product.list.ariaLabel')}
-      cardSize={PRODUCT_CONSTANTS.IMAGE_SIZE_IN_PX}
+      className='public-product-list'
+      itemSize={PRODUCT_CONSTANTS.IMAGE_SIZE_IN_PX}
       items={productItems}
       renderEmptyState={renderProductListEmptyState}
       renderItem={renderProductItem}

@@ -11,8 +11,6 @@
   --lightness-hovered: 0.1
   --lightness-pressed: 0.2
 
-  // Dark theme
-
   --dark-brand-background: var(--white)
   --dark-brand-background-hovered: oklch(from var(--dark-brand-background) clamp(0, l - var(--lightness-hovered), 1) c h)
   --dark-brand-background-pressed: oklch(from var(--dark-brand-background) clamp(0, l - var(--lightness-pressed), 1) c h)
@@ -60,7 +58,6 @@
   --dark-status-warning-border: oklch(66.59% 0.146 52.41)
   --dark-status-warning-foreground: oklch(66.59% 0.146 52.41)
 
-  // Light theme
 
   --light-brand-background: var(--black)
   --light-brand-background-hovered: oklch(from var(--light-brand-background) clamp(0, l + var(--lightness-hovered), 1) c h)
@@ -108,8 +105,6 @@
   --light-status-warning-background: oklch(97% 0.02 57.96)
   --light-status-warning-border: oklch(70% 0.136 52.41)
   --light-status-warning-foreground: oklch(45% 0.146 52.41)
-
-  // Final colors
 
   --neutral-background: light-dark(var(--light-neutral-background), var(--dark-neutral-background))
   --neutral-background-hovered: light-dark(var(--light-neutral-background-hovered), var(--dark-neutral-background-hovered))

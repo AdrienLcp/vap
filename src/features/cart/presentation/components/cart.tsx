@@ -7,6 +7,7 @@ import type { CartItemDTO } from '@/features/cart/domain/cart-entities'
 import { CartClient } from '@/features/cart/infrastructure/cart-client'
 import { CartButton } from '@/features/cart/presentation/components/cart-button'
 import { CartPanelHeader } from '@/features/cart/presentation/components/cart-panel-header'
+import { OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { Spinner } from '@/presentation/components/ui/loaders/spinner'
 import { ToastService } from '@/presentation/services/toast-service'
@@ -22,7 +23,7 @@ export const Cart: React.FC = () => {
     const cartResponse = await CartClient.findUserCartItems()
     setIsLoadingCart(false)
 
-    if (cartResponse.status === 200) {
+    if (cartResponse.status === OK_STATUS) {
       setCartItems(cartResponse.data)
       return
     }

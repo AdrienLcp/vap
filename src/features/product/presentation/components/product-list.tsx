@@ -9,8 +9,6 @@ import { ProductCard } from '@/features/product/presentation/components/product-
 import { t } from '@/infrastructure/i18n'
 import { Grid, type GridItem } from '@/presentation/components/ui/grid'
 
-import './product-list.sass'
-
 type ProductListProps = {
   products: ProductDTO[]
 }
@@ -33,7 +31,7 @@ export const ProductList: React.FC<ProductListProps> = ({ products }) => {
   return (
     <Grid
       aria-label={t('product.list.ariaLabel')}
-      cardSize={PRODUCT_CONSTANTS.IMAGE_SIZE_IN_PX}
+      itemSize={PRODUCT_CONSTANTS.IMAGE_SIZE_IN_PX}
       items={productGridItems}
       renderEmptyState={renderProductListEmptyState}
       renderItem={renderProductItem}

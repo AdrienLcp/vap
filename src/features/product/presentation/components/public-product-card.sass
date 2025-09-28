@@ -1,0 +1,33 @@
+@use '@/presentation/styles/interactive'
+@use '@/presentation/styles/selectors'
+@use '@/presentation/styles/sizes'
+
+.public-product-card
+  // @include interactive.transparent
+  background-color: var(--neutral-background)
+
+  &:hover
+    background-color: oklch(from var(--neutral-foreground) l c h / var(--alpha-xs, 0.125))
+
+  &:active
+    background-color: oklch(from var(--neutral-foreground) l c h / var(--alpha-s, 0.175))
+
+  & .product-image
+    @include sizes.square(100%)
+
+    & svg
+      @include sizes.square(3rem)
+
+  & .footer
+    display: grid
+    gap: var(--size-80, 0.5rem)
+    padding: var(--size-120, 0.75rem) var(--size-160, 1rem)
+
+    & .details
+      align-items: center
+      display: flex
+      gap: var(--size-80, 0.5rem)
+      justify-content: space-between
+
+.public-product-card:has(.add-to-cart-button:hover, .quantity-selector:hover)
+  background-color: var(--neutral-background)

@@ -2,6 +2,8 @@ import { PublicProductList } from '@/features/product/presentation/components/pu
 import { ProductController } from '@/features/product/presentation/controllers/product-controller'
 import { OK_STATUS, redirectByErrorStatus } from '@/infrastructure/api/http-response'
 
+import './home-page.sass'
+
 export const HomePage: React.FC = async () => {
   const publicProductListResponse = await ProductController.findPublicProducts()
 

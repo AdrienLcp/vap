@@ -31,7 +31,7 @@ export const CategoryList: React.FC<CategoryListProps> = ({ categories }) => {
   return (
     <Grid
       aria-label={t('category.list.ariaLabel')}
-      cardSize={CATEGORY_CONSTANTS.IMAGE_SIZE_IN_PX}
+      itemSize={CATEGORY_CONSTANTS.IMAGE_SIZE_IN_PX}
       items={categoryGridItems}
       renderEmptyState={renderCategoryListEmptyState}
       renderItem={renderCategoryItem}

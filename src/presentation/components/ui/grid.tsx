@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useMemo } from 'react'
-import { GridList, GridListItem, type GridListItemProps, type GridListProps, type GridListRenderProps } from 'react-aria-components'
+import { GridList, GridListItem, type GridListItemProps, type GridListItemRenderProps, type GridListProps, type GridListRenderProps } from 'react-aria-components'
 
 import { reactAriaClassNames } from '@/presentation/utils/react-aria-utils'
 import type { Style } from '@/presentation/utils/styles-utils'
@@ -11,14 +11,14 @@ import './grid.sass'
 export type GridItem<Data extends object> = GridListItemProps<Data> & Data
 
 type GridProps<Data extends object> = Omit<GridListProps<Data>, 'children' | 'items'> & {
-  cardSize?: number
+  itemSize?: number
   items: GridItem<Data>[]
-  renderItem?: (item: GridItem<Data>) => React.ReactNode
+  renderItem?: (item: GridItem<Data>, values?: GridListItemRenderProps) => React.ReactNode
 }
 
 export function Grid <Data extends object> ({
   className,
-  cardSize = 200,
+  itemSize = 200,
   layout = 'grid',
   renderEmptyState,
   renderItem,
@@ -26,9 +26,9 @@ export function Grid <Data extends object> ({
   ...gridRestProps
 }: GridProps<Data>) {
   const gridStyle: Style = useMemo(() => ({
-    '--grid-card-size': `${cardSize}px`,
+    '--grid-item-size': `${itemSize}px`,
     ...style
-  }), [cardSize, style])
+  }), [itemSize, style])
 
   const renderGridEmptyState = useCallback((gridListRenderProps: GridListRenderProps) => {
     if (!renderEmptyState) {
@@ -55,7 +55,7 @@ export function Grid <Data extends object> ({
           {...gridItem}
           className={values => reactAriaClassNames(values, gridItem.className, 'grid-item')}
         >
-          {renderItem?.(gridItem)}
+          {values => renderItem?.(gridItem, values)}
         </GridListItem>
       )}
     </GridList>
