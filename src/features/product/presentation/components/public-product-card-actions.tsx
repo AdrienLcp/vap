@@ -1,33 +1,17 @@
-import { ShoppingBasketIcon } from 'lucide-react'
-import { useCallback, useState } from 'react'
+import { useCartStore } from '@/features/cart/application/use-cart-store'
+import { AddProductToCartButton } from '@/features/product/presentation/components/add-product-to-cart-button'
+import { ProductQuantitySelector } from '@/features/product/presentation/components/product-quantity-selector'
 
-import { CART_CONSTANTS } from '@/features/cart/domain/cart-constants'
-import { Button } from '@/presentation/components/ui/pressables/button'
-import { QuantitySelector } from '@/presentation/components/ui/quantity-selector'
+type PublicProductCardActionsProps = {
+  productId: string
+}
 
-import './public-product-card-actions.sass'
+export const PublicProductCardActions: React.FC<PublicProductCardActionsProps> = ({ productId }) => {
+  const cartProductQuantity = useCartStore(state => state.getProductQuantity(productId))
 
-export const PublicProductCardActions: React.FC = () => {
-  const [quantity, setQuantity] = useState(0)
-  // const { count, increment } = useCartStore()
-
-  const addProductToCart = useCallback(() => {
-    setQuantity(1)
-  }, [])
-
-  if (quantity === 0) {
-    return (
-      <Button className='add-to-cart-button' onPress={addProductToCart}>
-        <ShoppingBasketIcon />
-      </Button>
-    )
+  if (cartProductQuantity <= 0) {
+    return <AddProductToCartButton productId={productId} />
   }
 
-  return (
-    <QuantitySelector
-      max={CART_CONSTANTS.MAX_ITEM_QUANTITY}
-      onQuantityChange={setQuantity}
-      quantity={quantity}
-    />
-  )
+  return <ProductQuantitySelector cartProductQuantity={cartProductQuantity} productId={productId} />
 }

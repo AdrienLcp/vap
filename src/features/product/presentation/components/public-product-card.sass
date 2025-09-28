@@ -3,14 +3,7 @@
 @use '@/presentation/styles/sizes'
 
 .public-product-card
-  // @include interactive.transparent
-  background-color: var(--neutral-background)
-
-  &:hover
-    background-color: oklch(from var(--neutral-foreground) l c h / var(--alpha-xs, 0.125))
-
-  &:active
-    background-color: oklch(from var(--neutral-foreground) l c h / var(--alpha-s, 0.175))
+  @include interactive.transparent
 
   & .product-image
     @include sizes.square(100%)

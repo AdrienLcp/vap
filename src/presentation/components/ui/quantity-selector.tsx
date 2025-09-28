@@ -7,13 +7,14 @@ import { stopPropagationHandlers } from '@/presentation/utils/interactions-utils
 import './quantity-selector.sass'
 
 type QuantitySelectorProps = {
+  isDisabled?: boolean
   max?: number
   min?: number
   onQuantityChange: (newQuantity: number) => void
   quantity: number
 }
 
-export const QuantitySelector: React.FC<QuantitySelectorProps> = ({ max, min, onQuantityChange, quantity }) => {
+export const QuantitySelector: React.FC<QuantitySelectorProps> = ({ isDisabled, max, min, onQuantityChange, quantity }) => {
   const isMax = useMemo(() => max != null && quantity >= max, [max, quantity])
   const isMin = useMemo(() => min != null && quantity <= min, [min, quantity])
 
@@ -31,13 +32,13 @@ export const QuantitySelector: React.FC<QuantitySelectorProps> = ({ max, min, on
 
   return (
     <div className='quantity-selector' {...stopPropagationHandlers}>
-      <Button isDisabled={isMin} onPress={onDecrement}>
+      <Button isDisabled={isDisabled || isMin} onPress={onDecrement}>
         <MinusIcon />
       </Button>
 
       <span>{quantity}</span>
 
-      <Button isDisabled={isMax} onPress={onIncrement}>
+      <Button isDisabled={isDisabled || isMax} onPress={onIncrement}>
         <PlusIcon />
       </Button>
     </div>

@@ -3,9 +3,10 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Dialog, DialogTrigger, Modal, ModalOverlay } from 'react-aria-components'
 
-import type { CartItemDTO } from '@/features/cart/domain/cart-entities'
+import { useCartStore } from '@/features/cart/application/use-cart-store'
 import { CartClient } from '@/features/cart/infrastructure/cart-client'
 import { CartButton } from '@/features/cart/presentation/components/cart-button'
+import { CartItemList } from '@/features/cart/presentation/components/cart-item-list'
 import { CartPanelHeader } from '@/features/cart/presentation/components/cart-panel-header'
 import { OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
@@ -15,22 +16,23 @@ import { ToastService } from '@/presentation/services/toast-service'
 import './cart.sass'
 
 export const Cart: React.FC = () => {
-  const [cartItems, setCartItems] = useState<CartItemDTO[]>([])
   const [isLoadingCart, setIsLoadingCart] = useState(true)
+  const addCartItem = useCartStore(state => state.addItem)
 
   const loadUserCart = useCallback(async () => {
     setIsLoadingCart(true)
     const cartResponse = await CartClient.findUserCartItems()
     setIsLoadingCart(false)
 
-    if (cartResponse.status === OK_STATUS) {
-      setCartItems(cartResponse.data)
+    if (cartResponse.status !== OK_STATUS) {
+      ToastService.error(t('cart.list.error'))
       return
     }
 
-    setCartItems([])
-    ToastService.error(t('cart.list.error'))
-  }, [])
+    for (const cartItem of cartResponse.data) {
+      addCartItem(cartItem.product, cartItem.quantity)
+    }
+  }, [addCartItem])
 
   useEffect(() => {
     loadUserCart()
@@ -42,14 +44,14 @@ export const Cart: React.FC = () => {
 
   return (
     <DialogTrigger>
-      <CartButton itemCount={cartItems.length}  />
+      <CartButton />
 
       <ModalOverlay className='cart-overlay' isDismissable>
         <Modal className='cart-modal'>
           <Dialog className='cart-panel'>
             <CartPanelHeader />
 
-            {/* item list */}
+            <CartItemList />
           </Dialog>
         </Modal>
       </ModalOverlay>
