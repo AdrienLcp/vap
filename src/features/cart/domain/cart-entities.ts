@@ -33,7 +33,7 @@ export type CartItemDeletionResponse = Response<
 >
 
 export type CartItemQuantityUpdateResponse = Response<
-  | OkResponse<CartItemDTO>
+  | NoContentResponse
   | BadRequestResponse<Issues<CartItemUpdateData>>
   | UnauthorizedResponse
   | ForbiddenResponse

@@ -3,7 +3,8 @@ import 'server-only'
 import { CartService } from '@/features/cart/application/cart-service'
 import { CART_API_BASE_URL } from '@/features/cart/domain/cart-constants'
 import type { CartClearResponse, CartItemCreationResponse, CartItemDeletionResponse, CartItemListResponse, CartItemQuantityUpdateResponse } from '@/features/cart/domain/cart-entities'
-import { CartItemCreationDataSchema, CartItemDTOSchema, CartItemIdSchema, CartItemUpdateDataSchema } from '@/features/cart/domain/cart-schemas'
+import { CartItemCreationDataSchema, CartItemDTOSchema, CartItemUpdateDataSchema } from '@/features/cart/domain/cart-schemas'
+import { ProductIdSchema } from '@/features/product/domain/product-schemas'
 import { HttpResponse } from '@/infrastructure/api/http-response'
 import { buildLocationUrl } from '@/infrastructure/env/client'
 
@@ -35,10 +36,10 @@ const addItemToUserCart = async (cartItemCreationRequest: Request): Promise<Cart
       return HttpResponse.internalServerError()
     }
 
-    const cratedCartItem = cartItemDTOValidation.data
-    const createdCartItemLocationUrl = buildLocationUrl(CART_API_BASE_URL, cratedCartItem.id)
+    const createdCartItem = cartItemDTOValidation.data
+    const createdCartItemLocationUrl = buildLocationUrl(CART_API_BASE_URL, createdCartItem.product.id)
 
-    return HttpResponse.created(cratedCartItem, { 'Location': createdCartItemLocationUrl })
+    return HttpResponse.created(createdCartItem, { 'Location': createdCartItemLocationUrl })
   } catch (error) {
     console.error('Unknown error in CartRepository.addItemToUserCart:', error)
     return HttpResponse.internalServerError()
@@ -94,15 +95,15 @@ const findUserCartItems = async (): Promise<CartItemListResponse> => {
   }
 }
 
-const removeItemFromUserCart = async (cartItemId: string): Promise<CartItemDeletionResponse> => {
+const removeItemFromUserCart = async (productId: string): Promise<CartItemDeletionResponse> => {
   try {
-    const cartItemIdValidation = CartItemIdSchema.safeParse(cartItemId)
+    const productIdValidation = ProductIdSchema.safeParse(productId)
 
-    if (cartItemIdValidation.error) {
-      return HttpResponse.badRequest(cartItemIdValidation.error.issues)
+    if (productIdValidation.error) {
+      return HttpResponse.badRequest(productIdValidation.error.issues)
     }
 
-    const cartItemDeletionResult = await CartService.removeItemFromUserCart(cartItemIdValidation.data)
+    const cartItemDeletionResult = await CartService.removeItemFromUserCart(productIdValidation.data)
 
     if (cartItemDeletionResult.status === 'ERROR') {
       switch (cartItemDeletionResult.error) {
@@ -121,12 +122,12 @@ const removeItemFromUserCart = async (cartItemId: string): Promise<CartItemDelet
   }
 }
 
-const updateUserCartItemQuantity = async (cartItemId: string, request: Request): Promise<CartItemQuantityUpdateResponse> => {
+const updateUserCartItemQuantity = async (productId: string, request: Request): Promise<CartItemQuantityUpdateResponse> => {
   try {
-    const cartItemIdValidation = CartItemIdSchema.safeParse(cartItemId)
+    const productIdValidation = ProductIdSchema.safeParse(productId)
 
-    if (cartItemIdValidation.error) {
-      return HttpResponse.badRequest(cartItemIdValidation.error.issues)
+    if (productIdValidation.error) {
+      return HttpResponse.badRequest(productIdValidation.error.issues)
     }
 
     const cartItemUpdateData = await request.json()
@@ -136,7 +137,7 @@ const updateUserCartItemQuantity = async (cartItemId: string, request: Request):
       return HttpResponse.badRequest(cartItemUpdateDataValidation.error.issues)
     }
 
-    const cartItemUpdateResult = await CartService.updateUserCartItemQuantity(cartItemIdValidation.data, cartItemUpdateDataValidation.data.quantity)
+    const cartItemUpdateResult = await CartService.updateUserCartItemQuantity(productIdValidation.data, cartItemUpdateDataValidation.data.quantity)
 
     if (cartItemUpdateResult.status === 'ERROR') {
       switch (cartItemUpdateResult.error) {
@@ -148,14 +149,7 @@ const updateUserCartItemQuantity = async (cartItemId: string, request: Request):
       }
     }
 
-    const cartItemDTOValidation = CartItemDTOSchema.safeParse(cartItemUpdateResult.data)
-
-    if (cartItemDTOValidation.error) {
-      console.error('Validation error in CartController.updateUserCartItemQuantity:', cartItemDTOValidation.error)
-      return HttpResponse.internalServerError()
-    }
-
-    return HttpResponse.ok(cartItemDTOValidation.data)
+    return HttpResponse.noContent()
   } catch (error) {
     console.error('Unknown error in CartRepository.updateCartItemQuantity:', error)
     return HttpResponse.internalServerError()

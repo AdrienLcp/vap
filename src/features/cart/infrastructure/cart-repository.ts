@@ -1,11 +1,11 @@
 import 'server-only'
 
+import type { NotFound } from '@/domain/entities'
 import type { CartItem, CartItemCreationData, CartItemDTO, CartProduct } from '@/features/cart/domain/cart-entities'
 import { failure, type Result, success } from '@/helpers/result'
 import { CartDatabase, type EntitySelectedFields } from '@/infrastructure/database'
 
 const CART_ITEM_SELECTED_FIELDS = {
-  id: true,
   quantity: true
 } satisfies EntitySelectedFields<CartItem>
 
@@ -28,6 +28,31 @@ const cartItemSelectedFields = {
 
 const addItemToUserCart = async (userId: string, cartItemCreationData: CartItemCreationData): Promise<Result<CartItemDTO>> => {
   try {
+    const existingItem = await CartDatabase.findUnique({
+      where: {
+        productId_userId: {
+          productId: cartItemCreationData.productId,
+          userId
+        }
+      },
+      select: { quantity: true }
+    })
+
+    if (existingItem) {
+      const updatedCartItem = await CartDatabase.update({
+        where: {
+          productId_userId: {
+            productId: cartItemCreationData.productId,
+            userId
+          }
+        },
+        data: { quantity: existingItem.quantity + cartItemCreationData.quantity },
+        select: cartItemSelectedFields
+      })
+
+      return success(updatedCartItem)
+    }
+
     const createdCartItem = await CartDatabase.create({
       data: {
         product: { connect: { id: cartItemCreationData.productId } },
@@ -68,24 +93,33 @@ const findUserCartItems = async (userId: string): Promise<Result<CartItemDTO[]>>
   }
 }
 
-const removeItemFromUserCart = async (userId: string, cartItemId: string): Promise<Result<CartItemDTO>> => {
+const removeItemFromUserCart = async (userId: string, productId: string): Promise<Result<null, NotFound>> => {
   try {
-    const deletedCartItem = await CartDatabase.delete({
-      where: { id: cartItemId, userId },
-      select: cartItemSelectedFields
+    await CartDatabase.delete({
+      where: {
+        productId_userId: {
+          productId,
+          userId
+        }
+      }
     })
 
-    return success(deletedCartItem)
+    return success()
   } catch (error) {
     console.error('Unknown error in CartRepository.removeItemFromUserCart:', error)
     return failure()
   }
 }
 
-const updateUserCartItemQuantity = async (userId: string, cartItemId: string, quantity: number): Promise<Result<CartItemDTO>> => {
+const updateUserCartItemQuantity = async (userId: string, productId: string, quantity: number): Promise<Result<CartItemDTO, NotFound>> => {
   try {
     const updatedCartItem = await CartDatabase.update({
-      where: { id: cartItemId, userId },
+      where: {
+        productId_userId: {
+          productId,
+          userId
+        }
+      },
       data: { quantity },
       select: cartItemSelectedFields
     })

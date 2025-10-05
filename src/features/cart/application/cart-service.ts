@@ -34,17 +34,17 @@ const findUserCartItems = async () => {
   return await CartRepository.findUserCartItems(authUserResult.data.id)
 }
 
-const removeItemFromUserCart = async (cartItemId: string) => {
+const removeItemFromUserCart = async (productId: string) => {
   const authUserResult = await AuthService.findUser()
 
   if (authUserResult.status === 'ERROR') {
     return authUserResult
   }
 
-  return await CartRepository.removeItemFromUserCart(authUserResult.data.id, cartItemId)
+  return await CartRepository.removeItemFromUserCart(authUserResult.data.id, productId)
 }
 
-const updateUserCartItemQuantity = async (cartItemId: string, quantity: number) => {
+const updateUserCartItemQuantity = async (productId: string, quantity: number) => {
   const authUserResult = await AuthService.findUser()
 
   if (authUserResult.status === 'ERROR') {
@@ -52,10 +52,10 @@ const updateUserCartItemQuantity = async (cartItemId: string, quantity: number) 
   }
 
   if (quantity === 0) {
-    return await CartRepository.removeItemFromUserCart(authUserResult.data.id, cartItemId)
+    return await CartRepository.removeItemFromUserCart(authUserResult.data.id, productId)
   }
 
-  return await CartRepository.updateUserCartItemQuantity(authUserResult.data.id, cartItemId, quantity)
+  return await CartRepository.updateUserCartItemQuantity(authUserResult.data.id, productId, quantity)
 }
 
 export const CartService = {

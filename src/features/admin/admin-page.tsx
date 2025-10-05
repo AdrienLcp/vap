@@ -29,7 +29,12 @@ const adminListBoxItems: AdminItem[] = [
 ]
 
 export const AdminPage: React.FC = () => (
-  <ListBox className='admin-list' items={adminListBoxItems} orientation='horizontal'>
+  <ListBox
+    aria-label={t('admin.links.listAriaLabel')}
+    className='admin-list'
+    items={adminListBoxItems}
+    orientation='horizontal'
+  >
     {({ Icon, textValue, ...item }) => (
       <ListBoxItem {...item} className='item' textValue={textValue}>
         <Card>

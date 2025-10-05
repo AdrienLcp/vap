@@ -3,15 +3,12 @@ import z from 'zod'
 import { CART_CONSTANTS, CART_ERRORS } from '@/features/cart/domain/cart-constants'
 import { ProductIdSchema, ProductPublicDTOSchema } from '@/features/product/domain/product-schemas'
 
-export const CartItemIdSchema = z.cuid()
-
 export const CartItemQuantitySchema = z
   .number()
   .max(CART_CONSTANTS.MAX_ITEM_QUANTITY, CART_ERRORS.QUANTITY_TOO_HIGH)
   .min(CART_CONSTANTS.MIN_ITEM_QUANTITY, CART_ERRORS.QUANTITY_TOO_LOW)
 
 export const CartItemSchema = z.object({
-  id: CartItemIdSchema,
   quantity: CartItemQuantitySchema
 })
 

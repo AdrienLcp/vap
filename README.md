@@ -160,6 +160,9 @@ export const ProductsClientComponent: React.FC = () => {
    ```bash
    # Run migrations
    pnpx prisma migrate dev
+
+   # View and edit database data with Prisma Studio
+   pnpx prisma studio
    ```
 
 5. **Start development server**

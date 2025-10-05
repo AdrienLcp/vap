@@ -4,6 +4,7 @@ export const fr = {
   admin: {
     links: {
       categories: 'Catégories',
+      listAriaLabel: 'Liens d\'administration',
       products: 'Produits'
     },
     nav: {

@@ -30,6 +30,8 @@ const BaseButton: React.FC<ButtonProps> = ({
   className,
   Icon,
   iconSide,
+  isDisabled,
+  isPending,
   size,
   variant,
   ...buttonRestProps
@@ -44,6 +46,8 @@ const BaseButton: React.FC<ButtonProps> = ({
       size,
       children
     )}
+    isDisabled={isDisabled || isPending}
+    isPending={isPending}
     {...buttonRestProps}
   >
     {values => variant == null
