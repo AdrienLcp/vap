@@ -31,7 +31,10 @@ export const CartItemCreationDataSchema = z.object({
   quantity: CartItemQuantitySchema
 })
 
+const CartItemQuantityUpdateSchema = z
+  .number()
+  .max(CART_CONSTANTS.MAX_ITEM_QUANTITY, CART_ERRORS.QUANTITY_TOO_HIGH)
+
 export const CartItemUpdateDataSchema = z.object({
-  productId: ProductIdSchema,
-  quantity: CartItemQuantitySchema
+  quantity: CartItemQuantityUpdateSchema
 })

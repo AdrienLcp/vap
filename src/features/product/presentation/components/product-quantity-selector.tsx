@@ -1,9 +1,11 @@
+'use client'
+
 import { useState } from 'react'
 
 import { useCartStore } from '@/features/cart/application/use-cart-store'
 import { CART_CONSTANTS } from '@/features/cart/domain/cart-constants'
 import { CartClient } from '@/features/cart/infrastructure/cart-client'
-import { CREATED_STATUS } from '@/infrastructure/api/http-response'
+import { NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
 import { QuantitySelector } from '@/presentation/components/ui/quantity-selector'
 import { ToastService } from '@/presentation/services/toast-service'
 
@@ -20,12 +22,11 @@ export const ProductQuantitySelector: React.FC<ProductQuantitySelectorProps> = (
   const updateProductCartQuantity = async (newQuantity: number) => {
     setIsAddingProductToCart(true)
 
-    // cart item id != product id
-    const createdItemResponse = await CartClient.updateUserCartItemQuantity(productId, newQuantity)
+    const updatedItemResponse = await CartClient.updateUserCartItemQuantity(productId, newQuantity)
 
     setIsAddingProductToCart(false)
 
-    if (createdItemResponse.status !== CREATED_STATUS) {
+    if (updatedItemResponse.status !== NO_CONTENT_STATUS) {
       ToastService.error('Could not update product quantity. Please try again.')
       return
     }

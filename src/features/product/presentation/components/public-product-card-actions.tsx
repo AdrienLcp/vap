@@ -1,3 +1,5 @@
+'use client'
+
 import { useCartStore } from '@/features/cart/application/use-cart-store'
 import { AddProductToCartButton } from '@/features/product/presentation/components/add-product-to-cart-button'
 import { ProductQuantitySelector } from '@/features/product/presentation/components/product-quantity-selector'
