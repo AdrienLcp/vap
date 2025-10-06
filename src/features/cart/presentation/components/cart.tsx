@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Dialog, DialogTrigger, Modal, ModalOverlay } from 'react-aria-components'
 
 import { useCartStore } from '@/features/cart/application/use-cart-store'
@@ -17,6 +17,8 @@ import './cart.sass'
 
 export const Cart: React.FC = () => {
   const [isLoadingCart, setIsLoadingCart] = useState(true)
+  const isFirstRender = useRef(true)
+
   const addCartItem = useCartStore(state => state.addItem)
 
   const loadUserCart = useCallback(async () => {
@@ -35,7 +37,10 @@ export const Cart: React.FC = () => {
   }, [addCartItem])
 
   useEffect(() => {
-    loadUserCart()
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      loadUserCart()
+    }
   }, [loadUserCart])
 
   if (isLoadingCart) {

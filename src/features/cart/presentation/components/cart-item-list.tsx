@@ -1,3 +1,5 @@
+'use client'
+
 import { useCartStore } from '@/features/cart/application/use-cart-store'
 
 export const CartItemList: React.FC = () => {

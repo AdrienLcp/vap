@@ -38,11 +38,11 @@ export const useCartStore = create<CartStore>((set, get) => ({
 
   clearStore: () => set({ items: new Map<string, CartStoreItem>() }),
 
+  getItemCount: () => get().items.size,
+
   getProductQuantity: (productId: string) => {
     return get().items.get(productId)?.quantity ?? 0
   },
-
-  getItemCount: () => get().items.size,
 
   removeItem: (productId: string) => {
     set(state => {
