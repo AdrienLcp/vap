@@ -10,11 +10,11 @@ import { QuantitySelector } from '@/presentation/components/ui/quantity-selector
 import { ToastService } from '@/presentation/services/toast-service'
 
 type ProductQuantitySelectorProps = {
-  cartProductQuantity: number
   productId: string
 }
 
-export const ProductQuantitySelector: React.FC<ProductQuantitySelectorProps> = ({ cartProductQuantity, productId }) => {
+export const ProductQuantitySelector: React.FC<ProductQuantitySelectorProps> = ({ productId }) => {
+  const cartProductQuantity = useCartStore(state => state.getProductQuantity(productId))
   const updateProductCartStoreQuantity = useCartStore(state => state.updateQuantity)
 
   const [isUpdatingCartProduct, setIsAddingProductToCart] = useState(false)

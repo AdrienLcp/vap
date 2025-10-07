@@ -6,13 +6,23 @@ import { Image, type ImageProps } from '@/presentation/components/ui/image'
 
 import './product-image.sass'
 
-export const ProductImage: React.FC<Partial<ImageProps>> = ({ className, src, ...productImageRestProps }) => (
-  <Image
-    alt={t('product.imageAlt')}
-    className={classNames('product-image', className)}
-    height={PRODUCT_CONSTANTS.IMAGE_SIZE_IN_PX}
-    src={src}
-    width={PRODUCT_CONSTANTS.IMAGE_SIZE_IN_PX}
-    {...productImageRestProps}
-  />
-)
+export type ProductImageSize = 'small' | 'large'
+
+type ProductImageProps = Partial<ImageProps> & {
+  size?: ProductImageSize
+}
+
+export const ProductImage: React.FC<ProductImageProps> = ({ className, size = 'large', src, ...productImageRestProps }) => {
+  const imageSizeInPx = size === 'small' ? PRODUCT_CONSTANTS.IMAGE_SMALL_SIZE_IN_PX : PRODUCT_CONSTANTS.IMAGE_SIZE_IN_PX
+
+  return (
+    <Image
+      alt={t('product.imageAlt')}
+      className={classNames('product-image', className)}
+      height={imageSizeInPx}
+      src={src}
+      width={imageSizeInPx}
+      {...productImageRestProps}
+    />
+  )
+}

@@ -127,11 +127,17 @@ export const fr = {
     }
   },
   cart: {
+    ariaLabel: 'Panier',
     button: {
       ariaLabel: 'Panier',
       itemCountTooltip: dt('{itemCount:plural} dans le panier', {
         plural: { itemCount: { zero: 'Aucun article', one: '1 article', other: '{?} articles' } }
       })
+    },
+    item: {
+      totalPrice: 'Prix total : {totalPrice}',
+      unitPrice: 'Prix à l\'unité : {unitPrice}',
+      quantity: 'Quantité : {quantity:number}'
     },
     list: {
       empty: 'Votre panier est vide.',

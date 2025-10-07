@@ -15,5 +15,5 @@ export const PublicProductCardActions: React.FC<PublicProductCardActionsProps> =
     return <AddProductToCartButton productId={productId} />
   }
 
-  return <ProductQuantitySelector cartProductQuantity={cartProductQuantity} productId={productId} />
+  return <ProductQuantitySelector productId={productId} />
 }

@@ -3,27 +3,29 @@
 import { GridList, GridListItem } from 'react-aria-components'
 
 import { useCartStore } from '@/features/cart/application/use-cart-store'
+import { CartItem } from '@/features/cart/presentation/components/cart-item'
 import { t } from '@/infrastructure/i18n'
 
 import './cart-item-list.sass'
 
 export const CartItemList: React.FC = () => {
-  const items = useCartStore(state => state.items)
+  const cartItems = useCartStore(state => state.items)
 
-  if (items.size === 0) {
+  if (cartItems.size === 0) {
     return <p className='cart-list-empty-message'>{t('cart.list.empty')}</p>
   }
 
-  const itemList = Array.from(items.values())
+  const cartItemList = Array.from(cartItems.values())
 
   return (
-    <GridList items={itemList}>
+    <GridList
+      aria-label={t('cart.ariaLabel')}
+      className='cart-list'
+      items={cartItemList}
+    >
       {item => (
-        <GridListItem
-          id={item.product.id}
-          textValue={item.product.name}
-        >
-          {item.product.name} - Quantity: {item.quantity} - Price: ${item.product.price}
+        <GridListItem id={item.product.id} textValue={item.product.name}>
+          <CartItem item={item} />
         </GridListItem>
       )}
     </GridList>
