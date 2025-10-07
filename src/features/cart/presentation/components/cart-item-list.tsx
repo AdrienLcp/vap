@@ -4,7 +4,6 @@ import { useCartStore } from '@/features/cart/application/use-cart-store'
 
 export const CartItemList: React.FC = () => {
   const items = useCartStore(state => state.items)
-
   const itemList = Array.from(items.values())
 
   if (itemList.length === 0) {
@@ -12,10 +11,10 @@ export const CartItemList: React.FC = () => {
   }
 
   return itemList.map(item => (
-    <div key={item.id}>
-      <span>{item.name}</span>
+    <div key={item.product.id}>
+      <span>{item.product.name}</span>
       <span>Quantity: {item.quantity}</span>
-      <span>Price: ${item.price}</span>
+      <span>Price: ${item.product.price}</span>
     </div>
   ))
 }

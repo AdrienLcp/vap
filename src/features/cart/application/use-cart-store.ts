@@ -1,21 +1,20 @@
 import { create } from 'zustand'
 
-import type { CartProduct } from '@/features/cart/domain/cart-entities'
-
-export type CartStoreItem = CartProduct & { quantity: number }
+import type { CartItemDTO, CartProduct } from '@/features/cart/domain/cart-entities'
 
 type CartStore = {
   addItem: (product: CartProduct, quantity?: number) => void
   clearStore: () => void
   getProductQuantity: (productId: string) => number
   getItemCount: () => number
-  items: Map<string, CartStoreItem>,
+  items: Map<string, CartItemDTO>,
   removeItem: (productId: string) => void
+  syncItems: (cartItems: CartItemDTO[]) => void
   updateQuantity: (productId: string, newQuantity: number) => void
 }
 
 export const useCartStore = create<CartStore>((set, get) => ({
-  items: new Map<string, CartStoreItem>(),
+  items: new Map<string, CartItemDTO>(),
 
   addItem: (product: CartProduct, quantity = 1) => {
     set(state => {
@@ -23,7 +22,7 @@ export const useCartStore = create<CartStore>((set, get) => ({
       const existingItem = newItems.get(product.id)
 
       if (!existingItem) {
-        newItems.set(product.id, { ...product, quantity })
+        newItems.set(product.id, { product, quantity })
       } else {
         const updatedItem = {
           ...existingItem,
@@ -36,7 +35,7 @@ export const useCartStore = create<CartStore>((set, get) => ({
     })
   },
 
-  clearStore: () => set({ items: new Map<string, CartStoreItem>() }),
+  clearStore: () => set({ items: new Map<string, CartItemDTO>() }),
 
   getItemCount: () => get().items.size,
 
@@ -48,6 +47,21 @@ export const useCartStore = create<CartStore>((set, get) => ({
     set(state => {
       const newItems = new Map(state.items)
       newItems.delete(productId)
+      return { items: newItems }
+    })
+  },
+
+  syncItems: (cartItems: CartItemDTO[]) => {
+    set(() => {
+      const newItems = new Map<string, CartItemDTO>()
+
+      for (const item of cartItems) {
+        newItems.set(item.product.id, {
+          product: item.product,
+          quantity: item.quantity
+        })
+      }
+
       return { items: newItems }
     })
   },
