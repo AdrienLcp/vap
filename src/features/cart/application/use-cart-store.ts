@@ -23,13 +23,15 @@ export const useCartStore = create<CartStore>((set, get) => ({
 
       if (!existingItem) {
         newItems.set(product.id, { product, quantity })
-      } else {
-        const updatedItem = {
-          ...existingItem,
-          quantity: existingItem.quantity + quantity
-        }
-        newItems.set(product.id, updatedItem)
+        return { items: newItems }
       }
+
+      const updatedItem = {
+        ...existingItem,
+        quantity: existingItem.quantity + quantity
+      }
+
+      newItems.set(product.id, updatedItem)
 
       return { items: newItems }
     })

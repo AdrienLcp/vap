@@ -134,6 +134,7 @@ export const fr = {
       })
     },
     list: {
+      empty: 'Votre panier est vide.',
       error: 'Une erreur est survenue lors du chargement des articles du panier.'
     },
     title: 'Votre panier'
