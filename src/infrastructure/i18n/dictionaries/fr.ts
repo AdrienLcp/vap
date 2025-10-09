@@ -135,9 +135,10 @@ export const fr = {
       })
     },
     item: {
+      deleteError: 'Une erreur est survenue lors de la suppression de l\'article du panier.',
+      quantity: 'Quantité : {quantity:number}',
       totalPrice: 'Prix total : {totalPrice}',
-      unitPrice: 'Prix à l\'unité : {unitPrice}',
-      quantity: 'Quantité : {quantity:number}'
+      unitPrice: 'Prix à l\'unité : {unitPrice}'
     },
     list: {
       empty: 'Votre panier est vide.',
@@ -318,6 +319,12 @@ export const fr = {
     list: {
       ariaLabel: 'Liste des produits',
       empty: 'Aucun produit disponible.'
+    },
+    quantitySelector: {
+      ariaLabel: 'Sélecteur de quantité',
+      decrease: 'Diminuer la quantité',
+      error: 'Une erreur est survenue lors de la mise à jour de la quantité.',
+      increase: 'Augmenter la quantité'
     },
     status: {
       active: 'Actif',

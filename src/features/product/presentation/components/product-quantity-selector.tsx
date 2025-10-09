@@ -1,38 +1,43 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { useCartStore } from '@/features/cart/application/use-cart-store'
 import { CART_CONSTANTS } from '@/features/cart/domain/cart-constants'
 import { CartClient } from '@/features/cart/infrastructure/cart-client'
 import { NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
+import { t } from '@/infrastructure/i18n'
 import { QuantitySelector } from '@/presentation/components/ui/quantity-selector'
 import { ToastService } from '@/presentation/services/toast-service'
 
 type ProductQuantitySelectorProps = {
   productId: string
+  setIsLoading?: (isLoading: boolean) => void
 }
 
-export const ProductQuantitySelector: React.FC<ProductQuantitySelectorProps> = ({ productId }) => {
+export const ProductQuantitySelector: React.FC<ProductQuantitySelectorProps> = ({ productId, setIsLoading }) => {
   const cartProductQuantity = useCartStore(state => state.getProductQuantity(productId))
   const updateProductCartStoreQuantity = useCartStore(state => state.updateQuantity)
 
-  const [isUpdatingCartProduct, setIsAddingProductToCart] = useState(false)
+  const [isUpdatingCartProduct, setIsUpdatingCartProduct] = useState(false)
 
-  const updateProductCartQuantity = async (newQuantity: number) => {
-    setIsAddingProductToCart(true)
+  const setIsProductQuantitySelectorLoading = useCallback((isLoading: boolean) => {
+    setIsLoading?.(isLoading)
+    setIsUpdatingCartProduct(isLoading)
+  }, [setIsLoading])
 
+  const updateProductCartQuantity = useCallback(async (newQuantity: number) => {
+    setIsProductQuantitySelectorLoading(true)
     const updatedItemResponse = await CartClient.updateUserCartItemQuantity(productId, newQuantity)
+    setIsProductQuantitySelectorLoading(false)
 
-    setIsAddingProductToCart(false)
-
-    if (updatedItemResponse.status !== NO_CONTENT_STATUS) {
-      ToastService.error('Could not update product quantity. Please try again.')
+    if (updatedItemResponse.status === NO_CONTENT_STATUS) {
+      updateProductCartStoreQuantity(productId, newQuantity)
       return
     }
 
-    updateProductCartStoreQuantity(productId, newQuantity)
-  }
+    ToastService.error(t('product.quantitySelector.error'))
+  }, [productId, setIsProductQuantitySelectorLoading, updateProductCartStoreQuantity])
 
   return (
     <QuantitySelector
