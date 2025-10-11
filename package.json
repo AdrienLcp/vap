@@ -35,7 +35,6 @@
   },
   "name": "vap",
   "scripts": {
-    "auth:generate": "pnpx @better-auth/cli generate --config src/features/auth/infrastructure/auth-lib.ts",
     "db:seed": "ts-node prisma/seed.ts",
     "dev": "next dev --turbopack",
     "build": "next build",
