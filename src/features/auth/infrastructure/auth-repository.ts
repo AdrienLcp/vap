@@ -8,14 +8,19 @@ import { auth } from '@/features/auth/infrastructure/auth-lib'
 import { failure, type Result, success } from '@/helpers/result'
 
 const findUser = async (): Promise<Result<User, Unauthorized>> => {
-  const headers = await getHeaders()
-  const session = await auth.api.getSession({ headers })
+  try {
+    const headers = await getHeaders()
+    const session = await auth.api.getSession({ headers })
 
-  if (!session) {
-    return failure('UNAUTHORIZED')
+    if (!session) {
+      return failure('UNAUTHORIZED')
+    }
+
+    return success(session.user)
+  } catch (error) {
+    console.error('Unknown error in AuthRepository.findUser:', error)
+    return failure()
   }
-
-  return success(session.user)
 }
 
 export const AuthRepository = {

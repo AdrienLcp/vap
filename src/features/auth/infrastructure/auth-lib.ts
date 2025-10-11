@@ -22,7 +22,8 @@ export const auth = betterAuth({
     additionalFields: {
       role: {
         defaultValue: USER_CONSTANTS.DEFAULT_ROLE,
-        type: [...USER_CONSTANTS.ROLES]
+        input: false,
+        type: USER_CONSTANTS.ROLES
       }
     },
     changeEmail: {
