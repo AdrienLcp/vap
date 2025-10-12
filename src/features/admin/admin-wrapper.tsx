@@ -8,13 +8,13 @@ import { OK_STATUS } from '@/infrastructure/api/http-response'
 import './admin-wrapper.sass'
 
 export const AdminWrapper: React.FC<React.PropsWithChildren> = async ({ children }) => {
-  const authUserResult = await AuthController.findUser()
+  const authUserResponse = await AuthController.findUser()
 
-  if (authUserResult.status !== OK_STATUS) {
+  if (authUserResponse.status !== OK_STATUS) {
     redirect(ROUTES.unauthorized)
   }
 
-  if (!authUserResult.data.permissions.canAccessAdmin) {
+  if (!authUserResponse.data.permissions.canAccessAdmin) {
     redirect(ROUTES.forbidden)
   }
 

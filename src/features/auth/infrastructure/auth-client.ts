@@ -71,14 +71,14 @@ const emailSignIn = async (signInInfo: SignInInfo): Promise<ClientResponse<Email
       }
     }
 
-    const userResult = await findUser()
+    const userResponse = await findUser()
 
-    if (userResult.status !== OK_STATUS) {
-      console.error('Failed to fetch user after sign-in:', userResult)
+    if (userResponse.status !== OK_STATUS) {
+      console.error('Failed to fetch user after sign-in:', userResponse)
       return unknownError()
     }
 
-    return HttpResponse.ok(userResult.data)
+    return HttpResponse.ok(userResponse.data)
   } catch (error) {
     console.error('Email sign-in error:', error)
     return unknownError()
@@ -107,14 +107,14 @@ const emailSignUp = async (signUpInfo: SignUpInfo): Promise<ClientResponse<SignU
       }
     }
 
-    const userResult = await findUser()
+    const userResponse = await findUser()
 
-    if (userResult.status !== OK_STATUS) {
-      console.error('Failed to fetch user after sign-up:', userResult)
+    if (userResponse.status !== OK_STATUS) {
+      console.error('Failed to fetch user after sign-up:', userResponse)
       return unknownError()
     }
 
-    return HttpResponse.created(userResult.data)
+    return HttpResponse.created(userResponse.data)
   } catch (error) {
     console.error('Email sign-up error:', error)
     return unknownError()

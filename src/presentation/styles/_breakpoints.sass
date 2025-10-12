@@ -13,5 +13,9 @@ $breakpoints: (
     @content
 
 @mixin is-desktop
-  @media (width > map.get($breakpoints, m))
+  @include responsive(m)
+    @content
+
+@mixin is-mobile
+  @media (width <= map.get($breakpoints, m))
     @content

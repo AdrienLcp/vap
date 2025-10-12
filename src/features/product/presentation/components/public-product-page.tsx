@@ -1,3 +1,4 @@
+import { PublicProduct } from '@/features/product/presentation/components/public-product'
 import { ProductController } from '@/features/product/presentation/controllers/product-controller'
 import { OK_STATUS, redirectByErrorStatus } from '@/infrastructure/api/http-response'
 
@@ -13,5 +14,5 @@ export const PublicProductPage: React.FC<PublicProductPageProps> = async ({ prod
     return null
   }
 
-  return <>Produit: {productResponse.data.name}</>
+  return <PublicProduct product={productResponse.data} />
 }

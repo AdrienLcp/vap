@@ -4,11 +4,11 @@ import { useCartStore } from '@/features/cart/application/use-cart-store'
 import { AddProductToCartButton } from '@/features/product/presentation/components/add-product-to-cart-button'
 import { ProductQuantitySelector } from '@/features/product/presentation/components/product-quantity-selector'
 
-type PublicProductCardActionsProps = {
+type PublicProductActionsProps = {
   productId: string
 }
 
-export const PublicProductCardActions: React.FC<PublicProductCardActionsProps> = ({ productId }) => {
+export const PublicProductActions: React.FC<PublicProductActionsProps> = ({ productId }) => {
   const cartProductQuantity = useCartStore(state => state.getProductQuantity(productId))
 
   if (cartProductQuantity <= 0) {

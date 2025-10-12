@@ -4,6 +4,7 @@ import { useCallback, useMemo } from 'react'
 import { getAdminProductRoute } from '@/domain/navigation'
 import type { ProductDTO } from '@/features/product/domain/product-entities'
 import { ProductClient } from '@/features/product/infrastructure/product-client'
+import { NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { Menu, type MenuItem } from '@/presentation/components/ui/menu'
 import { Button } from '@/presentation/components/ui/pressables/button'
@@ -29,7 +30,7 @@ export const ProductMenu: React.FC<ProductMenuProps> = ({ productId, setProductL
   const deleteProduct = useCallback(async () => {
     const productDeletionResponse = await ProductClient.deleteProduct(productId)
 
-    if (productDeletionResponse.status !== 204) {
+    if (productDeletionResponse.status !== NO_CONTENT_STATUS) {
       ToastService.error(t('product.delete.error'))
       return
     }

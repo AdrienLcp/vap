@@ -8,8 +8,8 @@ import { OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 
 export const SignInPage: React.FC = async () => {
-  const userResult = await AuthController.findUser()
-  const isUserAuthenticated = userResult.status === OK_STATUS
+  const userResponse = await AuthController.findUser()
+  const isUserAuthenticated = userResponse.status === OK_STATUS
 
   if (isUserAuthenticated) {
     redirect(DEFAULT_ROUTE)

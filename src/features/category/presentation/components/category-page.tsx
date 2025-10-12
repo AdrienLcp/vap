@@ -6,6 +6,7 @@ import { ROUTES } from '@/domain/navigation'
 import { CategoryDeleteButton } from '@/features/category/presentation/components/category-delete-button'
 import { CategoryUpdateForm } from '@/features/category/presentation/components/forms/category-update-form'
 import { CategoryController } from '@/features/category/presentation/controllers/category-controller'
+import { OK_STATUS } from '@/infrastructure/api/http-response'
 
 import './category-page.sass'
 
@@ -14,13 +15,13 @@ type CategoryPageProps = {
 }
 
 export const CategoryPage: React.FC<CategoryPageProps> = async ({ categoryId }) => {
-  const categoryResult = await CategoryController.findCategory(categoryId)
+  const categoryResponse = await CategoryController.findCategory(categoryId)
 
-  if (categoryResult.status !== 200) {
+  if (categoryResponse.status !== OK_STATUS) {
     redirect(ROUTES.notFound)
   }
 
-  const category = categoryResult.data
+  const category = categoryResponse.data
 
   return (
     <section className='category-page'>

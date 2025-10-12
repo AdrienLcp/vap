@@ -4,6 +4,7 @@ import { useCallback, useMemo } from 'react'
 import { getAdminCategoryRoute } from '@/domain/navigation'
 import type { CategoryDTO } from '@/features/category/domain/category-entities'
 import { CategoryClient } from '@/features/category/infrastructure/category-client'
+import { NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { Menu, type MenuItem } from '@/presentation/components/ui/menu'
 import { Button } from '@/presentation/components/ui/pressables/button'
@@ -29,7 +30,7 @@ export const CategoryMenu: React.FC<CategoryMenuProps> = ({ categoryId, setCateg
   const deleteCategory = useCallback(async () => {
     const categoryDeletionResponse = await CategoryClient.deleteCategory(categoryId)
 
-    if (categoryDeletionResponse.status !== 204) {
+    if (categoryDeletionResponse.status !== NO_CONTENT_STATUS) {
       ToastService.error(t('category.delete.error'))
       return
     }

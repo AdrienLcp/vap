@@ -6,6 +6,7 @@ import { useCallback } from 'react'
 
 import { ROUTES } from '@/domain/navigation'
 import { CategoryClient } from '@/features/category/infrastructure/category-client'
+import { NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { Button, type ButtonProps } from '@/presentation/components/ui/pressables/button'
 import { ToastService } from '@/presentation/services/toast-service'
@@ -18,7 +19,7 @@ export const CategoryDeleteButton: React.FC<CategoryDeleteButtonProps> = ({ cate
   const deleteCategory = useCallback(async () => {
     const categoryDeletionResponse = await CategoryClient.deleteCategory(categoryId)
 
-    if (categoryDeletionResponse.status !== 204) {
+    if (categoryDeletionResponse.status !== NO_CONTENT_STATUS) {
       ToastService.error(t('category.delete.error'))
       return
     }

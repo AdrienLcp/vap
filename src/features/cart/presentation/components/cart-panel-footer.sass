@@ -1,6 +1,17 @@
+@use '@/presentation/styles/breakpoints'
+@use '@/presentation/styles/typography'
+
 .cart-panel-footer
   align-items: center
   display: grid
-  grid-template-columns: 1fr auto auto
   gap: var(--size-160, 1rem)
   padding-inline: var(--size-160, 1rem)
+
+  & .total-price
+    @include typography.label-large
+
+  @include breakpoints.is-desktop
+    grid-template-columns: 1fr auto auto
+
+  @include breakpoints.is-mobile
+    text-align: center

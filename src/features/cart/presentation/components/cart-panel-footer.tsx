@@ -11,7 +11,9 @@ export const CartPanelFooter: React.FC = () => {
 
   return (
     <div className='cart-panel-footer'>
-      {t('cart.totalPrice', { totalPrice: formatPrice(cartTotalPrice) })}
+      <p className='total-price'>
+        {t('cart.totalPrice', { totalPrice: formatPrice(cartTotalPrice) })}
+      </p>
 
       <CartClearButton />
 

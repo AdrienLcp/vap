@@ -1,6 +1,6 @@
 import type { ProductPublicDTO } from '@/features/product/domain/product-entities'
 import { ProductImage } from '@/features/product/presentation/components/product-image'
-import { PublicProductCardActions } from '@/features/product/presentation/components/public-product-card-actions'
+import { PublicProductActions } from '@/features/product/presentation/components/public-product-actions'
 import { t } from '@/infrastructure/i18n'
 import { Card, CardBody, CardFooter, CardTitle } from '@/presentation/components/ui/card'
 import { formatPrice } from '@/utils/format-utils'
@@ -26,7 +26,7 @@ export const PublicProductCard: React.FC<PublicProductCardProps> = ({ product })
       <div className='details'>
         <span>{formatPrice(product.price)}</span>
 
-        <PublicProductCardActions productId={product.id} />
+        <PublicProductActions productId={product.id} />
       </div>
     </CardFooter>
   </Card>

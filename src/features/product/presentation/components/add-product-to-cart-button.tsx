@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { useCartStore } from '@/features/cart/application/use-cart-store'
 import type { CartItemCreationData } from '@/features/cart/domain/cart-entities'
 import { CartClient } from '@/features/cart/infrastructure/cart-client'
+import { CREATED_STATUS } from '@/infrastructure/api/http-response'
 import { Spinner } from '@/presentation/components/ui/loaders/spinner'
 import { Button } from '@/presentation/components/ui/pressables/button'
 import { ToastService } from '@/presentation/services/toast-service'
@@ -35,7 +36,7 @@ export const AddProductToCartButton: React.FC<AddProductToCartButtonProps> = ({ 
 
     setIsAddingProductToCart(false)
 
-    if (createdItemResponse.status !== 201) {
+    if (createdItemResponse.status !== CREATED_STATUS) {
       ToastService.error('Could not add product to cart. Please try again.')
       return
     }
