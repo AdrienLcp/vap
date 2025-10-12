@@ -23,6 +23,9 @@ export const ROUTES = {
   forbidden: '/auth/forbidden',
   unauthorized: '/auth/unauthorized',
 
+  // Order
+  order: '/order',
+
   // Public product
   product: `/products/:${PARAMS.productId}`
 } as const

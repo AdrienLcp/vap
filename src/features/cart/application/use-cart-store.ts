@@ -5,8 +5,9 @@ import type { CartItemDTO, CartProduct } from '@/features/cart/domain/cart-entit
 type CartStore = {
   addItem: (product: CartProduct, quantity?: number) => void
   clearStore: () => void
-  getProductQuantity: (productId: string) => number
   getItemCount: () => number
+  getProductQuantity: (productId: string) => number
+  getTotalPrice: () => number
   items: Map<string, CartItemDTO>,
   removeItem: (productId: string) => void
   syncItems: (cartItems: CartItemDTO[]) => void
@@ -43,6 +44,11 @@ export const useCartStore = create<CartStore>((set, get) => ({
 
   getProductQuantity: (productId: string) => {
     return get().items.get(productId)?.quantity ?? 0
+  },
+
+  getTotalPrice: () => {
+    return Array.from(get().items.values())
+      .reduce((total, item) => total + (item.product.price * item.quantity), 0)
   },
 
   removeItem: (productId: string) => {

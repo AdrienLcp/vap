@@ -25,8 +25,10 @@
     animation: cart-modal-animation var(--transition-150, 0) var(--ease-gentle, ease-in-out) reverse
 
 .cart-panel
+  block-size: stretch
   display: grid
   gap: var(--size-320, 2rem)
+  grid-template-rows: auto 1fr auto
   padding-block: var(--size-160, 1rem)
 
 @keyframes cart-modal-animation

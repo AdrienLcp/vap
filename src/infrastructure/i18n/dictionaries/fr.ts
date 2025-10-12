@@ -134,6 +134,10 @@ export const fr = {
         plural: { itemCount: { zero: 'Aucun article', one: '1 article', other: '{?} articles' } }
       })
     },
+    clear: {
+      error: 'Une erreur est survenue lors du vidage du panier.',
+      label: 'Vider le panier'
+    },
     item: {
       deleteError: 'Une erreur est survenue lors de la suppression de l\'article du panier.',
       quantity: 'Quantité : {quantity:number}',
@@ -144,7 +148,11 @@ export const fr = {
       empty: 'Votre panier est vide.',
       error: 'Une erreur est survenue lors du chargement des articles du panier.'
     },
-    title: 'Votre panier'
+    pay: 'Payer',
+    totalPrice: 'Prix total : {totalPrice}',
+    title: dt('Votre panier ({itemCount:plural})', {
+      plural: { itemCount: { zero: 'Aucun article', one: '1 article', other: '{?} articles' } }
+    })
   },
   category: {
     card: {

@@ -7,6 +7,7 @@ import { useCartStore } from '@/features/cart/application/use-cart-store'
 import { CartClient } from '@/features/cart/infrastructure/cart-client'
 import { CartButton } from '@/features/cart/presentation/components/cart-button'
 import { CartItemList } from '@/features/cart/presentation/components/cart-item-list'
+import { CartPanelFooter } from '@/features/cart/presentation/components/cart-panel-footer'
 import { CartPanelHeader } from '@/features/cart/presentation/components/cart-panel-header'
 import { OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
@@ -51,6 +52,8 @@ export const Cart: React.FC = () => {
             <CartPanelHeader />
 
             <CartItemList />
+
+            <CartPanelFooter />
           </Dialog>
         </Modal>
       </ModalOverlay>
