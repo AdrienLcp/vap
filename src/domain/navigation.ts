@@ -1,5 +1,6 @@
 const PARAMS = {
   categoryId: 'categoryId',
+  orderId: 'orderId',
   productId: 'productId'
 } as const
 
@@ -12,6 +13,8 @@ export const ROUTES = {
   adminCategories: '/admin/categories',
   adminCategory: `/admin/categories/:${PARAMS.categoryId}`,
   adminCategoryCreation: '/admin/categories/create',
+  adminOrders: '/admin/orders',
+  adminOrder: `/admin/orders/:${PARAMS.orderId}`,
   adminProducts: '/admin/products',
   adminProductCreation: '/admin/products/create',
   adminProduct: `/admin/products/:${PARAMS.productId}`,
@@ -23,10 +26,10 @@ export const ROUTES = {
   forbidden: '/auth/forbidden',
   unauthorized: '/auth/unauthorized',
 
-  // Order
-  order: '/order',
+  // Orders
+  orders: `/orders/${PARAMS.orderId}`,
 
-  // Public product
+  // Products
   product: `/products/:${PARAMS.productId}`
 } as const
 

@@ -1,6 +1,6 @@
 import type { z } from 'zod'
 
-import type { Unauthorized } from '@/domain/entities'
+import type { Forbidden, Unauthorized } from '@/domain/entities'
 import type { AUTH_CONSTANTS } from '@/features/auth/domain/auth-constants'
 import type { AuthPermissionsSchema, AuthUserDTOSchema } from '@/features/auth/domain/auth-schemas'
 import type { UserRole } from '@/features/user/domain/user-entities'
@@ -19,6 +19,8 @@ export type User = Omit<AuthUser, 'permissions'> & {
 }
 
 export type AuthUserError = Unauthorized
+
+export type AuthUserPermissionError = AuthUserError | Forbidden
 
 export type AuthUserResponse = Response<OkResponse<AuthUserDTO> | UnauthorizedResponse>
 

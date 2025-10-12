@@ -15,7 +15,10 @@ const ADMIN_RIGHTS = [
   'product:create',
   'product:read',
   'product:update',
-  'product:delete'
+  'product:delete',
+
+  'user:read',
+  'user:update'
 ] as const
 
 const SUPER_ADMIN_RIGHTS = [...ADMIN_RIGHTS] as const
@@ -41,7 +44,10 @@ export const getAuthUserPermissionsByRole = (role: UserRole): AuthPermissions =>
     canCreateProduct: rights.includes('product:create'),
     canReadProduct: rights.includes('product:read'),
     canUpdateProduct: rights.includes('product:update'),
-    canDeleteProduct: rights.includes('product:delete')
+    canDeleteProduct: rights.includes('product:delete'),
+
+    canReadUser: rights.includes('user:read'),
+    canUpdateUser: rights.includes('user:update')
   }
 
   return permissions

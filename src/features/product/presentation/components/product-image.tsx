@@ -12,8 +12,19 @@ type ProductImageProps = Partial<ImageProps> & {
   size?: ProductImageSize
 }
 
+const getImageSizeInPx = (size: ProductImageSize) => {
+  switch (size) {
+    case 'small':
+      return PRODUCT_CONSTANTS.IMAGE_SMALL_SIZE_IN_PX
+    case 'large':
+      return PRODUCT_CONSTANTS.IMAGE_SIZE_IN_PX
+    default:
+      return PRODUCT_CONSTANTS.IMAGE_SIZE_IN_PX
+  }
+}
+
 export const ProductImage: React.FC<ProductImageProps> = ({ className, size = 'large', src, ...productImageRestProps }) => {
-  const imageSizeInPx = size === 'small' ? PRODUCT_CONSTANTS.IMAGE_SMALL_SIZE_IN_PX : PRODUCT_CONSTANTS.IMAGE_SIZE_IN_PX
+  const imageSizeInPx = getImageSizeInPx(size)
 
   return (
     <Image

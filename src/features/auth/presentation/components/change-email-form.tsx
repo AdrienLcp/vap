@@ -5,7 +5,7 @@ import { useCallback, useState } from 'react'
 
 import { AUTH_FORM_FIELDS } from '@/features/auth/domain/auth-constants'
 import { AuthClient } from '@/features/auth/infrastructure/auth-client'
-import { UserEmailField } from '@/features/user/presentation/user-email-field'
+import { UserEmailField } from '@/features/user/presentation/components/user-email-field'
 import { NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { Form, type FormValues } from '@/presentation/components/forms/form'

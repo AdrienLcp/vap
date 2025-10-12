@@ -15,4 +15,4 @@ export const CategoryDatabase = prisma.category
 export const ProductDatabase = prisma.product
 export const UserDatabase = prisma.user
 
-export type EntitySelectedFields<T> = Record<keyof T, true>
+export type EntitySelectedFields<T> = Partial<Record<keyof T, true>>

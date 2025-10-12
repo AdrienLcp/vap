@@ -16,7 +16,10 @@ export const AuthPermissionsSchema = z.object({
   canCreateProduct: z.boolean(),
   canReadProduct: z.boolean(),
   canUpdateProduct: z.boolean(),
-  canDeleteProduct: z.boolean()
+  canDeleteProduct: z.boolean(),
+
+  canReadUser: z.boolean(),
+  canUpdateUser: z.boolean()
 })
 
 export const AuthUserDTOSchema = z.object({
