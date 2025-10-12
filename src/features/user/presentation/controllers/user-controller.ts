@@ -1,14 +1,24 @@
+import 'server-only'
+
 import { UserService } from '@/features/user/application/user-service'
 import { USER_SEARCH_PARAMS } from '@/features/user/domain/user-constants'
 import type { UserListResponse, UserUpdateResponse } from '@/features/user/domain/user-entities'
 import { UserDTOSchema, UserIdSchema, UserUpdateSchema } from '@/features/user/domain/user-schemas'
 import { HttpResponse } from '@/infrastructure/api/http-response'
 
-const findUsers = async (request: Request): Promise<UserListResponse> => {
-  try {
-    const { searchParams } = new URL(request.url)
-    const email = searchParams.get(USER_SEARCH_PARAMS.EMAIL)
+const extractSearchParams = (request?: Request) => {
+  if (!request?.url) return { email: null }
 
+  const { searchParams } = new URL(request.url)
+
+  return {
+    email: searchParams.get(USER_SEARCH_PARAMS.EMAIL)
+  }
+}
+
+const findUsers = async (request?: Request): Promise<UserListResponse> => {
+  try {
+    const { email } = extractSearchParams(request)
     const userResult = await UserService.findUsers(email)
 
     if (userResult.status === 'ERROR') {

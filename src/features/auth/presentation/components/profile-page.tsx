@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 
 import { ROUTES } from '@/domain/navigation'
+import { AccountDelete } from '@/features/auth/presentation/components/account-delete'
 import { ChangeEmailForm } from '@/features/auth/presentation/components/change-email-form'
 import { ChangePasswordForm } from '@/features/auth/presentation/components/change-password-form'
 import { AuthController } from '@/features/auth/presentation/controllers/auth-controller'
@@ -29,6 +30,11 @@ export const ProfilePage: React.FC = async () => {
       <section>
         <h2>{t('auth.profile.changePassword')}</h2>
         <ChangePasswordForm />
+      </section>
+
+      <section>
+        <h2>{t('auth.profile.deleteAccount')}</h2>
+        <AccountDelete />
       </section>
     </>
   )

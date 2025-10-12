@@ -56,6 +56,7 @@ export type SignOutResponse = Response<
 
 export type DeleteUserResponse = Response<
   | NoContentResponse
+  | BadRequestResponse<InvalidPassword>
   | UnauthorizedResponse
 >
 

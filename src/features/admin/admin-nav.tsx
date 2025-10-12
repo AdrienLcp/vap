@@ -1,13 +1,46 @@
 'use client'
 
-import { BoxIcon, ListIcon, ShieldIcon } from 'lucide-react'
+import { BoxIcon, CalendarArrowDownIcon, ListIcon, ShieldIcon, UsersRoundIcon } from 'lucide-react'
 
 import { ROUTES } from '@/domain/navigation'
 import { t } from '@/infrastructure/i18n'
 import { Link } from '@/presentation/components/ui/pressables/link'
-import { Separator } from '@/presentation/components/ui/separator'
 
 import './admin-nav.sass'
+
+type AdminNavItem = {
+  href: string
+  Icon: React.ReactElement
+  id: string
+  textValue: string
+}
+
+export const adminNavItems: AdminNavItem[] = [
+  {
+    href: ROUTES.adminProducts,
+    Icon: <BoxIcon aria-hidden />,
+    id: 'products',
+    textValue: t('admin.nav.products')
+  },
+  {
+    href: ROUTES.adminCategories,
+    Icon: <ListIcon aria-hidden />,
+    id: 'categories',
+    textValue: t('admin.nav.categories')
+  },
+  {
+    href: ROUTES.adminOrders,
+    Icon: <CalendarArrowDownIcon aria-hidden />,
+    id: 'orders',
+    textValue: t('admin.nav.orders')
+  },
+  {
+    href: ROUTES.adminUsers,
+    Icon: <UsersRoundIcon aria-hidden />,
+    id: 'users',
+    textValue: t('admin.nav.users')
+  }
+]
 
 export const AdminNav: React.FC = () => (
   <nav className='admin-nav'>
@@ -19,24 +52,15 @@ export const AdminNav: React.FC = () => (
       {t('admin.nav.admin')}
     </Link>
 
-    <Separator orientation='vertical' />
-
-    <Link
-      href={ROUTES.adminProducts}
-      Icon={<BoxIcon aria-hidden />}
-      variant='underlined'
-    >
-      {t('admin.nav.products')}
-    </Link>
-
-    <Separator orientation='vertical' />
-
-    <Link
-      href={ROUTES.adminCategories}
-      Icon={<ListIcon aria-hidden />}
-      variant='underlined'
-    >
-      {t('admin.nav.categories')}
-    </Link>
+    {adminNavItems.map(({ href, Icon, id, textValue }) => (
+      <Link
+        href={href}
+        Icon={Icon}
+        key={id}
+        variant='underlined'
+      >
+        {textValue}
+      </Link>
+    ))}
   </nav>
 )

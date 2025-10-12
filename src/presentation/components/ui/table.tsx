@@ -12,11 +12,13 @@ import {
   TableHeader
 } from 'react-aria-components'
 
+import { reactAriaClassNames } from '@/presentation/utils/react-aria-utils'
+
 import './table.sass'
 
 export type TableRow <RowData extends object> =
-  & Omit<RowProps<RowData>, 'children' | 'className' | 'columns' | 'id'>
-  & { className?: string, id: string, item: RowData }
+  & Omit<RowProps<RowData>, 'children' | 'columns' | 'id'>
+  & { id: string, item: RowData }
 
 export type TableColumn <ColumnKey extends Key = string> = Omit<ColumnProps, 'className' | 'id'> & {
   className?: string
@@ -45,7 +47,11 @@ export function Table <RowData extends object, ColumnKey extends Key = string> (
 
       <TableBody items={rows} renderEmptyState={renderEmptyState}>
         {({ item, value: _value, ...row }) => (
-          <Row {...row} columns={columns}>
+          <Row
+            {...row}
+            className={values => reactAriaClassNames(values, row.className, 'table-row')}
+            columns={columns}
+          >
             {column => <Cell className={column.className}>{renderCell(item, column)}</Cell>}
           </Row>
         )}

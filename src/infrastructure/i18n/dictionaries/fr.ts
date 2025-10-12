@@ -2,15 +2,13 @@ import { dt, type LanguageMessages } from '@/infrastructure/i18n/lib'
 
 export const fr = {
   admin: {
-    links: {
-      categories: 'Catégories',
-      listAriaLabel: 'Liens d\'administration',
-      products: 'Produits'
-    },
     nav: {
       admin: 'Administration',
+      categories: 'Catégories',
+      listAriaLabel: 'Liens d\'administration',
+      orders: 'Commandes',
       products: 'Produits',
-      categories: 'Catégories'
+      users: 'Utilisateurs'
     }
   },
   appName: 'VAP',
@@ -51,6 +49,26 @@ export const fr = {
       },
       success: 'Votre mot de passe a été changé avec succès.'
     },
+    deleteAccount: {
+      errors: {
+        invalidPassword: 'Le mot de passe est incorrect.',
+        unknown: 'Une erreur inconnue est survenue.'
+      },
+      form: {
+        cancel: 'Annuler',
+        password: {
+          label: 'Mot de passe',
+          placeholder: 'Entrez votre mot de passe'
+        },
+        submit: {
+          label: 'Supprimer le compte',
+          loading: 'Suppression en cours...'
+        }
+      },
+      success: 'Votre compte a été supprimé avec succès.',
+      title: 'Supprimer le compte',
+      warning: 'Cette action est irréversible. Toutes vos données seront définitivement supprimées. Veuillez confirmer votre mot de passe pour continuer.'
+    },
     fields: {
       email: {
         label: 'Email',
@@ -81,6 +99,7 @@ export const fr = {
     profile: {
       changeEmail: 'Changer l\'email',
       changePassword: 'Changer le mot de passe',
+      deleteAccount: 'Supprimer le compte',
       title: 'Mon profil'
     },
     signIn: {
@@ -352,6 +371,11 @@ export const fr = {
     avatar: {
       alt: 'Avatar de {userName}',
       defaultAlt: 'Avatar de l\'utilisateur'
+    },
+    list: {
+      ariaLabel: 'Liste des utilisateurs',
+      empty: 'Aucun utilisateur trouvé.',
+      error: 'Une erreur est survenue lors du chargement des utilisateurs.'
     }
   }
 } as const satisfies LanguageMessages

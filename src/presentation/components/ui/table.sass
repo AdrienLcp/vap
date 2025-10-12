@@ -1,8 +1,8 @@
 @use '@/presentation/styles/accessibility'
 
 table
-  position: relative
   overflow: auto
+  position: relative
 
   tr
     block-size: var(--size-480, 3rem)
@@ -23,6 +23,3 @@ table
 
   td, tr
     @include accessibility.focus-outline
-
-    &
-      border-radius: var(--radius-s, 0.25rem)

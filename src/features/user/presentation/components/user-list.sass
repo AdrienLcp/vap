@@ -1,0 +1,14 @@
+@use '@/presentation/styles/interactive'
+
+.user-list
+  inline-size: var(--content-inline-size)
+  margin: var(--size-320, 2rem) auto
+
+  &.empty-message
+    text-align: center
+
+  & .table-row
+    @include interactive.transparent
+
+    &
+      cursor: pointer

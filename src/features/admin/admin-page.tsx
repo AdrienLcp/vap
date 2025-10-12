@@ -1,38 +1,18 @@
 'use client'
 
-import { BoxIcon, ListIcon } from 'lucide-react'
-import { ListBox, ListBoxItem, type ListBoxItemProps } from 'react-aria-components'
+import { ListBox, ListBoxItem } from 'react-aria-components'
 
-import { ROUTES } from '@/domain/navigation'
+import { adminNavItems } from '@/features/admin/admin-nav'
 import { t } from '@/infrastructure/i18n'
 import { Card, CardBody, CardFooter, CardTitle } from '@/presentation/components/ui/card'
 
 import './admin-page.sass'
 
-type AdminItem = ListBoxItemProps & {
-  Icon: React.ReactNode
-}
-
-const adminListBoxItems: AdminItem[] = [
-  {
-    href: ROUTES.adminProducts,
-    Icon: <BoxIcon />,
-    id: 'products',
-    textValue: t('admin.links.products')
-  },
-  {
-    href: ROUTES.adminCategories,
-    Icon: <ListIcon />,
-    id: 'categories',
-    textValue: t('admin.links.categories')
-  }
-]
-
 export const AdminPage: React.FC = () => (
   <ListBox
-    aria-label={t('admin.links.listAriaLabel')}
+    aria-label={t('admin.nav.listAriaLabel')}
     className='admin-list'
-    items={adminListBoxItems}
+    items={adminNavItems}
     orientation='horizontal'
   >
     {({ Icon, textValue, ...item }) => (

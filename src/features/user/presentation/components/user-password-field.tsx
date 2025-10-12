@@ -8,16 +8,20 @@ export const UserPasswordField: React.FC<Partial<TextFieldProps>> = ({
   name = AUTH_FORM_FIELDS.PASSWORD,
   placeholder = t('auth.fields.password.placeholder'),
   ...userPasswordFieldRestProps
-}) => (
-  <TextField
-    {...userPasswordFieldRestProps}
-    description={description}
-    isRequired
-    label={label}
-    maxLength={AUTH_CONSTANTS.PASSWORD_MAX_LENGTH}
-    minLength={AUTH_CONSTANTS.PASSWORD_MIN_LENGTH}
-    name={name}
-    placeholder={placeholder}
-    type='password'
-  />
-)
+}) => {
+  // Add eye toggle to show/hide password
+
+  return (
+    <TextField
+      {...userPasswordFieldRestProps}
+      description={description}
+      isRequired
+      label={label}
+      maxLength={AUTH_CONSTANTS.PASSWORD_MAX_LENGTH}
+      minLength={AUTH_CONSTANTS.PASSWORD_MIN_LENGTH}
+      name={name}
+      placeholder={placeholder}
+      type='password'
+    />
+  )
+}

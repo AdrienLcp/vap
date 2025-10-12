@@ -127,9 +127,11 @@ const deleteUser = async (password: string): Promise<ClientResponse<DeleteUserRe
 
     if (deleteUserResponse.error) {
       switch (deleteUserResponse.error.code) {
+        case 'INVALID_PASSWORD':
+          return HttpResponse.badRequest('INVALID_PASSWORD')
         default:
           console.error('Delete user error:', deleteUserResponse.error)
-          unknownError()
+          return unknownError()
       }
     }
 

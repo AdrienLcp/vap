@@ -1,3 +1,5 @@
+import 'server-only'
+
 import { AuthService } from '@/features/auth/application/auth-service'
 import type { AuthUserPermissionError } from '@/features/auth/domain/auth-entities'
 import type { UserDTO, UserRole } from '@/features/user/domain/user-entities'

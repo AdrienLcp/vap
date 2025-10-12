@@ -1,3 +1,5 @@
+import 'server-only'
+
 import type { User } from '@prisma/client'
 
 import type { UserDTO, UserRole } from '@/features/user/domain/user-entities'

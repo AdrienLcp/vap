@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 import { USER_CONSTANTS } from '@/features/user/domain/user-constants'
 
-export const UserIdSchema = z.cuid()
+export const UserIdSchema = z.string()
 
 export const UserRoleSchema = z.enum(USER_CONSTANTS.ROLES)
 
