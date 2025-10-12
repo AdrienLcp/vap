@@ -1,4 +1,10 @@
 {
+  "editor.defaultFormatter": "biomejs.biome",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.biome": "explicit",
+    "source.organizeImports.biome": "explicit"
+  },
   "cSpell.overrides": [
     {
       "filename": "src/infrastructure/i18n/dictionaries/fr.ts",
