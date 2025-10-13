@@ -49,7 +49,7 @@ export const AccountDelete: React.FC = () => {
 
   return (
     <DialogTrigger>
-      <AccountDeleteButton className='account-delete-button' isPending={isDeletingUserAccount} />
+      <AccountDeleteButton isPending={isDeletingUserAccount} />
 
       <ModalOverlay className='account-delete overlay' isDismissable>
         <Modal className='modal'>

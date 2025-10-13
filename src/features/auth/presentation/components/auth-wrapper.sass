@@ -5,12 +5,15 @@
   flex: 1
   flex-direction: column
   gap: var(--size-160, 1rem)
-  inline-size: clamp(12.5rem, 100% - var(--size-80), 40ch)
   inline-size: var(--content-inline-size, 100%)
   margin-inline: auto
   min-block-size: 10rem
   justify-content: center
   padding-block: var(--size-320, 2rem) calc(var(--size-320, 2rem) + 10%)
+
+  & section .form .field-set .input-wrapper
+    // trouver mieux0
+    max-inline-size: var(--content-inline-size, 100%)
 
   & h1
     @include typography.title-large

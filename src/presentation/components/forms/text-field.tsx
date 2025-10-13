@@ -8,16 +8,20 @@ import './text-field.sass'
 
 export type TextFieldProps = ReactAriaTextFieldProps & {
   description?: string
+  EndContent?: React.ReactNode
   label: React.ReactNode
   placeholder?: string
+  StartContent?: React.ReactNode
 }
 
 export const TextField: React.FC<TextFieldProps> = ({
   className,
   description,
+  EndContent,
   label,
   maxLength,
   minLength,
+  StartContent,
   ...textFieldRestProps
 }) => (
   <ReactAriaTextField
@@ -32,7 +36,13 @@ export const TextField: React.FC<TextFieldProps> = ({
           {label} {isRequired && t('components.forms.requiredFields.mark')}
         </Label>
 
-        <Input />
+        <div className='input-wrapper'>
+          {StartContent}
+
+          <Input />
+
+          {EndContent}
+        </div>
 
         {isInvalid
           ? <FieldError maxLength={maxLength} minLength={minLength} />
