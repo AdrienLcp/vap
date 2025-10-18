@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation'
 
 import { DEFAULT_ROUTE } from '@/domain/navigation'
 import { AlreadyRegistered } from '@/features/auth/presentation/components/already-registered'
-import { SignUpForm } from '@/features/auth/presentation/components/sign-up-form'
+import { SignUpForm } from '@/features/auth/presentation/components/forms/sign-up-form'
 import { AuthController } from '@/features/auth/presentation/controllers/auth-controller'
 import { OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'

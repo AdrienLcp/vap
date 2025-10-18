@@ -12,7 +12,7 @@ const createProduct = async (productCreationRequest: Request): Promise<ProductCr
     const productCreationData = await productCreationRequest.json()
     const productCreationValidation = ProductCreationSchema.safeParse(productCreationData)
 
-    if (productCreationValidation.error) {
+    if (!productCreationValidation.success) {
       return HttpResponse.badRequest(productCreationValidation.error.issues)
     }
 
@@ -34,7 +34,7 @@ const createProduct = async (productCreationRequest: Request): Promise<ProductCr
 
     const productDTOValidation = ProductDTOSchema.safeParse(createdProductResult.data)
 
-    if (productDTOValidation.error) {
+    if (!productDTOValidation.success) {
       console.error('Validation error in ProductController.createProduct:', productDTOValidation.error)
       return HttpResponse.internalServerError()
     }
@@ -53,7 +53,7 @@ const deleteProduct = async (productId: string): Promise<ProductDeleteResponse> 
   try {
     const productIdValidation = ProductIdSchema.safeParse(productId)
 
-    if (productIdValidation.error) {
+    if (!productIdValidation.success) {
       return HttpResponse.badRequest(productIdValidation.error.issues)
     }
 
@@ -82,7 +82,7 @@ const findProduct = async (productId: string): Promise<ProductResponse> => {
   try {
     const productIdValidation = ProductIdSchema.safeParse(productId)
 
-    if (productIdValidation.error) {
+    if (!productIdValidation.success) {
       return HttpResponse.badRequest(productIdValidation.error.issues)
     }
 
@@ -104,7 +104,7 @@ const findProduct = async (productId: string): Promise<ProductResponse> => {
 
     const productDTOValidation = ProductDTOSchema.safeParse(productResult.data)
 
-    if (productDTOValidation.error) {
+    if (!productDTOValidation.success) {
       console.error('Validation error in ProductController.findProduct:', productDTOValidation.error)
       return HttpResponse.internalServerError()
     }
@@ -134,7 +134,7 @@ const findProducts = async (): Promise<ProductListResponse> => {
 
     const productsDTOValidation = ProductDTOSchema.array().safeParse(productsResult.data)
 
-    if (productsDTOValidation.error) {
+    if (!productsDTOValidation.success) {
       console.error('Validation error in ProductController.findProducts:', productsDTOValidation.error)
       return HttpResponse.internalServerError()
     }
@@ -150,7 +150,7 @@ const findPublicProduct = async (productId: string): Promise<ProductPublicRespon
   try {
     const productIdValidation = ProductIdSchema.safeParse(productId)
 
-    if (productIdValidation.error) {
+    if (!productIdValidation.success) {
       return HttpResponse.badRequest(productIdValidation.error.issues)
     }
 
@@ -168,7 +168,7 @@ const findPublicProduct = async (productId: string): Promise<ProductPublicRespon
 
     const productPublicDTOValidation = ProductPublicDTOSchema.safeParse(productResult.data)
 
-    if (productPublicDTOValidation.error) {
+    if (!productPublicDTOValidation.success) {
       console.error('Validation error in ProductController.findPublicProduct:', productPublicDTOValidation.error)
       return HttpResponse.internalServerError()
     }
@@ -191,7 +191,7 @@ const findPublicProducts = async (): Promise<ProductPublicListResponse> => {
 
     const productsDTOValidation = ProductPublicDTOSchema.array().safeParse(productsResult.data)
 
-    if (productsDTOValidation.error) {
+    if (!productsDTOValidation.success) {
       console.error('Validation error in ProductController.findPublicProducts:', productsDTOValidation.error)
       return HttpResponse.internalServerError()
     }
@@ -207,7 +207,7 @@ const updateProduct = async (productId: string, productUpdateRequest: Request): 
   try {
     const productIdValidation = ProductIdSchema.safeParse(productId)
 
-    if (productIdValidation.error) {
+    if (!productIdValidation.success) {
       return HttpResponse.badRequest(productIdValidation.error.issues)
     }
 
@@ -215,7 +215,7 @@ const updateProduct = async (productId: string, productUpdateRequest: Request): 
 
     const productUpdateValidation = ProductUpdateSchema.safeParse(productUpdateData)
 
-    if (productUpdateValidation.error) {
+    if (!productUpdateValidation.success) {
       return HttpResponse.badRequest(productUpdateValidation.error.issues)
     }
 
@@ -237,7 +237,7 @@ const updateProduct = async (productId: string, productUpdateRequest: Request): 
 
     const productDTOValidation = ProductDTOSchema.safeParse(updatedProductResult.data)
 
-    if (productDTOValidation.error) {
+    if (!productDTOValidation.success) {
       console.error('Validation error in ProductController.updateProduct:', productDTOValidation.error)
       return HttpResponse.internalServerError()
     }

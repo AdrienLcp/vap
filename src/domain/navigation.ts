@@ -31,6 +31,8 @@ export const ROUTES = {
 
   // Orders
   order: `/orders/${PARAMS.orderId}`,
+  ordering: '/orders/ordering',
+  orders: '/orders',
 
   // Products
   product: `/products/:${PARAMS.productId}`

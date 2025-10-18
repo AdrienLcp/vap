@@ -7,6 +7,7 @@ import { useCallback, useState } from 'react'
 import { getAdminCategoryRoute } from '@/domain/navigation'
 import { CATEGORY_CONSTANTS, CATEGORY_ERRORS, CATEGORY_FORM_FIELDS } from '@/features/category/domain/category-constants'
 import type { CategoryConflictError, CategoryCreationData, CategoryDTO, CategoryValidationErrors } from '@/features/category/domain/category-entities'
+import { CategoryCreationSchema } from '@/features/category/domain/category-schemas'
 import { CategoryClient } from '@/features/category/infrastructure/category-client'
 import { CategoryDescriptionField } from '@/features/category/presentation/components/forms/category-description-field'
 import { CategoryImagePreviewField } from '@/features/category/presentation/components/forms/category-image-preview-field'
@@ -14,7 +15,7 @@ import { CategoryNameField } from '@/features/category/presentation/components/f
 import { BAD_REQUEST_STATUS, CONFLICT_STATUS, CREATED_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
-import { Form, type FormValues } from '@/presentation/components/forms/form'
+import { Form } from '@/presentation/components/forms/form'
 import { FormError } from '@/presentation/components/forms/form-error'
 import { RequiredFieldsMessage } from '@/presentation/components/forms/required-fields-message'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
@@ -64,17 +65,25 @@ export const CategoryCreationForm: React.FC = () => {
     redirect(createdCategoryRoute)
   }, [])
 
-  const onCategoryCreationFormSubmit = useCallback(async (formValues: FormValues) => {
+  const onCategoryCreationFormSubmit = useCallback(async (formData: FormData) => {
     setIsCategoryCreationLoading(true)
     setCategoryCreationFormErrors(null)
 
-    const categoryCreationData: CategoryCreationData = {
-      name: formValues.getString(CATEGORY_FORM_FIELDS.NAME),
-      description: formValues.getOptionalString(CATEGORY_FORM_FIELDS.DESCRIPTION),
-      imageUrl: formValues.getOptionalString(CATEGORY_FORM_FIELDS.IMAGE_URL)
+    const categoryCreationData = {
+      name: formData.get(CATEGORY_FORM_FIELDS.NAME),
+      description: formData.get(CATEGORY_FORM_FIELDS.DESCRIPTION),
+      imageUrl: formData.get(CATEGORY_FORM_FIELDS.IMAGE_URL)
     }
 
-    const createdCategoryResponse = await CategoryClient.createCategory(categoryCreationData)
+    const categoryCreationValidation = CategoryCreationSchema.safeParse(categoryCreationData)
+
+    if (!categoryCreationValidation.success) {
+      setIsCategoryCreationLoading(false)
+      onCategoryCreationBadRequestError(categoryCreationValidation.error.issues)
+      return
+    }
+
+    const createdCategoryResponse = await CategoryClient.createCategory(categoryCreationValidation.data)
 
     setIsCategoryCreationLoading(false)
 

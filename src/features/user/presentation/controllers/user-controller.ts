@@ -35,7 +35,7 @@ const findUsers = async (request?: Request): Promise<UserListResponse> => {
 
     const usersDTOValidation = UserDTOSchema.array().safeParse(userResult.data)
 
-    if (usersDTOValidation.error) {
+    if (!usersDTOValidation.success) {
       console.error('Validation error in UserController.findUsers:', usersDTOValidation.error)
       return HttpResponse.internalServerError()
     }
@@ -51,14 +51,14 @@ const updateUserRole = async (userId: string, request: Request): Promise<UserUpd
   try {
     const userIdValidation = UserIdSchema.safeParse(userId)
 
-    if (userIdValidation.error) {
+    if (!userIdValidation.success) {
       return HttpResponse.internalServerError()
     }
 
     const userUpdateData = await request.json()
     const userUpdateDataValidation = UserUpdateSchema.safeParse(userUpdateData)
 
-    if (userUpdateDataValidation.error) {
+    if (!userUpdateDataValidation.success) {
       return HttpResponse.internalServerError()
     }
 
@@ -78,7 +78,7 @@ const updateUserRole = async (userId: string, request: Request): Promise<UserUpd
 
     const userDTOValidation = UserDTOSchema.safeParse(userResult.data)
 
-    if (userDTOValidation.error) {
+    if (!userDTOValidation.success) {
       console.error('Validation error in UserController.updateUserRole:', userDTOValidation.error)
       return HttpResponse.internalServerError()
     }

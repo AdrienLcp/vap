@@ -28,3 +28,21 @@ export const AuthUserDTOSchema = z.object({
   name: UserNameSchema,
   permissions: AuthPermissionsSchema
 })
+
+export const SignInInfoSchema = z.object({
+  email: UserEmailSchema,
+  password: UserPasswordSchema
+})
+
+export const SignUpInfoSchema = SignInInfoSchema.extend({
+  name: UserNameSchema
+})
+
+const RequiredPasswordSchema = z.string().min(1, AUTH_CONSTANTS.PASSWORD_REQUIRED)
+
+export const DeleteAccountPasswordSchema = RequiredPasswordSchema
+
+export const ChangePasswordSchema = z.object({
+  currentPassword: RequiredPasswordSchema,
+  newPassword: UserPasswordSchema
+})

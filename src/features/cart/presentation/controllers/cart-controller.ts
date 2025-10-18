@@ -13,7 +13,7 @@ const addItemToUserCart = async (cartItemCreationRequest: Request): Promise<Cart
     const cartItemCreationData = await cartItemCreationRequest.json()
     const cartItemCreationValidation = CartItemCreationDataSchema.safeParse(cartItemCreationData)
 
-    if (cartItemCreationValidation.error) {
+    if (!cartItemCreationValidation.success) {
       return HttpResponse.badRequest(cartItemCreationValidation.error.issues)
     }
 
@@ -31,7 +31,7 @@ const addItemToUserCart = async (cartItemCreationRequest: Request): Promise<Cart
 
     const cartItemDTOValidation = CartItemDTOSchema.safeParse(cartItemCreationResult.data)
 
-    if (cartItemDTOValidation.error) {
+    if (!cartItemDTOValidation.success) {
       console.error('Validation error in CartController.addItemToUserCart:', cartItemDTOValidation.error)
       return HttpResponse.internalServerError()
     }
@@ -83,7 +83,7 @@ const findUserCartItems = async (): Promise<CartItemListResponse> => {
 
     const cartValidation = CartItemDTOSchema.array().safeParse(cartResult.data)
 
-    if (cartValidation.error) {
+    if (!cartValidation.success) {
       console.error('Validation error in CartController.findUserCartItems:', cartValidation.error)
       return HttpResponse.internalServerError()
     }
@@ -99,7 +99,7 @@ const removeItemFromUserCart = async (productId: string): Promise<CartItemDeleti
   try {
     const productIdValidation = ProductIdSchema.safeParse(productId)
 
-    if (productIdValidation.error) {
+    if (!productIdValidation.success) {
       return HttpResponse.badRequest(productIdValidation.error.issues)
     }
 
@@ -126,14 +126,14 @@ const updateUserCartItemQuantity = async (productId: string, request: Request): 
   try {
     const productIdValidation = ProductIdSchema.safeParse(productId)
 
-    if (productIdValidation.error) {
+    if (!productIdValidation.success) {
       return HttpResponse.badRequest(productIdValidation.error.issues)
     }
 
     const cartItemUpdateData = await request.json()
     const cartItemUpdateDataValidation = CartItemUpdateDataSchema.safeParse(cartItemUpdateData)
 
-    if (cartItemUpdateDataValidation.error) {
+    if (!cartItemUpdateDataValidation.success) {
       return HttpResponse.badRequest(cartItemUpdateDataValidation.error.issues)
     }
 

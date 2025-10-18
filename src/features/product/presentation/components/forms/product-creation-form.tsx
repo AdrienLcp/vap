@@ -7,7 +7,8 @@ import { useCallback, useState } from 'react'
 import { getAdminProductRoute } from '@/domain/navigation'
 import type { CategoryDTO } from '@/features/category/domain/category-entities'
 import { PRODUCT_FORM_FIELDS } from '@/features/product/domain/product-constants'
-import type { ProductCreationData, ProductDTO, ProductStatus, ProductValidationErrors } from '@/features/product/domain/product-entities'
+import type { ProductDTO, ProductValidationErrors } from '@/features/product/domain/product-entities'
+import { ProductCreationSchema } from '@/features/product/domain/product-schemas'
 import { ProductClient } from '@/features/product/infrastructure/product-client'
 import { ProductCategorySelect } from '@/features/product/presentation/components/forms/product-category-select'
 import { ProductDescriptionField } from '@/features/product/presentation/components/forms/product-description-field'
@@ -22,7 +23,7 @@ import { getBadRequestProductFormErrors, getConflictProductFormErrors } from '@/
 import { BAD_REQUEST_STATUS, CONFLICT_STATUS, CREATED_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
-import { Form, type FormValues } from '@/presentation/components/forms/form'
+import { Form } from '@/presentation/components/forms/form'
 import { FormError } from '@/presentation/components/forms/form-error'
 import { RequiredFieldsMessage } from '@/presentation/components/forms/required-fields-message'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
@@ -42,23 +43,31 @@ export const ProductCreationForm: React.FC<ProductCreationFormProps> = ({ catego
     redirect(createdProductRoute)
   }, [])
 
-  const onProductCreationFormSubmit = useCallback(async (formValues: FormValues) => {
+  const onProductCreationFormSubmit = useCallback(async (formData: FormData) => {
     setIsProductCreationLoading(true)
     setProductCreationFormErrors(null)
 
-    const productCreationData: ProductCreationData = {
-      categoryId: formValues.getOptionalString(PRODUCT_FORM_FIELDS.CATEGORY_ID),
-      description: formValues.getOptionalString(PRODUCT_FORM_FIELDS.DESCRIPTION),
-      discountedPrice: formValues.getNumber(PRODUCT_FORM_FIELDS.DISCOUNTED_PRICE),
-      imageUrl: formValues.getOptionalString(PRODUCT_FORM_FIELDS.IMAGE_URL),
-      name: formValues.getString(PRODUCT_FORM_FIELDS.NAME),
-      price: formValues.getNumber(PRODUCT_FORM_FIELDS.PRICE),
-      sku: formValues.getString(PRODUCT_FORM_FIELDS.SKU),
-      status: formValues.getAs<ProductStatus>(PRODUCT_FORM_FIELDS.STATUS),
-      stock: formValues.getOptionalNumber(PRODUCT_FORM_FIELDS.STOCK)
+    const productCreationData = {
+      categoryId: formData.get(PRODUCT_FORM_FIELDS.CATEGORY_ID),
+      description: formData.get(PRODUCT_FORM_FIELDS.DESCRIPTION),
+      discountedPrice: formData.get(PRODUCT_FORM_FIELDS.DISCOUNTED_PRICE),
+      imageUrl: formData.get(PRODUCT_FORM_FIELDS.IMAGE_URL),
+      name: formData.get(PRODUCT_FORM_FIELDS.NAME),
+      price: formData.get(PRODUCT_FORM_FIELDS.PRICE),
+      sku: formData.get(PRODUCT_FORM_FIELDS.SKU),
+      status: formData.get(PRODUCT_FORM_FIELDS.STATUS),
+      stock: formData.get(PRODUCT_FORM_FIELDS.STOCK)
     }
 
-    const productCreationResponse = await ProductClient.createProduct(productCreationData)
+    const productCreationValidation = ProductCreationSchema.safeParse(productCreationData)
+
+    if (!productCreationValidation.success) {
+      setIsProductCreationLoading(false)
+      setProductCreationFormErrors(getBadRequestProductFormErrors(productCreationValidation.error.issues))
+      return
+    }
+
+    const productCreationResponse = await ProductClient.createProduct(productCreationValidation.data)
     setIsProductCreationLoading(false)
 
     switch (productCreationResponse.status) {

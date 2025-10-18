@@ -21,7 +21,7 @@ const findUser = async (): Promise<AuthUserResponse> => {
 
     const authUserDTOValidation = AuthUserDTOSchema.safeParse(userResult.data)
 
-    if (authUserDTOValidation.error) {
+    if (!authUserDTOValidation.success) {
       return HttpResponse.internalServerError()
     }
 

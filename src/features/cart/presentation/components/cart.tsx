@@ -9,7 +9,7 @@ import { CartButton } from '@/features/cart/presentation/components/cart-button'
 import { CartItemList } from '@/features/cart/presentation/components/cart-item-list'
 import { CartPanelFooter } from '@/features/cart/presentation/components/cart-panel-footer'
 import { CartPanelHeader } from '@/features/cart/presentation/components/cart-panel-header'
-import { OK_STATUS } from '@/infrastructure/api/http-response'
+import { OK_STATUS, UNAUTHORIZED_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { Spinner } from '@/presentation/components/ui/loaders/spinner'
 import { ToastService } from '@/presentation/services/toast-service'
@@ -27,7 +27,9 @@ export const Cart: React.FC = () => {
     setIsLoadingCart(false)
 
     if (cartResponse.status !== OK_STATUS) {
-      ToastService.error(t('cart.list.error'))
+      if (cartResponse.status !== UNAUTHORIZED_STATUS) {
+        ToastService.error(t('cart.list.error'))
+      }
       return
     }
 

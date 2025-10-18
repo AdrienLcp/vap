@@ -7,14 +7,15 @@ import { useCallback, useState } from 'react'
 import { DEFAULT_ROUTE } from '@/domain/navigation'
 import { useAuth } from '@/features/auth/application/use-auth'
 import { AUTH_FORM_FIELDS } from '@/features/auth/domain/auth-constants'
-import type { AuthUserDTO, SignInInfo } from '@/features/auth/domain/auth-entities'
+import type { AuthUserDTO } from '@/features/auth/domain/auth-entities'
+import { SignInInfoSchema } from '@/features/auth/domain/auth-schemas'
 import { AuthClient } from '@/features/auth/infrastructure/auth-client'
-import { UserEmailField } from '@/features/user/presentation/components/user-email-field'
-import { UserPasswordField } from '@/features/user/presentation/components/user-password-field'
+import { UserEmailField } from '@/features/auth/presentation/components/forms/user-email-field'
+import { UserPasswordField } from '@/features/auth/presentation/components/forms/user-password-field'
 import { BAD_REQUEST_STATUS, OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
-import { Form, type FormValues } from '@/presentation/components/forms/form'
+import { Form } from '@/presentation/components/forms/form'
 import { FormError } from '@/presentation/components/forms/form-error'
 import { RequiredFieldsMessage } from '@/presentation/components/forms/required-fields-message'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
@@ -34,16 +35,28 @@ export const SignInForm: React.FC = () => {
     redirect(DEFAULT_ROUTE)
   }, [setUser])
 
-  const onSignInFormSubmit = useCallback(async (formValues: FormValues) => {
+  const onSignInBadRequest = useCallback(() => {
+    setSignInFormErrors({ form: t('auth.signIn.errors.invalidCredentials') })
+  }, [])
+
+  const onSignInFormSubmit = useCallback(async (formData: FormData) => {
     setIsUserAuthenticationLoading(true)
     setSignInFormErrors(null)
 
-    const credentials: SignInInfo = {
-      email: formValues.getString(AUTH_FORM_FIELDS.EMAIL),
-      password: formValues.getString(AUTH_FORM_FIELDS.PASSWORD)
+    const credentials = {
+      email: formData.get(AUTH_FORM_FIELDS.EMAIL),
+      password: formData.get(AUTH_FORM_FIELDS.PASSWORD)
     }
 
-    const signInResponse = await AuthClient.emailSignIn(credentials)
+    const credentialsValidation = SignInInfoSchema.safeParse(credentials)
+
+    if (!credentialsValidation.success) {
+      onSignInBadRequest()
+      setIsUserAuthenticationLoading(false)
+      return
+    }
+
+    const signInResponse = await AuthClient.emailSignIn(credentialsValidation.data)
 
     setIsUserAuthenticationLoading(false)
 
@@ -52,13 +65,13 @@ export const SignInForm: React.FC = () => {
         onSignInSuccess(signInResponse.data)
         break
       case BAD_REQUEST_STATUS:
-        setSignInFormErrors({ form: t('auth.signIn.errors.invalidCredentials') })
+        onSignInBadRequest()
         break
       default:
         setSignInFormErrors({ form: t('auth.signIn.errors.unknown') })
         break
     }
-  }, [onSignInSuccess])
+  }, [onSignInBadRequest, onSignInSuccess])
 
   return (
     <Form onSubmit={onSignInFormSubmit} validationErrors={signInFormErrors}>

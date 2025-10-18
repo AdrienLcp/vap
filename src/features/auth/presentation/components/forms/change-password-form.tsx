@@ -4,13 +4,14 @@ import { SaveIcon } from 'lucide-react'
 import { useCallback, useState } from 'react'
 
 import { AUTH_CONSTANTS, AUTH_FORM_FIELDS } from '@/features/auth/domain/auth-constants'
-import type { ChangePasswordConflictError } from '@/features/auth/domain/auth-entities'
+import type { ChangePasswordError } from '@/features/auth/domain/auth-entities'
+import { ChangePasswordSchema } from '@/features/auth/domain/auth-schemas'
 import { AuthClient } from '@/features/auth/infrastructure/auth-client'
-import { UserPasswordField } from '@/features/user/presentation/components/user-password-field'
+import { UserPasswordField } from '@/features/auth/presentation/components/forms/user-password-field'
 import { BAD_REQUEST_STATUS, NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
-import { Form, type FormValues } from '@/presentation/components/forms/form'
+import { Form } from '@/presentation/components/forms/form'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import { ToastService } from '@/presentation/services/toast-service'
 import type { ValueOf } from '@/utils/object-utils'
@@ -22,7 +23,7 @@ export const ChangePasswordForm: React.FC = () => {
   const [isChangePasswordLoading, setIsChangePasswordLoading] = useState(false)
   const [changePasswordFormErrors, setChangePasswordFormErrors] = useState<ChangePasswordFormErrors>(null)
 
-  const onChangePasswordBadRequest = useCallback((errorCode: ChangePasswordConflictError) => {
+  const onChangePasswordBadRequest = useCallback((errorCode: ChangePasswordError) => {
     switch (errorCode) {
       case 'INVALID_PASSWORD':
         setChangePasswordFormErrors({ [AUTH_FORM_FIELDS.NEW_PASSWORD]: t('auth.changePassword.errors.invalidPassword') })
@@ -41,16 +42,23 @@ export const ChangePasswordForm: React.FC = () => {
     }
   }, [])
 
-  const onChangePasswordFormSubmit = useCallback(async (formValues: FormValues) => {
+  const onChangePasswordFormSubmit = useCallback(async (formData: FormData) => {
     setIsChangePasswordLoading(true)
     setChangePasswordFormErrors(null)
 
     const changePasswordInfo = {
-      currentPassword: formValues.getString(AUTH_FORM_FIELDS.PASSWORD),
-      newPassword: formValues.getString(AUTH_FORM_FIELDS.NEW_PASSWORD)
+      currentPassword: formData.get(AUTH_FORM_FIELDS.PASSWORD),
+      newPassword: formData.get(AUTH_FORM_FIELDS.NEW_PASSWORD)
     }
 
-    const changePasswordResponse = await AuthClient.changePassword(changePasswordInfo)
+    const changePasswordValidation = ChangePasswordSchema.safeParse(changePasswordInfo)
+
+    if (!changePasswordValidation.success) {
+      setIsChangePasswordLoading(false)
+      return
+    }
+
+    const changePasswordResponse = await AuthClient.changePassword(changePasswordValidation.data)
 
     setIsChangePasswordLoading(false)
 

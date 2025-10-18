@@ -4,11 +4,12 @@ import { SaveIcon } from 'lucide-react'
 import { useCallback, useState } from 'react'
 
 import { AUTH_FORM_FIELDS } from '@/features/auth/domain/auth-constants'
+import { UserEmailSchema } from '@/features/auth/domain/auth-schemas'
 import { AuthClient } from '@/features/auth/infrastructure/auth-client'
-import { UserEmailField } from '@/features/user/presentation/components/user-email-field'
+import { UserEmailField } from '@/features/auth/presentation/components/forms/user-email-field'
 import { NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
-import { Form, type FormValues } from '@/presentation/components/forms/form'
+import { Form } from '@/presentation/components/forms/form'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import { ToastService } from '@/presentation/services/toast-service'
 import type { ValueOf } from '@/utils/object-utils'
@@ -20,13 +21,20 @@ export const ChangeEmailForm: React.FC = () => {
   const [isChangeEmailLoading, setIsChangeEmailLoading] = useState(false)
   const [changeEmailFormErrors, setChangeEmailFormErrors] = useState<ChangeEmailFormErrors>(null)
 
-  const onChangeEmailFormSubmit = useCallback(async (formValues: FormValues) => {
+  const onChangeEmailFormSubmit = useCallback(async (formData: FormData) => {
     setIsChangeEmailLoading(true)
     setChangeEmailFormErrors(null)
 
-    const newEmail = formValues.getString(AUTH_FORM_FIELDS.EMAIL)
+    const newEmail = formData.get(AUTH_FORM_FIELDS.EMAIL)
+    const emailValidation = UserEmailSchema.safeParse(newEmail)
 
-    const changeEmailResponse = await AuthClient.changeEmail(newEmail)
+    if (!emailValidation.success) {
+      setIsChangeEmailLoading(false)
+      // setChangeEmailFormErrors({ [AUTH_FORM_FIELDS.EMAIL]: t('auth.changeEmail.errors.invalidEmail') })
+      return
+    }
+
+    const changeEmailResponse = await AuthClient.changeEmail(emailValidation.data)
 
     setIsChangeEmailLoading(false)
 

@@ -5,6 +5,7 @@ import { useCallback, useState } from 'react'
 
 import { CATEGORY_CONSTANTS, CATEGORY_ERRORS, CATEGORY_FORM_FIELDS } from '@/features/category/domain/category-constants'
 import type { CategoryConflictError, CategoryDTO, CategoryUpdateData, CategoryValidationErrors } from '@/features/category/domain/category-entities'
+import { CategoryUpdateSchema } from '@/features/category/domain/category-schemas'
 import { CategoryClient } from '@/features/category/infrastructure/category-client'
 import { CategoryDescriptionField } from '@/features/category/presentation/components/forms/category-description-field'
 import { CategoryImagePreviewField } from '@/features/category/presentation/components/forms/category-image-preview-field'
@@ -12,7 +13,7 @@ import { CategoryNameField } from '@/features/category/presentation/components/f
 import { BAD_REQUEST_STATUS, CONFLICT_STATUS, OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
-import { Form, type FormValues } from '@/presentation/components/forms/form'
+import { Form } from '@/presentation/components/forms/form'
 import { FormError } from '@/presentation/components/forms/form-error'
 import { RequiredFieldsMessage } from '@/presentation/components/forms/required-fields-message'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
@@ -64,17 +65,25 @@ export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = ({ category
     ToastService.success(t('category.update.success', { categoryName: updatedCategory.name }))
   }, [])
 
-  const onCategoryUpdateFormSubmit = useCallback(async (formValues: FormValues) => {
+  const onCategoryUpdateFormSubmit = useCallback(async (formData: FormData) => {
     setCategoryUpdateFormErrors(null)
     setIsCategoryUpdateLoading(true)
 
-    const categoryUpdateData: CategoryUpdateData = {
-      name: formValues.getString(CATEGORY_FORM_FIELDS.NAME),
-      description: formValues.getOptionalString(CATEGORY_FORM_FIELDS.DESCRIPTION),
-      imageUrl: formValues.getOptionalString(CATEGORY_FORM_FIELDS.IMAGE_URL)
+    const categoryUpdateData = {
+      name: formData.get(CATEGORY_FORM_FIELDS.NAME),
+      description: formData.get(CATEGORY_FORM_FIELDS.DESCRIPTION),
+      imageUrl: formData.get(CATEGORY_FORM_FIELDS.IMAGE_URL)
     }
 
-    const updatedCategoryResponse = await CategoryClient.updateCategory(category.id, categoryUpdateData)
+    const categoryUpdateValidation = CategoryUpdateSchema.safeParse(categoryUpdateData)
+
+    if (!categoryUpdateValidation.success) {
+      setIsCategoryUpdateLoading(false)
+      onCategoryUpdateBadRequestError(categoryUpdateValidation.error.issues)
+      return
+    }
+
+    const updatedCategoryResponse = await CategoryClient.updateCategory(category.id, categoryUpdateValidation.data)
 
     setIsCategoryUpdateLoading(false)
 

@@ -8,7 +8,7 @@ import { Link } from '@/presentation/components/ui/pressables/link'
 
 export const CartOrderLink: React.FC = () => (
   <Link
-    href={ROUTES.order}
+    href={ROUTES.ordering}
     Icon={<PackageCheckIcon aria-hidden />}
     variant='filled'
   >

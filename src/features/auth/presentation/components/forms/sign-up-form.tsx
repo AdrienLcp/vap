@@ -7,15 +7,16 @@ import { useCallback, useState } from 'react'
 import { DEFAULT_ROUTE } from '@/domain/navigation'
 import { useAuth } from '@/features/auth/application/use-auth'
 import { AUTH_CONSTANTS, AUTH_FORM_FIELDS } from '@/features/auth/domain/auth-constants'
-import type { AuthUserDTO, SignUpInfo } from '@/features/auth/domain/auth-entities'
+import type { AuthUserDTO } from '@/features/auth/domain/auth-entities'
+import { SignUpInfoSchema } from '@/features/auth/domain/auth-schemas'
 import { AuthClient } from '@/features/auth/infrastructure/auth-client'
-import { UserEmailField } from '@/features/user/presentation/components/user-email-field'
-import { UserNameField } from '@/features/user/presentation/components/user-name-field'
-import { UserPasswordField } from '@/features/user/presentation/components/user-password-field'
+import { UserEmailField } from '@/features/auth/presentation/components/forms/user-email-field'
+import { UserNameField } from '@/features/auth/presentation/components/forms/user-name-field'
+import { UserPasswordField } from '@/features/auth/presentation/components/forms/user-password-field'
 import { BAD_REQUEST_STATUS, CONFLICT_STATUS, CREATED_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
-import { Form, type FormValues } from '@/presentation/components/forms/form'
+import { Form } from '@/presentation/components/forms/form'
 import { FormError } from '@/presentation/components/forms/form-error'
 import { RequiredFieldsMessage } from '@/presentation/components/forms/required-fields-message'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
@@ -35,17 +36,34 @@ export const SignUpForm: React.FC = () => {
     redirect(DEFAULT_ROUTE)
   }, [setUser])
 
-  const onSignUpFormSubmit = useCallback(async (formValues: FormValues) => {
+  const onSignUpBadRequest = useCallback(() => {
+    setSignUpFormErrors({
+      [AUTH_FORM_FIELDS.PASSWORD]: t('auth.signUp.errors.invalidPasswordLength', {
+        maxLength: AUTH_CONSTANTS.PASSWORD_MAX_LENGTH,
+        minLength: AUTH_CONSTANTS.PASSWORD_MIN_LENGTH
+      })
+    })
+  }, [])
+
+  const onSignUpFormSubmit = useCallback(async (formData: FormData) => {
     setIsUserCreationLoading(true)
     setSignUpFormErrors(null)
 
-    const credentials: SignUpInfo = {
-      email: formValues.getString(AUTH_FORM_FIELDS.EMAIL),
-      name: formValues.getString(AUTH_FORM_FIELDS.NAME),
-      password: formValues.getString(AUTH_FORM_FIELDS.PASSWORD)
+    const credentials = {
+      email: formData.get(AUTH_FORM_FIELDS.EMAIL),
+      name: formData.get(AUTH_FORM_FIELDS.NAME),
+      password: formData.get(AUTH_FORM_FIELDS.PASSWORD)
     }
 
-    const signUpResponse = await AuthClient.emailSignUp(credentials)
+    const credentialsValidation = SignUpInfoSchema.safeParse(credentials)
+
+    if (!credentialsValidation.success) {
+      onSignUpBadRequest()
+      setIsUserCreationLoading(false)
+      return
+    }
+
+    const signUpResponse = await AuthClient.emailSignUp(credentialsValidation.data)
 
     setIsUserCreationLoading(false)
 
@@ -54,12 +72,6 @@ export const SignUpForm: React.FC = () => {
         onSignUpSuccess(signUpResponse.data)
         break
       case BAD_REQUEST_STATUS:
-        setSignUpFormErrors({
-          [AUTH_FORM_FIELDS.PASSWORD]: t('auth.signUp.errors.invalidPasswordLength', {
-            maxLength: AUTH_CONSTANTS.PASSWORD_MAX_LENGTH,
-            minLength: AUTH_CONSTANTS.PASSWORD_MIN_LENGTH
-          })
-        })
         break
       case CONFLICT_STATUS:
         setSignUpFormErrors({ [AUTH_FORM_FIELDS.EMAIL]: t('auth.signUp.errors.userAlreadyExists') })
@@ -68,7 +80,7 @@ export const SignUpForm: React.FC = () => {
         setSignUpFormErrors({ form: t('auth.signUp.errors.unknown') })
         break
     }
-  }, [onSignUpSuccess])
+  }, [onSignUpBadRequest, onSignUpSuccess])
 
   return (
     <Form onSubmit={onSignUpFormSubmit} validationErrors={signUpFormErrors}>

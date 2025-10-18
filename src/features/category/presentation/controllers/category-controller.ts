@@ -12,7 +12,7 @@ const createCategory = async (categoryCreationRequest: Request): Promise<Categor
     const categoryCreationData = await categoryCreationRequest.json()
     const categoryCreationValidation = CategoryCreationSchema.safeParse(categoryCreationData)
 
-    if (categoryCreationValidation.error) {
+    if (!categoryCreationValidation.success) {
       return HttpResponse.badRequest(categoryCreationValidation.error.issues)
     }
 
@@ -34,7 +34,7 @@ const createCategory = async (categoryCreationRequest: Request): Promise<Categor
 
     const categoryDTOValidation = CategoryDTOSchema.safeParse(createdCategoryResult.data)
 
-    if (categoryDTOValidation.error) {
+    if (!categoryDTOValidation.success) {
       console.error('Validation error in CategoryController.createCategory:', categoryDTOValidation.error)
       return HttpResponse.internalServerError()
     }
@@ -53,7 +53,7 @@ const deleteCategory = async (categoryId: unknown): Promise<CategoryDeletionResp
   try {
     const categoryIdValidation = CategoryIdSchema.safeParse(categoryId)
 
-    if (categoryIdValidation.error) {
+    if (!categoryIdValidation.success) {
       return HttpResponse.badRequest(categoryIdValidation.error.issues)
     }
 
@@ -89,7 +89,7 @@ const findCategories = async (): Promise<CategoryListResponse> => {
 
     const categoriesDTOValidation = CategoryDTOSchema.array().safeParse(categoriesResult.data)
 
-    if (categoriesDTOValidation.error) {
+    if (!categoriesDTOValidation.success) {
       console.error('Validation error in CategoryController.findCategories:', categoriesDTOValidation.error)
       return HttpResponse.internalServerError()
     }
@@ -105,7 +105,7 @@ const findCategory = async (categoryId: unknown): Promise<CategoryResponse> => {
   try {
     const categoryIdValidation = CategoryIdSchema.safeParse(categoryId)
 
-    if (categoryIdValidation.error) {
+    if (!categoryIdValidation.success) {
       return HttpResponse.badRequest(categoryIdValidation.error.issues)
     }
 
@@ -121,7 +121,7 @@ const findCategory = async (categoryId: unknown): Promise<CategoryResponse> => {
 
     const categoryDTOValidation = CategoryDTOSchema.safeParse(categoryResult.data)
 
-    if (categoryDTOValidation.error) {
+    if (!categoryDTOValidation.success) {
       console.error('Validation error in CategoryController.findCategory:', categoryDTOValidation.error)
       return HttpResponse.internalServerError()
     }
@@ -137,14 +137,14 @@ const updateCategory = async (categoryId: unknown, categoryUpdateRequest: Reques
   try {
     const categoryIdValidation = CategoryIdSchema.safeParse(categoryId)
 
-    if (categoryIdValidation.error) {
+    if (!categoryIdValidation.success) {
       return HttpResponse.badRequest(categoryIdValidation.error.issues)
     }
 
     const categoryUpdateData = await categoryUpdateRequest.json()
     const categoryUpdateValidation = CategoryUpdateSchema.safeParse(categoryUpdateData)
 
-    if (categoryUpdateValidation.error) {
+    if (!categoryUpdateValidation.success) {
       return HttpResponse.badRequest(categoryUpdateValidation.error.issues)
     }
 
@@ -166,7 +166,7 @@ const updateCategory = async (categoryId: unknown, categoryUpdateRequest: Reques
 
     const categoryDTOValidation = CategoryDTOSchema.safeParse(updatedCategoryResult.data)
 
-    if (categoryDTOValidation.error) {
+    if (!categoryDTOValidation.success) {
       console.error('Validation error in CategoryController.updateCategory:', categoryDTOValidation.error)
       return HttpResponse.internalServerError()
     }
