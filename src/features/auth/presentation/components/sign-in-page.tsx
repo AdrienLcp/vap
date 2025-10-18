@@ -1,8 +1,8 @@
 import { redirect } from 'next/navigation'
 
 import { DEFAULT_ROUTE } from '@/domain/navigation'
-import { NoAccount } from '@/features/auth/presentation/components/no-account'
 import { SignInForm } from '@/features/auth/presentation/components/forms/sign-in-form'
+import { NoAccount } from '@/features/auth/presentation/components/no-account'
 import { AuthController } from '@/features/auth/presentation/controllers/auth-controller'
 import { OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'

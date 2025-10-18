@@ -1,3 +1,5 @@
+'use client'
+
 import { UserRoundXIcon } from 'lucide-react'
 import { Dialog, DialogTrigger, Modal, ModalOverlay } from 'react-aria-components'
 
