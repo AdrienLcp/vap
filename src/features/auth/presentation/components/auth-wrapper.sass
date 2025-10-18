@@ -1,19 +1,16 @@
 @use '@/presentation/styles/typography'
 
 .auth-wrapper
+  --wrapper-size: var(--content-inline-size, 100%)
   display: flex
   flex: 1
   flex-direction: column
   gap: var(--size-160, 1rem)
-  inline-size: var(--content-inline-size, 100%)
+  inline-size: var(--wrapper-size)
   margin-inline: auto
   min-block-size: 10rem
   justify-content: center
   padding-block: var(--size-320, 2rem) calc(var(--size-320, 2rem) + 10%)
-
-  & section .form .field-set .input-wrapper
-    // trouver mieux0
-    max-inline-size: var(--content-inline-size, 100%)
 
   & h1
     @include typography.title-large
@@ -21,8 +18,8 @@
     &
       text-align: center
 
-  & .no-account,
-  & .already-registered
+  & .already-registered,
+  & .no-account
     display: grid
     gap: var(--size-80, 0.5rem)
     inline-size: fit-content

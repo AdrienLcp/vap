@@ -9,19 +9,17 @@ import { Button } from '@/presentation/components/ui/pressables/button'
 import './user-password-field.sass'
 
 type EyeIconButtonProps = {
-  isPasswordVisible: boolean
+  isSlashed: boolean
   onPress: () => void
 }
 
-const EyeIconButton: React.FC<EyeIconButtonProps> = ({ isPasswordVisible, onPress }) => (
+const EyeIconButton: React.FC<EyeIconButtonProps> = ({ isSlashed, onPress }) => (
   <Button
     className='eye-icon-button'
+    Icon={isSlashed ? <EyeOffIcon aria-hidden /> : <EyeIcon aria-hidden />}
     onPress={onPress}
-    // Icon={<EyeIcon />}
-    // variant='transparent'
-  >
-    {isPasswordVisible ? <EyeOffIcon /> : <EyeIcon />}
-  </Button>
+    variant='transparent'
+  />
 )
 
 export const UserPasswordField: React.FC<Partial<TextFieldProps>> = ({
@@ -34,26 +32,22 @@ export const UserPasswordField: React.FC<Partial<TextFieldProps>> = ({
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
   const togglePasswordVisibility = useCallback(() => {
-    setIsPasswordVisible(prevState => !prevState)
+    setIsPasswordVisible(previousPasswordVisibilityState => !previousPasswordVisibilityState)
   }, [])
-
-  // TODO:
-  // -> Les icônes n'ont pas la même taille
-  // -> L'input s'agrandit quand on écrit trop dedans
 
   return (
     <TextField
       {...userPasswordFieldRestProps}
       className='user-password-field'
       description={description}
-      EndContent={<EyeIconButton isPasswordVisible={isPasswordVisible} onPress={togglePasswordVisibility} />}
+      EndContent={<EyeIconButton isSlashed={isPasswordVisible} onPress={togglePasswordVisibility} />}
       isRequired
       label={label}
       maxLength={AUTH_CONSTANTS.PASSWORD_MAX_LENGTH}
       minLength={AUTH_CONSTANTS.PASSWORD_MIN_LENGTH}
       name={name}
       placeholder={placeholder}
-      StartContent={<div className='lock-icon'><LockIcon /></div>}
+      StartContent={<LockIcon className='lock-icon' />}
       type={isPasswordVisible ? 'text' : 'password'}
     />
   )

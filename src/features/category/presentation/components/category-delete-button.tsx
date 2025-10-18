@@ -30,7 +30,7 @@ export const CategoryDeleteButton: React.FC<CategoryDeleteButtonProps> = ({ cate
 
   return (
     <Button
-      Icon={<Trash2Icon />}
+      Icon={<Trash2Icon aria-hidden />}
       onPress={deleteCategory}
       variant='destructive'
       {...categoryDeleteButtonRestProps}

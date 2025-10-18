@@ -40,7 +40,7 @@ export const CartItemDeleteButton: React.FC<CartItemDeleteButtonProps> = ({ isLo
       isDisabled={isLoading}
       onPress={onCartItemDeleteButtonPress}
     >
-      <Trash2Icon />
+      <Trash2Icon aria-hidden />
     </Button>
   )
 }

@@ -30,7 +30,7 @@ export const CartClearButton: React.FC = () => {
 
   return (
     <Button
-      Icon={<Trash2Icon />}
+      Icon={<Trash2Icon aria-hidden />}
       isPending={isClearingCart}
       onPress={clearUserCart}
       variant='outlined'

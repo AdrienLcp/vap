@@ -21,7 +21,7 @@ const ProductMenuTrigger: React.FC = () => (
   <Button
     aria-label={t('product.card.menuAriaLabel')}
     className='product-menu-trigger'
-    Icon={<MenuIcon />}
+    Icon={<MenuIcon aria-hidden />}
     variant='transparent'
   />
 )
@@ -42,18 +42,18 @@ export const ProductMenu: React.FC<ProductMenuProps> = ({ productId, setProductL
   const productMenuItems: MenuItem[] = useMemo(() => [
     {
       href: getAdminProductRoute(productId),
-      Icon: <EyeIcon />,
+      Icon: <EyeIcon aria-hidden />,
       id: 'view',
       textValue: t('product.card.showProductSheet')
     },
     {
       href: getAdminProductRoute(productId),
-      Icon: <PenIcon />,
+      Icon: <PenIcon aria-hidden />,
       id: 'edit',
       textValue: t('product.card.edit')
     },
     {
-      Icon: <Trash2Icon />,
+      Icon: <Trash2Icon aria-hidden />,
       id: 'delete',
       onPress: deleteProduct,
       textValue: t('product.card.delete')

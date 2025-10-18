@@ -103,7 +103,7 @@ export const ProductCreationForm: React.FC<ProductCreationFormProps> = ({ catego
 
       <RequiredFieldsMessage />
 
-      <SubmitButton Icon={<SaveIcon />} isPending={isProductCreationLoading}>
+      <SubmitButton Icon={<SaveIcon aria-hidden />} isPending={isProductCreationLoading}>
         {({ isPending }) => t(`product.creation.submit.${isPending ? 'creating' : 'label'}`)}
       </SubmitButton>
     </Form>

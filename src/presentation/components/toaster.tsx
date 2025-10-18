@@ -31,7 +31,7 @@ export const Toaster: React.FC = () => (
         >
           <span aria-hidden className='icon'>
             {toast.content.Icon}
-            <CheckIcon />
+            <CheckIcon aria-hidden />
           </span>
 
           <ToastContent className='content'>

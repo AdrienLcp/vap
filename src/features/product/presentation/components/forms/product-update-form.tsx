@@ -97,7 +97,7 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({ categories
 
       <RequiredFieldsMessage />
 
-      <SubmitButton Icon={<SaveIcon />} isPending={isProductUpdateLoading}>
+      <SubmitButton Icon={<SaveIcon aria-hidden />} isPending={isProductUpdateLoading}>
         {({ isPending }) => t(`product.update.submit.${isPending ? 'updating' : 'label'}`)}
       </SubmitButton>
     </Form>

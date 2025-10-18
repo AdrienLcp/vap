@@ -82,7 +82,7 @@ export const ChangePasswordForm: React.FC = () => {
         />
       </FieldSet>
 
-      <SubmitButton Icon={<SaveIcon />} isPending={isChangePasswordLoading}>
+      <SubmitButton Icon={<SaveIcon aria-hidden />} isPending={isChangePasswordLoading}>
         {({ isPending }) => t(`auth.changePassword.form.submit.${isPending ? 'loading' : 'label'}`)}
       </SubmitButton>
     </Form>

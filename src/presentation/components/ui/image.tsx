@@ -27,7 +27,7 @@ const ImageDefaultFallback: React.FC<ImageDefaultFallbackProps> = ({ className, 
       className={classNames('image-default-fallback', className)}
       style={imageDefaultFallbackStyle}
     >
-      <ImageOffIcon />
+      <ImageOffIcon aria-hidden />
     </div>
   )
 }

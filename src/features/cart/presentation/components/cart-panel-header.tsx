@@ -17,7 +17,7 @@ export const CartPanelHeader: React.FC = () => {
       </Heading>
 
       <Button
-        Icon={<XIcon />}
+        Icon={<XIcon aria-hidden />}
         slot='close'
         variant='transparent'
       />

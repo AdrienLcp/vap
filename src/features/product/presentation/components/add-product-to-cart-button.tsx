@@ -50,7 +50,7 @@ export const AddProductToCartButton: React.FC<AddProductToCartButtonProps> = ({ 
       isPending={isAddingProductToCart}
       onPress={addProductToCart}
     >
-      {isAddingProductToCart ? <Spinner /> : <ShoppingBasketIcon />}
+      {isAddingProductToCart ? <Spinner /> : <ShoppingBasketIcon aria-hidden />}
     </Button>
   )
 }

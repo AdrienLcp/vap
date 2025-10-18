@@ -1,6 +1,10 @@
+import { MailIcon } from 'lucide-react'
+
 import { AUTH_FORM_FIELDS } from '@/features/auth/domain/auth-constants'
 import { t } from '@/infrastructure/i18n'
 import { TextField, type TextFieldProps } from '@/presentation/components/forms/text-field'
+
+import './user-email-field.sass'
 
 export const UserEmailField: React.FC<Partial<TextFieldProps>> = ({
   label = t('auth.fields.email.label'),
@@ -10,10 +14,12 @@ export const UserEmailField: React.FC<Partial<TextFieldProps>> = ({
 }) => (
   <TextField
     {...userEmailFieldRestProps}
+    className='user-email-field'
     isRequired
     label={label}
     name={name}
     placeholder={placeholder}
+    StartContent={<MailIcon className='mail-icon' />}
     type='email'
   />
 )

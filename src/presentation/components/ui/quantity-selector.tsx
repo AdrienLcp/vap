@@ -33,13 +33,13 @@ export const QuantitySelector: React.FC<QuantitySelectorProps> = ({ isDisabled, 
   return (
     <div className='quantity-selector' {...stopPropagationHandlers}>
       <Button isDisabled={isDisabled || isMin} onPress={onDecrement}>
-        <MinusIcon />
+        <MinusIcon aria-hidden />
       </Button>
 
       <span>{quantity}</span>
 
       <Button isDisabled={isDisabled || isMax} onPress={onIncrement}>
-        <PlusIcon />
+        <PlusIcon aria-hidden />
       </Button>
     </div>
   )

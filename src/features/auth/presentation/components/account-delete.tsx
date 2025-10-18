@@ -1,6 +1,6 @@
 'use client'
 
-import { Trash2Icon } from 'lucide-react'
+import { Trash2Icon, XIcon } from 'lucide-react'
 import { redirect } from 'next/navigation'
 import { useCallback, useState } from 'react'
 import { Dialog, DialogTrigger, Modal, ModalOverlay } from 'react-aria-components'
@@ -67,7 +67,7 @@ export const AccountDelete: React.FC = () => {
 
                 <div className='actions'>
                   <Button
-                    Icon={<Trash2Icon />}
+                    Icon={<Trash2Icon aria-hidden />}
                     isPending={isDeletingUserAccount}
                     type='submit'
                     variant='destructive'
@@ -76,6 +76,7 @@ export const AccountDelete: React.FC = () => {
                   </Button>
 
                   <Button
+                    Icon={<XIcon aria-hidden />}
                     isPending={isDeletingUserAccount}
                     onPress={close}
                     variant='transparent'

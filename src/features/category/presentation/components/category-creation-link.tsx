@@ -9,7 +9,7 @@ import { Link, type LinkProps } from '@/presentation/components/ui/pressables/li
 export const CategoryCreationLink: React.FC<Partial<LinkProps>> = (categoryCreationLinkProps) => (
   <Link
     href={ROUTES.adminCategoryCreation}
-    Icon={<PlusIcon />}
+    Icon={<PlusIcon aria-hidden />}
     variant='filled'
     {...categoryCreationLinkProps}
   >

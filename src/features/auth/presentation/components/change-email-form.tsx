@@ -50,7 +50,7 @@ export const ChangeEmailForm: React.FC = () => {
         placeholder={t('auth.fields.email.placeholder')}
       />
 
-      <SubmitButton Icon={<SaveIcon />} isPending={isChangeEmailLoading}>
+      <SubmitButton Icon={<SaveIcon aria-hidden />} isPending={isChangeEmailLoading}>
         {({ isPending }) => t(`auth.changeEmail.submit.${isPending ? 'loading' : 'label'}`)}
       </SubmitButton>
     </Form>

@@ -30,7 +30,7 @@ export const ProductDeleteButton: React.FC<ProductDeleteButtonProps> = ({ produc
 
   return (
     <Button
-      Icon={<Trash2Icon />}
+      Icon={<Trash2Icon aria-hidden />}
       onPress={deleteProduct}
       variant='destructive'
       {...productDeleteButtonRestProps}

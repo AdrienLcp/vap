@@ -1,10 +1,15 @@
 @use '@/presentation/styles/forms'
+@use '@/presentation/styles/sizes'
 
 .text-field
   @include forms.field
 
   & .input-wrapper
+    inline-size: var(--wrapper-size, 100%)
     position: relative
+
+    & svg
+      @include sizes.square(var(--size-160, 1rem))
 
   & input
     @include forms.field-input

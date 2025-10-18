@@ -9,7 +9,7 @@ import { Link, type LinkProps } from '@/presentation/components/ui/pressables/li
 export const ProductCreationLink: React.FC<Partial<LinkProps>> = (productCreationLinkProps) => (
   <Link
     href={ROUTES.adminProductCreation}
-    Icon={<PlusIcon />}
+    Icon={<PlusIcon aria-hidden />}
     variant='filled'
     {...productCreationLinkProps}
   >

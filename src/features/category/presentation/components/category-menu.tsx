@@ -21,7 +21,7 @@ const CategoryMenuTrigger: React.FC = () => (
   <Button
     aria-label={t('category.card.menuAriaLabel')}
     className='category-menu-trigger'
-    Icon={<MenuIcon />}
+    Icon={<MenuIcon aria-hidden />}
     variant='transparent'
   />
 )
@@ -42,18 +42,18 @@ export const CategoryMenu: React.FC<CategoryMenuProps> = ({ categoryId, setCateg
   const categoryMenuItems: MenuItem[] = useMemo(() => [
     {
       href: getAdminCategoryRoute(categoryId),
-      Icon: <EyeIcon />,
+      Icon: <EyeIcon aria-hidden />,
       id: 'view',
       textValue: t('category.card.showCategorySheet')
     },
     {
       href: getAdminCategoryRoute(categoryId),
-      Icon: <PenIcon />,
+      Icon: <PenIcon aria-hidden />,
       id: 'edit',
       textValue: t('category.card.edit')
     },
     {
-      Icon: <Trash2Icon />,
+      Icon: <Trash2Icon aria-hidden />,
       id: 'delete',
       onPress: deleteCategory,
       textValue: t('category.card.delete')

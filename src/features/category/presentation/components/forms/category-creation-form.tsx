@@ -105,7 +105,7 @@ export const CategoryCreationForm: React.FC = () => {
 
       <RequiredFieldsMessage />
 
-      <SubmitButton Icon={<SaveIcon />} isPending={isCategoryCreationLoading}>
+      <SubmitButton Icon={<SaveIcon aria-hidden />} isPending={isCategoryCreationLoading}>
         {({ isPending }) => t(`category.creation.submit.${isPending ? 'creating' : 'label'}`)}
       </SubmitButton>
     </Form>
