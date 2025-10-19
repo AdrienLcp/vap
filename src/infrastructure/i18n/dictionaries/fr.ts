@@ -143,6 +143,9 @@ export const fr = {
       },
       title: 'S\'inscrire'
     },
+    social: {
+      google: 'Continuer avec Google'
+    },
     unauthorized: {
       description: 'Vous n\'êtes pas autorisé à accéder à cette page.',
       linkLabel: 'Retour à l\'accueil',

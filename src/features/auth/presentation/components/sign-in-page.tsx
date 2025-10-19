@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 
 import { DEFAULT_ROUTE } from '@/domain/navigation'
 import { SignInForm } from '@/features/auth/presentation/components/forms/sign-in-form'
+import { GoogleAuthentication } from '@/features/auth/presentation/components/google-authentication'
 import { NoAccount } from '@/features/auth/presentation/components/no-account'
 import { AuthController } from '@/features/auth/presentation/controllers/auth-controller'
 import { OK_STATUS } from '@/infrastructure/api/http-response'
@@ -22,6 +23,8 @@ export const SignInPage: React.FC = async () => {
       <SignInForm />
 
       <NoAccount />
+
+      <GoogleAuthentication />
     </>
   )
 }
