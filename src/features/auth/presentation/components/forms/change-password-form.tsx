@@ -3,8 +3,8 @@
 import { SaveIcon } from 'lucide-react'
 import { useCallback, useState } from 'react'
 
-import { AUTH_CONSTANTS, AUTH_FORM_FIELDS } from '@/features/auth/domain/auth-constants'
-import type { ChangePasswordError } from '@/features/auth/domain/auth-entities'
+import { AUTH_CONSTANTS, AUTH_ERRORS, AUTH_FORM_FIELDS } from '@/features/auth/domain/auth-constants'
+import type { ChangePasswordError, ChangePasswordInfo } from '@/features/auth/domain/auth-entities'
 import { ChangePasswordSchema } from '@/features/auth/domain/auth-schemas'
 import { AuthClient } from '@/features/auth/infrastructure/auth-client'
 import { UserPasswordField } from '@/features/auth/presentation/components/forms/user-password-field'
@@ -15,7 +15,7 @@ import { Form } from '@/presentation/components/forms/form'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import { ToastService } from '@/presentation/services/toast-service'
 import type { ValueOf } from '@/utils/object-utils'
-import type { ValidationErrors } from '@/utils/validation-utils'
+import type { Issues, ValidationErrors } from '@/utils/validation-utils'
 
 type ChangePasswordFormErrors = ValidationErrors<ValueOf<typeof AUTH_FORM_FIELDS>>
 
@@ -42,6 +42,27 @@ export const ChangePasswordForm: React.FC = () => {
     }
   }, [])
 
+  const onChangePasswordValidationError = useCallback((issues: Issues<ChangePasswordInfo>) => {
+    for (const issue of issues) {
+      switch (issue.message) {
+        case AUTH_ERRORS.PASSWORD_REQUIRED:
+          setChangePasswordFormErrors({ [AUTH_FORM_FIELDS.NEW_PASSWORD]: t('auth.changePassword.errors.newPasswordRequired') })
+          break
+        case AUTH_ERRORS.PASSWORD_TOO_SHORT:
+          setChangePasswordFormErrors({
+            [AUTH_FORM_FIELDS.NEW_PASSWORD]: t('auth.changePassword.errors.invalidPasswordLength', {
+              maxLength: AUTH_CONSTANTS.PASSWORD_MAX_LENGTH,
+              minLength: AUTH_CONSTANTS.PASSWORD_MIN_LENGTH
+            })
+          })
+          break
+        default:
+          setChangePasswordFormErrors({ form: t('auth.changePassword.errors.unknown') })
+          break
+      }
+    }
+  }, [])
+
   const onChangePasswordFormSubmit = useCallback(async (formData: FormData) => {
     setIsChangePasswordLoading(true)
     setChangePasswordFormErrors(null)
@@ -54,6 +75,7 @@ export const ChangePasswordForm: React.FC = () => {
     const changePasswordValidation = ChangePasswordSchema.safeParse(changePasswordInfo)
 
     if (!changePasswordValidation.success) {
+      onChangePasswordValidationError(changePasswordValidation.error.issues)
       setIsChangePasswordLoading(false)
       return
     }
@@ -73,7 +95,7 @@ export const ChangePasswordForm: React.FC = () => {
         setChangePasswordFormErrors({ form: t('auth.changePassword.errors.unknown') })
         break
     }
-  }, [onChangePasswordBadRequest])
+  }, [onChangePasswordBadRequest, onChangePasswordValidationError])
 
   return (
     <Form onSubmit={onChangePasswordFormSubmit} validationErrors={changePasswordFormErrors}>

@@ -7,7 +7,7 @@ import { AUTH_FORM_FIELDS } from '@/features/auth/domain/auth-constants'
 import { UserEmailSchema } from '@/features/auth/domain/auth-schemas'
 import { AuthClient } from '@/features/auth/infrastructure/auth-client'
 import { UserEmailField } from '@/features/auth/presentation/components/forms/user-email-field'
-import { NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
+import { BAD_REQUEST_STATUS, NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { Form } from '@/presentation/components/forms/form'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
@@ -30,7 +30,7 @@ export const ChangeEmailForm: React.FC = () => {
 
     if (!emailValidation.success) {
       setIsChangeEmailLoading(false)
-      // setChangeEmailFormErrors({ [AUTH_FORM_FIELDS.EMAIL]: t('auth.changeEmail.errors.invalidEmail') })
+      setChangeEmailFormErrors({ [AUTH_FORM_FIELDS.EMAIL]: t('auth.changeEmail.errors.invalidEmail') })
       return
     }
 
@@ -41,6 +41,9 @@ export const ChangeEmailForm: React.FC = () => {
     switch (changeEmailResponse.status) {
       case NO_CONTENT_STATUS:
         ToastService.success(t('auth.changeEmail.success'))
+        break
+      case BAD_REQUEST_STATUS:
+        setChangeEmailFormErrors({ [AUTH_FORM_FIELDS.EMAIL]: t('auth.changeEmail.errors.invalidEmail') })
         break
       default:
         setChangeEmailFormErrors({ form: t('auth.changeEmail.errors.unknown') })

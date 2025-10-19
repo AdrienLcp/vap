@@ -11,7 +11,6 @@ export const UNAUTHORIZED_STATUS = 401
 export const FORBIDDEN_STATUS = 403
 export const NOT_FOUND_STATUS = 404
 export const CONFLICT_STATUS = 409
-export const UNPROCESSABLE_ENTITY_STATUS = 422
 export const INTERNAL_SERVER_ERROR_STATUS = 500
 
 export type OkStatus = typeof OK_STATUS
@@ -22,7 +21,6 @@ export type UnauthorizedStatus = typeof UNAUTHORIZED_STATUS
 export type ForbiddenStatus = typeof FORBIDDEN_STATUS
 export type NotFoundStatus = typeof NOT_FOUND_STATUS
 export type ConflictStatus = typeof CONFLICT_STATUS
-export type UnprocessableEntityStatus = typeof UNPROCESSABLE_ENTITY_STATUS
 export type InternalServerErrorStatus = typeof INTERNAL_SERVER_ERROR_STATUS
 
 export type SuccessStatus =
@@ -36,7 +34,6 @@ export type ErrorStatus =
   | ForbiddenStatus
   | NotFoundStatus
   | ConflictStatus
-  | UnprocessableEntityStatus
   | InternalServerErrorStatus
 
 export type HttpStatus = ErrorStatus | SuccessStatus
@@ -59,7 +56,6 @@ export type NotFoundResponse = BaseResponse<NotFoundStatus>
 export type UnauthorizedResponse = BaseResponse<UnauthorizedStatus>
 export type ForbiddenResponse = BaseResponse<ForbiddenStatus>
 export type ConflictResponse<Error> = BaseResponse<ConflictStatus, { error: Error }>
-export type UnprocessableEntityResponse<Error> = BaseResponse<UnprocessableEntityStatus, { error: Error }>
 export type InternalServerErrorResponse = BaseResponse<InternalServerErrorStatus>
 
 export type Response<T> = T | InternalServerErrorResponse
@@ -96,10 +92,6 @@ const notFound = (headers?: HeadersInit): NotFoundResponse => {
   return { headers, status: NOT_FOUND_STATUS }
 }
 
-const unprocessableEntity = <Error>(error: Error, headers?: HeadersInit): UnprocessableEntityResponse<Error> => {
-  return { error, headers, status: UNPROCESSABLE_ENTITY_STATUS }
-}
-
 const internalServerError = (headers?: HeadersInit): InternalServerErrorResponse => {
   return { headers, status: INTERNAL_SERVER_ERROR_STATUS }
 }
@@ -113,7 +105,6 @@ export const HttpResponse = {
   forbidden,
   notFound,
   conflict,
-  unprocessableEntity,
   internalServerError
 }
 

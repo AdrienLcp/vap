@@ -1,7 +1,7 @@
 import type { z } from 'zod'
 
 import type { Forbidden, Unauthorized } from '@/domain/entities'
-import type { AUTH_CONSTANTS } from '@/features/auth/domain/auth-constants'
+import type { AUTH_CONSTANTS, AUTH_ERRORS } from '@/features/auth/domain/auth-constants'
 import type { AuthPermissionsSchema, AuthUserDTOSchema, ChangePasswordSchema, SignInInfoSchema, SignUpInfoSchema } from '@/features/auth/domain/auth-schemas'
 import type { UserRole } from '@/features/user/domain/user-entities'
 import type { BadRequestResponse, ConflictResponse, CreatedResponse, NoContentResponse, OkResponse, Response, UnauthorizedResponse } from '@/infrastructure/api/http-response'
@@ -25,9 +25,9 @@ export type AuthUserPermissionError = AuthUserError | Forbidden
 export type AuthUserResponse = Response<OkResponse<AuthUserDTO> | UnauthorizedResponse>
 
 export type InvalidCredentials = 'INVALID_CREDENTIALS'
-export type InvalidEmail = typeof AUTH_CONSTANTS.INVALID_EMAIL
+export type InvalidEmail = typeof AUTH_ERRORS.INVALID_EMAIL
 export type InvalidPassword = 'INVALID_PASSWORD'
-export type PasswordTooShort = typeof AUTH_CONSTANTS.PASSWORD_TOO_SHORT
+export type PasswordTooShort = typeof AUTH_ERRORS.PASSWORD_TOO_SHORT
 export type UserAlreadyExists = 'USER_ALREADY_EXISTS'
 
 export type SignInInfo = z.infer<typeof SignInInfoSchema>
@@ -66,6 +66,7 @@ export type ChangePasswordResponse = Response<
 
 export type ChangeEmailResponse = Response<
   | NoContentResponse
+  | BadRequestResponse<InvalidEmail>
   | UnauthorizedResponse
 >
 

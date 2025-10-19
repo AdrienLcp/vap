@@ -65,12 +65,8 @@ export const ApiClient = {
   PUT
 }
 
-export const UNKNOWN_ERROR_STATUS = 0 as const
-export type UnknownErrorStatus = typeof UNKNOWN_ERROR_STATUS
-export type UnknownErrorResponse = { status: UnknownErrorStatus }
-
-export const unknownError = (): UnknownErrorResponse => {
-  return { status: UNKNOWN_ERROR_STATUS }
+export const unknownError = () => {
+  return { status: 0 } as const
 }
 
-export type ClientResponse<T> = T | UnknownErrorResponse
+export type ClientResponse<T> = T | ReturnType<typeof unknownError>

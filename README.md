@@ -206,6 +206,10 @@ The project supports multiple languages using a custom i18n implementation.
    }
    ```
 
+### 🔤 **Client-Side Only Usage**
+
+⚠️ **Important**: The `t` function should **only be used in client components**. This restriction is in place to prepare for future language switching functionality using React context and/or hooks.
+
 ---
 
 ## ♿ Accessibility

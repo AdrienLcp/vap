@@ -14,6 +14,8 @@ const changeEmail = async (newEmail: string): Promise<ClientResponse<ChangeEmail
 
     if (changeEmailResponse.error) {
       switch (changeEmailResponse.error.code) {
+        case 'VALIDATION_ERROR':
+          return HttpResponse.badRequest('INVALID_EMAIL')
         default:
           console.error('Change email error:', changeEmailResponse.error)
           return unknownError()

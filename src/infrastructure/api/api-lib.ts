@@ -15,9 +15,7 @@ import {
   type NotFoundResponse,
   OK_STATUS,
   type OkResponse,
-  type UnauthorizedResponse,
-  UNPROCESSABLE_ENTITY_STATUS,
-  type UnprocessableEntityResponse
+  type UnauthorizedResponse
 } from '@/infrastructure/api/http-response'
 
 type ApiResponse<Data = unknown, Error = unknown> =
@@ -29,7 +27,6 @@ type ApiResponse<Data = unknown, Error = unknown> =
   | ForbiddenResponse
   | NotFoundResponse
   | ConflictResponse<Error>
-  | UnprocessableEntityResponse<Error>
   | InternalServerErrorResponse
 
 const hasData = <Response extends ApiResponse>(response: Response): response is Response & { data: object } => {
@@ -37,7 +34,7 @@ const hasData = <Response extends ApiResponse>(response: Response): response is 
 }
 
 const hasError = <Response extends ApiResponse> (response: Response): response is Response & { error: object } => {
-  return (response.status === CONFLICT_STATUS || response.status === UNPROCESSABLE_ENTITY_STATUS) && response.error != null
+  return response.status === CONFLICT_STATUS && response.error != null
 }
 
 const hasIssues = <Response extends ApiResponse> (response: Response): response is Response & { issues: object } => {

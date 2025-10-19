@@ -37,7 +37,6 @@ export const UserPasswordField: React.FC<Partial<TextFieldProps>> = ({
 
   return (
     <TextField
-      {...userPasswordFieldRestProps}
       className='user-password-field'
       description={description}
       EndContent={<EyeIconButton isSlashed={isPasswordVisible} onPress={togglePasswordVisibility} />}
@@ -47,8 +46,9 @@ export const UserPasswordField: React.FC<Partial<TextFieldProps>> = ({
       minLength={AUTH_CONSTANTS.PASSWORD_MIN_LENGTH}
       name={name}
       placeholder={placeholder}
-      StartContent={<LockIcon className='lock-icon' />}
+      StartContent={<LockIcon aria-hidden className='lock-icon' />}
       type={isPasswordVisible ? 'text' : 'password'}
+      {...userPasswordFieldRestProps}
     />
   )
 }

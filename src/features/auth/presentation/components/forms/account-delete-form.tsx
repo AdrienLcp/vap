@@ -39,7 +39,6 @@ export const AccountDeleteForm: React.FC<AccountDeleteFormProps> = ({ onCloseBut
     setIsDeletingUserAccount(true)
 
     const password = formData.get(AUTH_FORM_FIELDS.PASSWORD)
-
     const passwordValidation = DeleteAccountPasswordSchema.safeParse(password)
 
     if (!passwordValidation.success) {

@@ -15,6 +15,7 @@ export const fr = {
   auth: {
     changeEmail: {
       errors: {
+        invalidEmail: 'L\'email fourni n\'est pas valide.',
         unknown: 'Une erreur inconnue est survenue.'
       },
       submit: {
@@ -25,6 +26,7 @@ export const fr = {
     },
     changePassword: {
       errors: {
+        newPasswordRequired: 'Le nouveau mot de passe est requis.',
         invalidPassword: 'Le mot de passe actuel est incorrect.',
         invalidPasswordLength: dt('Le mot de passe doit comporter entre {minLength:number} et {maxLength:plural}', {
           plural: {
@@ -124,13 +126,15 @@ export const fr = {
     signUp: {
       alreadyHaveAccount: 'Vous avez déjà un compte ?',
       errors: {
+        invalidEmail: 'L\'email n\'est pas valide.',
         invalidPasswordLength: dt('Le mot de passe doit comporter entre {minLength:number} et {maxLength:plural}', {
           plural: {
             maxLength: { zero: '0 caractère', one: '1 caractère', other: '{?} caractères' }
           }
         }),
         unknown: 'Une erreur inconnue est survenue.',
-        userAlreadyExists: 'Un utilisateur avec cet email existe déjà.'
+        userAlreadyExists: 'Un utilisateur avec cet email existe déjà.',
+        userNameRequired: 'Le nom d\'utilisateur est requis.'
       },
       signInHere: 'Connectez-vous ici',
       submit: {
