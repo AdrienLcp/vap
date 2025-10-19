@@ -32,7 +32,9 @@ const findUsers = async (email?: string | null): Promise<Result<UserDTO[], AuthU
     return failure('FORBIDDEN')
   }
 
-  return await UserRepository.findUsers(email)
+  const normalizedEmail = email?.trim().toLowerCase() || null
+
+  return await UserRepository.findUsers(normalizedEmail)
 }
 
 const updateUserRole = async (userId: string, role: UserRole): Promise<Result<UserDTO, AuthUserPermissionError>> => {

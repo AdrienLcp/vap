@@ -1,10 +1,15 @@
 'use client'
 
-import { getAdminUserRoute } from '@/domain/navigation'
+import { useCallback, useState } from 'react'
+
 import type { UserDTO } from '@/features/user/domain/user-entities'
-import { translateUserRole } from '@/features/user/presentation/utils/role-utils'
+import { UserClient } from '@/features/user/infrastructure/user-client'
+import { UserListSearch } from '@/features/user/presentation/components/user-list-search'
+import { UsersTable } from '@/features/user/presentation/components/users-table'
+import { OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
-import { Table, type TableColumn, type TableRow } from '@/presentation/components/ui/table'
+import { Loader } from '@/presentation/components/ui/loaders/loader'
+import { ToastService } from '@/presentation/services/toast-service'
 
 import './user-list.sass'
 
@@ -12,47 +17,31 @@ type UserListProps = {
   users: UserDTO[]
 }
 
-type TableColumnKey = 'email' | 'name' | 'role'
-type UserTableColumn = TableColumn<TableColumnKey>
-
-const userTableColumns: UserTableColumn[] = [
-  { id: 'name', children: t('user.list.columns.name') },
-  { id: 'email', children: t('user.list.columns.email'), isRowHeader: true },
-  { id: 'role', children: t('user.list.columns.role') }
-]
-
-const renderUserTableCell = (user: UserDTO, column: UserTableColumn) => {
-  switch (column.id) {
-    case 'email':
-      return user.email
-    case 'name':
-      return user.name
-    case 'role':
-      return translateUserRole(user.role)
-    default:
-      return null
-  }
-}
-
-const renderUserTableEmptyState = () => (
-  <p className='user-list empty-message'>{t('user.list.empty')}</p>
-)
-
 export const UserList: React.FC<UserListProps> = ({ users }) => {
-  const userTableRows: TableRow<UserDTO>[] = users.map(user => ({
-    href: getAdminUserRoute(user.id),
-    id: user.id,
-    item: user
-  }))
+  const [filteredUsers, setFilteredUsers] = useState<UserDTO[]>(users)
+  const [isLoadingUsers, setIsLoadingUsers] = useState<boolean>(false)
+
+  const loadUsersByEmail = useCallback(async (email: string) => {
+    setIsLoadingUsers(true)
+    const usersResponse = await UserClient.findUsers(email)
+    setIsLoadingUsers(false)
+
+    if (usersResponse.status !== OK_STATUS) {
+      ToastService.error(t('user.list.search.error'))
+      return
+    }
+
+    setFilteredUsers(usersResponse.data)
+  }, [])
 
   return (
-    <Table
-      aria-label={t('user.list.ariaLabel')}
-      className='user-list'
-      columns={userTableColumns}
-      renderCell={renderUserTableCell}
-      renderEmptyState={renderUserTableEmptyState}
-      rows={userTableRows}
-    />
+    <div className='user-list'>
+      <UserListSearch isPending={isLoadingUsers} onChange={loadUsersByEmail} />
+
+      {isLoadingUsers
+        ? <Loader />
+        : <UsersTable users={filteredUsers} />
+      }
+    </div>
   )
 }

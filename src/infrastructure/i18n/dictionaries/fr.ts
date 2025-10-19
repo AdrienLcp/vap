@@ -379,20 +379,27 @@ export const fr = {
       alt: 'Avatar de {userName}',
       defaultAlt: 'Avatar de l\'utilisateur'
     },
-    list: {
-      ariaLabel: 'Liste des utilisateurs',
-      columns: {
-        name: 'Nom',
-        email: 'Email',
-        role: 'Rôle'
-      },
-      empty: 'Aucun utilisateur trouvé.',
-      error: 'Une erreur est survenue lors du chargement des utilisateurs.'
-    },
     roles: {
       admin: 'Administrateur',
       customer: 'Client',
       superAdmin: 'Super Administrateur'
+    },
+    list: {
+      search: {
+        error: 'Une erreur est survenue lors de la recherche des utilisateurs.',
+        label: 'Rechercher des utilisateurs',
+        placeholder: 'Rechercher par email'
+      },
+      table: {
+        ariaLabel: 'Liste des utilisateurs',
+        columns: {
+          name: 'Nom',
+          email: 'Email',
+          role: 'Rôle'
+        },
+        empty: 'Aucun utilisateur trouvé.',
+        error: 'Une erreur est survenue lors du chargement des utilisateurs.'
+      }
     }
   }
 } as const satisfies LanguageMessages

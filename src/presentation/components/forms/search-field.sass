@@ -1,0 +1,33 @@
+@use '@/presentation/styles/forms'
+@use '@/presentation/styles/sizes'
+
+.search-field
+  @include forms.field
+
+  & .input-wrapper
+    inline-size: var(--wrapper-size, 100%)
+    position: relative
+
+    & svg
+      @include sizes.square(var(--size-160, 1rem))
+
+    & .delete-icon-button,
+    & .search-icon
+      aspect-ratio: 1
+      block-size: var(--element-size, 2.5rem)
+      display: grid
+      position: absolute
+      place-items: center
+      translate: 0 -50%
+
+    & .delete-icon-button
+      inset: 50% 0 auto auto
+
+    & .search-icon
+      inset: 50% auto auto 0
+
+    & input
+      @include forms.field-input
+
+      &
+        padding-inline: calc(var(--element-size, 2.5rem) - var(--size-40, 0.25rem)) var(--element-size, 2.5rem)

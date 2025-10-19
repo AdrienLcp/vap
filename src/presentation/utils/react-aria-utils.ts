@@ -7,6 +7,7 @@ import type {
   ListBoxItemRenderProps,
   MenuItemRenderProps,
   NumberFieldRenderProps,
+  SearchFieldRenderProps,
   SelectRenderProps,
   TextFieldRenderProps,
   TooltipRenderProps
@@ -20,6 +21,7 @@ export type ReactAriaComponentRenderProps =
   | ListBoxItemRenderProps
   | MenuItemRenderProps
   | NumberFieldRenderProps
+  | SearchFieldRenderProps
   | SelectRenderProps
   | TextFieldRenderProps
   | TooltipRenderProps

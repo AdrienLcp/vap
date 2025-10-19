@@ -1,0 +1,11 @@
+@use '@/presentation/styles/interactive'
+
+.users-table
+  &.empty-message
+    text-align: center
+
+  & .table-row
+    @include interactive.transparent
+
+    &
+      cursor: pointer

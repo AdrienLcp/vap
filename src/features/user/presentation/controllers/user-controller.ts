@@ -55,6 +55,7 @@ const findUser = async (userId: string): Promise<UserResponse> => {
 const findUsers = async (request?: Request): Promise<UserListResponse> => {
   try {
     const { email } = extractSearchParams(request)
+
     const userResult = await UserService.findUsers(email)
 
     if (userResult.status === 'ERROR') {
