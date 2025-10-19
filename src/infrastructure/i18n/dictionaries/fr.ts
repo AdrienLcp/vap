@@ -378,8 +378,18 @@ export const fr = {
     },
     list: {
       ariaLabel: 'Liste des utilisateurs',
+      columns: {
+        name: 'Nom',
+        email: 'Email',
+        role: 'Rôle'
+      },
       empty: 'Aucun utilisateur trouvé.',
       error: 'Une erreur est survenue lors du chargement des utilisateurs.'
+    },
+    roles: {
+      admin: 'Administrateur',
+      customer: 'Client',
+      superAdmin: 'Super Administrateur'
     }
   }
 } as const satisfies LanguageMessages

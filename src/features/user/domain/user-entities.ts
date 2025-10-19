@@ -1,7 +1,10 @@
 import type z from 'zod'
 
-import type { UserDTOSchema, UserRoleSchema, UserUpdateSchema } from '@/features/user/domain/user-schemas'
-import type { ForbiddenResponse, OkResponse, Response, UnauthorizedResponse } from '@/infrastructure/api/http-response'
+import type { UserDTOSchema, UserIdSchema, UserRoleSchema, UserUpdateSchema } from '@/features/user/domain/user-schemas'
+import type { BadRequestResponse, ForbiddenResponse, OkResponse, Response, UnauthorizedResponse } from '@/infrastructure/api/http-response'
+import type { Issues } from '@/utils/validation-utils'
+
+export type UserId = z.infer<typeof UserIdSchema>
 
 export type UserRole = z.infer<typeof UserRoleSchema>
 
@@ -17,6 +20,14 @@ export type UserListResponse = Response<
 
 export type UserUpdateResponse = Response<
   | OkResponse<UserDTO>
+  | BadRequestResponse<Issues<UserId>>
+  | ForbiddenResponse
+  | UnauthorizedResponse
+>
+
+export type UserResponse = Response<
+  | OkResponse<UserDTO>
+  | BadRequestResponse<Issues<UserId>>
   | ForbiddenResponse
   | UnauthorizedResponse
 >

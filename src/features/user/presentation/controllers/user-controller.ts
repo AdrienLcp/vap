@@ -2,7 +2,7 @@ import 'server-only'
 
 import { UserService } from '@/features/user/application/user-service'
 import { USER_SEARCH_PARAMS } from '@/features/user/domain/user-constants'
-import type { UserListResponse, UserUpdateResponse } from '@/features/user/domain/user-entities'
+import type { UserListResponse, UserResponse, UserUpdateResponse } from '@/features/user/domain/user-entities'
 import { UserDTOSchema, UserIdSchema, UserUpdateSchema } from '@/features/user/domain/user-schemas'
 import { HttpResponse } from '@/infrastructure/api/http-response'
 
@@ -13,6 +13,42 @@ const extractSearchParams = (request?: Request) => {
 
   return {
     email: searchParams.get(USER_SEARCH_PARAMS.EMAIL)
+  }
+}
+
+const findUser = async (userId: string): Promise<UserResponse> => {
+  try {
+    const userIdValidation = UserIdSchema.safeParse(userId)
+
+    if (!userIdValidation.success) {
+      return HttpResponse.badRequest(userIdValidation.error.issues)
+    }
+
+    const userResult = await UserService.findUser(userIdValidation.data)
+
+    if (userResult.status === 'ERROR') {
+      switch (userResult.error) {
+        case 'FORBIDDEN':
+          return HttpResponse.forbidden()
+        case 'UNAUTHORIZED':
+          return HttpResponse.unauthorized()
+        default:
+          console.error('Unknown error in UserController.findUser:', userResult.error)
+          return HttpResponse.internalServerError()
+      }
+    }
+
+    const userDTOValidation = UserDTOSchema.safeParse(userResult.data)
+
+    if (!userDTOValidation.success) {
+      console.error('Validation error in UserController.findUser:', userDTOValidation.error)
+      return HttpResponse.internalServerError()
+    }
+
+    return HttpResponse.ok(userDTOValidation.data)
+  } catch (error) {
+    console.error('Error in UserController.findUser:', error)
+    return HttpResponse.internalServerError()
   }
 }
 
@@ -52,7 +88,7 @@ const updateUserRole = async (userId: string, request: Request): Promise<UserUpd
     const userIdValidation = UserIdSchema.safeParse(userId)
 
     if (!userIdValidation.success) {
-      return HttpResponse.internalServerError()
+      return HttpResponse.badRequest(userIdValidation.error.issues)
     }
 
     const userUpdateData = await request.json()
@@ -91,6 +127,7 @@ const updateUserRole = async (userId: string, request: Request): Promise<UserUpd
 }
 
 export const UserController = {
+  findUser,
   findUsers,
   updateUserRole
 }

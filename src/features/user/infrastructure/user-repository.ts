@@ -2,6 +2,7 @@ import 'server-only'
 
 import type { User } from '@prisma/client'
 
+import type { NotFound } from '@/domain/entities'
 import type { UserDTO, UserRole } from '@/features/user/domain/user-entities'
 import { failure, type Result, success } from '@/helpers/result'
 import { type EntitySelectedFields, UserDatabase } from '@/infrastructure/database'
@@ -12,6 +13,24 @@ const USER_SELECTED_FIELDS = {
   email: true,
   role: true
 } satisfies EntitySelectedFields<User>
+
+const findUser = async (userId: string): Promise<Result<UserDTO, NotFound>> => {
+  try {
+    const user = await UserDatabase.findUnique({
+      where: { id: userId },
+      select: USER_SELECTED_FIELDS
+    })
+
+    if (!user) {
+      return failure('NOT_FOUND')
+    }
+
+    return success(user)
+  } catch (error) {
+    console.error('Unknown error in UserRepository.findUser:', error)
+    return failure()
+  }
+}
 
 const findUsers = async (email?: string | null): Promise<Result<UserDTO[]>> => {
   try {
@@ -53,6 +72,7 @@ const updateUserRole = async (userId: string, role: UserRole): Promise<Result<Us
 }
 
 export const UserRepository = {
+  findUser,
   findUsers,
   updateUserRole
 }
