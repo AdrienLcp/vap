@@ -1,9 +1,12 @@
+@use '@/presentation/styles/sizes'
 @use '@/presentation/styles/typography'
 
 .fallback-wrapper
-  inline-size: var(--content-inline-size)
-  margin: auto
-  padding-block-end: 10%
+  @include sizes.responsive
+
+  &
+    margin: auto
+    padding-block-end: 10%
 
 .fallback-title
   @include typography.title-large

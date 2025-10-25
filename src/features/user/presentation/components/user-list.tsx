@@ -36,7 +36,7 @@ export const UserList: React.FC<UserListProps> = ({ users }) => {
 
   return (
     <div className='user-list'>
-      <UserListSearch isPending={isLoadingUsers} onChange={loadUsersByEmail} />
+      <UserListSearch onChange={loadUsersByEmail} />
 
       {isLoadingUsers
         ? <Loader />

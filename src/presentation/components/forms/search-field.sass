@@ -31,3 +31,8 @@
 
       &
         padding-inline: calc(var(--element-size, 2.5rem) - var(--size-40, 0.25rem)) var(--element-size, 2.5rem)
+
+  &[data-empty],
+  &[data-disabled]
+    & .delete-icon-button
+      display: none

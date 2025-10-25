@@ -44,14 +44,13 @@ export const SearchField: React.FC<SearchFieldProps> = ({
 
           <Input />
 
-          {!isDisabled && !isPending && state.value !== '' && (
-            <Button
-              className='delete-icon-button'
-              Icon={<XIcon aria-hidden />}
-              onPress={() => state.setValue('')}
-              variant='transparent'
-            />
-          )}
+          <Button
+            className='delete-icon-button'
+            Icon={<XIcon aria-hidden />}
+            isPending={isPending}
+            onPress={() => state.setValue('')}
+            variant='transparent'
+          />
         </div>
 
         {isInvalid

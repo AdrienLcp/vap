@@ -1,9 +1,13 @@
+@use '@/presentation/styles/sizes'
+
 .category-page
-  display: grid
-  gap: var(--size-320, 2rem)
-  inline-size: var(--content-inline-size, 100%)
-  margin-inline: auto
-  padding-block: var(--size-480, 3rem)
+  @include sizes.responsive
+
+  &
+    display: grid
+    gap: var(--size-320, 2rem)
+    margin-inline: auto
+    padding-block: var(--size-480, 3rem)
 
   & h1
     text-align: center
