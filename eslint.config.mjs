@@ -17,9 +17,6 @@ export default defineConfig([
     plugins: {
       '@stylistic': stylistic
     },
-    settings: {
-      react: { version: 'detect' }
-    },
     rules: {
       '@stylistic/comma-dangle': ['error', 'never'],
       '@stylistic/comma-spacing': ['error', { before: false, after: true }],
@@ -61,13 +58,16 @@ export default defineConfig([
       'react-hooks/set-state-in-effect': 'off',
 
       'sort-imports': ['error', {
+        allowSeparatedGroups: true,
         ignoreCase: true,
         ignoreDeclarationSort: true,
         ignoreMemberSort: false,
-        memberSyntaxSortOrder: ['all', 'multiple', 'single', 'none'],
-        allowSeparatedGroups: true
+        memberSyntaxSortOrder: ['all', 'multiple', 'single', 'none']
       }]
-    }
+    },
+    settings: {
+      react: { version: 'detect' }
+    },
   },
   {
     files: ['**/*.d.ts'],
