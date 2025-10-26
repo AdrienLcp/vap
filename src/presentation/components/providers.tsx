@@ -12,9 +12,7 @@ export const Providers: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <NuqsAdapter>
       <RouterProvider navigate={router.push}>
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+        <AuthProvider>{children}</AuthProvider>
       </RouterProvider>
     </NuqsAdapter>
   )

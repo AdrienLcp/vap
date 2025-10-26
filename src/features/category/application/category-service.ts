@@ -2,7 +2,13 @@ import 'server-only'
 
 import type { Forbidden, NotFound, Unauthorized } from '@/domain/entities'
 import { AuthService } from '@/features/auth/application/auth-service'
-import type { Category, CategoryCreationData, CategoryDTO, CategoryEditError, CategoryUpdateData } from '@/features/category/domain/category-entities'
+import type {
+  Category,
+  CategoryCreationData,
+  CategoryDTO,
+  CategoryEditError,
+  CategoryUpdateData
+} from '@/features/category/domain/category-entities'
 import { CategoryRepository } from '@/features/category/infrastructure/category-repository'
 import { ProductService } from '@/features/product/application/product-service'
 import { failure, type Result, success } from '@/helpers/result'
@@ -10,20 +16,21 @@ import { failure, type Result, success } from '@/helpers/result'
 const enrichCategoryWithProductCount = async (category: Category): Promise<CategoryDTO> => {
   const categoryProductCountResult = await ProductService.getCategoryProductCount(category.id)
 
-  const productCount = categoryProductCountResult.status === 'SUCCESS'
-    ? categoryProductCountResult.data
-    : 0
+  const productCount =
+    categoryProductCountResult.status === 'SUCCESS' ? categoryProductCountResult.data : 0
 
   return {
-    id: category.id,
-    name: category.name,
     description: category.description,
+    id: category.id,
     imageUrl: category.imageUrl,
+    name: category.name,
     productCount
   } satisfies CategoryDTO
 }
 
-const createCategory = async (categoryCreationData: CategoryCreationData): Promise<Result<CategoryDTO, CategoryEditError>> => {
+const createCategory = async (
+  categoryCreationData: CategoryCreationData
+): Promise<Result<CategoryDTO, CategoryEditError>> => {
   const userResult = await AuthService.findUserDTO()
 
   if (userResult.status === 'ERROR') {
@@ -48,7 +55,9 @@ const createCategory = async (categoryCreationData: CategoryCreationData): Promi
   return success(categoryDTO)
 }
 
-const deleteCategory = async (categoryId: string): Promise<Result<null, Forbidden | Unauthorized>> => {
+const deleteCategory = async (
+  categoryId: string
+): Promise<Result<null, Forbidden | Unauthorized>> => {
   const userResult = await AuthService.findUserDTO()
 
   if (userResult.status === 'ERROR') {
@@ -97,7 +106,10 @@ const findCategory = async (categoryId: string): Promise<Result<CategoryDTO, Not
   return success(categoryDTO)
 }
 
-const updateCategory = async (categoryId: string, categoryUpdateData: CategoryUpdateData): Promise<Result<CategoryDTO, CategoryEditError>> => {
+const updateCategory = async (
+  categoryId: string,
+  categoryUpdateData: CategoryUpdateData
+): Promise<Result<CategoryDTO, CategoryEditError>> => {
   const userResult = await AuthService.findUserDTO()
 
   if (userResult.status === 'ERROR') {
@@ -108,7 +120,10 @@ const updateCategory = async (categoryId: string, categoryUpdateData: CategoryUp
     return failure('FORBIDDEN')
   }
 
-  const updatedCategoryResult = await CategoryRepository.updateCategory(categoryId, categoryUpdateData)
+  const updatedCategoryResult = await CategoryRepository.updateCategory(
+    categoryId,
+    categoryUpdateData
+  )
 
   if (updatedCategoryResult.status === 'ERROR') {
     return updatedCategoryResult

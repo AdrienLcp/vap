@@ -35,35 +35,35 @@ export const ProductMenu: React.FC<ProductMenuProps> = ({ productId, setProductL
       return
     }
 
-    setProductList(prevProductList => prevProductList.filter(product => product.id !== productId))
+    setProductList((prevProductList) =>
+      prevProductList.filter((product) => product.id !== productId)
+    )
     ToastService.success(t('product.delete.success'))
   }, [productId, setProductList])
 
-  const productMenuItems: MenuItem[] = useMemo(() => [
-    {
-      href: getAdminProductRoute(productId),
-      Icon: <EyeIcon aria-hidden />,
-      id: 'view',
-      textValue: t('product.card.showProductSheet')
-    },
-    {
-      href: getAdminProductRoute(productId),
-      Icon: <PenIcon aria-hidden />,
-      id: 'edit',
-      textValue: t('product.card.edit')
-    },
-    {
-      Icon: <Trash2Icon aria-hidden />,
-      id: 'delete',
-      onPress: deleteProduct,
-      textValue: t('product.card.delete')
-    }
-  ], [deleteProduct, productId])
-
-  return (
-    <Menu
-      items={productMenuItems}
-      Trigger={<ProductMenuTrigger />}
-    />
+  const productMenuItems: MenuItem[] = useMemo(
+    () => [
+      {
+        href: getAdminProductRoute(productId),
+        Icon: <EyeIcon aria-hidden />,
+        id: 'view',
+        textValue: t('product.card.showProductSheet')
+      },
+      {
+        href: getAdminProductRoute(productId),
+        Icon: <PenIcon aria-hidden />,
+        id: 'edit',
+        textValue: t('product.card.edit')
+      },
+      {
+        Icon: <Trash2Icon aria-hidden />,
+        id: 'delete',
+        onPress: deleteProduct,
+        textValue: t('product.card.delete')
+      }
+    ],
+    [deleteProduct, productId]
   )
+
+  return <Menu items={productMenuItems} Trigger={<ProductMenuTrigger />} />
 }

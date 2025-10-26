@@ -8,7 +8,7 @@ import { Button } from '@/presentation/components/ui/pressables/button'
 import './cart-panel-header.sass'
 
 export const CartPanelHeader: React.FC = () => {
-  const cartItemCount = useCartStore(state => state.getItemCount())
+  const cartItemCount = useCartStore((state) => state.getItemCount())
 
   return (
     <header className='cart-panel-header'>
@@ -16,11 +16,7 @@ export const CartPanelHeader: React.FC = () => {
         {t('cart.title', { itemCount: cartItemCount })}
       </Heading>
 
-      <Button
-        Icon={<XIcon aria-hidden />}
-        slot='close'
-        variant='transparent'
-      />
+      <Button Icon={<XIcon aria-hidden />} slot='close' variant='transparent' />
     </header>
   )
 }

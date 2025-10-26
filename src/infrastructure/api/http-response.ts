@@ -23,10 +23,7 @@ export type NotFoundStatus = typeof NOT_FOUND_STATUS
 export type ConflictStatus = typeof CONFLICT_STATUS
 export type InternalServerErrorStatus = typeof INTERNAL_SERVER_ERROR_STATUS
 
-export type SuccessStatus =
-  | OkStatus
-  | CreatedStatus
-  | NoContentStatus
+export type SuccessStatus = OkStatus | CreatedStatus | NoContentStatus
 
 export type ErrorStatus =
   | BadRequestStatus
@@ -97,18 +94,21 @@ const internalServerError = (headers?: HeadersInit): InternalServerErrorResponse
 }
 
 export const HttpResponse = {
-  ok,
-  created,
-  noContent,
   badRequest,
-  unauthorized,
-  forbidden,
-  notFound,
   conflict,
-  internalServerError
+  created,
+  forbidden,
+  internalServerError,
+  noContent,
+  notFound,
+  ok,
+  unauthorized
 }
 
-export const redirectByErrorStatus = (status: ErrorStatus, fallbackRoute?: ValueOf<typeof ROUTES>): ReturnType<typeof redirect> => {
+export const redirectByErrorStatus = (
+  status: ErrorStatus,
+  fallbackRoute?: ValueOf<typeof ROUTES>
+): ReturnType<typeof redirect> => {
   switch (status) {
     case UNAUTHORIZED_STATUS:
       redirect(ROUTES.unauthorized)

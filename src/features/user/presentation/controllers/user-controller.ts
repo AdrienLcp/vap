@@ -2,7 +2,11 @@ import 'server-only'
 
 import { UserService } from '@/features/user/application/user-service'
 import { USER_SEARCH_PARAMS } from '@/features/user/domain/user-constants'
-import type { UserListResponse, UserResponse, UserUpdateResponse } from '@/features/user/domain/user-entities'
+import type {
+  UserListResponse,
+  UserResponse,
+  UserUpdateResponse
+} from '@/features/user/domain/user-entities'
 import { UserDTOSchema, UserIdSchema, UserUpdateSchema } from '@/features/user/domain/user-schemas'
 import { HttpResponse } from '@/infrastructure/api/http-response'
 
@@ -99,7 +103,10 @@ const updateUserRole = async (userId: string, request: Request): Promise<UserUpd
       return HttpResponse.internalServerError()
     }
 
-    const userResult = await UserService.updateUserRole(userIdValidation.data, userUpdateDataValidation.data.role)
+    const userResult = await UserService.updateUserRole(
+      userIdValidation.data,
+      userUpdateDataValidation.data.role
+    )
 
     if (userResult.status === 'ERROR') {
       switch (userResult.error) {

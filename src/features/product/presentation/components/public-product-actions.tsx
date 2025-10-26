@@ -9,7 +9,7 @@ type PublicProductActionsProps = {
 }
 
 export const PublicProductActions: React.FC<PublicProductActionsProps> = ({ productId }) => {
-  const cartProductQuantity = useCartStore(state => state.getProductQuantity(productId))
+  const cartProductQuantity = useCartStore((state) => state.getProductQuantity(productId))
 
   if (cartProductQuantity <= 0) {
     return <AddProductToCartButton productId={productId} />

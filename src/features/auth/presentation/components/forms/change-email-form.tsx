@@ -30,7 +30,9 @@ export const ChangeEmailForm: React.FC = () => {
 
     if (!emailValidation.success) {
       setIsChangeEmailLoading(false)
-      setChangeEmailFormErrors({ [AUTH_FORM_FIELDS.EMAIL]: t('auth.changeEmail.errors.invalidEmail') })
+      setChangeEmailFormErrors({
+        [AUTH_FORM_FIELDS.EMAIL]: t('auth.changeEmail.errors.invalidEmail')
+      })
       return
     }
 
@@ -43,7 +45,9 @@ export const ChangeEmailForm: React.FC = () => {
         ToastService.success(t('auth.changeEmail.success'))
         break
       case BAD_REQUEST_STATUS:
-        setChangeEmailFormErrors({ [AUTH_FORM_FIELDS.EMAIL]: t('auth.changeEmail.errors.invalidEmail') })
+        setChangeEmailFormErrors({
+          [AUTH_FORM_FIELDS.EMAIL]: t('auth.changeEmail.errors.invalidEmail')
+        })
         break
       default:
         setChangeEmailFormErrors({ form: t('auth.changeEmail.errors.unknown') })
@@ -51,10 +55,7 @@ export const ChangeEmailForm: React.FC = () => {
   }, [])
 
   return (
-    <Form
-      onSubmit={onChangeEmailFormSubmit}
-      validationErrors={changeEmailFormErrors}
-    >
+    <Form onSubmit={onChangeEmailFormSubmit} validationErrors={changeEmailFormErrors}>
       <UserEmailField
         isDisabled={isChangeEmailLoading}
         label={t('auth.fields.email.label')}

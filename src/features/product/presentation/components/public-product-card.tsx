@@ -12,10 +12,7 @@ type PublicProductCardProps = {
 }
 
 export const PublicProductCard: React.FC<PublicProductCardProps> = ({ product }) => (
-  <Card
-    className='public-product-card'
-    title={t('product.card.showProductSheet')}
-  >
+  <Card className='public-product-card' title={t('product.card.showProductSheet')}>
     <CardBody>
       <ProductImage className='product-image' src={product.imageUrl} />
     </CardBody>

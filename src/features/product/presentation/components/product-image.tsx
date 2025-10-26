@@ -23,7 +23,12 @@ const getImageSizeInPx = (size: ProductImageSize) => {
   }
 }
 
-export const ProductImage: React.FC<ProductImageProps> = ({ className, size = 'large', src, ...productImageRestProps }) => {
+export const ProductImage: React.FC<ProductImageProps> = ({
+  className,
+  size = 'large',
+  src,
+  ...productImageRestProps
+}) => {
   const imageSizeInPx = getImageSizeInPx(size)
 
   return (

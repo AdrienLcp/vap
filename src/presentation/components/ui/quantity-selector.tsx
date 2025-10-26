@@ -14,7 +14,13 @@ type QuantitySelectorProps = {
   quantity: number
 }
 
-export const QuantitySelector: React.FC<QuantitySelectorProps> = ({ isDisabled, max, min, onQuantityChange, quantity }) => {
+export const QuantitySelector: React.FC<QuantitySelectorProps> = ({
+  isDisabled,
+  max,
+  min,
+  onQuantityChange,
+  quantity
+}) => {
   const isMax = useMemo(() => max != null && quantity >= max, [max, quantity])
   const isMin = useMemo(() => min != null && quantity <= min, [min, quantity])
 

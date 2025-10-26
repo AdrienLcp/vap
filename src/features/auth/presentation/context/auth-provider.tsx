@@ -42,9 +42,5 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     loadUser()
   }, [loadUser, session])
 
-  return (
-    <AuthContext value={{ auth, setUser }}>
-      {children}
-    </AuthContext>
-  )
+  return <AuthContext value={{ auth, setUser }}>{children}</AuthContext>
 }

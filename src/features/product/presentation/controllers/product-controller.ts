@@ -2,8 +2,22 @@ import 'server-only'
 
 import { ProductService } from '@/features/product/application/product-service'
 import { PRODUCT_API_BASE_URL } from '@/features/product/domain/product-constants'
-import type { ProductCreationResponse, ProductDeleteResponse, ProductListResponse, ProductPublicListResponse, ProductPublicResponse, ProductResponse, ProductUpdateResponse } from '@/features/product/domain/product-entities'
-import { ProductCreationSchema, ProductDTOSchema, ProductIdSchema, ProductPublicDTOSchema, ProductUpdateSchema } from '@/features/product/domain/product-schemas'
+import type {
+  ProductCreationResponse,
+  ProductDeletionResponse,
+  ProductListResponse,
+  ProductPublicListResponse,
+  ProductPublicResponse,
+  ProductResponse,
+  ProductUpdateResponse
+} from '@/features/product/domain/product-entities'
+import {
+  ProductCreationSchema,
+  ProductDTOSchema,
+  ProductIdSchema,
+  ProductPublicDTOSchema,
+  ProductUpdateSchema
+} from '@/features/product/domain/product-schemas'
 import { HttpResponse } from '@/infrastructure/api/http-response'
 import { buildLocationUrl } from '@/infrastructure/env/client'
 
@@ -27,7 +41,10 @@ const createProduct = async (productCreationRequest: Request): Promise<ProductCr
         case 'PRODUCT_SKU_ALREADY_EXISTS':
           return HttpResponse.conflict('PRODUCT_SKU_ALREADY_EXISTS')
         default:
-          console.error('Unknown error in ProductController.createProduct:', createdProductResult.error)
+          console.error(
+            'Unknown error in ProductController.createProduct:',
+            createdProductResult.error
+          )
           return HttpResponse.internalServerError()
       }
     }
@@ -35,21 +52,24 @@ const createProduct = async (productCreationRequest: Request): Promise<ProductCr
     const productDTOValidation = ProductDTOSchema.safeParse(createdProductResult.data)
 
     if (!productDTOValidation.success) {
-      console.error('Validation error in ProductController.createProduct:', productDTOValidation.error)
+      console.error(
+        'Validation error in ProductController.createProduct:',
+        productDTOValidation.error
+      )
       return HttpResponse.internalServerError()
     }
 
     const productDTO = productDTOValidation.data
     const createdProductLocationUrl = buildLocationUrl(PRODUCT_API_BASE_URL, productDTO.id)
 
-    return HttpResponse.created(productDTO, { 'Location': createdProductLocationUrl })
+    return HttpResponse.created(productDTO, { Location: createdProductLocationUrl })
   } catch (error) {
     console.error('Unknown error in ProductController.createProduct:', error)
     return HttpResponse.internalServerError()
   }
 }
 
-const deleteProduct = async (productId: string): Promise<ProductDeleteResponse> => {
+const deleteProduct = async (productId: string): Promise<ProductDeletionResponse> => {
   try {
     const productIdValidation = ProductIdSchema.safeParse(productId)
 
@@ -105,7 +125,10 @@ const findProduct = async (productId: string): Promise<ProductResponse> => {
     const productDTOValidation = ProductDTOSchema.safeParse(productResult.data)
 
     if (!productDTOValidation.success) {
-      console.error('Validation error in ProductController.findProduct:', productDTOValidation.error)
+      console.error(
+        'Validation error in ProductController.findProduct:',
+        productDTOValidation.error
+      )
       return HttpResponse.internalServerError()
     }
 
@@ -127,7 +150,10 @@ const findProducts = async (): Promise<ProductListResponse> => {
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
         default:
-          console.error('Unknown error in ProductController.findPublicProducts:', productsResult.error)
+          console.error(
+            'Unknown error in ProductController.findPublicProducts:',
+            productsResult.error
+          )
           return HttpResponse.internalServerError()
       }
     }
@@ -135,7 +161,10 @@ const findProducts = async (): Promise<ProductListResponse> => {
     const productsDTOValidation = ProductDTOSchema.array().safeParse(productsResult.data)
 
     if (!productsDTOValidation.success) {
-      console.error('Validation error in ProductController.findProducts:', productsDTOValidation.error)
+      console.error(
+        'Validation error in ProductController.findProducts:',
+        productsDTOValidation.error
+      )
       return HttpResponse.internalServerError()
     }
 
@@ -161,7 +190,10 @@ const findPublicProduct = async (productId: string): Promise<ProductPublicRespon
         case 'NOT_FOUND':
           return HttpResponse.notFound()
         default:
-          console.error('Unknown error in ProductController.findPublicProduct:', productResult.error)
+          console.error(
+            'Unknown error in ProductController.findPublicProduct:',
+            productResult.error
+          )
           return HttpResponse.internalServerError()
       }
     }
@@ -169,7 +201,10 @@ const findPublicProduct = async (productId: string): Promise<ProductPublicRespon
     const productPublicDTOValidation = ProductPublicDTOSchema.safeParse(productResult.data)
 
     if (!productPublicDTOValidation.success) {
-      console.error('Validation error in ProductController.findPublicProduct:', productPublicDTOValidation.error)
+      console.error(
+        'Validation error in ProductController.findPublicProduct:',
+        productPublicDTOValidation.error
+      )
       return HttpResponse.internalServerError()
     }
 
@@ -192,7 +227,10 @@ const findPublicProducts = async (): Promise<ProductPublicListResponse> => {
     const productsDTOValidation = ProductPublicDTOSchema.array().safeParse(productsResult.data)
 
     if (!productsDTOValidation.success) {
-      console.error('Validation error in ProductController.findPublicProducts:', productsDTOValidation.error)
+      console.error(
+        'Validation error in ProductController.findPublicProducts:',
+        productsDTOValidation.error
+      )
       return HttpResponse.internalServerError()
     }
 
@@ -203,7 +241,10 @@ const findPublicProducts = async (): Promise<ProductPublicListResponse> => {
   }
 }
 
-const updateProduct = async (productId: string, productUpdateRequest: Request): Promise<ProductUpdateResponse> => {
+const updateProduct = async (
+  productId: string,
+  productUpdateRequest: Request
+): Promise<ProductUpdateResponse> => {
   try {
     const productIdValidation = ProductIdSchema.safeParse(productId)
 
@@ -219,10 +260,13 @@ const updateProduct = async (productId: string, productUpdateRequest: Request): 
       return HttpResponse.badRequest(productUpdateValidation.error.issues)
     }
 
-    const updatedProductResult = await ProductService.updateProduct(productIdValidation.data, productUpdateValidation.data)
+    const productUpdateResult = await ProductService.updateProduct(
+      productIdValidation.data,
+      productUpdateValidation.data
+    )
 
-    if (updatedProductResult.status === 'ERROR') {
-      switch (updatedProductResult.error) {
+    if (productUpdateResult.status === 'ERROR') {
+      switch (productUpdateResult.error) {
         case 'FORBIDDEN':
           return HttpResponse.forbidden()
         case 'UNAUTHORIZED':
@@ -230,15 +274,21 @@ const updateProduct = async (productId: string, productUpdateRequest: Request): 
         case 'PRODUCT_SKU_ALREADY_EXISTS':
           return HttpResponse.conflict('PRODUCT_SKU_ALREADY_EXISTS')
         default:
-          console.error('Unknown error in ProductController.updateProduct:', updatedProductResult.error)
+          console.error(
+            'Unknown error in ProductController.updateProduct:',
+            productUpdateResult.error
+          )
           return HttpResponse.internalServerError()
       }
     }
 
-    const productDTOValidation = ProductDTOSchema.safeParse(updatedProductResult.data)
+    const productDTOValidation = ProductDTOSchema.safeParse(productUpdateResult.data)
 
     if (!productDTOValidation.success) {
-      console.error('Validation error in ProductController.updateProduct:', productDTOValidation.error)
+      console.error(
+        'Validation error in ProductController.updateProduct:',
+        productDTOValidation.error
+      )
       return HttpResponse.internalServerError()
     }
 

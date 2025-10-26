@@ -1,4 +1,7 @@
-import { CATEGORY_CONSTANTS, CATEGORY_FORM_FIELDS } from '@/features/category/domain/category-constants'
+import {
+  CATEGORY_CONSTANTS,
+  CATEGORY_FORM_FIELDS
+} from '@/features/category/domain/category-constants'
 import { t } from '@/infrastructure/i18n'
 import { TextField, type TextFieldProps } from '@/presentation/components/forms/text-field'
 

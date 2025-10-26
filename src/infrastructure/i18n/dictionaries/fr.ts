@@ -5,7 +5,7 @@ export const fr = {
     nav: {
       admin: 'Administration',
       categories: 'Catégories',
-      listAriaLabel: 'Liens d\'administration',
+      listAriaLabel: "Liens d'administration",
       orders: 'Commandes',
       products: 'Produits',
       users: 'Utilisateurs'
@@ -15,7 +15,7 @@ export const fr = {
   auth: {
     changeEmail: {
       errors: {
-        invalidEmail: 'L\'email fourni n\'est pas valide.',
+        invalidEmail: "L'email fourni n'est pas valide.",
         unknown: 'Une erreur inconnue est survenue.'
       },
       submit: {
@@ -26,13 +26,16 @@ export const fr = {
     },
     changePassword: {
       errors: {
-        newPasswordRequired: 'Le nouveau mot de passe est requis.',
         invalidPassword: 'Le mot de passe actuel est incorrect.',
-        invalidPasswordLength: dt('Le mot de passe doit comporter entre {minLength:number} et {maxLength:plural}', {
-          plural: {
-            maxLength: { zero: '0 caractère', one: '1 caractère', other: '{?} caractères' }
+        invalidPasswordLength: dt(
+          'Le mot de passe doit comporter entre {minLength:number} et {maxLength:plural}',
+          {
+            plural: {
+              maxLength: { one: '1 caractère', other: '{?} caractères', zero: '0 caractère' }
+            }
           }
-        }),
+        ),
+        newPasswordRequired: 'Le nouveau mot de passe est requis.',
         unknown: 'Une erreur inconnue est survenue.'
       },
       form: {
@@ -69,7 +72,8 @@ export const fr = {
       },
       success: 'Votre compte a été supprimé avec succès.',
       title: 'Supprimer le compte',
-      warning: 'Cette action est irréversible. Toutes vos données seront définitivement supprimées. Veuillez confirmer votre mot de passe pour continuer.'
+      warning:
+        'Cette action est irréversible. Toutes vos données seront définitivement supprimées. Veuillez confirmer votre mot de passe pour continuer.'
     },
     fields: {
       email: {
@@ -82,15 +86,17 @@ export const fr = {
       },
       password: {
         description: dt('Au moins {characterCount:plural}', {
-          plural: { characterCount: { zero: '0 caractère', one: '1 caractère', other: '{?} caractères' } }
+          plural: {
+            characterCount: { one: '1 caractère', other: '{?} caractères', zero: '0 caractère' }
+          }
         }),
         label: 'Mot de passe',
         placeholder: 'Entrez votre mot de passe'
       }
     },
     forbidden: {
-      description: 'Vous n\'avez pas la permission d\'accéder à cette page.',
-      linkLabel: 'Retour à l\'accueil',
+      description: "Vous n'avez pas la permission d'accéder à cette page.",
+      linkLabel: "Retour à l'accueil",
       title: 'Accès interdit'
     },
     persona: {
@@ -99,18 +105,18 @@ export const fr = {
       signOut: 'Se déconnecter'
     },
     profile: {
-      changeEmail: 'Changer l\'email',
+      changeEmail: "Changer l'email",
       changePassword: 'Changer le mot de passe',
       deleteAccount: 'Supprimer le compte',
       title: 'Mon profil'
     },
     signIn: {
       errors: {
-        invalidCredentials: 'L\'adresse mail et le mot de passe ne correspondent pas.',
+        invalidCredentials: "L'adresse mail et le mot de passe ne correspondent pas.",
         unknown: 'Une erreur inconnue est survenue.'
       },
       label: 'Se connecter',
-      noAccount: 'Vous n\'avez pas de compte ?',
+      noAccount: "Vous n'avez pas de compte ?",
       signUpHere: 'Inscrivez-vous ici',
       submit: {
         label: 'Se connecter',
@@ -126,29 +132,32 @@ export const fr = {
     signUp: {
       alreadyHaveAccount: 'Vous avez déjà un compte ?',
       errors: {
-        invalidEmail: 'L\'email n\'est pas valide.',
-        invalidPasswordLength: dt('Le mot de passe doit comporter entre {minLength:number} et {maxLength:plural}', {
-          plural: {
-            maxLength: { zero: '0 caractère', one: '1 caractère', other: '{?} caractères' }
+        invalidEmail: "L'email n'est pas valide.",
+        invalidPasswordLength: dt(
+          'Le mot de passe doit comporter entre {minLength:number} et {maxLength:plural}',
+          {
+            plural: {
+              maxLength: { one: '1 caractère', other: '{?} caractères', zero: '0 caractère' }
+            }
           }
-        }),
+        ),
         unknown: 'Une erreur inconnue est survenue.',
         userAlreadyExists: 'Un utilisateur avec cet email existe déjà.',
-        userNameRequired: 'Le nom d\'utilisateur est requis.'
+        userNameRequired: "Le nom d'utilisateur est requis."
       },
       signInHere: 'Connectez-vous ici',
       submit: {
         creating: 'Création en cours...',
-        label: 'S\'inscrire'
+        label: "S'inscrire"
       },
-      title: 'S\'inscrire'
+      title: "S'inscrire"
     },
     social: {
       google: 'Continuer avec Google'
     },
     unauthorized: {
-      description: 'Vous n\'êtes pas autorisé à accéder à cette page.',
-      linkLabel: 'Retour à l\'accueil',
+      description: "Vous n'êtes pas autorisé à accéder à cette page.",
+      linkLabel: "Retour à l'accueil",
       title: 'Accès non autorisé'
     }
   },
@@ -157,7 +166,7 @@ export const fr = {
     button: {
       ariaLabel: 'Panier',
       itemCountTooltip: dt('{itemCount:plural} dans le panier', {
-        plural: { itemCount: { zero: 'Aucun article', one: '1 article', other: '{?} articles' } }
+        plural: { itemCount: { one: '1 article', other: '{?} articles', zero: 'Aucun article' } }
       })
     },
     clear: {
@@ -165,20 +174,20 @@ export const fr = {
       label: 'Vider le panier'
     },
     item: {
-      deleteError: 'Une erreur est survenue lors de la suppression de l\'article du panier.',
+      deleteError: "Une erreur est survenue lors de la suppression de l'article du panier.",
       quantity: 'Quantité : {quantity:number}',
       totalPrice: 'Prix total : {totalPrice}',
-      unitPrice: 'Prix à l\'unité : {unitPrice}'
+      unitPrice: "Prix à l'unité : {unitPrice}"
     },
     list: {
       empty: 'Votre panier est vide.',
       error: 'Une erreur est survenue lors du chargement des articles du panier.'
     },
     pay: 'Payer',
-    totalPrice: 'Prix total : {totalPrice}',
     title: dt('Votre panier ({itemCount:plural})', {
-      plural: { itemCount: { zero: 'Aucun article', one: '1 article', other: '{?} articles' } }
-    })
+      plural: { itemCount: { one: '1 article', other: '{?} articles', zero: 'Aucun article' } }
+    }),
+    totalPrice: 'Prix total : {totalPrice}'
   },
   category: {
     card: {
@@ -212,7 +221,7 @@ export const fr = {
       },
       image: {
         label: 'Image',
-        placeholder: 'URL de l\'image'
+        placeholder: "URL de l'image"
       },
       name: {
         label: 'Nom',
@@ -239,7 +248,6 @@ export const fr = {
       title: 'Une erreur est survenue'
     },
     forms: {
-      formValidationErrorDefaultMessage: 'Le formulaire contient des erreurs.',
       fieldError: {
         lengthValues: 'La valeur doit être comprise entre {min:number} et {max:number} caractères.',
         tooLong: 'La valeur saisie est trop longue.',
@@ -248,9 +256,10 @@ export const fr = {
         tooShortValue: 'La valeur saisie doit faire au moins {min:number} caractères.',
         valueMissing: 'Ce champ est requis.'
       },
+      formValidationErrorDefaultMessage: 'Le formulaire contient des erreurs.',
       requiredFields: {
         mark: '*',
-        message: 'Les champs marqués d\'un {mark} sont requis.'
+        message: "Les champs marqués d'un {mark} sont requis."
       },
       select: {
         defaultPlaceholder: 'Sélectionnez une option'
@@ -265,6 +274,9 @@ export const fr = {
   },
   errors: {
     unknown: 'Une erreur inconnue est survenue.'
+  },
+  icons: {
+    googleAltText: 'Logo Google'
   },
   product: {
     card: {
@@ -310,9 +322,9 @@ export const fr = {
       },
       imageUrl: {
         errors: {
-          invalidUrl: 'L\'URL de l\'image n\'est pas valide.'
+          invalidUrl: "L'URL de l'image n'est pas valide."
         },
-        label: 'URL de l\'image'
+        label: "URL de l'image"
       },
       name: {
         errors: {
@@ -377,12 +389,7 @@ export const fr = {
   user: {
     avatar: {
       alt: 'Avatar de {userName}',
-      defaultAlt: 'Avatar de l\'utilisateur'
-    },
-    roles: {
-      admin: 'Administrateur',
-      customer: 'Client',
-      superAdmin: 'Super Administrateur'
+      defaultAlt: "Avatar de l'utilisateur"
     },
     list: {
       search: {
@@ -393,13 +400,18 @@ export const fr = {
       table: {
         ariaLabel: 'Liste des utilisateurs',
         columns: {
-          name: 'Nom',
           email: 'Email',
+          name: 'Nom',
           role: 'Rôle'
         },
         empty: 'Aucun utilisateur trouvé.',
         error: 'Une erreur est survenue lors du chargement des utilisateurs.'
       }
+    },
+    roles: {
+      admin: 'Administrateur',
+      customer: 'Client',
+      superAdmin: 'Super Administrateur'
     }
   }
 } as const satisfies LanguageMessages

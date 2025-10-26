@@ -16,7 +16,11 @@ export type ImageProps = Omit<NextImageProps, 'src'> & {
 
 type ImageDefaultFallbackProps = Pick<ImageProps, 'className' | 'height' | 'width'>
 
-const ImageDefaultFallback: React.FC<ImageDefaultFallbackProps> = ({ className, height, width }) => {
+const ImageDefaultFallback: React.FC<ImageDefaultFallbackProps> = ({
+  className,
+  height,
+  width
+}) => {
   const imageDefaultFallbackStyle: Style = {
     '--image-default-fallback-height': `${height}px`,
     '--image-default-fallback-width': `${width}px`

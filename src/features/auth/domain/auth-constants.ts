@@ -1,6 +1,6 @@
 export const AUTH_CONSTANTS = {
-  PASSWORD_MIN_LENGTH: 8,
   PASSWORD_MAX_LENGTH: 64,
+  PASSWORD_MIN_LENGTH: 8,
   SOCIAL_PROVIDERS: ['google']
 } as const
 
@@ -16,8 +16,8 @@ export const AUTH_ERRORS = {
 } as const
 
 export const AUTH_FORM_FIELDS = {
-  NAME: 'name',
   EMAIL: 'email',
-  PASSWORD: 'password',
-  NEW_PASSWORD: 'new-password'
+  NAME: 'name',
+  NEW_PASSWORD: 'new-password',
+  PASSWORD: 'password'
 } as const

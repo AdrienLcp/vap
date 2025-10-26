@@ -12,7 +12,12 @@ type AvatarProps = {
   userName: string
 }
 
-export const Avatar: React.FC<AvatarProps> = ({ size = 'medium', userEmail, userImageUrl, userName }) => {
+export const Avatar: React.FC<AvatarProps> = ({
+  size = 'medium',
+  userEmail,
+  userImageUrl,
+  userName
+}) => {
   const imageSize = size === 'medium' ? 48 : 32
   const hashedEmail = sha256(userEmail.trim().toLowerCase())
 

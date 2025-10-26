@@ -35,35 +35,35 @@ export const CategoryMenu: React.FC<CategoryMenuProps> = ({ categoryId, setCateg
       return
     }
 
-    setCategoryList(prevCategoryList => prevCategoryList.filter(category => category.id !== categoryId))
+    setCategoryList((prevCategoryList) =>
+      prevCategoryList.filter((category) => category.id !== categoryId)
+    )
     ToastService.success(t('category.delete.success'))
   }, [categoryId, setCategoryList])
 
-  const categoryMenuItems: MenuItem[] = useMemo(() => [
-    {
-      href: getAdminCategoryRoute(categoryId),
-      Icon: <EyeIcon aria-hidden />,
-      id: 'view',
-      textValue: t('category.card.showCategorySheet')
-    },
-    {
-      href: getAdminCategoryRoute(categoryId),
-      Icon: <PenIcon aria-hidden />,
-      id: 'edit',
-      textValue: t('category.card.edit')
-    },
-    {
-      Icon: <Trash2Icon aria-hidden />,
-      id: 'delete',
-      onPress: deleteCategory,
-      textValue: t('category.card.delete')
-    }
-  ], [categoryId, deleteCategory])
-
-  return (
-    <Menu
-      items={categoryMenuItems}
-      Trigger={<CategoryMenuTrigger />}
-    />
+  const categoryMenuItems: MenuItem[] = useMemo(
+    () => [
+      {
+        href: getAdminCategoryRoute(categoryId),
+        Icon: <EyeIcon aria-hidden />,
+        id: 'view',
+        textValue: t('category.card.showCategorySheet')
+      },
+      {
+        href: getAdminCategoryRoute(categoryId),
+        Icon: <PenIcon aria-hidden />,
+        id: 'edit',
+        textValue: t('category.card.edit')
+      },
+      {
+        Icon: <Trash2Icon aria-hidden />,
+        id: 'delete',
+        onPress: deleteCategory,
+        textValue: t('category.card.delete')
+      }
+    ],
+    [categoryId, deleteCategory]
   )
+
+  return <Menu items={categoryMenuItems} Trigger={<CategoryMenuTrigger />} />
 }

@@ -1,7 +1,12 @@
 import 'server-only'
 
 import type { NotFound } from '@/domain/entities'
-import type { CartItem, CartItemCreationData, CartItemDTO, CartProduct } from '@/features/cart/domain/cart-entities'
+import type {
+  CartItem,
+  CartItemCreationData,
+  CartItemDTO,
+  CartProduct
+} from '@/features/cart/domain/cart-entities'
 import { failure, type Result, success } from '@/helpers/result'
 import { CartDatabase, type EntitySelectedFields } from '@/infrastructure/database'
 
@@ -26,28 +31,31 @@ const cartItemSelectedFields = {
   }
 }
 
-const addItemToUserCart = async (userId: string, cartItemCreationData: CartItemCreationData): Promise<Result<CartItemDTO>> => {
+const addItemToUserCart = async (
+  userId: string,
+  cartItemCreationData: CartItemCreationData
+): Promise<Result<CartItemDTO>> => {
   try {
     const existingItem = await CartDatabase.findUnique({
+      select: { quantity: true },
       where: {
         productId_userId: {
           productId: cartItemCreationData.productId,
           userId
         }
-      },
-      select: { quantity: true }
+      }
     })
 
     if (existingItem) {
       const updatedCartItem = await CartDatabase.update({
+        data: { quantity: existingItem.quantity + cartItemCreationData.quantity },
+        select: cartItemSelectedFields,
         where: {
           productId_userId: {
             productId: cartItemCreationData.productId,
             userId
           }
-        },
-        data: { quantity: existingItem.quantity + cartItemCreationData.quantity },
-        select: cartItemSelectedFields
+        }
       })
 
       return success(updatedCartItem)
@@ -82,8 +90,8 @@ const clearUserCart = async (userId: string): Promise<Result> => {
 const findUserCartItems = async (userId: string): Promise<Result<CartItemDTO[]>> => {
   try {
     const userCartItems = await CartDatabase.findMany({
-      where: { userId },
-      select: cartItemSelectedFields
+      select: cartItemSelectedFields,
+      where: { userId }
     })
 
     return success(userCartItems)
@@ -93,7 +101,10 @@ const findUserCartItems = async (userId: string): Promise<Result<CartItemDTO[]>>
   }
 }
 
-const removeItemFromUserCart = async (userId: string, productId: string): Promise<Result<null, NotFound>> => {
+const removeItemFromUserCart = async (
+  userId: string,
+  productId: string
+): Promise<Result<null, NotFound>> => {
   try {
     await CartDatabase.delete({
       where: {
@@ -111,17 +122,21 @@ const removeItemFromUserCart = async (userId: string, productId: string): Promis
   }
 }
 
-const updateUserCartItemQuantity = async (userId: string, productId: string, quantity: number): Promise<Result<CartItemDTO, NotFound>> => {
+const updateUserCartItemQuantity = async (
+  userId: string,
+  productId: string,
+  quantity: number
+): Promise<Result<CartItemDTO, NotFound>> => {
   try {
     const updatedCartItem = await CartDatabase.update({
+      data: { quantity },
+      select: cartItemSelectedFields,
       where: {
         productId_userId: {
           productId,
           userId
         }
-      },
-      data: { quantity },
-      select: cartItemSelectedFields
+      }
     })
 
     return success(updatedCartItem)

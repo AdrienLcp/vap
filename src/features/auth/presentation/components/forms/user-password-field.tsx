@@ -1,5 +1,5 @@
 import { EyeIcon, EyeOffIcon, LockIcon } from 'lucide-react'
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { AUTH_CONSTANTS, AUTH_FORM_FIELDS } from '@/features/auth/domain/auth-constants'
 import { t } from '@/infrastructure/i18n'
@@ -23,7 +23,9 @@ const EyeIconButton: React.FC<EyeIconButtonProps> = ({ isSlashed, onPress }) => 
 )
 
 export const UserPasswordField: React.FC<Partial<TextFieldProps>> = ({
-  description = t('auth.fields.password.description', { characterCount: AUTH_CONSTANTS.PASSWORD_MIN_LENGTH }),
+  description = t('auth.fields.password.description', {
+    characterCount: AUTH_CONSTANTS.PASSWORD_MIN_LENGTH
+  }),
   label = t('auth.fields.password.label'),
   name = AUTH_FORM_FIELDS.PASSWORD,
   placeholder = t('auth.fields.password.placeholder'),
@@ -32,14 +34,18 @@ export const UserPasswordField: React.FC<Partial<TextFieldProps>> = ({
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
   const togglePasswordVisibility = useCallback(() => {
-    setIsPasswordVisible(previousPasswordVisibilityState => !previousPasswordVisibilityState)
+    setIsPasswordVisible((previousPasswordVisibilityState) => !previousPasswordVisibilityState)
   }, [])
+
+  const UserPasswordFieldEndContent = useMemo(() => {
+    return <EyeIconButton isSlashed={isPasswordVisible} onPress={togglePasswordVisibility} />
+  }, [isPasswordVisible, togglePasswordVisibility])
 
   return (
     <TextField
       className='user-password-field'
       description={description}
-      EndContent={<EyeIconButton isSlashed={isPasswordVisible} onPress={togglePasswordVisibility} />}
+      EndContent={UserPasswordFieldEndContent}
       isRequired
       label={label}
       maxLength={AUTH_CONSTANTS.PASSWORD_MAX_LENGTH}

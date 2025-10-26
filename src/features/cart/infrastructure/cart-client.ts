@@ -1,12 +1,25 @@
 'use client'
 
 import { CART_API_BASE_URL } from '@/features/cart/domain/cart-constants'
-import type { CartClearResponse, CartItemCreationData, CartItemCreationResponse, CartItemDeletionResponse, CartItemListResponse, CartItemQuantityUpdateResponse, CartItemUpdateData } from '@/features/cart/domain/cart-entities'
+import type {
+  CartClearResponse,
+  CartItemCreationData,
+  CartItemCreationResponse,
+  CartItemDeletionResponse,
+  CartItemListResponse,
+  CartItemQuantityUpdateResponse,
+  CartItemUpdateData
+} from '@/features/cart/domain/cart-entities'
 import { ApiClient, type ClientResponse, unknownError } from '@/infrastructure/api/api-client'
 
-const addItemToUserCart = async (cartItemCreationData: CartItemCreationData): Promise<ClientResponse<CartItemCreationResponse>> => {
+const addItemToUserCart = async (
+  cartItemCreationData: CartItemCreationData
+): Promise<ClientResponse<CartItemCreationResponse>> => {
   try {
-    return await ApiClient.POST<CartItemCreationResponse, CartItemCreationData>(CART_API_BASE_URL, cartItemCreationData)
+    return await ApiClient.POST<CartItemCreationResponse, CartItemCreationData>(
+      CART_API_BASE_URL,
+      cartItemCreationData
+    )
   } catch (error) {
     console.error('Add item to user cart error:', error)
     return unknownError()
@@ -31,20 +44,30 @@ const findUserCartItems = async (): Promise<ClientResponse<CartItemListResponse>
   }
 }
 
-const removeItemFromUserCart = async (productId: string): Promise<ClientResponse<CartItemDeletionResponse>> => {
+const removeItemFromUserCart = async (
+  productId: string
+): Promise<ClientResponse<CartItemDeletionResponse>> => {
   try {
     const encodedProductId = encodeURIComponent(productId)
-    return await ApiClient.DELETE<CartItemDeletionResponse>(`/${CART_API_BASE_URL}/${encodedProductId}`)
+    return await ApiClient.DELETE<CartItemDeletionResponse>(
+      `/${CART_API_BASE_URL}/${encodedProductId}`
+    )
   } catch (error) {
     console.error('Remove item from user cart error:', error)
     return unknownError()
   }
 }
 
-const updateUserCartItemQuantity = async (productId: string, quantity: number): Promise<ClientResponse<CartItemQuantityUpdateResponse>> => {
+const updateUserCartItemQuantity = async (
+  productId: string,
+  quantity: number
+): Promise<ClientResponse<CartItemQuantityUpdateResponse>> => {
   try {
     const encodedProductId = encodeURIComponent(productId)
-    return await ApiClient.PATCH<CartItemQuantityUpdateResponse, CartItemUpdateData>(`/${CART_API_BASE_URL}/${encodedProductId}`, { quantity })
+    return await ApiClient.PATCH<CartItemQuantityUpdateResponse, CartItemUpdateData>(
+      `/${CART_API_BASE_URL}/${encodedProductId}`,
+      { quantity }
+    )
   } catch (error) {
     console.error('Update user cart item quantity error:', error)
     return unknownError()

@@ -1,18 +1,27 @@
 'use client'
 
-import { type LinkRenderProps, Link as ReactAriaLink, type LinkProps as ReactAriaLinkProps } from 'react-aria-components'
+import {
+  type LinkRenderProps,
+  Link as ReactAriaLink,
+  type LinkProps as ReactAriaLinkProps
+} from 'react-aria-components'
 
 import { Tooltip, type TooltipProps } from '@/presentation/components/ui/tooltip'
 
-import { type DefaultChildrenProps, type PressableProps, reactAriaPressableClassNames } from './pressable'
+import {
+  type DefaultChildrenProps,
+  type PressableProps,
+  reactAriaPressableClassNames
+} from './pressable'
 
 export type LinkProps = PressableProps & ReactAriaLinkProps
 
 type LinkRenderPropsValues = LinkRenderProps & DefaultChildrenProps
 
-const renderLinkChildren = (children: LinkProps['children'], renderValues: LinkRenderPropsValues) => {
-  return typeof children === 'function' ? children(renderValues) : children
-}
+const renderLinkChildren = (
+  children: LinkProps['children'],
+  renderValues: LinkRenderPropsValues
+) => (typeof children === 'function' ? children(renderValues) : children)
 
 export const BaseLink: React.FC<LinkProps> = ({
   children,
@@ -24,32 +33,23 @@ export const BaseLink: React.FC<LinkProps> = ({
   ...linkRestProps
 }) => (
   <ReactAriaLink
-    className={(values) => reactAriaPressableClassNames(
-      values,
-      className,
-      variant,
-      Icon,
-      iconSide,
-      size,
-      children
-    )}
+    className={(values) =>
+      reactAriaPressableClassNames(values, className, variant, Icon, iconSide, size, children)
+    }
     {...linkRestProps}
   >
-    {values => variant == null
-      ? renderLinkChildren(children, values)
-      : <>
-          {Icon && (
-            <div className='icon'>
-              {Icon}
-            </div>
-          )}
+    {(values) =>
+      variant == null ? (
+        renderLinkChildren(children, values)
+      ) : (
+        <>
+          {Icon && <div className='icon'>{Icon}</div>}
 
           {children != null && (
-            <div className='content'>
-              {renderLinkChildren(children, values)}
-            </div>
+            <div className='content'>{renderLinkChildren(children, values)}</div>
           )}
         </>
+      )
     }
   </ReactAriaLink>
 )
@@ -63,9 +63,5 @@ export const Link: React.FC<LinkWithTooltipProps> = ({ tooltip, ...linkRestProps
     return <BaseLink {...linkRestProps} />
   }
 
-  return (
-    <Tooltip Trigger={<BaseLink {...linkRestProps} />}>
-      {tooltip}
-    </Tooltip>
-  )
+  return <Tooltip Trigger={<BaseLink {...linkRestProps} />}>{tooltip}</Tooltip>
 }

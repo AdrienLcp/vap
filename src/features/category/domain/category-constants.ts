@@ -3,10 +3,10 @@ export const CATEGORY_API_BASE_URL = 'categories'
 export const CATEGORY_CONSTANTS = {
   DESCRIPTION_MAX_LENGTH: 500,
 
-  NAME_MAX_LENGTH: 25,
-
+  IMAGE_SIZE_IN_PX: 150,
   IMAGE_URL_MAX_LENGTH: 2048,
-  IMAGE_SIZE_IN_PX: 150
+
+  NAME_MAX_LENGTH: 25
 } as const
 
 export const CATEGORY_ERRORS = {
@@ -15,7 +15,7 @@ export const CATEGORY_ERRORS = {
 } as const
 
 export const CATEGORY_FORM_FIELDS = {
-  NAME: 'category-name',
   DESCRIPTION: 'category-description',
-  IMAGE_URL: 'category-image-url'
+  IMAGE_URL: 'category-image-url',
+  NAME: 'category-name'
 } as const

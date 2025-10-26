@@ -14,7 +14,11 @@ type CategoryCardProps = {
   setCategoryList: React.Dispatch<React.SetStateAction<CategoryDTO[]>>
 }
 
-export const CategoryCard: React.FC<CategoryCardProps> = ({ category, isDisabled, setCategoryList }) => (
+export const CategoryCard: React.FC<CategoryCardProps> = ({
+  category,
+  isDisabled,
+  setCategoryList
+}) => (
   <Card
     className={classNames('category-card', isDisabled && 'is-disabled')}
     title={t('category.card.showCategorySheet')}

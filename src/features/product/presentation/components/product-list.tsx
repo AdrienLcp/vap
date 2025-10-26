@@ -18,15 +18,18 @@ const renderProductListEmptyState = () => <p>{t('product.list.empty')}</p>
 export const ProductList: React.FC<ProductListProps> = ({ products }) => {
   const [productList, setProductList] = useState<ProductDTO[]>(products)
 
-  const productGridItems: GridItem<ProductDTO>[] = productList.map(product => ({
+  const productGridItems: GridItem<ProductDTO>[] = productList.map((product) => ({
     ...product,
     href: getAdminProductRoute(product.id),
     textValue: product.name
   }))
 
-  const renderProductItem = useCallback((productItem: GridItem<ProductDTO>) => (
-    <ProductCard product={productItem} setProductList={setProductList} />
-  ), [])
+  const renderProductItem = useCallback(
+    (productItem: GridItem<ProductDTO>) => (
+      <ProductCard product={productItem} setProductList={setProductList} />
+    ),
+    []
+  )
 
   return (
     <Grid

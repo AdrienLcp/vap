@@ -9,7 +9,7 @@ import { t } from '@/infrastructure/i18n'
 import './cart-item-list.sass'
 
 export const CartItemList: React.FC = () => {
-  const cartItems = useCartStore(state => state.items)
+  const cartItems = useCartStore((state) => state.items)
 
   if (cartItems.size === 0) {
     return <p className='cart-list-empty-message'>{t('cart.list.empty')}</p>
@@ -18,12 +18,8 @@ export const CartItemList: React.FC = () => {
   const cartItemList = Array.from(cartItems.values())
 
   return (
-    <GridList
-      aria-label={t('cart.ariaLabel')}
-      className='cart-list'
-      items={cartItemList}
-    >
-      {item => (
+    <GridList aria-label={t('cart.ariaLabel')} className='cart-list' items={cartItemList}>
+      {(item) => (
         <GridListItem id={item.product.id} textValue={item.product.name}>
           <CartItem item={item} />
         </GridListItem>

@@ -22,18 +22,25 @@ type BaseSelectItem<K extends Key = string> = {
   id: K
 }
 
-export type SelectItem<K extends Key = string> = Omit<ListBoxItemProps<BaseSelectItem<K>>, 'id'> & BaseSelectItem<K>
+export type SelectItem<K extends Key = string> = Omit<ListBoxItemProps<BaseSelectItem<K>>, 'id'> &
+  BaseSelectItem<K>
 
 export type SelectProps<K extends Key = string> = ReactAriaSelectProps<SelectItem<K>> & {
   items: SelectItem<K>[]
   label: string
 }
 
-export function Select <K extends Key = string> ({ className, label, items, placeholder, ...selectRestProps }: SelectProps<K>) {
+export function Select<K extends Key = string>({
+  className,
+  label,
+  items,
+  placeholder,
+  ...selectRestProps
+}: SelectProps<K>) {
   return (
     <ReactAriaSelect
       {...selectRestProps}
-      className={values => reactAriaClassNames(values, className, 'select')}
+      className={(values) => reactAriaClassNames(values, className, 'select')}
       placeholder={placeholder}
     >
       {({ isRequired }) => (
@@ -61,13 +68,17 @@ export function Select <K extends Key = string> ({ className, label, items, plac
               {({ className, Icon, textValue, ...selectItemRestProps }) => (
                 <ListBoxItem
                   {...selectItemRestProps}
-                  className={values => reactAriaClassNames(values, className, 'item')}
+                  className={(values) => reactAriaClassNames(values, className, 'item')}
                   textValue={textValue}
                 >
                   {({ isSelected }) => (
                     <>
                       <div className='content'>
-                        {Icon && <span aria-hidden className='icon'>{Icon}</span>}
+                        {Icon && (
+                          <span aria-hidden className='icon'>
+                            {Icon}
+                          </span>
+                        )}
 
                         <span className='text'>{textValue}</span>
                       </div>
@@ -75,7 +86,6 @@ export function Select <K extends Key = string> ({ className, label, items, plac
                       {isSelected && <CheckIcon aria-hidden className='check-icon' />}
                     </>
                   )}
-
                 </ListBoxItem>
               )}
             </ListBox>

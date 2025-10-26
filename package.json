@@ -16,32 +16,25 @@
     "zustand": "^5.0.8"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "3.3.1",
-    "@next/eslint-plugin-next": "^16.0.0",
-    "@stylistic/eslint-plugin": "^5.5.0",
+    "@biomejs/biome": "2.3.0",
     "@types/node": "^24.9.1",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
-    "eslint": "^9.38.0",
-    "eslint-config-next": "16.0.0",
-    "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^7.0.1",
     "prisma": "6.18.0",
     "sass": "^1.93.2",
     "ts-node": "^10.9.2",
-    "typescript": "5.9.3",
-    "typescript-eslint": "^8.46.2"
+    "typescript": "5.9.3"
   },
   "name": "vap",
   "packageManager": "pnpm@10.19.0",
   "scripts": {
     "auth:generate": "pnpx @better-auth/cli generate --config ./src/features/auth/infrastructure/auth-lib.ts",
+    "build": "next build",
     "db:migrate": "prisma migrate dev",
     "db:seed": "ts-node prisma/seed.ts",
     "dev": "next dev --turbopack",
-    "build": "next build",
-    "lint": "eslint",
+    "format": "biome format --write",
+    "lint": "biome check",
     "start": "next start"
   },
   "version": "0.1.0"

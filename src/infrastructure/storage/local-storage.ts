@@ -6,9 +6,11 @@ type LocalStorage = {
 
 type LocaleStorageKey = keyof LocalStorage
 
-const clear = () => { window.localStorage.clear() }
+const clear = () => {
+  window.localStorage.clear()
+}
 
-const find = <K extends LocaleStorageKey> (key: K): LocalStorage[K] | null => {
+const find = <K extends LocaleStorageKey>(key: K): LocalStorage[K] | null => {
   const item = window.localStorage.getItem(key)
 
   if (!item || item === 'undefined') {
@@ -27,7 +29,7 @@ const remove = (key: LocaleStorageKey) => {
   window.localStorage.removeItem(key)
 }
 
-const set = <K extends LocaleStorageKey> (key: K, value: LocalStorage[K]) => {
+const set = <K extends LocaleStorageKey>(key: K, value: LocalStorage[K]) => {
   window.localStorage.setItem(key, JSON.stringify(value))
 }
 

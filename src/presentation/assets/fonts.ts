@@ -1,11 +1,11 @@
 import { Geist, Geist_Mono } from 'next/font/google'
 
 export const fontBody = Geist({
-  variable: '--font-body',
-  subsets: ['latin']
+  subsets: ['latin'],
+  variable: '--font-body'
 })
 
 export const fontTitle = Geist_Mono({
-  variable: '--font-title',
-  subsets: ['latin']
+  subsets: ['latin'],
+  variable: '--font-title'
 })

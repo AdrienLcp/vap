@@ -18,8 +18,12 @@ type CartItemDeleteButtonProps = {
   setIsLoading: (isLoading: boolean) => void
 }
 
-export const CartItemDeleteButton: React.FC<CartItemDeleteButtonProps> = ({ isLoading, productId, setIsLoading }) => {
-  const removeCartItem = useCartStore(state => state.removeItem)
+export const CartItemDeleteButton: React.FC<CartItemDeleteButtonProps> = ({
+  isLoading,
+  productId,
+  setIsLoading
+}) => {
+  const removeCartItem = useCartStore((state) => state.removeItem)
 
   const onCartItemDeleteButtonPress = useCallback(async () => {
     setIsLoading(true)

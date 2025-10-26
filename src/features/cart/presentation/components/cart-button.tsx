@@ -7,7 +7,7 @@ import { Button } from '@/presentation/components/ui/pressables/button'
 import './cart-button.sass'
 
 export const CartButton: React.FC = () => {
-  const totalItemCount = useCartStore(state => state.getItemCount())
+  const totalItemCount = useCartStore((state) => state.getItemCount())
 
   return (
     <Button
@@ -17,9 +17,7 @@ export const CartButton: React.FC = () => {
     >
       <ShoppingCartIcon aria-hidden />
 
-      <span className='item-count'>
-        {totalItemCount}
-      </span>
+      <span className='item-count'>{totalItemCount}</span>
     </Button>
   )
 }

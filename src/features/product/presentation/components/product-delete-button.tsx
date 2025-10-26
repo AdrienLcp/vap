@@ -15,7 +15,10 @@ type ProductDeleteButtonProps = Partial<ButtonProps> & {
   productId: string
 }
 
-export const ProductDeleteButton: React.FC<ProductDeleteButtonProps> = ({ productId, ...productDeleteButtonRestProps }) => {
+export const ProductDeleteButton: React.FC<ProductDeleteButtonProps> = ({
+  productId,
+  ...productDeleteButtonRestProps
+}) => {
   const deleteProduct = useCallback(async () => {
     const deletedProductResponse = await ProductClient.deleteProduct(productId)
 

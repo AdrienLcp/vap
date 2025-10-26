@@ -24,7 +24,7 @@ type AccountDeleteFormProps = {
 
 export const AccountDeleteForm: React.FC<AccountDeleteFormProps> = ({ onCloseButtonPress }) => {
   const [isDeletingUserAccount, setIsDeletingUserAccount] = useState(false)
-  const [accountDeletionFormValidationErrors, setAccountDeletionFormValidationErrors] = useState<SignInFormErrors>(null)
+  const [accountDeletionFormErrors, setAccountDeletionFormErrors] = useState<SignInFormErrors>(null)
 
   const onDeleteAccountSuccess = useCallback(() => {
     ToastService.success(t('auth.deleteAccount.success'))
@@ -32,40 +32,45 @@ export const AccountDeleteForm: React.FC<AccountDeleteFormProps> = ({ onCloseBut
   }, [])
 
   const onDeleteAccountBadRequest = useCallback(() => {
-    setAccountDeletionFormValidationErrors({ [AUTH_FORM_FIELDS.PASSWORD]: t('auth.deleteAccount.errors.invalidPassword') })
+    setAccountDeletionFormErrors({
+      [AUTH_FORM_FIELDS.PASSWORD]: t('auth.deleteAccount.errors.invalidPassword')
+    })
   }, [])
 
-  const deleteAccount = useCallback(async (formData: FormData) => {
-    setIsDeletingUserAccount(true)
+  const deleteAccount = useCallback(
+    async (formData: FormData) => {
+      setIsDeletingUserAccount(true)
 
-    const password = formData.get(AUTH_FORM_FIELDS.PASSWORD)
-    const passwordValidation = DeleteAccountPasswordSchema.safeParse(password)
+      const password = formData.get(AUTH_FORM_FIELDS.PASSWORD)
+      const passwordValidation = DeleteAccountPasswordSchema.safeParse(password)
 
-    if (!passwordValidation.success) {
-      onDeleteAccountBadRequest()
-      setIsDeletingUserAccount(false)
-      return
-    }
-
-    const accountDeletionResponse = await AuthClient.deleteUser(passwordValidation.data)
-
-    setIsDeletingUserAccount(false)
-
-    switch (accountDeletionResponse.status) {
-      case NO_CONTENT_STATUS:
-        onDeleteAccountSuccess()
-        break
-      case BAD_REQUEST_STATUS:
+      if (!passwordValidation.success) {
         onDeleteAccountBadRequest()
-        break
-      default:
-        setAccountDeletionFormValidationErrors({ form: t('auth.deleteAccount.errors.unknown') })
-        break
-    }
-  }, [onDeleteAccountBadRequest, onDeleteAccountSuccess])
+        setIsDeletingUserAccount(false)
+        return
+      }
+
+      const accountDeletionResponse = await AuthClient.deleteUser(passwordValidation.data)
+
+      setIsDeletingUserAccount(false)
+
+      switch (accountDeletionResponse.status) {
+        case NO_CONTENT_STATUS:
+          onDeleteAccountSuccess()
+          break
+        case BAD_REQUEST_STATUS:
+          onDeleteAccountBadRequest()
+          break
+        default:
+          setAccountDeletionFormErrors({ form: t('auth.deleteAccount.errors.unknown') })
+          break
+      }
+    },
+    [onDeleteAccountBadRequest, onDeleteAccountSuccess]
+  )
 
   return (
-    <Form onSubmit={deleteAccount} validationErrors={accountDeletionFormValidationErrors}>
+    <Form onSubmit={deleteAccount} validationErrors={accountDeletionFormErrors}>
       <h3>{t('auth.deleteAccount.title')}</h3>
 
       <p className='warning'>{t('auth.deleteAccount.warning')}</p>

@@ -11,12 +11,17 @@ type CategoryImagePreviewFieldProps = {
   imageUrl?: string | null
 }
 
-export const CategoryImagePreviewField: React.FC<CategoryImagePreviewFieldProps> = ({ imageUrl }) => {
+export const CategoryImagePreviewField: React.FC<CategoryImagePreviewFieldProps> = ({
+  imageUrl
+}) => {
   const [currentCategoryImageUrl, setCurrentCategoryImageUrl] = useState(imageUrl)
 
   return (
     <div className='category-image-preview-field'>
-      <CategoryImageUrlField onChange={setCurrentCategoryImageUrl} value={currentCategoryImageUrl} />
+      <CategoryImageUrlField
+        onChange={setCurrentCategoryImageUrl}
+        value={currentCategoryImageUrl}
+      />
 
       <Image
         alt={t('category.imageAlt')}

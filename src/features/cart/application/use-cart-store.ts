@@ -8,17 +8,15 @@ type CartStore = {
   getItemCount: () => number
   getProductQuantity: (productId: string) => number
   getTotalPrice: () => number
-  items: Map<string, CartItemDTO>,
+  items: Map<string, CartItemDTO>
   removeItem: (productId: string) => void
   syncItems: (cartItems: CartItemDTO[]) => void
   updateQuantity: (productId: string, newQuantity: number) => void
 }
 
 export const useCartStore = create<CartStore>((set, get) => ({
-  items: new Map<string, CartItemDTO>(),
-
   addItem: (product: CartProduct, quantity = 1) => {
-    set(state => {
+    set((state) => {
       const newItems = new Map(state.items)
       const existingItem = newItems.get(product.id)
 
@@ -47,12 +45,16 @@ export const useCartStore = create<CartStore>((set, get) => ({
   },
 
   getTotalPrice: () => {
-    return Array.from(get().items.values())
-      .reduce((total, item) => total + (item.product.price * item.quantity), 0)
+    return Array.from(get().items.values()).reduce(
+      (total, item) => total + item.product.price * item.quantity,
+      0
+    )
   },
 
+  items: new Map<string, CartItemDTO>(),
+
   removeItem: (productId: string) => {
-    set(state => {
+    set((state) => {
       const newItems = new Map(state.items)
       newItems.delete(productId)
       return { items: newItems }
@@ -80,7 +82,7 @@ export const useCartStore = create<CartStore>((set, get) => ({
       return
     }
 
-    set(state => {
+    set((state) => {
       const newItems = new Map(state.items)
       const existingItem = newItems.get(productId)
 

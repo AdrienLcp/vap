@@ -1,6 +1,6 @@
 import type { ButtonRenderProps, LinkRenderProps } from 'react-aria-components'
 
-import { reactAriaClassNames, type RenderPropsValues } from '@/presentation/utils/react-aria-utils'
+import { type RenderPropsValues, reactAriaClassNames } from '@/presentation/utils/react-aria-utils'
 
 import './pressable.sass'
 
@@ -9,12 +9,7 @@ export type DefaultChildrenProps = { defaultChildren: React.ReactNode | undefine
 export type PressableIconSide = 'left' | 'right'
 export type PressableSize = 'medium' | 'small'
 
-export type PressableVariant =
-  | 'destructive'
-  | 'filled'
-  | 'outlined'
-  | 'transparent'
-  | 'underlined'
+export type PressableVariant = 'destructive' | 'filled' | 'outlined' | 'transparent' | 'underlined'
 
 type PressableWithVariantProps = {
   /** Optional icon to display within the button. */
@@ -51,15 +46,13 @@ type PressableWithoutVariantProps = {
 
 export type PressableProps = PressableWithVariantProps | PressableWithoutVariantProps
 
-type PressableRenderProps =
-  | ButtonRenderProps
-  | LinkRenderProps
+type PressableRenderProps = ButtonRenderProps | LinkRenderProps
 
-type PressableChildren <T extends PressableRenderProps> =
+type PressableChildren<T extends PressableRenderProps> =
   | React.ReactNode
   | ((values: T & { defaultChildren: React.ReactNode | undefined }) => React.ReactNode)
 
-export function reactAriaPressableClassNames <T extends PressableRenderProps> (
+export function reactAriaPressableClassNames<T extends PressableRenderProps>(
   values: RenderPropsValues<T>,
   className: string | ((values: RenderPropsValues<T>) => string) | undefined,
   variant: PressableProps['variant'],
@@ -70,7 +63,8 @@ export function reactAriaPressableClassNames <T extends PressableRenderProps> (
 ) {
   const hasIcon = !!Icon
   const isIconButton = hasIcon && children == null
-  const currentVariant: PressableProps['variant'] = variant == null && isIconButton ? 'transparent' : variant
+  const currentVariant: PressableProps['variant'] =
+    variant == null && isIconButton ? 'transparent' : variant
   const currentSize: PressableProps['size'] = size === 'medium' ? undefined : size
 
   return reactAriaClassNames(

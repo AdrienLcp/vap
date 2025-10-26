@@ -7,11 +7,7 @@ import { t } from '@/infrastructure/i18n'
 import { Link } from '@/presentation/components/ui/pressables/link'
 
 export const CartOrderLink: React.FC = () => (
-  <Link
-    href={ROUTES.ordering}
-    Icon={<PackageCheckIcon aria-hidden />}
-    variant='filled'
-  >
+  <Link href={ROUTES.ordering} Icon={<PackageCheckIcon aria-hidden />} variant='filled'>
     {t('cart.pay')}
   </Link>
 )

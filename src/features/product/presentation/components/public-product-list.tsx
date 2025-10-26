@@ -18,7 +18,7 @@ const renderProductItem = (productItem: GridItem<ProductPublicDTO>) => (
 )
 
 export const PublicProductList: React.FC<PublicProductListProps> = ({ products }) => {
-  const productItems: GridItem<ProductPublicDTO>[] = products.map(product => ({
+  const productItems: GridItem<ProductPublicDTO>[] = products.map((product) => ({
     ...product,
     href: getProductRoute(product.id),
     textValue: product.name

@@ -6,36 +6,32 @@ const PARAMS = {
 } as const
 
 export const ROUTES = {
-  home: '/',
-  notFound: '/not-found',
-
-  // Admin
   admin: '/admin',
   adminCategories: '/admin/categories',
   adminCategory: `/admin/categories/:${PARAMS.categoryId}`,
   adminCategoryCreation: '/admin/categories/create',
-  adminOrders: '/admin/orders',
   adminOrder: `/admin/orders/:${PARAMS.orderId}`,
+  adminOrders: '/admin/orders',
   adminProduct: `/admin/products/:${PARAMS.productId}`,
-  adminProducts: '/admin/products',
   adminProductCreation: '/admin/products/create',
+  adminProducts: '/admin/products',
   adminUser: `/admin/users/:${PARAMS.userId}`,
   adminUsers: '/admin/users',
 
-  // Auth
-  profile: '/auth/profile',
-  signIn: '/auth/sign-in',
-  signUp: '/auth/sign-up',
   forbidden: '/auth/forbidden',
-  unauthorized: '/auth/unauthorized',
+  home: '/',
+  notFound: '/not-found',
 
-  // Orders
   order: `/orders/${PARAMS.orderId}`,
   ordering: '/orders/ordering',
   orders: '/orders',
 
-  // Products
-  product: `/products/:${PARAMS.productId}`
+  product: `/products/:${PARAMS.productId}`,
+
+  profile: '/auth/profile',
+  signIn: '/auth/sign-in',
+  signUp: '/auth/sign-up',
+  unauthorized: '/auth/unauthorized'
 } as const
 
 export const DEFAULT_ROUTE = ROUTES.home

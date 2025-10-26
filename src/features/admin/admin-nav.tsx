@@ -44,21 +44,12 @@ export const adminNavItems: AdminNavItem[] = [
 
 export const AdminNav: React.FC = () => (
   <nav className='admin-nav'>
-    <Link
-      href={ROUTES.admin}
-      Icon={<ShieldIcon aria-hidden />}
-      variant='underlined'
-    >
+    <Link href={ROUTES.admin} Icon={<ShieldIcon aria-hidden />} variant='underlined'>
       {t('admin.nav.admin')}
     </Link>
 
     {adminNavItems.map(({ href, Icon, id, textValue }) => (
-      <Link
-        href={href}
-        Icon={Icon}
-        key={id}
-        variant='underlined'
-      >
+      <Link href={href} Icon={Icon} key={id} variant='underlined'>
         {textValue}
       </Link>
     ))}

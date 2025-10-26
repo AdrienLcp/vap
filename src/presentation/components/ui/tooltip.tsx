@@ -14,7 +14,13 @@ export type TooltipProps = ReactAriaTooltipProps & {
   Trigger: React.ReactElement
 }
 
-export const Tooltip: React.FC<TooltipProps> = ({ className, delay = 500, offset = 8, Trigger, ...tooltipProps }) => (
+export const Tooltip: React.FC<TooltipProps> = ({
+  className,
+  delay = 500,
+  offset = 8,
+  Trigger,
+  ...tooltipProps
+}) => (
   <TooltipTrigger delay={delay}>
     {Trigger}
 

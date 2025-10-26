@@ -11,19 +11,27 @@ export type FormProps = Omit<ReactAriaFormProps, 'onSubmit' | 'validationErrors'
   validationErrors?: ReactAriaFormProps['validationErrors'] | null
 }
 
-export const Form: React.FC<FormProps> = ({ children, onSubmit, validationErrors, ...formRestProps }) => {
-  const onSubmitHandler = useCallback((event: React.FormEvent<HTMLFormElement>) => {
-    if (!onSubmit) {
-      return
-    }
+export const Form: React.FC<FormProps> = ({
+  children,
+  onSubmit,
+  validationErrors,
+  ...formRestProps
+}) => {
+  const onSubmitHandler = useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      if (!onSubmit) {
+        return
+      }
 
-    event.preventDefault()
+      event.preventDefault()
 
-    const currentTarget = event.currentTarget
-    const formData = new FormData(currentTarget)
+      const currentTarget = event.currentTarget
+      const formData = new FormData(currentTarget)
 
-    onSubmit(formData, currentTarget)
-  }, [onSubmit])
+      onSubmit(formData, currentTarget)
+    },
+    [onSubmit]
+  )
 
   return (
     <ReactAriaForm

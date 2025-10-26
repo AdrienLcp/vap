@@ -29,19 +29,27 @@ type ApiResponse<Data = unknown, Error = unknown> =
   | ConflictResponse<Error>
   | InternalServerErrorResponse
 
-const hasData = <Response extends ApiResponse>(response: Response): response is Response & { data: object } => {
-  return (response.status === OK_STATUS || response.status === CREATED_STATUS) && response.data != null
+const hasData = <Response extends ApiResponse>(
+  response: Response
+): response is Response & { data: object } => {
+  return (
+    (response.status === OK_STATUS || response.status === CREATED_STATUS) && response.data != null
+  )
 }
 
-const hasError = <Response extends ApiResponse> (response: Response): response is Response & { error: object } => {
+const hasError = <Response extends ApiResponse>(
+  response: Response
+): response is Response & { error: object } => {
   return response.status === CONFLICT_STATUS && response.error != null
 }
 
-const hasIssues = <Response extends ApiResponse> (response: Response): response is Response & { issues: object } => {
+const hasIssues = <Response extends ApiResponse>(
+  response: Response
+): response is Response & { issues: object } => {
   return response.status === BAD_REQUEST_STATUS && response.issues != null
 }
 
-export const nextResponse = async <Response extends ApiResponse> (promise: Promise<Response>) => {
+export const nextResponse = async <Response extends ApiResponse>(promise: Promise<Response>) => {
   try {
     const response = await promise
 
