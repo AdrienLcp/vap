@@ -10,6 +10,7 @@
 ![Prisma](https://img.shields.io/badge/Prisma-6.16.2-2D3748?style=for-the-badge&logo=prisma&logoColor=white)
 ![Better Auth](https://img.shields.io/badge/Better_Auth-1.3.17-FF6B6B?style=for-the-badge)
 ![React Aria Components](https://img.shields.io/badge/React_Aria-1.12.2-E056FD?style=for-the-badge&logo=adobe&logoColor=white)
+![Biome](https://img.shields.io/badge/Biome-2.3.0-4B8BF5?style=for-the-badge&logo=biome)
 
 </div>
 
@@ -159,10 +160,13 @@ export const ProductsClientComponent: React.FC = () => {
 4. **Database setup**
    ```bash
    # Run migrations
-   pnpx prisma migrate dev
+   pnpm db:migrate
+
+   # Populate database with dev data
+   pnpm db:seed
 
    # View and edit database data with Prisma Studio
-   pnpx prisma studio
+   pnpm db:studio
    ```
 
 5. **Start development server**
@@ -178,7 +182,8 @@ export const ProductsClientComponent: React.FC = () => {
 |---------|-------------|
 | `pnpm dev` | Start development server with Turbopack |
 | `pnpm build` | Build for production |
-| `pnpm lint` | Run ESLint |
+| `pnpm format` | Format code with Biome |
+| `pnpm lint` | Run Biome (lint + format suggestions) |
 
 ---
 
@@ -261,8 +266,9 @@ This project prioritizes accessibility using **React Aria Components** and follo
 - **Server-only 0.0.1** - Server-side code protection
 
 ### �️ **Development Tools**
-- **ESLint 9.36.0** - Code linting and formatting
-- **TypeScript ESLint 8.44.1** - TypeScript-specific linting
+- **Biome 2.3.0** - Unified formatter, linter, import organizer
+- **TypeScript 5.9.3** - Type safety and developer experience
+- **Prisma 6.18.0** - Database toolkit
 - **Turbopack** - Fast development bundler
 
 ### 🌐 **Infrastructure**
@@ -328,11 +334,11 @@ vap/
 │       ├── object-utils.ts
 │       └── validation-utils.ts
 │
-├── 📄 package.json               # Dependencies & scripts
-├── 📄 tsconfig.json              # TypeScript configuration
+├── 📄 biome.json                 # Biome config (formatter + linter)
 ├── 📄 next.config.ts             # Next.js configuration
-├── 📄 eslint.config.mjs          # ESLint configuration
-└── 📄 README.md                  # Project documentation
+├── 📄 package.json               # Dependencies & scripts
+├── 📄 README.md                  # Project documentation
+└── 📄 tsconfig.json              # TypeScript configuration
 ```
 
 ### 🏛️ **Feature Architecture Example**
@@ -399,6 +405,7 @@ We welcome contributions! Please follow these guidelines:
 - **Single Responsibility** - One concern per component/function
 - **Accessibility first** - Always consider screen readers and keyboard navigation
 - **Feature architecture** - Organize by business domain, not technical layers
+- **Biome enforced** - Single quotes (including JSX), no semicolons, 2-space indent, max line width 100, arrow params no parentheses when single
 
 ---
 

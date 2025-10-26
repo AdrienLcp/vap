@@ -24,16 +24,16 @@ type Product = {
 }
 
 const products: Product[] = [
-  { name: 'Product 1', price: 10, sku: '0', stock: 10, status: 'ACTIVE' },
-  { name: 'Product 2', price: 10, sku: '1', stock: 10, status: 'ACTIVE' },
-  { name: 'Product 3', price: 10, sku: '2', stock: 10, status: 'ACTIVE' },
-  { name: 'Product 4', price: 10, sku: '3', stock: 10, status: 'ACTIVE' },
-  { name: 'Product 5', price: 10, sku: '4', stock: 10, status: 'ACTIVE' },
-  { name: 'Product 6', price: 10, sku: '5', stock: 10, status: 'ACTIVE' },
-  { name: 'Product 7', price: 10, sku: '6', stock: 10, status: 'ACTIVE' },
-  { name: 'Product 8', price: 10, sku: '7', stock: 10, status: 'ACTIVE' },
-  { name: 'Product 9', price: 10, sku: '8', stock: 10, status: 'ACTIVE' },
-  { name: 'Product 10', price: 10, sku: '9', stock: 10, status: 'ACTIVE' }
+  { name: 'Product 1', price: 10, sku: '0', status: 'ACTIVE', stock: 10 },
+  { name: 'Product 2', price: 10, sku: '1', status: 'ACTIVE', stock: 10 },
+  { name: 'Product 3', price: 10, sku: '2', status: 'ACTIVE', stock: 10 },
+  { name: 'Product 4', price: 10, sku: '3', status: 'ACTIVE', stock: 10 },
+  { name: 'Product 5', price: 10, sku: '4', status: 'ACTIVE', stock: 10 },
+  { name: 'Product 6', price: 10, sku: '5', status: 'ACTIVE', stock: 10 },
+  { name: 'Product 7', price: 10, sku: '6', status: 'ACTIVE', stock: 10 },
+  { name: 'Product 8', price: 10, sku: '7', status: 'ACTIVE', stock: 10 },
+  { name: 'Product 9', price: 10, sku: '8', status: 'ACTIVE', stock: 10 },
+  { name: 'Product 10', price: 10, sku: '9', status: 'ACTIVE', stock: 10 }
 ]
 
 const seed = async () => {
@@ -48,12 +48,12 @@ const seed = async () => {
 
     await prisma.product.create({
       data: {
+        categoryId: randomCategory.id,
         name: product.name,
         price: product.price,
         sku: product.sku,
-        stock: product.stock,
         status: product.status,
-        categoryId: randomCategory.id
+        stock: product.stock
       }
     })
   }

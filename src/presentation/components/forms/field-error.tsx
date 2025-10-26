@@ -1,4 +1,7 @@
-import { FieldError as ReactAriaFieldError, type FieldErrorProps as ReactAriaFieldErrorProps } from 'react-aria-components'
+import {
+  FieldError as ReactAriaFieldError,
+  type FieldErrorProps as ReactAriaFieldErrorProps
+} from 'react-aria-components'
 
 import { t } from '@/infrastructure/i18n'
 import { reactAriaClassNames } from '@/presentation/utils/react-aria-utils'
@@ -10,23 +13,26 @@ type FieldErrorProps = Omit<ReactAriaFieldErrorProps, 'children'> & {
   minLength?: number
 }
 
-export const FieldError: React.FC<FieldErrorProps> = ({ className, maxLength, minLength, ...fieldErrorRestProps }) => (
+export const FieldError: React.FC<FieldErrorProps> = ({
+  className,
+  maxLength,
+  minLength,
+  ...fieldErrorRestProps
+}) => (
   <ReactAriaFieldError
-    className={values => reactAriaClassNames(values, className, 'field-error')}
+    className={(values) => reactAriaClassNames(values, className, 'field-error')}
     {...fieldErrorRestProps}
   >
     {({ defaultChildren, validationDetails, validationErrors }) => {
       if (validationDetails.customError) {
-        return validationErrors.map(errorMessage => (
-          <span key={errorMessage}>
-            {errorMessage}
-          </span>
+        return validationErrors.map((errorMessage) => (
+          <span key={errorMessage}>{errorMessage}</span>
         ))
       }
 
       if (validationDetails.tooLong) {
         if (maxLength != null && minLength != null) {
-          return t('components.forms.fieldError.lengthValues', { min: minLength, max: maxLength })
+          return t('components.forms.fieldError.lengthValues', { max: maxLength, min: minLength })
         }
 
         if (maxLength != null) {
@@ -38,7 +44,7 @@ export const FieldError: React.FC<FieldErrorProps> = ({ className, maxLength, mi
 
       if (validationDetails.tooShort) {
         if (maxLength != null && minLength != null) {
-          return t('components.forms.fieldError.lengthValues', { min: minLength, max: maxLength })
+          return t('components.forms.fieldError.lengthValues', { max: maxLength, min: minLength })
         }
 
         if (minLength != null) {

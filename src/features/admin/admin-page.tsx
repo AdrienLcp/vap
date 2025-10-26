@@ -18,9 +18,7 @@ export const AdminPage: React.FC = () => (
     {({ Icon, textValue, ...item }) => (
       <ListBoxItem {...item} className='item' textValue={textValue}>
         <Card>
-          <CardBody>
-            {Icon}
-          </CardBody>
+          <CardBody>{Icon}</CardBody>
 
           <CardFooter>
             <CardTitle>{textValue}</CardTitle>

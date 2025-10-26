@@ -7,7 +7,7 @@ import { formatPrice } from '@/utils/format-utils'
 import './cart-panel-footer.sass'
 
 export const CartPanelFooter: React.FC = () => {
-  const cartTotalPrice = useCartStore(state => state.getTotalPrice())
+  const cartTotalPrice = useCartStore((state) => state.getTotalPrice())
 
   return (
     <div className='cart-panel-footer'>

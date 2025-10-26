@@ -3,7 +3,10 @@ import { ProductPriceField } from '@/features/product/presentation/components/fo
 import { t } from '@/infrastructure/i18n'
 import type { NumberFieldProps } from '@/presentation/components/forms/number-field'
 
-type ProductDiscountedPriceFieldProps = Omit<Partial<NumberFieldProps>, 'defaultValue' | 'value'> & {
+type ProductDiscountedPriceFieldProps = Omit<
+  Partial<NumberFieldProps>,
+  'defaultValue' | 'value'
+> & {
   defaultValue?: number | null
   value?: number | null
 }

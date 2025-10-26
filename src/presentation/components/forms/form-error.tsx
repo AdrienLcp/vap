@@ -21,9 +21,8 @@ export const FormError: React.FC<FormErrorProps> = ({ errors }) => {
 
       <p>
         {isErrorsArray
-          ? getUniqueStringsArray(errors).map(error => <span key={error}>{error}</span>)
-          : errors
-        }
+          ? getUniqueStringsArray(errors).map((error) => <span key={error}>{error}</span>)
+          : errors}
       </p>
     </div>
   )

@@ -5,7 +5,10 @@ import { useCallback, useState } from 'react'
 
 import type { CategoryDTO } from '@/features/category/domain/category-entities'
 import { PRODUCT_FORM_FIELDS } from '@/features/product/domain/product-constants'
-import type { ProductDTO, ProductValidationErrors } from '@/features/product/domain/product-entities'
+import type {
+  ProductDTO,
+  ProductValidationErrors
+} from '@/features/product/domain/product-entities'
 import { ProductUpdateSchema } from '@/features/product/domain/product-schemas'
 import { ProductClient } from '@/features/product/infrastructure/product-client'
 import { ProductCategorySelect } from '@/features/product/presentation/components/forms/product-category-select'
@@ -17,7 +20,10 @@ import { ProductPriceField } from '@/features/product/presentation/components/fo
 import { ProductSkuField } from '@/features/product/presentation/components/forms/product-sku-field'
 import { ProductStatusSelect } from '@/features/product/presentation/components/forms/product-status-select'
 import { ProductStockField } from '@/features/product/presentation/components/forms/product-stock-field'
-import { getBadRequestProductFormErrors, getConflictProductFormErrors } from '@/features/product/presentation/validation/product-form-validation'
+import {
+  getBadRequestProductFormErrors,
+  getConflictProductFormErrors
+} from '@/features/product/presentation/validation/product-form-validation'
 import { BAD_REQUEST_STATUS, CONFLICT_STATUS, OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
@@ -34,54 +40,62 @@ type ProductUpdateFormProps = {
 
 export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({ categories, product }) => {
   const [isProductUpdateLoading, setIsProductUpdateLoading] = useState<boolean>(false)
-  const [productUpdateFormErrors, setProductUpdateFormErrors] = useState<ProductValidationErrors>(null)
+  const [formErrors, setFormErrors] = useState<ProductValidationErrors>(null)
 
-  const onProductUpdateFormSubmit = useCallback(async (formData: FormData) => {
-    setIsProductUpdateLoading(true)
-    setProductUpdateFormErrors(null)
+  const onProductUpdateFormSubmit = useCallback(
+    async (formData: FormData) => {
+      setIsProductUpdateLoading(true)
+      setFormErrors(null)
 
-    const productUpdateData = {
-      categoryId: formData.get(PRODUCT_FORM_FIELDS.CATEGORY_ID),
-      description: formData.get(PRODUCT_FORM_FIELDS.DESCRIPTION),
-      discountedPrice: formData.get(PRODUCT_FORM_FIELDS.DISCOUNTED_PRICE),
-      imageUrl: formData.get(PRODUCT_FORM_FIELDS.IMAGE_URL),
-      name: formData.get(PRODUCT_FORM_FIELDS.NAME),
-      price: formData.get(PRODUCT_FORM_FIELDS.PRICE),
-      sku: formData.get(PRODUCT_FORM_FIELDS.SKU),
-      status: formData.get(PRODUCT_FORM_FIELDS.STATUS),
-      stock: formData.get(PRODUCT_FORM_FIELDS.STOCK)
-    }
+      const productUpdateData = {
+        categoryId: formData.get(PRODUCT_FORM_FIELDS.CATEGORY_ID),
+        description: formData.get(PRODUCT_FORM_FIELDS.DESCRIPTION),
+        discountedPrice: formData.get(PRODUCT_FORM_FIELDS.DISCOUNTED_PRICE),
+        imageUrl: formData.get(PRODUCT_FORM_FIELDS.IMAGE_URL),
+        name: formData.get(PRODUCT_FORM_FIELDS.NAME),
+        price: formData.get(PRODUCT_FORM_FIELDS.PRICE),
+        sku: formData.get(PRODUCT_FORM_FIELDS.SKU),
+        status: formData.get(PRODUCT_FORM_FIELDS.STATUS),
+        stock: formData.get(PRODUCT_FORM_FIELDS.STOCK)
+      }
 
-    const productUpdateValidation = ProductUpdateSchema.safeParse(productUpdateData)
+      const productUpdateValidation = ProductUpdateSchema.safeParse(productUpdateData)
 
-    if (!productUpdateValidation.success) {
+      if (!productUpdateValidation.success) {
+        setIsProductUpdateLoading(false)
+        setFormErrors(getBadRequestProductFormErrors(productUpdateValidation.error.issues))
+        return
+      }
+
+      const productUpdateResponse = await ProductClient.updateProduct(
+        product.id,
+        productUpdateValidation.data
+      )
+
       setIsProductUpdateLoading(false)
-      setProductUpdateFormErrors(getBadRequestProductFormErrors(productUpdateValidation.error.issues))
-      return
-    }
 
-    const productUpdateResponse = await ProductClient.updateProduct(product.id, productUpdateValidation.data)
-
-    setIsProductUpdateLoading(false)
-
-    switch (productUpdateResponse.status) {
-      case OK_STATUS:
-        ToastService.success(t('product.update.success', { productName: productUpdateResponse.data.name }))
-        break
-      case BAD_REQUEST_STATUS:
-        setProductUpdateFormErrors(getBadRequestProductFormErrors(productUpdateResponse.issues))
-        break
-      case CONFLICT_STATUS:
-        setProductUpdateFormErrors(getConflictProductFormErrors(productUpdateResponse.error))
-        break
-      default:
-        console.error('Unhandled product update response status:', productUpdateResponse)
-        ToastService.error(t('product.update.unknownError'))
-    }
-  }, [product.id])
+      switch (productUpdateResponse.status) {
+        case OK_STATUS:
+          ToastService.success(
+            t('product.update.success', { productName: productUpdateResponse.data.name })
+          )
+          break
+        case BAD_REQUEST_STATUS:
+          setFormErrors(getBadRequestProductFormErrors(productUpdateResponse.issues))
+          break
+        case CONFLICT_STATUS:
+          setFormErrors(getConflictProductFormErrors(productUpdateResponse.error))
+          break
+        default:
+          console.error('Unhandled product update response status:', productUpdateResponse)
+          ToastService.error(t('product.update.unknownError'))
+      }
+    },
+    [product.id]
+  )
 
   return (
-    <Form onSubmit={onProductUpdateFormSubmit} validationErrors={productUpdateFormErrors}>
+    <Form onSubmit={onProductUpdateFormSubmit} validationErrors={formErrors}>
       <FieldSet isDisabled={isProductUpdateLoading}>
         <ProductNameField defaultValue={product.name} />
 
@@ -102,7 +116,7 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({ categories
         <ProductImagePreviewField imageUrl={product.imageUrl} />
       </FieldSet>
 
-      <FormError errors={productUpdateFormErrors?.form} />
+      <FormError errors={formErrors?.form} />
 
       <RequiredFieldsMessage />
 

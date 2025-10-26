@@ -26,38 +26,35 @@ export type ReactAriaComponentRenderProps =
   | TextFieldRenderProps
   | TooltipRenderProps
 
-export type RenderPropsValues <T extends ReactAriaComponentRenderProps> = T & {
+export type RenderPropsValues<T extends ReactAriaComponentRenderProps> = T & {
   defaultClassName: string | undefined
 }
 
-export type ReactAriaClassName <T extends ReactAriaComponentRenderProps> =
+export type ReactAriaClassName<T extends ReactAriaComponentRenderProps> =
   | string
   | ((values: RenderPropsValues<T>) => string)
   | undefined
 
-export const reactAriaClassNames = <T extends ReactAriaComponentRenderProps> (
+export const reactAriaClassNames = <T extends ReactAriaComponentRenderProps>(
   values: RenderPropsValues<T>,
   className: ReactAriaClassName<T>,
   ...baseClassName: classNames.ArgumentArray
 ) => {
-  const classNameOverride = typeof className === 'function'
-    ? className(values)
-    : className
-
+  const classNameOverride = typeof className === 'function' ? className(values) : className
   return classNames(...baseClassName, classNameOverride)
 }
 
-type ReactAriaComponentChildrenValues <T extends ReactAriaComponentRenderProps> = T & { defaultChildren: React.ReactNode | undefined }
+type ReactAriaComponentChildrenValues<T extends ReactAriaComponentRenderProps> = T & {
+  defaultChildren: React.ReactNode | undefined
+}
 
-type ReactAriaComponentChildren <T extends ReactAriaComponentRenderProps> =
+type ReactAriaComponentChildren<T extends ReactAriaComponentRenderProps> =
   | ((values: ReactAriaComponentChildrenValues<T>) => React.ReactNode)
   | React.ReactNode
 
-export const renderReactAriaChildren = <T extends ReactAriaComponentRenderProps> (
+export const renderReactAriaChildren = <T extends ReactAriaComponentRenderProps>(
   children: ReactAriaComponentChildren<T>,
   values: ReactAriaComponentChildrenValues<T>
 ) => {
-  return typeof children === 'function'
-    ? children(values)
-    : children
+  return typeof children === 'function' ? children(values) : children
 }

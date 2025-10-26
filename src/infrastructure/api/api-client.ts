@@ -48,14 +48,23 @@ const DELETE = async <Response>(route: string, options?: RequestOptions) =>
 const GET = async <Response>(route: string, options?: RequestOptions) =>
   await request<Response>(route, 'GET', options)
 
-const PATCH = async <Response, RequestBody>(route: string, body?: RequestBody, options?: RequestOptions) =>
-  await request<Response, RequestBody>(route, 'PATCH', options, body)
+const PATCH = async <Response, RequestBody>(
+  route: string,
+  body?: RequestBody,
+  options?: RequestOptions
+) => await request<Response, RequestBody>(route, 'PATCH', options, body)
 
-const POST = async <Response, RequestBody>(route: string, body?: RequestBody, options?: RequestOptions) =>
-  await request<Response, RequestBody>(route, 'POST', options, body)
+const POST = async <Response, RequestBody>(
+  route: string,
+  body?: RequestBody,
+  options?: RequestOptions
+) => await request<Response, RequestBody>(route, 'POST', options, body)
 
-const PUT = async <Response, RequestBody>(route: string, body?: RequestBody, options?: RequestOptions) =>
-  await request<Response, RequestBody>(route, 'PUT', options, body)
+const PUT = async <Response, RequestBody>(
+  route: string,
+  body?: RequestBody,
+  options?: RequestOptions
+) => await request<Response, RequestBody>(route, 'PUT', options, body)
 
 export const ApiClient = {
   DELETE,

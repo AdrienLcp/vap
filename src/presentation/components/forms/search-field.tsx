@@ -1,5 +1,11 @@
 import { SearchIcon, XIcon } from 'lucide-react'
-import { Input, Label, SearchField as ReactAriaSearchField, type SearchFieldProps as ReactAriaSearchFieldProps, Text } from 'react-aria-components'
+import {
+  Input,
+  Label,
+  SearchField as ReactAriaSearchField,
+  type SearchFieldProps as ReactAriaSearchFieldProps,
+  Text
+} from 'react-aria-components'
 
 import { FieldError } from '@/presentation/components/forms/field-error'
 import { Spinner } from '@/presentation/components/ui/loaders/spinner'
@@ -25,22 +31,15 @@ export const SearchField: React.FC<SearchFieldProps> = ({
 }) => (
   <ReactAriaSearchField
     {...searchFieldRestProps}
+    className={(values) => reactAriaClassNames(values, className, 'search-field')}
     isDisabled={isDisabled || isPending}
-    className={values => reactAriaClassNames(values, className, 'search-field')}
   >
     {({ isInvalid, state }) => (
       <>
-        <Label className='label'>
-          {label}
-        </Label>
+        <Label className='label'>{label}</Label>
 
         <div className='input-wrapper'>
-          <div className='search-icon'>
-            {isPending
-              ? <Spinner />
-              : <SearchIcon aria-hidden />
-            }
-          </div>
+          <div className='search-icon'>{isPending ? <Spinner /> : <SearchIcon aria-hidden />}</div>
 
           <Input />
 
@@ -53,14 +52,15 @@ export const SearchField: React.FC<SearchFieldProps> = ({
           />
         </div>
 
-        {isInvalid
-          ? <FieldError />
-          : description && (
+        {isInvalid ? (
+          <FieldError />
+        ) : (
+          description && (
             <Text className='description' slot='description'>
               {description}
             </Text>
           )
-        }
+        )}
       </>
     )}
   </ReactAriaSearchField>

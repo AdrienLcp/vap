@@ -17,8 +17,8 @@ const findUser = async (): Promise<Result<AuthUser, AuthUserError>> => {
   const userPermissions = getAuthUserPermissionsByRole(user.role)
 
   const authUser: AuthUser = {
-    id: user.id,
     email: user.email,
+    id: user.id,
     image: user.image,
     name: user.name,
     permissions: userPermissions

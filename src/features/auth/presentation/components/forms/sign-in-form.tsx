@@ -30,48 +30,54 @@ export const SignInForm: React.FC = () => {
 
   const { setUser } = useAuth()
 
-  const onSignInSuccess = useCallback((authenticatedUser: AuthUserDTO) => {
-    setUser(authenticatedUser)
-    redirect(DEFAULT_ROUTE)
-  }, [setUser])
+  const onSignInSuccess = useCallback(
+    (authenticatedUser: AuthUserDTO) => {
+      setUser(authenticatedUser)
+      redirect(DEFAULT_ROUTE)
+    },
+    [setUser]
+  )
 
   const onSignInBadRequest = useCallback(() => {
     setSignInFormErrors({ form: t('auth.signIn.errors.invalidCredentials') })
   }, [])
 
-  const onSignInFormSubmit = useCallback(async (formData: FormData) => {
-    setIsUserAuthenticationLoading(true)
-    setSignInFormErrors(null)
+  const onSignInFormSubmit = useCallback(
+    async (formData: FormData) => {
+      setIsUserAuthenticationLoading(true)
+      setSignInFormErrors(null)
 
-    const credentials = {
-      email: formData.get(AUTH_FORM_FIELDS.EMAIL),
-      password: formData.get(AUTH_FORM_FIELDS.PASSWORD)
-    }
+      const credentials = {
+        email: formData.get(AUTH_FORM_FIELDS.EMAIL),
+        password: formData.get(AUTH_FORM_FIELDS.PASSWORD)
+      }
 
-    const credentialsValidation = SignInInfoSchema.safeParse(credentials)
+      const credentialsValidation = SignInInfoSchema.safeParse(credentials)
 
-    if (!credentialsValidation.success) {
-      onSignInBadRequest()
-      setIsUserAuthenticationLoading(false)
-      return
-    }
-
-    const signInResponse = await AuthClient.emailSignIn(credentialsValidation.data)
-
-    setIsUserAuthenticationLoading(false)
-
-    switch (signInResponse.status) {
-      case OK_STATUS:
-        onSignInSuccess(signInResponse.data)
-        break
-      case BAD_REQUEST_STATUS:
+      if (!credentialsValidation.success) {
         onSignInBadRequest()
-        break
-      default:
-        setSignInFormErrors({ form: t('auth.signIn.errors.unknown') })
-        break
-    }
-  }, [onSignInBadRequest, onSignInSuccess])
+        setIsUserAuthenticationLoading(false)
+        return
+      }
+
+      const signInResponse = await AuthClient.emailSignIn(credentialsValidation.data)
+
+      setIsUserAuthenticationLoading(false)
+
+      switch (signInResponse.status) {
+        case OK_STATUS:
+          onSignInSuccess(signInResponse.data)
+          break
+        case BAD_REQUEST_STATUS:
+          onSignInBadRequest()
+          break
+        default:
+          setSignInFormErrors({ form: t('auth.signIn.errors.unknown') })
+          break
+      }
+    },
+    [onSignInBadRequest, onSignInSuccess]
+  )
 
   return (
     <Form onSubmit={onSignInFormSubmit} validationErrors={signInFormErrors}>

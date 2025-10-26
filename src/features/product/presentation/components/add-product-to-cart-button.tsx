@@ -22,7 +22,7 @@ const CART_ITEM_CREATION_INITIAL_QUANTITY = 1
 export const AddProductToCartButton: React.FC<AddProductToCartButtonProps> = ({ productId }) => {
   const [isAddingProductToCart, setIsAddingProductToCart] = useState(false)
 
-  const addProductToCartStore = useCartStore(state => state.addItem)
+  const addProductToCartStore = useCartStore((state) => state.addItem)
 
   const addProductToCart = async () => {
     setIsAddingProductToCart(true)

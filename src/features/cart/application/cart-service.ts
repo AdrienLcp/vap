@@ -55,7 +55,11 @@ const updateUserCartItemQuantity = async (productId: string, quantity: number) =
     return await CartRepository.removeItemFromUserCart(authUserResult.data.id, productId)
   }
 
-  return await CartRepository.updateUserCartItemQuantity(authUserResult.data.id, productId, quantity)
+  return await CartRepository.updateUserCartItemQuantity(
+    authUserResult.data.id,
+    productId,
+    quantity
+  )
 }
 
 export const CartService = {

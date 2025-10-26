@@ -4,9 +4,7 @@ import { CATEGORY_CONSTANTS, CATEGORY_ERRORS } from '@/features/category/domain/
 
 export const CategoryIdSchema = z.cuid()
 
-export const CategoryImageUrlSchema = z
-  .url()
-  .max(CATEGORY_CONSTANTS.IMAGE_URL_MAX_LENGTH)
+export const CategoryImageUrlSchema = z.url().max(CATEGORY_CONSTANTS.IMAGE_URL_MAX_LENGTH)
 
 export const CategoryNameSchema = z
   .string()
@@ -18,22 +16,22 @@ export const CategoryDescriptionSchema = z
   .max(CATEGORY_CONSTANTS.DESCRIPTION_MAX_LENGTH)
 
 export const CategoryCreationSchema = z.object({
-  name: CategoryNameSchema,
   description: CategoryDescriptionSchema.optional().catch(undefined),
-  imageUrl: CategoryImageUrlSchema.optional().catch(undefined)
+  imageUrl: CategoryImageUrlSchema.optional().catch(undefined),
+  name: CategoryNameSchema
 })
 
 export const CategoryUpdateSchema = z.object({
-  name: CategoryNameSchema.optional(),
   description: CategoryDescriptionSchema.optional().catch(undefined),
-  imageUrl: CategoryImageUrlSchema.optional().catch(undefined)
+  imageUrl: CategoryImageUrlSchema.optional().catch(undefined),
+  name: CategoryNameSchema.optional()
 })
 
 export const CategorySchema = z.object({
-  id: CategoryIdSchema,
-  name: CategoryNameSchema,
   description: CategoryDescriptionSchema.nullable(),
-  imageUrl: CategoryImageUrlSchema.nullable()
+  id: CategoryIdSchema,
+  imageUrl: CategoryImageUrlSchema.nullable(),
+  name: CategoryNameSchema
 })
 
 export const CategoryDTOSchema = CategorySchema.extend({

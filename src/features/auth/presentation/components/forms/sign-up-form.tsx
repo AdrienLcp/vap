@@ -6,14 +6,22 @@ import { useCallback, useState } from 'react'
 
 import { DEFAULT_ROUTE } from '@/domain/navigation'
 import { useAuth } from '@/features/auth/application/use-auth'
-import { AUTH_CONSTANTS, AUTH_ERRORS, AUTH_FORM_FIELDS } from '@/features/auth/domain/auth-constants'
-import type { AuthUserDTO, SignUpInfo } from '@/features/auth/domain/auth-entities'
+import {
+  AUTH_CONSTANTS,
+  AUTH_ERRORS,
+  AUTH_FORM_FIELDS
+} from '@/features/auth/domain/auth-constants'
+import type { AuthUserDTO, SignUpBadRequestError, SignUpInfo } from '@/features/auth/domain/auth-entities'
 import { SignUpInfoSchema } from '@/features/auth/domain/auth-schemas'
 import { AuthClient } from '@/features/auth/infrastructure/auth-client'
 import { UserEmailField } from '@/features/auth/presentation/components/forms/user-email-field'
 import { UserNameField } from '@/features/auth/presentation/components/forms/user-name-field'
 import { UserPasswordField } from '@/features/auth/presentation/components/forms/user-password-field'
-import { BAD_REQUEST_STATUS, CONFLICT_STATUS, CREATED_STATUS } from '@/infrastructure/api/http-response'
+import {
+  BAD_REQUEST_STATUS,
+  CONFLICT_STATUS,
+  CREATED_STATUS
+} from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
 import { Form } from '@/presentation/components/forms/form'
@@ -31,18 +39,33 @@ export const SignUpForm: React.FC = () => {
 
   const { setUser } = useAuth()
 
-  const onSignUpSuccess = useCallback((createdUser: AuthUserDTO) => {
-    setUser(createdUser)
-    redirect(DEFAULT_ROUTE)
-  }, [setUser])
+  const onSignUpSuccess = useCallback(
+    (createdUser: AuthUserDTO) => {
+      setUser(createdUser)
+      redirect(DEFAULT_ROUTE)
+    },
+    [setUser]
+  )
 
-  const onSignUpBadRequest = useCallback(() => {
-    setSignUpFormErrors({
-      [AUTH_FORM_FIELDS.PASSWORD]: t('auth.signUp.errors.invalidPasswordLength', {
-        maxLength: AUTH_CONSTANTS.PASSWORD_MAX_LENGTH,
-        minLength: AUTH_CONSTANTS.PASSWORD_MIN_LENGTH
-      })
-    })
+  const onSignUpBadRequest = useCallback((signUpBadRequestError: SignUpBadRequestError) => {
+    switch (signUpBadRequestError) {
+      case 'INVALID_EMAIL':
+        setSignUpFormErrors({
+          [AUTH_FORM_FIELDS.EMAIL]: t('auth.signUp.errors.invalidEmail')
+        })
+        return
+      case 'PASSWORD_TOO_SHORT':
+        setSignUpFormErrors({
+          [AUTH_FORM_FIELDS.PASSWORD]: t('auth.signUp.errors.invalidPasswordLength', {
+            maxLength: AUTH_CONSTANTS.PASSWORD_MAX_LENGTH,
+            minLength: AUTH_CONSTANTS.PASSWORD_MIN_LENGTH
+          })
+        })
+        break
+      default:
+        setSignUpFormErrors({ form: t('auth.signUp.errors.unknown') })
+        return
+    }
   }, [])
 
   const onSignUpValidationError = useCallback((issues: Issues<SignUpInfo>) => {
@@ -60,10 +83,12 @@ export const SignUpForm: React.FC = () => {
           userNameErrors.push(t('auth.signUp.errors.userNameRequired'))
           break
         case AUTH_ERRORS.PASSWORD_TOO_SHORT:
-          passwordErrors.push(t('auth.signUp.errors.invalidPasswordLength', {
-            maxLength: AUTH_CONSTANTS.PASSWORD_MAX_LENGTH,
-            minLength: AUTH_CONSTANTS.PASSWORD_MIN_LENGTH
-          }))
+          passwordErrors.push(
+            t('auth.signUp.errors.invalidPasswordLength', {
+              maxLength: AUTH_CONSTANTS.PASSWORD_MAX_LENGTH,
+              minLength: AUTH_CONSTANTS.PASSWORD_MIN_LENGTH
+            })
+          )
           break
         default:
           formErrors.push(t('auth.signUp.errors.unknown'))
@@ -79,54 +104,48 @@ export const SignUpForm: React.FC = () => {
     })
   }, [])
 
-  const onSignUpFormSubmit = useCallback(async (formData: FormData) => {
-    setIsUserCreationLoading(true)
-    setSignUpFormErrors(null)
+  const onSignUpFormSubmit = useCallback(
+    async (formData: FormData) => {
+      setIsUserCreationLoading(true)
+      setSignUpFormErrors(null)
 
-    const credentials = {
-      email: formData.get(AUTH_FORM_FIELDS.EMAIL),
-      name: formData.get(AUTH_FORM_FIELDS.NAME),
-      password: formData.get(AUTH_FORM_FIELDS.PASSWORD)
-    }
+      const credentials = {
+        email: formData.get(AUTH_FORM_FIELDS.EMAIL),
+        name: formData.get(AUTH_FORM_FIELDS.NAME),
+        password: formData.get(AUTH_FORM_FIELDS.PASSWORD)
+      }
 
-    const credentialsValidation = SignUpInfoSchema.safeParse(credentials)
+      const credentialsValidation = SignUpInfoSchema.safeParse(credentials)
 
-    if (!credentialsValidation.success) {
-      onSignUpValidationError(credentialsValidation.error.issues)
+      if (!credentialsValidation.success) {
+        onSignUpValidationError(credentialsValidation.error.issues)
+        setIsUserCreationLoading(false)
+        return
+      }
+
+      const signUpResponse = await AuthClient.emailSignUp(credentialsValidation.data)
+
       setIsUserCreationLoading(false)
-      return
-    }
 
-    const signUpResponse = await AuthClient.emailSignUp(credentialsValidation.data)
-
-    setIsUserCreationLoading(false)
-
-    switch (signUpResponse.status) {
-      case CREATED_STATUS:
-        onSignUpSuccess(signUpResponse.data)
-        break
-      case BAD_REQUEST_STATUS:
-        // HERE
-        // HERE
-        // HERE
-        // HERE
-        // HERE
-        onSignUpBadRequest()
-        // HERE
-        // HERE
-        // HERE
-        // HERE
-        // HERE
-        // HERE
-        break
-      case CONFLICT_STATUS:
-        setSignUpFormErrors({ [AUTH_FORM_FIELDS.EMAIL]: t('auth.signUp.errors.userAlreadyExists') })
-        break
-      default:
-        setSignUpFormErrors({ form: t('auth.signUp.errors.unknown') })
-        break
-    }
-  }, [onSignUpBadRequest, onSignUpSuccess, onSignUpValidationError])
+      switch (signUpResponse.status) {
+        case CREATED_STATUS:
+          onSignUpSuccess(signUpResponse.data)
+          break
+        case BAD_REQUEST_STATUS:
+          onSignUpBadRequest(signUpResponse.issues)
+          break
+        case CONFLICT_STATUS:
+          setSignUpFormErrors({
+            [AUTH_FORM_FIELDS.EMAIL]: t('auth.signUp.errors.userAlreadyExists')
+          })
+          break
+        default:
+          setSignUpFormErrors({ form: t('auth.signUp.errors.unknown') })
+          break
+      }
+    },
+    [onSignUpBadRequest, onSignUpSuccess, onSignUpValidationError]
+  )
 
   return (
     <Form onSubmit={onSignUpFormSubmit} validationErrors={signUpFormErrors}>

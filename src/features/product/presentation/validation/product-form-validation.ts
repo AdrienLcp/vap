@@ -1,5 +1,12 @@
-import { PRODUCT_CONSTANTS, PRODUCT_ERRORS, PRODUCT_FORM_FIELDS } from '@/features/product/domain/product-constants'
-import type { ProductConflictError, ProductValidationErrors } from '@/features/product/domain/product-entities'
+import {
+  PRODUCT_CONSTANTS,
+  PRODUCT_ERRORS,
+  PRODUCT_FORM_FIELDS
+} from '@/features/product/domain/product-constants'
+import type {
+  ProductConflictError,
+  ProductValidationErrors
+} from '@/features/product/domain/product-entities'
 import { t } from '@/infrastructure/i18n'
 import { getUniqueStringsArray } from '@/utils/array-utils'
 import type { Issues } from '@/utils/validation-utils'
@@ -17,13 +24,21 @@ export const getBadRequestProductFormErrors = (issues: Issues): ProductValidatio
   for (const issue of issues) {
     switch (issue.message) {
       case PRODUCT_ERRORS.DESCRIPTION_TOO_LONG:
-        descriptionErrors.push(t('product.fields.description.errors.tooLong', { max: PRODUCT_CONSTANTS.DESCRIPTION_MAX_LENGTH }))
+        descriptionErrors.push(
+          t('product.fields.description.errors.tooLong', {
+            max: PRODUCT_CONSTANTS.DESCRIPTION_MAX_LENGTH
+          })
+        )
         break
       case PRODUCT_ERRORS.DISCOUNTED_PRICE_TOO_HIGH:
-        discountedPriceErrors.push(t('product.fields.discountedPrice.errors.tooHigh', { max: PRODUCT_CONSTANTS.MAX_PRICE }))
+        discountedPriceErrors.push(
+          t('product.fields.discountedPrice.errors.tooHigh', { max: PRODUCT_CONSTANTS.MAX_PRICE })
+        )
         break
       case PRODUCT_ERRORS.DISCOUNTED_PRICE_TOO_LOW:
-        discountedPriceErrors.push(t('product.fields.discountedPrice.errors.tooLow', { min: PRODUCT_CONSTANTS.MIN_PRICE }))
+        discountedPriceErrors.push(
+          t('product.fields.discountedPrice.errors.tooLow', { min: PRODUCT_CONSTANTS.MIN_PRICE })
+        )
         break
       case PRODUCT_ERRORS.IMAGE_URL_INVALID:
         imageUrlErrors.push(t('product.fields.imageUrl.errors.invalidUrl'))
@@ -32,22 +47,32 @@ export const getBadRequestProductFormErrors = (issues: Issues): ProductValidatio
         nameErrors.push(t('product.fields.name.errors.required'))
         break
       case PRODUCT_ERRORS.NAME_TOO_LONG:
-        nameErrors.push(t('product.fields.name.errors.tooLong', { max: PRODUCT_CONSTANTS.NAME_MAX_LENGTH }))
+        nameErrors.push(
+          t('product.fields.name.errors.tooLong', { max: PRODUCT_CONSTANTS.NAME_MAX_LENGTH })
+        )
         break
       case PRODUCT_ERRORS.PRICE_TOO_HIGH:
-        priceErrors.push(t('product.fields.price.errors.tooHigh', { max: PRODUCT_CONSTANTS.MAX_PRICE }))
+        priceErrors.push(
+          t('product.fields.price.errors.tooHigh', { max: PRODUCT_CONSTANTS.MAX_PRICE })
+        )
         break
       case PRODUCT_ERRORS.PRICE_TOO_LOW:
-        priceErrors.push(t('product.fields.price.errors.tooLow', { min: PRODUCT_CONSTANTS.MIN_PRICE }))
+        priceErrors.push(
+          t('product.fields.price.errors.tooLow', { min: PRODUCT_CONSTANTS.MIN_PRICE })
+        )
         break
       case PRODUCT_ERRORS.SKU_REQUIRED:
         skuErrors.push(t('product.fields.sku.errors.required'))
         break
       case PRODUCT_ERRORS.SKU_TOO_LONG:
-        skuErrors.push(t('product.fields.sku.errors.tooLong', { max: PRODUCT_CONSTANTS.SKU_MAX_LENGTH }))
+        skuErrors.push(
+          t('product.fields.sku.errors.tooLong', { max: PRODUCT_CONSTANTS.SKU_MAX_LENGTH })
+        )
         break
       case PRODUCT_ERRORS.STOCK_TOO_LOW:
-        stockErrors.push(t('product.fields.stock.errors.tooLow', { min: PRODUCT_CONSTANTS.MIN_STOCK }))
+        stockErrors.push(
+          t('product.fields.stock.errors.tooLow', { min: PRODUCT_CONSTANTS.MIN_STOCK })
+        )
         break
       default:
         console.error('Unhandled bad request product validation error:', issue)
@@ -67,7 +92,9 @@ export const getBadRequestProductFormErrors = (issues: Issues): ProductValidatio
   }
 }
 
-export const getConflictProductFormErrors = (conflictError: ProductConflictError): ProductValidationErrors => {
+export const getConflictProductFormErrors = (
+  conflictError: ProductConflictError
+): ProductValidationErrors => {
   switch (conflictError) {
     case 'PRODUCT_SKU_ALREADY_EXISTS':
       return { [PRODUCT_FORM_FIELDS.SKU]: t('product.fields.sku.errors.alreadyExists') }

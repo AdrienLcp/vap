@@ -13,7 +13,7 @@ import { ToastService } from '@/presentation/services/toast-service'
 export const CartClearButton: React.FC = () => {
   const [isClearingCart, setIsClearingCart] = useState(false)
 
-  const clearStore = useCartStore(state => state.clearStore)
+  const clearStore = useCartStore((state) => state.clearStore)
 
   const clearUserCart = async () => {
     setIsClearingCart(true)

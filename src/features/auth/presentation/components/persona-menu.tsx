@@ -34,15 +34,15 @@ const MENU_ITEM_ADMIN_ID = 'admin'
 
 const menuItems: MenuItem[] = [
   {
+    href: ROUTES.profile,
     Icon: <UserIcon aria-hidden />,
     id: 'profile',
-    href: ROUTES.profile,
     textValue: t('auth.persona.profile')
   },
   {
+    href: ROUTES.admin,
     Icon: <ShieldIcon aria-hidden />,
     id: MENU_ITEM_ADMIN_ID,
-    href: ROUTES.admin,
     textValue: t('auth.persona.admin')
   },
   {
@@ -54,26 +54,20 @@ const menuItems: MenuItem[] = [
 ]
 
 export const PersonaMenu: React.FC<PersonaMenuProps> = ({ user }) => {
-  const MenuTrigger = useMemo(() => (
-    <Button className='persona-menu-trigger'>
-      <Avatar
-        userEmail={user.email}
-        userImageUrl={user.image}
-        userName={user.name}
-      />
-    </Button>
-  ), [user.email, user.image, user.name])
+  const MenuTrigger = useMemo(
+    () => (
+      <Button className='persona-menu-trigger'>
+        <Avatar userEmail={user.email} userImageUrl={user.image} userName={user.name} />
+      </Button>
+    ),
+    [user.email, user.image, user.name]
+  )
 
   const filteredMenuItems = useMemo(() => {
     return user.permissions.canAccessAdmin
       ? menuItems
-      : menuItems.filter(item => item.id !== MENU_ITEM_ADMIN_ID)
+      : menuItems.filter((item) => item.id !== MENU_ITEM_ADMIN_ID)
   }, [user.permissions.canAccessAdmin])
 
-  return (
-    <Menu
-      items={filteredMenuItems}
-      Trigger={MenuTrigger}
-    />
-  )
+  return <Menu items={filteredMenuItems} Trigger={MenuTrigger} />
 }

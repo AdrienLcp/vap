@@ -2,9 +2,23 @@ import type { z } from 'zod'
 
 import type { Forbidden, Unauthorized } from '@/domain/entities'
 import type { AUTH_CONSTANTS, AUTH_ERRORS } from '@/features/auth/domain/auth-constants'
-import type { AuthPermissionsSchema, AuthUserDTOSchema, ChangePasswordSchema, SignInInfoSchema, SignUpInfoSchema } from '@/features/auth/domain/auth-schemas'
+import type {
+  AuthPermissionsSchema,
+  AuthUserDTOSchema,
+  ChangePasswordSchema,
+  SignInInfoSchema,
+  SignUpInfoSchema
+} from '@/features/auth/domain/auth-schemas'
 import type { UserRole } from '@/features/user/domain/user-entities'
-import type { BadRequestResponse, ConflictResponse, CreatedResponse, NoContentResponse, OkResponse, Response, UnauthorizedResponse } from '@/infrastructure/api/http-response'
+import type {
+  BadRequestResponse,
+  ConflictResponse,
+  CreatedResponse,
+  NoContentResponse,
+  OkResponse,
+  Response,
+  UnauthorizedResponse
+} from '@/infrastructure/api/http-response'
 
 export type AuthPermissions = z.infer<typeof AuthPermissionsSchema>
 
@@ -34,40 +48,44 @@ export type SignInInfo = z.infer<typeof SignInInfoSchema>
 
 export type SignUpInfo = z.infer<typeof SignUpInfoSchema>
 
-export type EmailSignInResponse = Response<
-  | OkResponse<AuthUserDTO>
-  | BadRequestResponse<InvalidCredentials>
->
+type EmailSignInResult = OkResponse<AuthUserDTO> | BadRequestResponse<InvalidCredentials>
 
-export type SignUpResponse =
+export type EmailSignInResponse = Response<EmailSignInResult>
+
+export type SignUpBadRequestError = InvalidEmail | PasswordTooShort
+
+type SignUpResult =
   | CreatedResponse<AuthUserDTO>
-  | BadRequestResponse<InvalidEmail | PasswordTooShort>
+  | BadRequestResponse<SignUpBadRequestError>
   | ConflictResponse<UserAlreadyExists>
 
-export type SignOutResponse = Response<
-  | NoContentResponse
-  | UnauthorizedResponse
->
+export type SignUpResponse = Response<SignUpResult>
 
-export type DeleteUserResponse = Response<
+type SignOuResult = NoContentResponse | UnauthorizedResponse
+
+export type SignOutResponse = Response<SignOuResult>
+
+type UserDeletionResult =
   | NoContentResponse
   | BadRequestResponse<InvalidPassword>
   | UnauthorizedResponse
->
+
+export type UserDeletionResponse = Response<UserDeletionResult>
 
 export type ChangePasswordInfo = z.infer<typeof ChangePasswordSchema>
 
 export type ChangePasswordError = PasswordTooShort | InvalidPassword
 
-export type ChangePasswordResponse = Response<
-  | NoContentResponse
-  | BadRequestResponse<ChangePasswordError>
->
+type PasswordUpdateResult = NoContentResponse | BadRequestResponse<ChangePasswordError>
 
-export type ChangeEmailResponse = Response<
+export type PasswordUpdateResponse = Response<PasswordUpdateResult>
+
+type EmailUpdateResult =
   | NoContentResponse
   | BadRequestResponse<InvalidEmail>
+  | ConflictResponse<UserAlreadyExists>
   | UnauthorizedResponse
->
 
-export type SocialProvider = typeof AUTH_CONSTANTS.SOCIAL_PROVIDERS[number]
+export type EmailUpdateResponse = Response<EmailUpdateResult>
+
+export type SocialProvider = (typeof AUTH_CONSTANTS.SOCIAL_PROVIDERS)[number]

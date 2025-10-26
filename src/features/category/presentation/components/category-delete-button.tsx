@@ -15,7 +15,10 @@ type CategoryDeleteButtonProps = Partial<ButtonProps> & {
   categoryId: string
 }
 
-export const CategoryDeleteButton: React.FC<CategoryDeleteButtonProps> = ({ categoryId, ...categoryDeleteButtonRestProps }) => {
+export const CategoryDeleteButton: React.FC<CategoryDeleteButtonProps> = ({
+  categoryId,
+  ...categoryDeleteButtonRestProps
+}) => {
   const deleteCategory = useCallback(async () => {
     const categoryDeletionResponse = await CategoryClient.deleteCategory(categoryId)
 

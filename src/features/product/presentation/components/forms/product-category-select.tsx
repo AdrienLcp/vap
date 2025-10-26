@@ -17,7 +17,7 @@ export const ProductCategorySelect: React.FC<ProductCategorySelectProps> = ({
   ...productCategorySelectRestProps
 }) => {
   const categorySelectItems: SelectItem[] = useMemo(() => {
-    return categories.map(category => ({
+    return categories.map((category) => ({
       ...category,
       textValue: category.name
     }))

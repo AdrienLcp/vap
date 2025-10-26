@@ -22,7 +22,7 @@ type MenuProps<T> = ReactAriaMenuProps<T> & {
   Trigger: React.ReactElement
 }
 
-export function Menu <T>({ Trigger, ...menuRestProps }: MenuProps<T>) {
+export function Menu<T>({ Trigger, ...menuRestProps }: MenuProps<T>) {
   return (
     <MenuTrigger>
       {Trigger}
@@ -31,11 +31,15 @@ export function Menu <T>({ Trigger, ...menuRestProps }: MenuProps<T>) {
         <ReactAriaMenu className='menu' {...menuRestProps}>
           {({ className, Icon, textValue, ...restItemProps }) => (
             <ReactAriaMenuItem
-              className={values => reactAriaClassNames(values, className, 'item')}
+              className={(values) => reactAriaClassNames(values, className, 'item')}
               textValue={textValue}
               {...restItemProps}
             >
-              {Icon && <span aria-hidden className='icon'>{Icon}</span>}
+              {Icon && (
+                <span aria-hidden className='icon'>
+                  {Icon}
+                </span>
+              )}
 
               <span className='text'>{textValue}</span>
             </ReactAriaMenuItem>

@@ -4,22 +4,27 @@ import { AUTH_CONSTANTS, AUTH_ERRORS } from '@/features/auth/domain/auth-constan
 
 export const UserEmailSchema = z.email(AUTH_ERRORS.INVALID_EMAIL)
 export const UserNameSchema = z.string().min(1, AUTH_ERRORS.USER_NAME_REQUIRED)
-export const UserPasswordSchema = z.string().min(AUTH_CONSTANTS.PASSWORD_MIN_LENGTH, AUTH_ERRORS.PASSWORD_TOO_SHORT)
+export const UserPasswordSchema = z
+  .string()
+  .min(AUTH_CONSTANTS.PASSWORD_MIN_LENGTH, AUTH_ERRORS.PASSWORD_TOO_SHORT)
+
+const permissionSchema = z.boolean()
 
 export const AuthPermissionsSchema = z.object({
-  canAccessAdmin: z.boolean(),
+  canAccessAdmin: permissionSchema,
 
-  canCreateCategory: z.boolean(),
-  canUpdateCategory: z.boolean(),
-  canDeleteCategory: z.boolean(),
+  canCreateCategory: permissionSchema,
+  canCreateProduct: permissionSchema,
 
-  canCreateProduct: z.boolean(),
-  canReadProduct: z.boolean(),
-  canUpdateProduct: z.boolean(),
-  canDeleteProduct: z.boolean(),
+  canDeleteCategory: permissionSchema,
+  canDeleteProduct: permissionSchema,
 
-  canReadUser: z.boolean(),
-  canUpdateUser: z.boolean()
+  canReadProduct: permissionSchema,
+  canReadUser: permissionSchema,
+
+  canUpdateCategory: permissionSchema,
+  canUpdateProduct: permissionSchema,
+  canUpdateUser: permissionSchema
 })
 
 export const AuthUserDTOSchema = z.object({

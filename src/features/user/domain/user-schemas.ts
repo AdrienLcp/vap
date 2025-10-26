@@ -11,8 +11,8 @@ export const UserUpdateSchema = z.object({
 })
 
 export const UserDTOSchema = z.object({
+  email: z.email(),
   id: UserIdSchema,
   name: z.string(),
-  email: z.email(),
   role: UserRoleSchema.catch(USER_CONSTANTS.DEFAULT_ROLE)
 })

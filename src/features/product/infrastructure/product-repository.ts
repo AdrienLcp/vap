@@ -1,28 +1,35 @@
 import 'server-only'
 
 import type { NotFound } from '@/domain/entities'
-import type { Product, ProductCategoryDTO, ProductConflictError, ProductCreationData, ProductDTO, ProductUpdateData } from '@/features/product/domain/product-entities'
+import type {
+  Product,
+  ProductCategoryDTO,
+  ProductConflictError,
+  ProductCreationData,
+  ProductDTO,
+  ProductUpdateData
+} from '@/features/product/domain/product-entities'
 import { type ErrorResult, failure, type Result, success } from '@/helpers/result'
 import { type EntitySelectedFields, ProductDatabase } from '@/infrastructure/database'
 import { getDatabaseError } from '@/infrastructure/database/database-helpers'
 
 const PRODUCT_SELECTED_FIELDS = {
+  description: true,
+  discountedPrice: true,
   id: true,
+  imageUrl: true,
   name: true,
   price: true,
-  description: true,
-  imageUrl: true,
-  status: true,
+  salesCount: true,
   sku: true,
-  discountedPrice: true,
-  stock: true,
-  salesCount: true
+  status: true,
+  stock: true
 } satisfies EntitySelectedFields<Product>
 
 const PRODUCT_CATEGORY_SELECTED_FIELDS = {
   id: true,
-  name: true,
-  imageUrl: true
+  imageUrl: true,
+  name: true
 } satisfies EntitySelectedFields<ProductCategoryDTO>
 
 const productSelectedFields = {
@@ -43,19 +50,21 @@ const onProductDuplicateError = (duplicatedKeys: string[]): ErrorResult<ProductC
   return failure()
 }
 
-const createProduct = async (productCreationData: ProductCreationData): Promise<Result<ProductDTO, ProductConflictError>> => {
+const createProduct = async (
+  productCreationData: ProductCreationData
+): Promise<Result<ProductDTO, ProductConflictError>> => {
   try {
     const createdProduct = await ProductDatabase.create({
       data: {
+        categoryId: productCreationData.categoryId,
+        description: productCreationData.description,
+        discountedPrice: productCreationData.discountedPrice,
+        imageUrl: productCreationData.imageUrl,
         name: productCreationData.name,
         price: productCreationData.price,
         sku: productCreationData.sku,
-        description: productCreationData.description,
-        imageUrl: productCreationData.imageUrl,
         status: productCreationData.status,
-        discountedPrice: productCreationData.discountedPrice,
-        stock: productCreationData.stock,
-        categoryId: productCreationData.categoryId
+        stock: productCreationData.stock
       },
       select: productSelectedFields
     })
@@ -87,8 +96,8 @@ const deleteProduct = async (productId: string): Promise<Result> => {
 const findProduct = async (productId: string): Promise<Result<ProductDTO, NotFound>> => {
   try {
     const product = await ProductDatabase.findUnique({
-      where: { id: productId },
-      select: productSelectedFields
+      select: productSelectedFields,
+      where: { id: productId }
     })
 
     if (!product) {
@@ -126,8 +135,8 @@ const getCategoryProductCount = async (categoryId: string): Promise<Result<numbe
 const removeProductsCategory = async (categoryId: string): Promise<Result> => {
   try {
     await ProductDatabase.updateMany({
-      where: { categoryId },
-      data: { categoryId: null }
+      data: { categoryId: null },
+      where: { categoryId }
     })
 
     return success()
@@ -137,23 +146,26 @@ const removeProductsCategory = async (categoryId: string): Promise<Result> => {
   }
 }
 
-const updateProduct = async (productId: string, productData: ProductUpdateData): Promise<Result<ProductDTO, ProductConflictError>> => {
+const updateProduct = async (
+  productId: string,
+  productData: ProductUpdateData
+): Promise<Result<ProductDTO, ProductConflictError>> => {
   try {
     const updatedProduct = await ProductDatabase.update({
-      where: { id: productId },
       data: {
+        categoryId: productData.categoryId,
+        description: productData.description,
+        discountedPrice: productData.discountedPrice,
+        imageUrl: productData.imageUrl,
         name: productData.name,
         price: productData.price,
+        salesCount: productData.salesCount,
         sku: productData.sku,
-        description: productData.description,
-        imageUrl: productData.imageUrl,
         status: productData.status,
-        discountedPrice: productData.discountedPrice,
-        stock: productData.stock,
-        categoryId: productData.categoryId,
-        salesCount: productData.salesCount
+        stock: productData.stock
       },
-      select: productSelectedFields
+      select: productSelectedFields,
+      where: { id: productId }
     })
 
     return success(updatedProduct)

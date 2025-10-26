@@ -19,7 +19,7 @@ import './cart.sass'
 export const Cart: React.FC = () => {
   const [isLoadingCart, setIsLoadingCart] = useState(true)
 
-  const syncCartStore = useCartStore(state => state.syncItems)
+  const syncCartStore = useCartStore((state) => state.syncItems)
 
   const loadUserCart = useCallback(async () => {
     setIsLoadingCart(true)

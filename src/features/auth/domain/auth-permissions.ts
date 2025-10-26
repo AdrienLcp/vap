@@ -26,9 +26,9 @@ const SUPER_ADMIN_RIGHTS = [...ADMIN_RIGHTS] as const
 type Right = (typeof SUPER_ADMIN_RIGHTS)[number]
 
 const ROLE_RIGHTS: Record<UserRole, Readonly<Right[]>> = {
-  USER: USER_RIGHTS,
   ADMIN: ADMIN_RIGHTS,
-  SUPER_ADMIN: SUPER_ADMIN_RIGHTS
+  SUPER_ADMIN: SUPER_ADMIN_RIGHTS,
+  USER: USER_RIGHTS
 }
 
 export const getAuthUserPermissionsByRole = (role: UserRole): AuthPermissions => {
@@ -38,15 +38,16 @@ export const getAuthUserPermissionsByRole = (role: UserRole): AuthPermissions =>
     canAccessAdmin: rights.includes('admin:read'),
 
     canCreateCategory: rights.includes('category:create'),
-    canUpdateCategory: rights.includes('category:update'),
-    canDeleteCategory: rights.includes('category:delete'),
-
     canCreateProduct: rights.includes('product:create'),
-    canReadProduct: rights.includes('product:read'),
-    canUpdateProduct: rights.includes('product:update'),
+
+    canDeleteCategory: rights.includes('category:delete'),
     canDeleteProduct: rights.includes('product:delete'),
 
+    canReadProduct: rights.includes('product:read'),
     canReadUser: rights.includes('user:read'),
+
+    canUpdateCategory: rights.includes('category:update'),
+    canUpdateProduct: rights.includes('product:update'),
     canUpdateUser: rights.includes('user:update')
   }
 

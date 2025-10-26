@@ -5,14 +5,27 @@ import { redirect } from 'next/navigation'
 import { useCallback, useState } from 'react'
 
 import { getAdminCategoryRoute } from '@/domain/navigation'
-import { CATEGORY_CONSTANTS, CATEGORY_ERRORS, CATEGORY_FORM_FIELDS } from '@/features/category/domain/category-constants'
-import type { CategoryConflictError, CategoryCreationData, CategoryDTO, CategoryValidationErrors } from '@/features/category/domain/category-entities'
+import {
+  CATEGORY_CONSTANTS,
+  CATEGORY_ERRORS,
+  CATEGORY_FORM_FIELDS
+} from '@/features/category/domain/category-constants'
+import type {
+  CategoryConflictError,
+  CategoryCreationData,
+  CategoryDTO,
+  CategoryValidationErrors
+} from '@/features/category/domain/category-entities'
 import { CategoryCreationSchema } from '@/features/category/domain/category-schemas'
 import { CategoryClient } from '@/features/category/infrastructure/category-client'
 import { CategoryDescriptionField } from '@/features/category/presentation/components/forms/category-description-field'
 import { CategoryImagePreviewField } from '@/features/category/presentation/components/forms/category-image-preview-field'
 import { CategoryNameField } from '@/features/category/presentation/components/forms/category-name-field'
-import { BAD_REQUEST_STATUS, CONFLICT_STATUS, CREATED_STATUS } from '@/infrastructure/api/http-response'
+import {
+  BAD_REQUEST_STATUS,
+  CONFLICT_STATUS,
+  CREATED_STATUS
+} from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
 import { Form } from '@/presentation/components/forms/form'
@@ -25,7 +38,7 @@ import type { Issues } from '@/utils/validation-utils'
 
 export const CategoryCreationForm: React.FC = () => {
   const [isCategoryCreationLoading, setIsCategoryCreationLoading] = useState(false)
-  const [categoryCreationFormErrors, setCategoryCreationFormErrors] = useState<CategoryValidationErrors>()
+  const [formErrors, setFormErrors] = useState<CategoryValidationErrors>()
 
   const onCategoryCreationBadRequestError = useCallback((issues: Issues<CategoryCreationData>) => {
     const nameErrors: string[] = []
@@ -34,7 +47,9 @@ export const CategoryCreationForm: React.FC = () => {
     for (const issue of issues) {
       switch (issue.message) {
         case CATEGORY_ERRORS.NAME_TOO_LONG:
-          nameErrors.push(t('category.errors.categoryNameTooLong', { max: CATEGORY_CONSTANTS.NAME_MAX_LENGTH }))
+          nameErrors.push(
+            t('category.errors.categoryNameTooLong', { max: CATEGORY_CONSTANTS.NAME_MAX_LENGTH })
+          )
           break
         default:
           formErrors.push(t('components.forms.formValidationErrorDefaultMessage'))
@@ -42,7 +57,7 @@ export const CategoryCreationForm: React.FC = () => {
       }
     }
 
-    setCategoryCreationFormErrors({
+    setFormErrors({
       form: getUniqueStringsArray(formErrors),
       [CATEGORY_FORM_FIELDS.NAME]: getUniqueStringsArray(nameErrors)
     })
@@ -51,10 +66,12 @@ export const CategoryCreationForm: React.FC = () => {
   const onCategoryCreationConflictError = useCallback((error: CategoryConflictError) => {
     switch (error) {
       case CATEGORY_ERRORS.NAME_ALREADY_EXISTS:
-        setCategoryCreationFormErrors({ [CATEGORY_FORM_FIELDS.NAME]: t('category.errors.categoryNameAlreadyExists') })
+        setFormErrors({
+          [CATEGORY_FORM_FIELDS.NAME]: t('category.errors.categoryNameAlreadyExists')
+        })
         break
       default:
-        setCategoryCreationFormErrors({ form: t('components.forms.formValidationErrorDefaultMessage') })
+        setFormErrors({ form: t('components.forms.formValidationErrorDefaultMessage') })
         break
     }
   }, [])
@@ -65,43 +82,48 @@ export const CategoryCreationForm: React.FC = () => {
     redirect(createdCategoryRoute)
   }, [])
 
-  const onCategoryCreationFormSubmit = useCallback(async (formData: FormData) => {
-    setIsCategoryCreationLoading(true)
-    setCategoryCreationFormErrors(null)
+  const onCategoryCreationFormSubmit = useCallback(
+    async (formData: FormData) => {
+      setIsCategoryCreationLoading(true)
+      setFormErrors(null)
 
-    const categoryCreationData = {
-      name: formData.get(CATEGORY_FORM_FIELDS.NAME),
-      description: formData.get(CATEGORY_FORM_FIELDS.DESCRIPTION),
-      imageUrl: formData.get(CATEGORY_FORM_FIELDS.IMAGE_URL)
-    }
+      const categoryCreationData = {
+        description: formData.get(CATEGORY_FORM_FIELDS.DESCRIPTION),
+        imageUrl: formData.get(CATEGORY_FORM_FIELDS.IMAGE_URL),
+        name: formData.get(CATEGORY_FORM_FIELDS.NAME)
+      }
 
-    const categoryCreationValidation = CategoryCreationSchema.safeParse(categoryCreationData)
+      const categoryCreationValidation = CategoryCreationSchema.safeParse(categoryCreationData)
 
-    if (!categoryCreationValidation.success) {
+      if (!categoryCreationValidation.success) {
+        setIsCategoryCreationLoading(false)
+        onCategoryCreationBadRequestError(categoryCreationValidation.error.issues)
+        return
+      }
+
+      const createdCategoryResponse = await CategoryClient.createCategory(
+        categoryCreationValidation.data
+      )
+
       setIsCategoryCreationLoading(false)
-      onCategoryCreationBadRequestError(categoryCreationValidation.error.issues)
-      return
-    }
 
-    const createdCategoryResponse = await CategoryClient.createCategory(categoryCreationValidation.data)
-
-    setIsCategoryCreationLoading(false)
-
-    switch (createdCategoryResponse.status) {
-      case CREATED_STATUS:
-        onCategoryCreationSuccess(createdCategoryResponse.data)
-        break
-      case BAD_REQUEST_STATUS:
-        onCategoryCreationBadRequestError(createdCategoryResponse.issues)
-        break
-      case CONFLICT_STATUS:
-        onCategoryCreationConflictError(createdCategoryResponse.error)
-        break
-    }
-  }, [onCategoryCreationBadRequestError, onCategoryCreationConflictError, onCategoryCreationSuccess])
+      switch (createdCategoryResponse.status) {
+        case CREATED_STATUS:
+          onCategoryCreationSuccess(createdCategoryResponse.data)
+          break
+        case BAD_REQUEST_STATUS:
+          onCategoryCreationBadRequestError(createdCategoryResponse.issues)
+          break
+        case CONFLICT_STATUS:
+          onCategoryCreationConflictError(createdCategoryResponse.error)
+          break
+      }
+    },
+    [onCategoryCreationBadRequestError, onCategoryCreationConflictError, onCategoryCreationSuccess]
+  )
 
   return (
-    <Form onSubmit={onCategoryCreationFormSubmit} validationErrors={categoryCreationFormErrors}>
+    <Form onSubmit={onCategoryCreationFormSubmit} validationErrors={formErrors}>
       <FieldSet isDisabled={isCategoryCreationLoading}>
         <CategoryNameField />
 
@@ -110,7 +132,7 @@ export const CategoryCreationForm: React.FC = () => {
         <CategoryImagePreviewField />
       </FieldSet>
 
-      <FormError errors={categoryCreationFormErrors?.form} />
+      <FormError errors={formErrors?.form} />
 
       <RequiredFieldsMessage />
 

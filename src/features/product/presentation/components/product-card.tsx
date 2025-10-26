@@ -17,7 +17,11 @@ type ProductCardProps = {
   setProductList: React.Dispatch<React.SetStateAction<ProductDTO[]>>
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({ isDisabled, product, setProductList }) => (
+export const ProductCard: React.FC<ProductCardProps> = ({
+  isDisabled,
+  product,
+  setProductList
+}) => (
   <Card
     className={classNames('product-card', isDisabled && 'is-disabled')}
     title={t('product.card.showProductSheet')}

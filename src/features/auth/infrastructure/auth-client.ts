@@ -2,13 +2,25 @@
 
 import { createAuthClient } from 'better-auth/react'
 
-import type { AuthUserResponse, ChangeEmailResponse, ChangePasswordInfo, ChangePasswordResponse, DeleteUserResponse, EmailSignInResponse, SignInInfo, SignOutResponse, SignUpInfo, SignUpResponse, SocialProvider } from '@/features/auth/domain/auth-entities'
+import type {
+  AuthUserResponse,
+  ChangePasswordInfo,
+  EmailSignInResponse,
+  EmailUpdateResponse,
+  PasswordUpdateResponse,
+  SignInInfo,
+  SignOutResponse,
+  SignUpInfo,
+  SignUpResponse,
+  SocialProvider,
+  UserDeletionResponse
+} from '@/features/auth/domain/auth-entities'
 import { ApiClient, type ClientResponse, unknownError } from '@/infrastructure/api/api-client'
 import { HttpResponse, OK_STATUS } from '@/infrastructure/api/http-response'
 
 export const betterAuthClient = createAuthClient()
 
-const changeEmail = async (newEmail: string): Promise<ClientResponse<ChangeEmailResponse>> => {
+const changeEmail = async (newEmail: string): Promise<ClientResponse<EmailUpdateResponse>> => {
   try {
     const changeEmailResponse = await betterAuthClient.changeEmail({ newEmail })
 
@@ -29,7 +41,9 @@ const changeEmail = async (newEmail: string): Promise<ClientResponse<ChangeEmail
   }
 }
 
-const changePassword = async (changePasswordInfo: ChangePasswordInfo): Promise<ClientResponse<ChangePasswordResponse>> => {
+const changePassword = async (
+  changePasswordInfo: ChangePasswordInfo
+): Promise<ClientResponse<PasswordUpdateResponse>> => {
   try {
     const changeEmailResponse = await betterAuthClient.changePassword({
       currentPassword: changePasswordInfo.currentPassword,
@@ -56,7 +70,30 @@ const changePassword = async (changePasswordInfo: ChangePasswordInfo): Promise<C
   }
 }
 
-const emailSignIn = async (signInInfo: SignInInfo): Promise<ClientResponse<EmailSignInResponse>> => {
+const deleteUser = async (password: string): Promise<ClientResponse<UserDeletionResponse>> => {
+  try {
+    const deleteUserResponse = await betterAuthClient.deleteUser({ password })
+
+    if (deleteUserResponse.error) {
+      switch (deleteUserResponse.error.code) {
+        case 'INVALID_PASSWORD':
+          return HttpResponse.badRequest('INVALID_PASSWORD')
+        default:
+          console.error('Delete user error:', deleteUserResponse.error)
+          return unknownError()
+      }
+    }
+
+    return HttpResponse.noContent()
+  } catch (error) {
+    console.error('Delete user error:', error)
+    return unknownError()
+  }
+}
+
+const emailSignIn = async (
+  signInInfo: SignInInfo
+): Promise<ClientResponse<EmailSignInResponse>> => {
   try {
     const emailSignInResponse = await betterAuthClient.signIn.email({
       email: signInInfo.email,
@@ -97,12 +134,12 @@ const emailSignUp = async (signUpInfo: SignUpInfo): Promise<ClientResponse<SignU
 
     if (emailSignUpResponse.error) {
       switch (emailSignUpResponse.error.code) {
+        case 'INVALID_EMAIL':
+          return HttpResponse.badRequest('INVALID_EMAIL')
         case 'PASSWORD_TOO_SHORT':
           return HttpResponse.badRequest('PASSWORD_TOO_SHORT')
         case 'USER_ALREADY_EXISTS':
           return HttpResponse.conflict('USER_ALREADY_EXISTS')
-        case 'INVALID_EMAIL':
-          return HttpResponse.badRequest('INVALID_EMAIL')
         default:
           console.error('Email sign-up error:', emailSignUpResponse.error)
           return unknownError()
@@ -119,27 +156,6 @@ const emailSignUp = async (signUpInfo: SignUpInfo): Promise<ClientResponse<SignU
     return HttpResponse.created(userResponse.data)
   } catch (error) {
     console.error('Email sign-up error:', error)
-    return unknownError()
-  }
-}
-
-const deleteUser = async (password: string): Promise<ClientResponse<DeleteUserResponse>> => {
-  try {
-    const deleteUserResponse = await betterAuthClient.deleteUser({ password })
-
-    if (deleteUserResponse.error) {
-      switch (deleteUserResponse.error.code) {
-        case 'INVALID_PASSWORD':
-          return HttpResponse.badRequest('INVALID_PASSWORD')
-        default:
-          console.error('Delete user error:', deleteUserResponse.error)
-          return unknownError()
-      }
-    }
-
-    return HttpResponse.noContent()
-  } catch (error) {
-    console.error('Delete user error:', error)
     return unknownError()
   }
 }
@@ -169,7 +185,9 @@ const signOut = async (): Promise<ClientResponse<SignOutResponse>> => {
   }
 }
 
-const socialSignIn = async (provider: SocialProvider): Promise<ClientResponse<AuthUserResponse>> => {
+const socialSignIn = async (
+  provider: SocialProvider
+): Promise<ClientResponse<AuthUserResponse>> => {
   try {
     const signInResponse = await betterAuthClient.signIn.social({ provider })
 
@@ -188,9 +206,9 @@ const socialSignIn = async (provider: SocialProvider): Promise<ClientResponse<Au
 export const AuthClient = {
   changeEmail,
   changePassword,
+  deleteUser,
   emailSignIn,
   emailSignUp,
-  deleteUser,
   findUser,
   signOut,
   socialSignIn

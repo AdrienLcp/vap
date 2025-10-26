@@ -1,4 +1,8 @@
-import { type ButtonRenderProps, Button as ReactAriaButton, type ButtonProps as ReactAriaButtonProps } from 'react-aria-components'
+import {
+  type ButtonRenderProps,
+  Button as ReactAriaButton,
+  type ButtonProps as ReactAriaButtonProps
+} from 'react-aria-components'
 
 import { Spinner } from '@/presentation/components/ui/loaders/spinner'
 import { Tooltip, type TooltipProps } from '@/presentation/components/ui/tooltip'
@@ -9,11 +13,16 @@ export type ButtonProps = PressableProps & ReactAriaButtonProps
 
 type ButtonRenderPropsValues = ButtonRenderProps & { defaultChildren: React.ReactNode | undefined }
 
-const renderButtonChildren = (children: ButtonProps['children'], renderValues: ButtonRenderPropsValues) => {
-  return typeof children === 'function' ? children(renderValues) : children
-}
+const renderButtonChildren = (
+  children: ButtonProps['children'],
+  renderValues: ButtonRenderPropsValues
+) => (typeof children === 'function' ? children(renderValues) : children)
 
-const renderButtonIcon = (Icon: ButtonProps['Icon'], variant: ButtonProps['variant'], isPending: boolean) => {
+const renderButtonIcon = (
+  Icon: ButtonProps['Icon'],
+  variant: ButtonProps['variant'],
+  isPending: boolean
+) => {
   if (Icon == null || variant == null) {
     return null
   }
@@ -37,26 +46,23 @@ const BaseButton: React.FC<ButtonProps> = ({
   ...buttonRestProps
 }) => (
   <ReactAriaButton
-    className={values => reactAriaPressableClassNames(
-      values,
-      className,
-      variant,
-      Icon,
-      iconSide,
-      size,
-      children
-    )}
+    className={(values) =>
+      reactAriaPressableClassNames(values, className, variant, Icon, iconSide, size, children)
+    }
     isDisabled={isDisabled || isPending}
     isPending={isPending}
     {...buttonRestProps}
   >
-    {values => variant == null
-      ? renderButtonChildren(children, values)
-      : <>
+    {(values) =>
+      variant == null ? (
+        renderButtonChildren(children, values)
+      ) : (
+        <>
           {renderButtonIcon(Icon, variant, values.isPending)}
 
           {children != null && renderButtonChildren(children, values)}
         </>
+      )
     }
   </ReactAriaButton>
 )
@@ -70,9 +76,5 @@ export const Button: React.FC<ButtonWithTooltipProps> = ({ tooltip, ...buttonRes
     return <BaseButton {...buttonRestProps} />
   }
 
-  return (
-    <Tooltip Trigger={<BaseButton {...buttonRestProps} />}>
-      {tooltip}
-    </Tooltip>
-  )
+  return <Tooltip Trigger={<BaseButton {...buttonRestProps} />}>{tooltip}</Tooltip>
 }

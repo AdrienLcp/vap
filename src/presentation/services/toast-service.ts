@@ -30,47 +30,59 @@ type ToastOptions = Pick<Toast, 'description' | 'Icon'> & {
 const DEFAULT_DURATION = 10000
 
 const error = (title: string, options?: ToastOptions) => {
-  toastQueue.add({
-    title,
-    description: options?.description,
-    Icon: options?.Icon,
-    type: 'error'
-  }, {
-    timeout: options?.duration ?? DEFAULT_DURATION
-  })
+  toastQueue.add(
+    {
+      description: options?.description,
+      Icon: options?.Icon,
+      title,
+      type: 'error'
+    },
+    {
+      timeout: options?.duration ?? DEFAULT_DURATION
+    }
+  )
 }
 
 const info = (title: string, options?: ToastOptions) => {
-  toastQueue.add({
-    title,
-    description: options?.description,
-    Icon: options?.Icon,
-    type: 'info'
-  }, {
-    timeout: options?.duration ?? DEFAULT_DURATION
-  })
+  toastQueue.add(
+    {
+      description: options?.description,
+      Icon: options?.Icon,
+      title,
+      type: 'info'
+    },
+    {
+      timeout: options?.duration ?? DEFAULT_DURATION
+    }
+  )
 }
 
 const success = (title: string, options?: ToastOptions) => {
-  toastQueue.add({
-    title,
-    description: options?.description,
-    Icon: options?.Icon,
-    type: 'success'
-  }, {
-    timeout: options?.duration ?? DEFAULT_DURATION
-  })
+  toastQueue.add(
+    {
+      description: options?.description,
+      Icon: options?.Icon,
+      title,
+      type: 'success'
+    },
+    {
+      timeout: options?.duration ?? DEFAULT_DURATION
+    }
+  )
 }
 
 const warning = (title: string, options?: ToastOptions) => {
-  toastQueue.add({
-    title,
-    description: options?.description,
-    Icon: options?.Icon,
-    type: 'warning'
-  }, {
-    timeout: options?.duration ?? DEFAULT_DURATION
-  })
+  toastQueue.add(
+    {
+      description: options?.description,
+      Icon: options?.Icon,
+      title,
+      type: 'warning'
+    },
+    {
+      timeout: options?.duration ?? DEFAULT_DURATION
+    }
+  )
 }
 
 export const ToastService = {

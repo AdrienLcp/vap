@@ -24,11 +24,7 @@ export const Toaster: React.FC = () => (
       }
 
       return (
-        <Toast
-          className={classNames('toast', toast.content.type)}
-          style={toastStyle}
-          toast={toast}
-        >
+        <Toast className={classNames('toast', toast.content.type)} style={toastStyle} toast={toast}>
           <span aria-hidden className='icon'>
             {toast.content.Icon}
             <CheckIcon aria-hidden />
@@ -37,7 +33,9 @@ export const Toaster: React.FC = () => (
           <ToastContent className='content'>
             <Text slot='title'>{toast.content.title}</Text>
 
-            {toast.content.description && <Text slot='description'>{toast.content.description}</Text>}
+            {toast.content.description && (
+              <Text slot='description'>{toast.content.description}</Text>
+            )}
           </ToastContent>
 
           <Button

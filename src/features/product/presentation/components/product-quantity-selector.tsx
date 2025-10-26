@@ -15,29 +15,41 @@ type ProductQuantitySelectorProps = {
   setIsLoading?: (isLoading: boolean) => void
 }
 
-export const ProductQuantitySelector: React.FC<ProductQuantitySelectorProps> = ({ productId, setIsLoading }) => {
-  const cartProductQuantity = useCartStore(state => state.getProductQuantity(productId))
-  const updateProductCartStoreQuantity = useCartStore(state => state.updateQuantity)
+export const ProductQuantitySelector: React.FC<ProductQuantitySelectorProps> = ({
+  productId,
+  setIsLoading
+}) => {
+  const cartProductQuantity = useCartStore((state) => state.getProductQuantity(productId))
+  const updateProductCartStoreQuantity = useCartStore((state) => state.updateQuantity)
 
   const [isUpdatingCartProduct, setIsUpdatingCartProduct] = useState(false)
 
-  const setIsProductQuantitySelectorLoading = useCallback((isLoading: boolean) => {
-    setIsLoading?.(isLoading)
-    setIsUpdatingCartProduct(isLoading)
-  }, [setIsLoading])
+  const setIsProductQuantitySelectorLoading = useCallback(
+    (isLoading: boolean) => {
+      setIsLoading?.(isLoading)
+      setIsUpdatingCartProduct(isLoading)
+    },
+    [setIsLoading]
+  )
 
-  const updateProductCartQuantity = useCallback(async (newQuantity: number) => {
-    setIsProductQuantitySelectorLoading(true)
-    const updatedItemResponse = await CartClient.updateUserCartItemQuantity(productId, newQuantity)
-    setIsProductQuantitySelectorLoading(false)
+  const updateProductCartQuantity = useCallback(
+    async (newQuantity: number) => {
+      setIsProductQuantitySelectorLoading(true)
+      const cartProductUpdateResponse = await CartClient.updateUserCartItemQuantity(
+        productId,
+        newQuantity
+      )
+      setIsProductQuantitySelectorLoading(false)
 
-    if (updatedItemResponse.status === NO_CONTENT_STATUS) {
-      updateProductCartStoreQuantity(productId, newQuantity)
-      return
-    }
+      if (cartProductUpdateResponse.status === NO_CONTENT_STATUS) {
+        updateProductCartStoreQuantity(productId, newQuantity)
+        return
+      }
 
-    ToastService.error(t('product.quantitySelector.error'))
-  }, [productId, setIsProductQuantitySelectorLoading, updateProductCartStoreQuantity])
+      ToastService.error(t('product.quantitySelector.error'))
+    },
+    [productId, setIsProductQuantitySelectorLoading, updateProductCartStoreQuantity]
+  )
 
   return (
     <QuantitySelector

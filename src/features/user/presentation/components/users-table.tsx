@@ -16,9 +16,9 @@ type TableColumnKey = 'email' | 'name' | 'role'
 type UserTableColumn = TableColumn<TableColumnKey>
 
 const userTableColumns: UserTableColumn[] = [
-  { id: 'name', children: t('user.list.table.columns.name') },
-  { id: 'email', children: t('user.list.table.columns.email'), isRowHeader: true },
-  { id: 'role', children: t('user.list.table.columns.role') }
+  { children: t('user.list.table.columns.name'), id: 'name' },
+  { children: t('user.list.table.columns.email'), id: 'email', isRowHeader: true },
+  { children: t('user.list.table.columns.role'), id: 'role' }
 ]
 
 const renderUserTableCell = (user: UserDTO, column: UserTableColumn) => {
@@ -39,7 +39,7 @@ const renderUserTableEmptyState = () => (
 )
 
 export const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
-  const userTableRows: TableRow<UserDTO>[] = users.map(user => ({
+  const userTableRows: TableRow<UserDTO>[] = users.map((user) => ({
     href: getAdminUserRoute(user.id),
     id: user.id,
     item: user

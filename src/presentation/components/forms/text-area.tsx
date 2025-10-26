@@ -1,4 +1,10 @@
-import { Label, TextArea as ReactAriaTextArea, TextField as ReactAriaTextField, type TextFieldProps as ReactAriaTextFieldProps, Text } from 'react-aria-components'
+import {
+  Label,
+  TextArea as ReactAriaTextArea,
+  TextField as ReactAriaTextField,
+  type TextFieldProps as ReactAriaTextFieldProps,
+  Text
+} from 'react-aria-components'
 
 import { t } from '@/infrastructure/i18n'
 import { FieldError } from '@/presentation/components/forms/field-error'
@@ -22,7 +28,7 @@ export const TextArea: React.FC<TextAreaProps> = ({
 }) => (
   <ReactAriaTextField
     {...textFieldRestProps}
-    className={values => reactAriaClassNames(values, className, 'text-area')}
+    className={(values) => reactAriaClassNames(values, className, 'text-area')}
     maxLength={maxLength}
     minLength={minLength}
   >
@@ -34,14 +40,15 @@ export const TextArea: React.FC<TextAreaProps> = ({
 
         <ReactAriaTextArea />
 
-        {isInvalid
-          ? <FieldError maxLength={maxLength} minLength={minLength} />
-          : description && (
+        {isInvalid ? (
+          <FieldError maxLength={maxLength} minLength={minLength} />
+        ) : (
+          description && (
             <Text className='description' slot='description'>
               {description}
             </Text>
           )
-        }
+        )}
       </>
     )}
   </ReactAriaTextField>

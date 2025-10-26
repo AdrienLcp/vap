@@ -7,7 +7,9 @@ import type { UserDTO, UserRole } from '@/features/user/domain/user-entities'
 import { UserRepository } from '@/features/user/infrastructure/user-repository'
 import { failure, type Result } from '@/helpers/result'
 
-const findUser = async (userId: string): Promise<Result<UserDTO, AuthUserPermissionError | NotFound>> => {
+const findUser = async (
+  userId: string
+): Promise<Result<UserDTO, AuthUserPermissionError | NotFound>> => {
   const authUserResponse = await AuthService.findUserDTO()
 
   if (authUserResponse.status === 'ERROR') {
@@ -21,7 +23,9 @@ const findUser = async (userId: string): Promise<Result<UserDTO, AuthUserPermiss
   return await UserRepository.findUser(userId)
 }
 
-const findUsers = async (email?: string | null): Promise<Result<UserDTO[], AuthUserPermissionError>> => {
+const findUsers = async (
+  email?: string | null
+): Promise<Result<UserDTO[], AuthUserPermissionError>> => {
   const authUserResponse = await AuthService.findUserDTO()
 
   if (authUserResponse.status === 'ERROR') {
@@ -37,7 +41,10 @@ const findUsers = async (email?: string | null): Promise<Result<UserDTO[], AuthU
   return await UserRepository.findUsers(normalizedEmail)
 }
 
-const updateUserRole = async (userId: string, role: UserRole): Promise<Result<UserDTO, AuthUserPermissionError>> => {
+const updateUserRole = async (
+  userId: string,
+  role: UserRole
+): Promise<Result<UserDTO, AuthUserPermissionError>> => {
   const authUserResponse = await AuthService.findUserDTO()
 
   if (authUserResponse.status === 'ERROR') {
