@@ -337,8 +337,8 @@ vap/
 ├── 📄 biome.json                 # Biome config (formatter + linter)
 ├── 📄 next.config.ts             # Next.js configuration
 ├── 📄 package.json               # Dependencies & scripts
-└── 📄 README.md                  # Project documentation
-├── 📄 tsconfig.json              # TypeScript configuration
+├── 📄 README.md                  # Project documentation
+└── 📄 tsconfig.json              # TypeScript configuration
 ```
 
 ### 🏛️ **Feature Architecture Example**
