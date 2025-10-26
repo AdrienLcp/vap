@@ -40,14 +40,13 @@ export default defineConfig([
       '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
-      '@typescript-eslint/array-type': 'off',
       '@typescript-eslint/no-extraneous-class': 'off',
 
       'import/order': ['error', {
         alphabetize: { order: 'asc', caseInsensitive: true },
         groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
         'newlines-between': 'always',
-        pathGroups: [{ pattern: '@/**', group: 'internal' }],
+        pathGroups: [{ group: 'internal', pattern: '@/**' }],
         pathGroupsExcludedImportTypes: ['builtin']
       }],
 
@@ -58,6 +57,8 @@ export default defineConfig([
       'no-debugger': 'error',
       'no-unused-private-class-members': 'error',
       'no-useless-return': 'error',
+
+      'react-hooks/set-state-in-effect': 'off',
 
       'sort-imports': ['error', {
         ignoreCase: true,
