@@ -11,7 +11,7 @@ import {
   AUTH_ERRORS,
   AUTH_FORM_FIELDS
 } from '@/features/auth/domain/auth-constants'
-import type { AuthUserDTO, SignUpInfo } from '@/features/auth/domain/auth-entities'
+import type { AuthUserDTO, SignUpBadRequestError, SignUpInfo } from '@/features/auth/domain/auth-entities'
 import { SignUpInfoSchema } from '@/features/auth/domain/auth-schemas'
 import { AuthClient } from '@/features/auth/infrastructure/auth-client'
 import { UserEmailField } from '@/features/auth/presentation/components/forms/user-email-field'
@@ -47,13 +47,25 @@ export const SignUpForm: React.FC = () => {
     [setUser]
   )
 
-  const onSignUpBadRequest = useCallback(() => {
-    setSignUpFormErrors({
-      [AUTH_FORM_FIELDS.PASSWORD]: t('auth.signUp.errors.invalidPasswordLength', {
-        maxLength: AUTH_CONSTANTS.PASSWORD_MAX_LENGTH,
-        minLength: AUTH_CONSTANTS.PASSWORD_MIN_LENGTH
-      })
-    })
+  const onSignUpBadRequest = useCallback((signUpBadRequestError: SignUpBadRequestError) => {
+    switch (signUpBadRequestError) {
+      case 'INVALID_EMAIL':
+        setSignUpFormErrors({
+          [AUTH_FORM_FIELDS.EMAIL]: t('auth.signUp.errors.invalidEmail')
+        })
+        return
+      case 'PASSWORD_TOO_SHORT':
+        setSignUpFormErrors({
+          [AUTH_FORM_FIELDS.PASSWORD]: t('auth.signUp.errors.invalidPasswordLength', {
+            maxLength: AUTH_CONSTANTS.PASSWORD_MAX_LENGTH,
+            minLength: AUTH_CONSTANTS.PASSWORD_MIN_LENGTH
+          })
+        })
+        break
+      default:
+        setSignUpFormErrors({ form: t('auth.signUp.errors.unknown') })
+        return
+    }
   }, [])
 
   const onSignUpValidationError = useCallback((issues: Issues<SignUpInfo>) => {
@@ -120,18 +132,7 @@ export const SignUpForm: React.FC = () => {
           onSignUpSuccess(signUpResponse.data)
           break
         case BAD_REQUEST_STATUS:
-          // HERE
-          // HERE
-          // HERE
-          // HERE
-          // HERE
-          onSignUpBadRequest()
-          // HERE
-          // HERE
-          // HERE
-          // HERE
-          // HERE
-          // HERE
+          onSignUpBadRequest(signUpResponse.issues)
           break
         case CONFLICT_STATUS:
           setSignUpFormErrors({

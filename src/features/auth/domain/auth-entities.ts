@@ -52,9 +52,11 @@ type EmailSignInResult = OkResponse<AuthUserDTO> | BadRequestResponse<InvalidCre
 
 export type EmailSignInResponse = Response<EmailSignInResult>
 
+export type SignUpBadRequestError = InvalidEmail | PasswordTooShort
+
 type SignUpResult =
   | CreatedResponse<AuthUserDTO>
-  | BadRequestResponse<InvalidEmail | PasswordTooShort>
+  | BadRequestResponse<SignUpBadRequestError>
   | ConflictResponse<UserAlreadyExists>
 
 export type SignUpResponse = Response<SignUpResult>

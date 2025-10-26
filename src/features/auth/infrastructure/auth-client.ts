@@ -134,12 +134,12 @@ const emailSignUp = async (signUpInfo: SignUpInfo): Promise<ClientResponse<SignU
 
     if (emailSignUpResponse.error) {
       switch (emailSignUpResponse.error.code) {
+        case 'INVALID_EMAIL':
+          return HttpResponse.badRequest('INVALID_EMAIL')
         case 'PASSWORD_TOO_SHORT':
           return HttpResponse.badRequest('PASSWORD_TOO_SHORT')
         case 'USER_ALREADY_EXISTS':
           return HttpResponse.conflict('USER_ALREADY_EXISTS')
-        case 'INVALID_EMAIL':
-          return HttpResponse.badRequest('INVALID_EMAIL')
         default:
           console.error('Email sign-up error:', emailSignUpResponse.error)
           return unknownError()
