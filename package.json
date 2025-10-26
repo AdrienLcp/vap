@@ -32,6 +32,7 @@
     "build": "next build",
     "db:migrate": "prisma migrate dev",
     "db:seed": "ts-node prisma/seed.ts",
+    "db:studio": "prisma studio",
     "dev": "next dev --turbopack",
     "format": "biome format --write",
     "lint": "biome check",
