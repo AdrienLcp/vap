@@ -17,7 +17,7 @@ export const Unauthorized: React.FC = () => (
       {t('auth.unauthorized.description')}
     </FallbackDescription>
 
-    <Link className='fallback-button' href={DEFAULT_ROUTE}>
+    <Link className='fallback-button' href={DEFAULT_ROUTE} variant='underlined'>
       {t('auth.unauthorized.linkLabel')}
 
       <VisuallyHidden>

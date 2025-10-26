@@ -1,6 +1,6 @@
 'use client'
 
-import { parseAsString, useQueryState } from 'nuqs'
+import { useQueryState } from 'nuqs'
 
 import { t } from '@/infrastructure/i18n'
 import { SearchField } from '@/presentation/components/forms/search-field'
@@ -11,7 +11,7 @@ type UserListSearchProps = {
 }
 
 export const UserListSearch: React.FC<UserListSearchProps> = ({ onChange }) => {
-  const [searchValue, setSearchValue] = useQueryState('user-email', parseAsString.withDefault(''))
+  const [searchValue, setSearchValue] = useQueryState('user-email', { defaultValue: '' })
 
   useDebounceCallback(searchValue, onChange)
 
