@@ -12,7 +12,15 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!build", "!**/*.css", "!dist", "!.next", "!node_modules", "!**/*.sass"]
+    "includes": [
+      "**",
+      "!build",
+      "!**/*.css",
+      "!dist",
+      "!.next",
+      "!node_modules",
+      "!**/*.sass"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -45,7 +53,20 @@
           }
         }
       },
-      "recommended": true
+      "recommended": true,
+      "suspicious": {
+        "noConsole": {
+          "level": "error",
+          "options": {
+            "allow": [
+              "assert",
+              "error",
+              "info",
+              "warn"
+            ]
+          }
+        }
+      }
     }
   },
   "vcs": {
