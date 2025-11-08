@@ -1,63 +1,53 @@
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 
-import type { ProductFilters } from '@/features/product/domain/product-entities'
+import { PRODUCT_CONSTANTS } from '@/features/product/domain/product-constants'
+import type {
+  ProductFilters,
+  ProductPriceFilters
+} from '@/features/product/domain/product-entities'
 import { ProductPriceFilter } from '@/features/product/presentation/components/product-price-filter'
 import { PublicProductsSearch } from '@/features/product/presentation/components/public-products-search'
 
 import './public-products-filters.sass'
 
 type PublicProductsFiltersProps = {
+  filters: ProductFilters
   isLoadingProducts: boolean
-  loadProducts: (filters?: ProductFilters) => void
+  onFilterChange: (filters: ProductFilters) => void
 }
 
 export const PublicProductsFilters: React.FC<PublicProductsFiltersProps> = ({
+  filters,
   isLoadingProducts,
-  loadProducts
+  onFilterChange
 }) => {
-  const [productsFilters, setProductsFilters] = useState<ProductFilters | null>(null)
+  const onPriceFiltersChange = useCallback(
+    ({ maxPrice, minPrice }: ProductPriceFilters) => {
+      onFilterChange({ maxPrice, minPrice })
+    },
+    [onFilterChange]
+  )
 
-  const onSearchChange = useCallback(
+  const onSearchFilterChange = useCallback(
     (search: string) => {
-      if (search === productsFilters?.search) return
-
-      const newFilters = { ...productsFilters, search }
-      setProductsFilters(newFilters)
-      loadProducts(newFilters)
+      onFilterChange({ search })
     },
-    [loadProducts, productsFilters]
-  )
-
-  const onMaxPriceFilterChange = useCallback(
-    (maxPrice: number) => {
-      if (maxPrice === productsFilters?.maxPrice) return
-
-      const newFilters = { ...productsFilters, maxPrice }
-      setProductsFilters(newFilters)
-      loadProducts(newFilters)
-    },
-    [loadProducts, productsFilters]
-  )
-
-  const onMinPriceFilterChange = useCallback(
-    (minPrice: number) => {
-      if (minPrice === productsFilters?.minPrice) return
-
-      const newFilters = { ...productsFilters, minPrice }
-      setProductsFilters(newFilters)
-      loadProducts(newFilters)
-    },
-    [loadProducts, productsFilters]
+    [onFilterChange]
   )
 
   return (
     <div className='public-products-filters'>
-      <PublicProductsSearch isLoadingProducts={isLoadingProducts} onSearchChange={onSearchChange} />
+      <PublicProductsSearch
+        isLoadingProducts={isLoadingProducts}
+        onSearchFilterChange={onSearchFilterChange}
+        searchFilter={filters.search ?? ''}
+      />
 
       <ProductPriceFilter
         isLoadingProducts={isLoadingProducts}
-        onMaxPriceFilterChange={onMaxPriceFilterChange}
-        onMinPriceFilterChange={onMinPriceFilterChange}
+        maxPriceFilter={filters.maxPrice ?? PRODUCT_CONSTANTS.MAX_PRICE}
+        minPriceFilter={filters.minPrice ?? PRODUCT_CONSTANTS.MIN_PRICE}
+        onPriceFiltersChange={onPriceFiltersChange}
       />
     </div>
   )

@@ -40,7 +40,7 @@ export const getBadRequestProductFormErrors = (issues: Issues): ProductValidatio
           t('product.fields.discountedPrice.errors.tooLow', { min: PRODUCT_CONSTANTS.MIN_PRICE })
         )
         break
-      case PRODUCT_ERRORS.IMAGE_URL_INVALID:
+      case PRODUCT_ERRORS.INVALID_IMAGE_URL:
         imageUrlErrors.push(t('product.fields.imageUrl.errors.invalidUrl'))
         break
       case PRODUCT_ERRORS.NAME_REQUIRED:

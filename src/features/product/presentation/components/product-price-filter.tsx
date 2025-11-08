@@ -1,13 +1,9 @@
-import { parseAsInteger, useQueryState } from 'nuqs'
 import { useCallback } from 'react'
 
-import {
-  PRODUCT_CONSTANTS,
-  PRODUCT_SEARCH_PARAMS
-} from '@/features/product/domain/product-constants'
+import { PRODUCT_CONSTANTS } from '@/features/product/domain/product-constants'
+import type { ProductPriceFilters } from '@/features/product/domain/product-entities'
 import { t } from '@/infrastructure/i18n'
 import { Slider } from '@/presentation/components/ui/slider'
-import { useDebounceCallback } from '@/presentation/hooks/use-debounce'
 import { priceFormatOptions } from '@/utils/format-utils'
 
 import './product-price-filter.sass'
@@ -23,28 +19,17 @@ const priceFilterFormatOptions: Intl.NumberFormatOptions = {
 
 type ProductPriceFilterProps = {
   isLoadingProducts: boolean
-  onMaxPriceFilterChange: (maxPrice: number) => void
-  onMinPriceFilterChange: (minPrice: number) => void
+  maxPriceFilter: number
+  minPriceFilter: number
+  onPriceFiltersChange: ({ maxPrice, minPrice }: ProductPriceFilters) => void
 }
 
 export const ProductPriceFilter: React.FC<ProductPriceFilterProps> = ({
   isLoadingProducts,
-  onMaxPriceFilterChange,
-  onMinPriceFilterChange
+  maxPriceFilter,
+  minPriceFilter,
+  onPriceFiltersChange
 }) => {
-  const [maxPriceFilter, setMaxPriceFilter] = useQueryState(
-    PRODUCT_SEARCH_PARAMS.MAX_PRICE,
-    parseAsInteger.withDefault(filterMaxPrice)
-  )
-
-  const [minPriceFilter, setMinPriceFilter] = useQueryState(
-    PRODUCT_SEARCH_PARAMS.MIN_PRICE,
-    parseAsInteger.withDefault(filterMinPrice)
-  )
-
-  useDebounceCallback(maxPriceFilter, onMaxPriceFilterChange)
-  useDebounceCallback(minPriceFilter, onMinPriceFilterChange)
-
   const onProductPriceFilterChange = useCallback(
     (values: number | number[]) => {
       if (!Array.isArray(values)) return
@@ -52,10 +37,9 @@ export const ProductPriceFilter: React.FC<ProductPriceFilterProps> = ({
       const newMaxPrice = values[1] ?? filterMaxPrice
       const newMinPrice = values[0] ?? filterMinPrice
 
-      setMaxPriceFilter(newMaxPrice)
-      setMinPriceFilter(newMinPrice)
+      onPriceFiltersChange({ maxPrice: newMaxPrice, minPrice: newMinPrice })
     },
-    [setMaxPriceFilter, setMinPriceFilter]
+    [onPriceFiltersChange]
   )
 
   return (
@@ -67,7 +51,7 @@ export const ProductPriceFilter: React.FC<ProductPriceFilterProps> = ({
       label={t('product.filters.price.label')}
       maxValue={filterMaxPrice}
       minValue={filterMinPrice}
-      onChange={onProductPriceFilterChange}
+      onChangeEnd={onProductPriceFilterChange}
       step={5}
       thumbLabels={[
         t('product.filters.price.minPriceAriaLabel'),

@@ -1,24 +1,23 @@
-import { useQueryState } from 'nuqs'
+import { useState } from 'react'
 
-import { PRODUCT_SEARCH_PARAMS } from '@/features/product/domain/product-constants'
 import { t } from '@/infrastructure/i18n'
 import { SearchField } from '@/presentation/components/forms/search-field'
 import { useDebounceCallback } from '@/presentation/hooks/use-debounce'
 
 type PublicProductsSearchProps = {
   isLoadingProducts: boolean
-  onSearchChange: (search: string) => void
+  onSearchFilterChange: (search: string) => void
+  searchFilter: string
 }
 
 export const PublicProductsSearch: React.FC<PublicProductsSearchProps> = ({
   isLoadingProducts,
-  onSearchChange
+  onSearchFilterChange,
+  searchFilter
 }) => {
-  const [productSearch, setProductSearch] = useQueryState(PRODUCT_SEARCH_PARAMS.SEARCH, {
-    defaultValue: ''
-  })
+  const [productSearch, setProductSearch] = useState<string>(searchFilter)
 
-  useDebounceCallback(productSearch, onSearchChange)
+  useDebounceCallback(productSearch, onSearchFilterChange)
 
   return (
     <SearchField

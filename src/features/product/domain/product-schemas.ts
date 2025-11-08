@@ -16,12 +16,12 @@ export const ProductDescriptionSchema = z
   .trim()
   .max(PRODUCT_CONSTANTS.DESCRIPTION_MAX_LENGTH, PRODUCT_ERRORS.DESCRIPTION_TOO_LONG)
 
-export const ProductDiscountedPriceSchema = z
+export const ProductDiscountedPriceSchema = z.coerce
   .number()
   .min(PRODUCT_CONSTANTS.MIN_PRICE, PRODUCT_ERRORS.DISCOUNTED_PRICE_TOO_LOW)
   .max(PRODUCT_CONSTANTS.MAX_PRICE, PRODUCT_ERRORS.DISCOUNTED_PRICE_TOO_HIGH)
 
-export const ProductImageUrlSchema = z.url({ error: PRODUCT_ERRORS.IMAGE_URL_INVALID })
+export const ProductImageUrlSchema = z.url({ error: PRODUCT_ERRORS.INVALID_IMAGE_URL })
 
 export const ProductNameSchema = z
   .string()
@@ -29,7 +29,7 @@ export const ProductNameSchema = z
   .min(1, PRODUCT_ERRORS.NAME_REQUIRED)
   .max(PRODUCT_CONSTANTS.NAME_MAX_LENGTH, PRODUCT_ERRORS.NAME_TOO_LONG)
 
-export const ProductPriceSchema = z
+export const ProductPriceSchema = z.coerce
   .number()
   .min(PRODUCT_CONSTANTS.MIN_PRICE, PRODUCT_ERRORS.PRICE_TOO_LOW)
   .max(PRODUCT_CONSTANTS.MAX_PRICE, PRODUCT_ERRORS.PRICE_TOO_HIGH)
@@ -42,15 +42,15 @@ export const ProductSKU = z
 
 export const ProductStatusSchema = z.enum(PRODUCT_CONSTANTS.STATUS)
 
-export const ProductStockSchema = z
-  .int()
+export const ProductStockSchema = z.coerce
+  .number()
   .min(PRODUCT_CONSTANTS.MIN_STOCK, PRODUCT_ERRORS.STOCK_TOO_LOW)
 
 export const ProductCreationSchema = z.object({
   categoryId: CategoryIdSchema.optional(),
   description: ProductDescriptionSchema.optional(),
   discountedPrice: ProductPriceSchema.optional(),
-  imageUrl: ProductImageUrlSchema.optional(),
+  imageUrl: ProductImageUrlSchema.optional().catch(undefined),
   name: ProductNameSchema,
   price: ProductPriceSchema,
   sku: ProductSKU,
@@ -62,7 +62,7 @@ export const ProductUpdateSchema = z.object({
   categoryId: CategoryIdSchema.optional(),
   description: ProductDescriptionSchema.optional(),
   discountedPrice: ProductPriceSchema.optional(),
-  imageUrl: ProductImageUrlSchema.optional(),
+  imageUrl: ProductImageUrlSchema.optional().catch(undefined),
   name: ProductNameSchema.optional(),
   price: ProductPriceSchema.optional(),
   salesCount: z.number().optional(),

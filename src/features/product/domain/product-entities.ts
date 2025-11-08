@@ -99,3 +99,8 @@ type ProductDeletionResult =
 export type ProductDeletionResponse = Response<ProductDeletionResult>
 
 export type ProductValidationErrors = ValidationErrors<ValueOf<typeof PRODUCT_FORM_FIELDS>>
+
+export type ProductPriceFilters = {
+  maxPrice?: number
+  minPrice?: number
+}
