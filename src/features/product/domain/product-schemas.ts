@@ -13,6 +13,7 @@ export const ProductCategoryDTOSchema = CategoryDTOSchema.pick({
 
 export const ProductDescriptionSchema = z
   .string()
+  .trim()
   .max(PRODUCT_CONSTANTS.DESCRIPTION_MAX_LENGTH, PRODUCT_ERRORS.DESCRIPTION_TOO_LONG)
 
 export const ProductDiscountedPriceSchema = z
@@ -24,6 +25,7 @@ export const ProductImageUrlSchema = z.url({ error: PRODUCT_ERRORS.IMAGE_URL_INV
 
 export const ProductNameSchema = z
   .string()
+  .trim()
   .min(1, PRODUCT_ERRORS.NAME_REQUIRED)
   .max(PRODUCT_CONSTANTS.NAME_MAX_LENGTH, PRODUCT_ERRORS.NAME_TOO_LONG)
 
@@ -34,6 +36,7 @@ export const ProductPriceSchema = z
 
 export const ProductSKU = z
   .string()
+  .trim()
   .min(1, PRODUCT_ERRORS.SKU_REQUIRED)
   .max(PRODUCT_CONSTANTS.SKU_MAX_LENGTH, PRODUCT_ERRORS.SKU_TOO_LONG)
 
@@ -95,4 +98,12 @@ export const ProductPublicDTOSchema = ProductDTOSchema.pick({
   price: true,
   status: true,
   stock: true
+})
+
+export const ProductFiltersSchema = z.object({
+  categoryIds: z.array(CategoryIdSchema).optional().catch(undefined),
+  maxPrice: ProductPriceSchema.optional().catch(undefined),
+  minPrice: ProductPriceSchema.optional().catch(undefined),
+  search: z.string().trim().min(1).optional().catch(undefined),
+  status: ProductStatusSchema.optional().catch(undefined)
 })

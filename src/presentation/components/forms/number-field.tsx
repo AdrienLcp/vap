@@ -1,6 +1,5 @@
 import {
   Input,
-  Label,
   NumberField as ReactAriaNumberField,
   type NumberFieldProps as ReactAriaNumberFieldProps,
   Text
@@ -8,6 +7,7 @@ import {
 
 import { t } from '@/infrastructure/i18n'
 import { FieldError } from '@/presentation/components/forms/field-error'
+import { Label } from '@/presentation/components/ui/label'
 import { reactAriaClassNames } from '@/presentation/utils/react-aria-utils'
 
 import './number-field.sass'
@@ -30,7 +30,7 @@ export const NumberField: React.FC<NumberFieldProps> = ({
   >
     {({ isInvalid, isRequired }) => (
       <>
-        <Label className='label'>
+        <Label>
           {label} {isRequired && t('components.forms.requiredFields.mark')}
         </Label>
 

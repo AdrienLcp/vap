@@ -1,5 +1,9 @@
+@use '@/presentation/styles/sizes'
+
 .products-admin-page
-  display: grid
-  gap: var(--size-160, 1rem)
-  inline-size: var(--large-content-inline-size)
-  margin: var(--size-160, 1rem) auto
+  @include sizes.responsive(l)
+
+  &
+    display: grid
+    gap: var(--size-160, 1rem)
+    margin: var(--size-160, 1rem) auto

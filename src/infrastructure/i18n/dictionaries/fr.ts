@@ -212,6 +212,7 @@ export const fr = {
     },
     errors: {
       categoryNameAlreadyExists: 'Une catégorie avec ce nom existe déjà.',
+      categoryNameRequired: 'Le nom de la catégorie est requis.',
       categoryNameTooLong: 'Le nom de la catégorie ne doit pas dépasser {max:number} caractères.'
     },
     fields: {
@@ -361,10 +362,22 @@ export const fr = {
         label: 'Stock'
       }
     },
+    filters: {
+      price: {
+        label: 'Prix',
+        maxPriceAriaLabel: 'Prix maximum',
+        minPriceAriaLabel: 'Prix minimum'
+      },
+      search: {
+        label: 'Rechercher un produit',
+        placeholder: 'Filtrer les produits par nom, catégorie, ...'
+      }
+    },
     imageAlt: 'Image du produit',
     list: {
       ariaLabel: 'Liste des produits',
-      empty: 'Aucun produit disponible.'
+      empty: 'Aucun produit disponible.',
+      loadError: 'Une erreur est survenue lors du chargement des produits.'
     },
     quantitySelector: {
       ariaLabel: 'Sélecteur de quantité',

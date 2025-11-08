@@ -7,6 +7,7 @@ import type {
   ProductDTO,
   ProductEditError,
   ProductError,
+  ProductFilters,
   ProductPublicDTO,
   ProductUpdateData
 } from '@/features/product/domain/product-entities'
@@ -106,8 +107,10 @@ const findPublicProduct = async (
   return success(productPublicDTO)
 }
 
-const findPublicProducts = async (): Promise<Result<ProductPublicDTO[]>> => {
-  const productsResult = await ProductRepository.findProducts()
+const findPublicProducts = async (
+  filters?: ProductFilters
+): Promise<Result<ProductPublicDTO[]>> => {
+  const productsResult = await ProductRepository.findProducts(filters)
 
   if (productsResult.status === 'ERROR') {
     return productsResult

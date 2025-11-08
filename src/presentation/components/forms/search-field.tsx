@@ -1,13 +1,13 @@
 import { SearchIcon, XIcon } from 'lucide-react'
 import {
   Input,
-  Label,
   SearchField as ReactAriaSearchField,
   type SearchFieldProps as ReactAriaSearchFieldProps,
   Text
 } from 'react-aria-components'
 
 import { FieldError } from '@/presentation/components/forms/field-error'
+import { Label } from '@/presentation/components/ui/label'
 import { Spinner } from '@/presentation/components/ui/loaders/spinner'
 import { Button } from '@/presentation/components/ui/pressables/button'
 import { reactAriaClassNames } from '@/presentation/utils/react-aria-utils'
@@ -36,7 +36,7 @@ export const SearchField: React.FC<SearchFieldProps> = ({
   >
     {({ isInvalid, state }) => (
       <>
-        <Label className='label'>{label}</Label>
+        <Label>{label}</Label>
 
         <div className='input-wrapper'>
           <div className='search-icon'>{isPending ? <Spinner /> : <SearchIcon aria-hidden />}</div>

@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { AUTH_CONSTANTS, AUTH_ERRORS } from '@/features/auth/domain/auth-constants'
 
 export const UserEmailSchema = z.email(AUTH_ERRORS.INVALID_EMAIL)
-export const UserNameSchema = z.string().min(1, AUTH_ERRORS.USER_NAME_REQUIRED)
+export const UserNameSchema = z.string().trim().min(1, AUTH_ERRORS.USER_NAME_REQUIRED)
 export const UserPasswordSchema = z
   .string()
   .min(AUTH_CONSTANTS.PASSWORD_MIN_LENGTH, AUTH_ERRORS.PASSWORD_TOO_SHORT)

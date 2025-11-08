@@ -6,6 +6,7 @@ import type {
   ProductCategoryDTOSchema,
   ProductCreationSchema,
   ProductDTOSchema,
+  ProductFiltersSchema,
   ProductPublicDTOSchema,
   ProductSchema,
   ProductStatusSchema,
@@ -47,6 +48,8 @@ export type ProductError = Forbidden | Unauthorized
 
 export type ProductEditError = ProductError | ProductConflictError
 
+export type ProductFilters = z.infer<typeof ProductFiltersSchema>
+
 type ProductListResult = OkResponse<ProductDTO[]> | UnauthorizedResponse | ForbiddenResponse
 
 export type ProductListResponse = Response<ProductListResult>
@@ -64,7 +67,7 @@ export type ProductPublicListResponse = Response<OkResponse<ProductPublicDTO[]>>
 
 type ProductPublicResult =
   | OkResponse<ProductPublicDTO>
-  | BadRequestResponse<Issues<string>>
+  | BadRequestResponse<Issues<string | ProductFilters>>
   | NotFoundResponse
 
 export type ProductPublicResponse = Response<ProductPublicResult>

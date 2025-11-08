@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 /**
  * Custom hook that returns a debounced value after a specified delay.
@@ -33,13 +33,16 @@ export const useDebounce = <T>(value: T, delay = 500): T => {
  * @param delay The delay in milliseconds (default: 500ms)
  */
 export const useDebounceCallback = <T>(value: T, callback: (value: T) => void, delay = 500) => {
+  const callbackRef = useRef(callback)
+  useEffect(() => {
+    callbackRef.current = callback
+  }, [callback])
   useEffect(() => {
     const timer = setTimeout(() => {
-      callback(value)
+      callbackRef.current(value)
     }, delay)
-
     return () => {
       clearTimeout(timer)
     }
-  }, [callback, delay, value])
+  }, [value, delay])
 }

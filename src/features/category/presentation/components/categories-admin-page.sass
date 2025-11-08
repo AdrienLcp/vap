@@ -1,8 +1,12 @@
+@use '@/presentation/styles/sizes'
+
 .categories-admin-page
-  display: flex
-  flex: 1
-  flex-direction: column
-  gap: var(--size-160, 1rem)
-  inline-size: var(--large-content-inline-size)
-  margin-inline: auto
-  padding-block: var(--size-160, 1rem)
+  @include sizes.responsive(l)
+
+  &
+    display: flex
+    flex: 1
+    flex-direction: column
+    gap: var(--size-160, 1rem)
+    margin-inline: auto
+    padding-block: var(--size-160, 1rem)

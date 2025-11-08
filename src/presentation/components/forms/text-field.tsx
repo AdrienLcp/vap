@@ -1,6 +1,5 @@
 import {
   Input,
-  Label,
   TextField as ReactAriaTextField,
   type TextFieldProps as ReactAriaTextFieldProps,
   Text
@@ -8,6 +7,7 @@ import {
 
 import { t } from '@/infrastructure/i18n'
 import { FieldError } from '@/presentation/components/forms/field-error'
+import { Label } from '@/presentation/components/ui/label'
 import { reactAriaClassNames } from '@/presentation/utils/react-aria-utils'
 
 import './text-field.sass'
@@ -38,7 +38,7 @@ export const TextField: React.FC<TextFieldProps> = ({
   >
     {({ isInvalid, isRequired }) => (
       <>
-        <Label className='label'>
+        <Label>
           {label} {isRequired && t('components.forms.requiredFields.mark')}
         </Label>
 

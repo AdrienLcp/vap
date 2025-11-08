@@ -11,7 +11,11 @@ import {
   AUTH_ERRORS,
   AUTH_FORM_FIELDS
 } from '@/features/auth/domain/auth-constants'
-import type { AuthUserDTO, SignUpBadRequestError, SignUpInfo } from '@/features/auth/domain/auth-entities'
+import type {
+  AuthUserDTO,
+  SignUpBadRequestError,
+  SignUpInfo
+} from '@/features/auth/domain/auth-entities'
 import { SignUpInfoSchema } from '@/features/auth/domain/auth-schemas'
 import { AuthClient } from '@/features/auth/infrastructure/auth-client'
 import { UserEmailField } from '@/features/auth/presentation/components/forms/user-email-field'

@@ -7,6 +7,7 @@ import type {
   ProductConflictError,
   ProductCreationData,
   ProductDTO,
+  ProductFilters,
   ProductUpdateData
 } from '@/features/product/domain/product-entities'
 import { type ErrorResult, failure, type Result, success } from '@/helpers/result'
@@ -111,9 +112,20 @@ const findProduct = async (productId: string): Promise<Result<ProductDTO, NotFou
   }
 }
 
-const findProducts = async (): Promise<Result<ProductDTO[]>> => {
+const findProducts = async (filters?: ProductFilters): Promise<Result<ProductDTO[]>> => {
   try {
-    const products = await ProductDatabase.findMany({ select: productSelectedFields })
+    const products = await ProductDatabase.findMany({
+      select: productSelectedFields,
+      where: {
+        categoryId: filters?.categoryIds ? { in: filters.categoryIds } : undefined,
+        name: filters?.search ? { contains: filters.search, mode: 'insensitive' } : undefined,
+        price: {
+          gte: filters?.minPrice,
+          lte: filters?.maxPrice
+        },
+        status: filters?.status
+      }
+    })
 
     return success(products)
   } catch (error) {

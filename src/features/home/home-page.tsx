@@ -1,20 +1,9 @@
-import { PublicProductList } from '@/features/product/presentation/components/public-product-list'
-import { ProductController } from '@/features/product/presentation/controllers/product-controller'
-import { OK_STATUS, redirectByErrorStatus } from '@/infrastructure/api/http-response'
+import { PublicProductsDashboard } from '@/features/product/presentation/components/public-products-dashboard'
 
 import './home-page.sass'
 
-export const HomePage: React.FC = async () => {
-  const publicProductListResponse = await ProductController.findPublicProducts()
-
-  if (publicProductListResponse.status !== OK_STATUS) {
-    redirectByErrorStatus(publicProductListResponse.status)
-    return null
-  }
-
-  return (
-    <main className='home-main'>
-      <PublicProductList products={publicProductListResponse.data} />
-    </main>
-  )
-}
+export const HomePage: React.FC = async () => (
+  <main className='home-main'>
+    <PublicProductsDashboard />
+  </main>
+)

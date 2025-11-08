@@ -7,13 +7,13 @@ export const PRODUCT_CONSTANTS = {
   DESCRIPTION_MAX_LENGTH: 500,
   IMAGE_SIZE_IN_PX: 220,
   IMAGE_SMALL_SIZE_IN_PX: 80,
-  MAX_PRICE: 10000,
+  MAX_PRICE: 500,
   MIN_PRICE: 0.01,
   MIN_STOCK: 0,
   NAME_MAX_LENGTH: 100,
   SKU_MAX_LENGTH: 50,
   SKU_MIN_LENGTH: 1,
-  STATUS: ['ACTIVE', 'INACTIVE', 'FEATURED'] satisfies ProductStatus[]
+  STATUS: ['ACTIVE', 'FEATURED', 'INACTIVE'] satisfies ProductStatus[]
 } as const
 
 export const PRODUCT_ERRORS = {
@@ -46,4 +46,12 @@ export const PRODUCT_FORM_FIELDS = {
   SKU: 'product-sku',
   STATUS: 'product-status',
   STOCK: 'product-stock'
+} as const
+
+export const PRODUCT_SEARCH_PARAMS = {
+  CATEGORY_IDS: 'category-ids',
+  MAX_PRICE: 'max-price',
+  MIN_PRICE: 'min-price',
+  SEARCH: 'search',
+  STATUS: 'status'
 } as const

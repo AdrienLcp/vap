@@ -23,7 +23,7 @@
   --size-440: clamp(2.75rem, 1.65rem + 2.2vw, 3.08rem)
   --size-480: clamp(3rem, 1.8rem + 2.5vw, 3.36rem)
   --size-520: clamp(3.625rem, 2.25rem + 3vw, 4.2rem)
-  --size-640: clamp(4.25rem, 2.75rem + 3.5vw, 4.96rem)
+  --size-640: clamp(4rem, 2.75rem + 3.5vw, 4.96rem)
   --size-760: clamp(4.875rem, 3.25rem + 4vw, 5.72rem)
   --size-880: clamp(5.5rem, 3.75rem + 4.5vw, 6.48rem)
   --size-1000: clamp(6.125rem, 4.25rem + 5vw, 7.24rem)
@@ -47,19 +47,17 @@
   --element-stroke: var(--stroke-m, 0.125rem)
 
   --max-inline-size: min(100%, 100vw - var(--size-160, 1rem))
-  --content-inline-size: min(50ch, var(--max-inline-size))
-  --large-content-inline-size: min(100rem, var(--max-inline-size))
   --header-height: var(--size-520, 3.625rem)
 
 $sizes: (
-  s: 30ch,
-  m: 50ch,
-  l: 120ch
+  s: 50ch,
+  m: 100ch,
+  l: 200ch
 )
 
 @mixin responsive($size: m)
-  --wrapper-size: min(map.get($sizes, $size), var(--max-inline-size))
-  inline-size: min(map.get($sizes, $size), var(--max-inline-size))
+  --wrapper-size: min(map.get($sizes, $size), min(100%, 100vw - 1rem))
+  inline-size: min(map.get($sizes, $size), min(100%, 100vw - 1rem))
 
 @mixin square($size)
   block-size: $size

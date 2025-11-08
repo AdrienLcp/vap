@@ -8,11 +8,13 @@ export const CategoryImageUrlSchema = z.url().max(CATEGORY_CONSTANTS.IMAGE_URL_M
 
 export const CategoryNameSchema = z
   .string()
+  .trim()
+  .min(1, { message: CATEGORY_ERRORS.NAME_REQUIRED })
   .max(CATEGORY_CONSTANTS.NAME_MAX_LENGTH, { message: CATEGORY_ERRORS.NAME_TOO_LONG })
 
 export const CategoryDescriptionSchema = z
   .string()
-  .min(1)
+  .trim()
   .max(CATEGORY_CONSTANTS.DESCRIPTION_MAX_LENGTH)
 
 export const CategoryCreationSchema = z.object({

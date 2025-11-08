@@ -9,6 +9,7 @@ import type {
   NumberFieldRenderProps,
   SearchFieldRenderProps,
   SelectRenderProps,
+  SliderRenderProps,
   TextFieldRenderProps,
   TooltipRenderProps
 } from 'react-aria-components'
@@ -23,6 +24,7 @@ export type ReactAriaComponentRenderProps =
   | NumberFieldRenderProps
   | SearchFieldRenderProps
   | SelectRenderProps
+  | SliderRenderProps
   | TextFieldRenderProps
   | TooltipRenderProps
 

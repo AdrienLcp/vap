@@ -1,7 +1,6 @@
 import { CheckIcon, ChevronDown } from 'lucide-react'
 import {
   type Key,
-  Label,
   ListBox,
   ListBoxItem,
   type ListBoxItemProps,
@@ -12,6 +11,7 @@ import {
 } from 'react-aria-components'
 
 import { t } from '@/infrastructure/i18n'
+import { Label } from '@/presentation/components/ui/label'
 import { Button } from '@/presentation/components/ui/pressables/button'
 import { reactAriaClassNames } from '@/presentation/utils/react-aria-utils'
 
@@ -45,7 +45,7 @@ export function Select<K extends Key = string>({
     >
       {({ isRequired }) => (
         <>
-          <Label className='label'>
+          <Label>
             {label} {isRequired && t('components.forms.requiredFields.mark')}
           </Label>
 

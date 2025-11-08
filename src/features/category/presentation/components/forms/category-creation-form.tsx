@@ -46,6 +46,9 @@ export const CategoryCreationForm: React.FC = () => {
 
     for (const issue of issues) {
       switch (issue.message) {
+        case CATEGORY_ERRORS.NAME_REQUIRED:
+          nameErrors.push(t('category.errors.categoryNameRequired'))
+          break
         case CATEGORY_ERRORS.NAME_TOO_LONG:
           nameErrors.push(
             t('category.errors.categoryNameTooLong', { max: CATEGORY_CONSTANTS.NAME_MAX_LENGTH })

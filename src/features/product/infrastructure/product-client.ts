@@ -1,10 +1,14 @@
 'use client'
 
-import { PRODUCT_API_BASE_URL } from '@/features/product/domain/product-constants'
+import {
+  PRODUCT_API_BASE_URL,
+  PRODUCT_SEARCH_PARAMS
+} from '@/features/product/domain/product-constants'
 import type {
   ProductCreationData,
   ProductCreationResponse,
   ProductDeletionResponse,
+  ProductFilters,
   ProductListResponse,
   ProductPublicListResponse,
   ProductPublicResponse,
@@ -13,6 +17,46 @@ import type {
   ProductUpdateResponse
 } from '@/features/product/domain/product-entities'
 import { ApiClient, type ClientResponse, unknownError } from '@/infrastructure/api/api-client'
+
+const buildProductFiltersQueryString = (productFilters?: ProductFilters): string => {
+  if (!productFilters) {
+    return ''
+  }
+
+  const productFiltersQueryParams = new URLSearchParams()
+
+  if (productFilters.categoryIds) {
+    productFiltersQueryParams.set(
+      PRODUCT_SEARCH_PARAMS.CATEGORY_IDS,
+      productFilters.categoryIds.join(',')
+    )
+  }
+
+  if (productFilters.maxPrice != null) {
+    productFiltersQueryParams.set(
+      PRODUCT_SEARCH_PARAMS.MAX_PRICE,
+      productFilters.maxPrice.toString()
+    )
+  }
+
+  if (productFilters.minPrice != null) {
+    productFiltersQueryParams.set(
+      PRODUCT_SEARCH_PARAMS.MIN_PRICE,
+      productFilters.minPrice.toString()
+    )
+  }
+
+  if (productFilters.search) {
+    productFiltersQueryParams.set(PRODUCT_SEARCH_PARAMS.SEARCH, productFilters.search)
+  }
+  0
+
+  if (productFilters.status) {
+    productFiltersQueryParams.set(PRODUCT_SEARCH_PARAMS.STATUS, productFilters.status)
+  }
+
+  return `?${productFiltersQueryParams.toString()}`
+}
 
 const createProduct = async (
   productCreationData: ProductCreationData
@@ -72,9 +116,15 @@ const findPublicProduct = async (
   }
 }
 
-const findPublicProducts = async (): Promise<ClientResponse<ProductPublicListResponse>> => {
+const findPublicProducts = async (
+  productFilters?: ProductFilters
+): Promise<ClientResponse<ProductPublicListResponse>> => {
   try {
-    return await ApiClient.GET<ProductPublicListResponse>(`/${PRODUCT_API_BASE_URL}/public`)
+    const productFilterQueryString = buildProductFiltersQueryString(productFilters)
+
+    return await ApiClient.GET<ProductPublicListResponse>(
+      `/${PRODUCT_API_BASE_URL}/public${productFilterQueryString}`
+    )
   } catch (error) {
     console.error('Find public products error:', error)
     return unknownError()

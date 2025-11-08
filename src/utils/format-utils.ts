@@ -1,6 +1,6 @@
 import { locale } from '@/infrastructure/i18n'
 
-export const defaultPriceFormatOptions: Intl.NumberFormatOptions = {
+export const priceFormatOptions: Intl.NumberFormatOptions = {
   currency: 'EUR',
   maximumFractionDigits: 2,
   minimumFractionDigits: 2,
@@ -22,7 +22,7 @@ type FormatPriceOptions = {
  */
 export const formatPrice = (value: number, options?: FormatPriceOptions): string => {
   const formatOptions: FormatPriceOptions = {
-    ...defaultPriceFormatOptions,
+    ...priceFormatOptions,
     ...options
   }
 

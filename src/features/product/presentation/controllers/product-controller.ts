@@ -1,10 +1,14 @@
 import 'server-only'
 
 import { ProductService } from '@/features/product/application/product-service'
-import { PRODUCT_API_BASE_URL } from '@/features/product/domain/product-constants'
+import {
+  PRODUCT_API_BASE_URL,
+  PRODUCT_SEARCH_PARAMS
+} from '@/features/product/domain/product-constants'
 import type {
   ProductCreationResponse,
   ProductDeletionResponse,
+  ProductFilters,
   ProductListResponse,
   ProductPublicListResponse,
   ProductPublicResponse,
@@ -14,12 +18,32 @@ import type {
 import {
   ProductCreationSchema,
   ProductDTOSchema,
+  ProductFiltersSchema,
   ProductIdSchema,
   ProductPublicDTOSchema,
   ProductUpdateSchema
 } from '@/features/product/domain/product-schemas'
 import { HttpResponse } from '@/infrastructure/api/http-response'
 import { buildLocationUrl } from '@/infrastructure/env/client'
+
+const extractSearchParams = (request?: Request): ProductFilters | null => {
+  if (!request?.url) {
+    return null
+  }
+
+  const { searchParams } = new URL(request.url)
+
+  const maxPriceParam = parseInt(searchParams.get(PRODUCT_SEARCH_PARAMS.MAX_PRICE) ?? '', 10)
+  const minPriceParam = parseInt(searchParams.get(PRODUCT_SEARCH_PARAMS.MIN_PRICE) ?? '', 10)
+  const categoryIdsRaw = searchParams.get(PRODUCT_SEARCH_PARAMS.CATEGORY_IDS)
+
+  return {
+    categoryIds: categoryIdsRaw ? categoryIdsRaw.split(',').filter(Boolean) : undefined,
+    maxPrice: Number.isNaN(maxPriceParam) ? undefined : maxPriceParam,
+    minPrice: Number.isNaN(minPriceParam) ? undefined : minPriceParam,
+    search: searchParams.get(PRODUCT_SEARCH_PARAMS.SEARCH) ?? undefined
+  }
+}
 
 const createProduct = async (productCreationRequest: Request): Promise<ProductCreationResponse> => {
   try {
@@ -215,9 +239,13 @@ const findPublicProduct = async (productId: string): Promise<ProductPublicRespon
   }
 }
 
-const findPublicProducts = async (): Promise<ProductPublicListResponse> => {
+const findPublicProducts = async (request?: Request): Promise<ProductPublicListResponse> => {
   try {
-    const productsResult = await ProductService.findPublicProducts()
+    const productFilters = extractSearchParams(request)
+
+    const productFiltersValidation = ProductFiltersSchema.safeParse(productFilters)
+
+    const productsResult = await ProductService.findPublicProducts(productFiltersValidation.data)
 
     if (productsResult.status === 'ERROR') {
       console.error('Unknown error in ProductController.findPublicProducts:', productsResult.error)
