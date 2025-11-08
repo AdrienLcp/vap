@@ -109,7 +109,7 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({ categories
 
         <ProductCategorySelect categories={categories} />
 
-        <ProductStatusSelect defaultSelectedKey={product.status} />
+        <ProductStatusSelect defaultValue={product.status} />
 
         <ProductDescriptionField defaultValue={product.description} />
 

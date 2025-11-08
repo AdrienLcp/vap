@@ -5,6 +5,7 @@ import type {
   ProductFilters,
   ProductPriceFilters
 } from '@/features/product/domain/product-entities'
+import { ProductCategoryFilter } from '@/features/product/presentation/components/product-category-filter'
 import { ProductPriceFilter } from '@/features/product/presentation/components/product-price-filter'
 import { PublicProductsSearch } from '@/features/product/presentation/components/public-products-search'
 
@@ -21,6 +22,13 @@ export const PublicProductsFilters: React.FC<PublicProductsFiltersProps> = ({
   isLoadingProducts,
   onFilterChange
 }) => {
+  const onCategoriesFilterChange = useCallback(
+    (categoryIds: string[]) => {
+      onFilterChange({ categoryIds })
+    },
+    [onFilterChange]
+  )
+
   const onPriceFiltersChange = useCallback(
     ({ maxPrice, minPrice }: ProductPriceFilters) => {
       onFilterChange({ maxPrice, minPrice })
@@ -41,6 +49,12 @@ export const PublicProductsFilters: React.FC<PublicProductsFiltersProps> = ({
         isLoadingProducts={isLoadingProducts}
         onSearchFilterChange={onSearchFilterChange}
         searchFilter={filters.search ?? ''}
+      />
+
+      <ProductCategoryFilter
+        isLoadingProducts={isLoadingProducts}
+        onCategoriesFilterChange={onCategoriesFilterChange}
+        selectedCategoryIds={filters.categoryIds ?? []}
       />
 
       <ProductPriceFilter

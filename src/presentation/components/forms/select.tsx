@@ -17,6 +17,8 @@ import { reactAriaClassNames } from '@/presentation/utils/react-aria-utils'
 
 import './select.sass'
 
+type SelectionMode = 'multiple' | 'single'
+
 type BaseSelectItem<K extends Key = string> = {
   Icon?: React.ReactElement
   id: K
@@ -25,18 +27,21 @@ type BaseSelectItem<K extends Key = string> = {
 export type SelectItem<K extends Key = string> = Omit<ListBoxItemProps<BaseSelectItem<K>>, 'id'> &
   BaseSelectItem<K>
 
-export type SelectProps<K extends Key = string> = ReactAriaSelectProps<SelectItem<K>> & {
+export type SelectProps<K extends Key = string, Mode extends SelectionMode = 'single'> = Omit<
+  ReactAriaSelectProps<SelectItem<K>, Mode>,
+  'children'
+> & {
   items: SelectItem<K>[]
   label: string
 }
 
-export function Select<K extends Key = string>({
+export function Select<K extends Key = string, Mode extends SelectionMode = 'single'>({
   className,
   label,
   items,
   placeholder,
   ...selectRestProps
-}: SelectProps<K>) {
+}: SelectProps<K, Mode>) {
   return (
     <ReactAriaSelect
       {...selectRestProps}
@@ -51,12 +56,20 @@ export function Select<K extends Key = string>({
 
           <Button className='trigger'>
             <SelectValue className='value'>
-              {({ defaultChildren, isPlaceholder }) => {
+              {({ isPlaceholder, selectedItems }) => {
                 if (isPlaceholder) {
                   return placeholder ?? t('components.forms.select.defaultPlaceholder')
                 }
 
-                return defaultChildren
+                const textValues: string[] = []
+
+                for (const item of selectedItems) {
+                  if (item && 'textValue' in item && typeof item.textValue === 'string') {
+                    textValues.push(item.textValue)
+                  }
+                }
+
+                return textValues.join(', ')
               }}
             </SelectValue>
 

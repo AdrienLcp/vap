@@ -1,8 +1,12 @@
 @use '@/presentation/styles/interactive'
+@use '@/presentation/styles/typography'
 
 .slider
-  display: grid
-  gap: var(--size-80, 0.5rem)
+  &-header
+    align-items: center
+    display: flex
+    gap: var(--size-80, 0.5rem)
+    justify-content: space-between
 
   & .track
     background-color: var(--neutral-border)

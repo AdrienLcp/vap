@@ -26,11 +26,13 @@ export const Slider: React.FC<SliderProps> = ({
     className={(values) => reactAriaClassNames(values, className, 'slider')}
     {...sliderRestProps}
   >
-    <Label>{label}</Label>
+    <div className='slider-header'>
+      <Label>{label}</Label>
 
-    <SliderOutput className='output'>
-      {({ state }) => state.values.map((_, index) => state.getThumbValueLabel(index)).join(' - ')}
-    </SliderOutput>
+      <SliderOutput className='output'>
+        {({ state }) => state.values.map((_, index) => state.getThumbValueLabel(index)).join(' - ')}
+      </SliderOutput>
+    </div>
 
     <SliderTrack className='track'>
       {({ state }) =>

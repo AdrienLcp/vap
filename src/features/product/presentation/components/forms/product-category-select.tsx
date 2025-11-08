@@ -5,7 +5,7 @@ import { PRODUCT_FORM_FIELDS } from '@/features/product/domain/product-constants
 import { t } from '@/infrastructure/i18n'
 import { Select, type SelectItem, type SelectProps } from '@/presentation/components/forms/select'
 
-type ProductCategorySelectProps = Partial<Pick<SelectProps, 'label' | 'name' | 'placeholder'>> & {
+type ProductCategorySelectProps = Partial<SelectProps> & {
   categories: CategoryDTO[]
 }
 

@@ -50,6 +50,7 @@ export const PRODUCT_FORM_FIELDS = {
 
 export const PRODUCT_SEARCH_PARAMS = {
   CATEGORY_IDS: 'category-ids',
+  CATEGORY_IDS_SEPARATOR: ',',
   MAX_PRICE: 'max-price',
   MIN_PRICE: 'min-price',
   SEARCH: 'search',

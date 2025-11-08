@@ -1,6 +1,6 @@
 'use client'
 
-import { parseAsInteger, useQueryState } from 'nuqs'
+import { parseAsArrayOf, parseAsInteger, parseAsString, useQueryState } from 'nuqs'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import {
@@ -21,6 +21,11 @@ import './public-products-dashboard.sass'
 export const PublicProductsDashboard: React.FC = () => {
   const [isLoadingProducts, setIsLoadingProducts] = useState<boolean>(false)
   const [products, setProducts] = useState<ProductPublicDTO[]>([])
+
+  const [categoryIdsFilter, setCategoryIdsFilter] = useQueryState(
+    PRODUCT_SEARCH_PARAMS.CATEGORY_IDS,
+    parseAsArrayOf<string>(parseAsString, PRODUCT_SEARCH_PARAMS.CATEGORY_IDS_SEPARATOR)
+  )
 
   const [maxPriceFilter, setMaxPriceFilter] = useQueryState(
     PRODUCT_SEARCH_PARAMS.MAX_PRICE,
@@ -51,20 +56,31 @@ export const PublicProductsDashboard: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    loadProducts({ maxPrice: maxPriceFilter, minPrice: minPriceFilter, search: productSearch })
-  }, [loadProducts, maxPriceFilter, minPriceFilter, productSearch])
+    loadProducts({
+      categoryIds:
+        categoryIdsFilter && categoryIdsFilter.length > 0 ? categoryIdsFilter : undefined,
+      maxPrice: maxPriceFilter,
+      minPrice: minPriceFilter,
+      search: productSearch
+    })
+  }, [categoryIdsFilter, loadProducts, maxPriceFilter, minPriceFilter, productSearch])
 
   const filters: ProductFilters = useMemo(
     () => ({
+      categoryIds: categoryIdsFilter ?? undefined,
       maxPrice: maxPriceFilter,
       minPrice: minPriceFilter,
       search: productSearch
     }),
-    [maxPriceFilter, minPriceFilter, productSearch]
+    [categoryIdsFilter, maxPriceFilter, minPriceFilter, productSearch]
   )
 
   const onFilterChange = useCallback(
     (newFilters: ProductFilters) => {
+      if (newFilters.categoryIds) {
+        setCategoryIdsFilter(newFilters.categoryIds.length > 0 ? newFilters.categoryIds : null)
+      }
+
       if (newFilters.maxPrice != null) {
         setMaxPriceFilter(newFilters.maxPrice)
       }
@@ -77,7 +93,7 @@ export const PublicProductsDashboard: React.FC = () => {
         setProductSearch(newFilters.search)
       }
     },
-    [setMaxPriceFilter, setMinPriceFilter, setProductSearch]
+    [setCategoryIdsFilter, setMaxPriceFilter, setMinPriceFilter, setProductSearch]
   )
 
   return (

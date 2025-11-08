@@ -10,7 +10,7 @@ const productStatusSelectItems: SelectItem<ProductStatus>[] = [
 ]
 
 export const ProductStatusSelect: React.FC<Partial<SelectProps<ProductStatus>>> = ({
-  defaultSelectedKey = PRODUCT_CONSTANTS.DEFAULT_STATUS,
+  defaultValue = PRODUCT_CONSTANTS.DEFAULT_STATUS,
   isRequired = true,
   items = productStatusSelectItems,
   label = t('product.fields.status.label'),
@@ -18,7 +18,7 @@ export const ProductStatusSelect: React.FC<Partial<SelectProps<ProductStatus>>> 
   ...productStatusSelectRestProps
 }) => (
   <Select
-    defaultSelectedKey={defaultSelectedKey}
+    defaultValue={defaultValue}
     isRequired={isRequired}
     items={items}
     label={label}

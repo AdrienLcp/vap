@@ -1,2 +1,8 @@
 .product-price-filter
-  padding-inline: var(--size-160, 1rem)
+  display: flex
+  flex-direction: column
+  gap: var(--size-240, 1.5rem)
+
+  & .track
+    inline-size: calc(100% - var(--size-160, 1rem))
+    margin-inline: auto

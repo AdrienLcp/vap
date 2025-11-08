@@ -363,6 +363,10 @@ export const fr = {
       }
     },
     filters: {
+      categories: {
+        label: 'Catégories',
+        placeholder: 'Filtrer par catégories'
+      },
       price: {
         label: 'Prix',
         maxPriceAriaLabel: 'Prix maximum',

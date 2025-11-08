@@ -38,7 +38,9 @@ const extractSearchParams = (request?: Request): ProductFilters | null => {
   const categoryIdsRaw = searchParams.get(PRODUCT_SEARCH_PARAMS.CATEGORY_IDS)
 
   return {
-    categoryIds: categoryIdsRaw ? categoryIdsRaw.split(',').filter(Boolean) : undefined,
+    categoryIds: categoryIdsRaw
+      ? categoryIdsRaw.split(PRODUCT_SEARCH_PARAMS.CATEGORY_IDS_SEPARATOR).filter(Boolean)
+      : undefined,
     maxPrice: Number.isNaN(maxPriceParam) ? undefined : maxPriceParam,
     minPrice: Number.isNaN(minPriceParam) ? undefined : minPriceParam,
     search: searchParams.get(PRODUCT_SEARCH_PARAMS.SEARCH) ?? undefined
