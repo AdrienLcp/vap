@@ -6,7 +6,7 @@ import { CategoryClient } from '@/features/category/infrastructure/category-clie
 import { OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { Select, type SelectItem } from '@/presentation/components/forms/select'
-import { Spinner } from '@/presentation/components/ui/loaders/spinner'
+import { Loader } from '@/presentation/components/ui/loaders/loader'
 
 type ProductCategoryFilterProps = {
   selectedCategoryIds: string[]
@@ -45,7 +45,7 @@ export const ProductCategoryFilter: React.FC<ProductCategoryFilterProps> = ({
   )
 
   if (isLoadingCategories) {
-    return <Spinner />
+    return <Loader />
   }
 
   if (categories.length === 0) {

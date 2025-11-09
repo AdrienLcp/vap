@@ -2,6 +2,7 @@ import type z from 'zod'
 
 import type {
   UserDTOSchema,
+  UserFiltersSchema,
   UserIdSchema,
   UserRoleSchema,
   UserUpdateSchema
@@ -42,3 +43,5 @@ type UserResult =
   | UnauthorizedResponse
 
 export type UserResponse = Response<UserResult>
+
+export type UserFilters = z.infer<typeof UserFiltersSchema>

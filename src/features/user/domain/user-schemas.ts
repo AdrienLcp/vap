@@ -16,3 +16,8 @@ export const UserDTOSchema = z.object({
   name: z.string(),
   role: UserRoleSchema.catch(USER_CONSTANTS.DEFAULT_ROLE)
 })
+
+export const UserFiltersSchema = z.object({
+  email: z.string().trim().optional().catch(undefined),
+  roles: UserRoleSchema.array().optional().catch(undefined)
+})

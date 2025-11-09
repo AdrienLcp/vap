@@ -8,5 +8,7 @@ export const USER_CONSTANTS = {
 export const USER_API_BASE_URL = 'users'
 
 export const USER_SEARCH_PARAMS = {
-  EMAIL: 'email'
-}
+  EMAIL: 'email',
+  ROLES: 'roles',
+  ROLES_SEPARATOR: ','
+} as const

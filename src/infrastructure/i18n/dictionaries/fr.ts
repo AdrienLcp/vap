@@ -409,6 +409,10 @@ export const fr = {
       defaultAlt: "Avatar de l'utilisateur"
     },
     list: {
+      roleFilter: {
+        label: 'Rôles',
+        placeholder: 'Filtrer par rôles'
+      },
       search: {
         error: 'Une erreur est survenue lors de la recherche des utilisateurs.',
         label: 'Rechercher des utilisateurs',

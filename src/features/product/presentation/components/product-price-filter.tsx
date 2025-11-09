@@ -21,7 +21,7 @@ type ProductPriceFilterProps = {
   isLoadingProducts: boolean
   maxPriceFilter: number
   minPriceFilter: number
-  onPriceFiltersChange: ({ maxPrice, minPrice }: ProductPriceFilters) => void
+  onPriceFiltersChange: (prices: ProductPriceFilters) => void
 }
 
 export const ProductPriceFilter: React.FC<ProductPriceFilterProps> = ({

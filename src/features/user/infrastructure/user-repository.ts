@@ -3,7 +3,7 @@ import 'server-only'
 import type { User } from '@prisma/client'
 
 import type { NotFound } from '@/domain/entities'
-import type { UserDTO, UserRole } from '@/features/user/domain/user-entities'
+import type { UserDTO, UserFilters, UserRole } from '@/features/user/domain/user-entities'
 import { failure, type Result, success } from '@/helpers/result'
 import { type EntitySelectedFields, UserDatabase } from '@/infrastructure/database'
 
@@ -32,9 +32,9 @@ const findUser = async (userId: string): Promise<Result<UserDTO, NotFound>> => {
   }
 }
 
-const findUsers = async (email?: string | null): Promise<Result<UserDTO[]>> => {
+const findUsers = async (filters?: UserFilters): Promise<Result<UserDTO[]>> => {
   try {
-    if (!email) {
+    if (!filters) {
       const users = await UserDatabase.findMany({ select: USER_SELECTED_FIELDS })
       return success(users)
     }
@@ -43,9 +43,10 @@ const findUsers = async (email?: string | null): Promise<Result<UserDTO[]>> => {
       select: USER_SELECTED_FIELDS,
       where: {
         email: {
-          contains: email.trim(),
+          contains: filters?.email ? filters.email : undefined,
           mode: 'insensitive'
-        }
+        },
+        role: filters?.roles ? { in: filters.roles } : undefined
       }
     })
 

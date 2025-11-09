@@ -3,20 +3,36 @@ import 'server-only'
 import { UserService } from '@/features/user/application/user-service'
 import { USER_SEARCH_PARAMS } from '@/features/user/domain/user-constants'
 import type {
+  UserFilters,
   UserListResponse,
   UserResponse,
+  UserRole,
   UserUpdateResponse
 } from '@/features/user/domain/user-entities'
-import { UserDTOSchema, UserIdSchema, UserUpdateSchema } from '@/features/user/domain/user-schemas'
+import { UserDTOSchema, UserFiltersSchema, UserIdSchema, UserUpdateSchema } from '@/features/user/domain/user-schemas'
 import { HttpResponse } from '@/infrastructure/api/http-response'
 
-const extractSearchParams = (request?: Request) => {
-  if (!request?.url) return { email: null }
+const extractSearchParams = (request?: Request): UserFilters | null => {
+  if (!request?.url) {
+    return null
+  }
 
   const { searchParams } = new URL(request.url)
 
+  const userRolesRaw = searchParams.get(USER_SEARCH_PARAMS.ROLES)
+  const userRoles: UserRole[] = []
+
+  if (userRolesRaw) {
+    for (const role of userRolesRaw.split(USER_SEARCH_PARAMS.ROLES_SEPARATOR)) {
+      if (role) {
+        userRoles.push(role as UserRole)
+      }
+    }
+  }
+
   return {
-    email: searchParams.get(USER_SEARCH_PARAMS.EMAIL)
+    email: searchParams.get(USER_SEARCH_PARAMS.EMAIL) ?? undefined,
+    roles: userRoles.length > 0 ? userRoles : undefined
   }
 }
 
@@ -58,9 +74,11 @@ const findUser = async (userId: string): Promise<UserResponse> => {
 
 const findUsers = async (request?: Request): Promise<UserListResponse> => {
   try {
-    const { email } = extractSearchParams(request)
+    const userFilters = extractSearchParams(request)
 
-    const userResult = await UserService.findUsers(email)
+    const userFiltersValidation = UserFiltersSchema.safeParse(userFilters)
+
+    const userResult = await UserService.findUsers(userFiltersValidation.data)
 
     if (userResult.status === 'ERROR') {
       switch (userResult.error) {
