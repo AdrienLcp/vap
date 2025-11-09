@@ -4,6 +4,8 @@ import type { UserFilters, UserRole } from '@/features/user/domain/user-entities
 import { UserRoleSelect } from '@/features/user/presentation/components/user-role-select'
 import { UserSearch } from '@/features/user/presentation/components/user-search'
 
+import './users-filters.sass'
+
 type UsersFiltersProps = {
   filters: UserFilters
   isLoadingUsers: boolean
@@ -30,7 +32,7 @@ export const UsersFilters: React.FC<UsersFiltersProps> = ({
   )
 
   return (
-    <>
+    <div className='users-filters'>
       <UserSearch
         isDisabled={isLoadingUsers}
         onChange={onUserSearchChange}
@@ -42,6 +44,6 @@ export const UsersFilters: React.FC<UsersFiltersProps> = ({
         onChange={onUserRolesFilterChange}
         selectedRoles={filters.roles ?? []}
       />
-    </>
+    </div>
   )
 }
