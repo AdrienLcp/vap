@@ -3,6 +3,7 @@
 import { Trash2Icon } from 'lucide-react'
 import { useCallback } from 'react'
 
+import { useAuth } from '@/features/auth/application/use-auth'
 import { useCartStore } from '@/features/cart/application/use-cart-store'
 import { CartClient } from '@/features/cart/infrastructure/cart-client'
 import { NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
@@ -23,25 +24,38 @@ export const CartItemDeleteButton: React.FC<CartItemDeleteButtonProps> = ({
   productId,
   setIsLoading
 }) => {
+  const { auth } = useAuth()
+
   const removeCartItem = useCartStore((state) => state.removeItem)
 
-  const onCartItemDeleteButtonPress = useCallback(async () => {
+  const removeRemoteCartItem = useCallback(async () => {
     setIsLoading(true)
     const cartItemDeletionResponse = await CartClient.removeItemFromUserCart(productId)
     setIsLoading(false)
 
-    if (cartItemDeletionResponse.status === NO_CONTENT_STATUS) {
-      removeCartItem(productId)
+    if (cartItemDeletionResponse.status !== NO_CONTENT_STATUS) {
+      ToastService.error(t('cart.item.deleteError'))
       return
     }
 
-    ToastService.error(t('cart.item.deleteError'))
+    removeCartItem(productId)
   }, [productId, removeCartItem, setIsLoading])
+
+  const onCartItemDeleteButtonPress = useCallback(async () => {
+    if (auth.status === 'authenticated') {
+      await removeRemoteCartItem()
+      return
+    }
+
+    removeCartItem(productId)
+  }, [auth.status, removeRemoteCartItem, removeCartItem, productId])
+
+  const isButtonDisabled = auth.status === 'loading' || isLoading
 
   return (
     <Button
       className='cart-item-delete-button'
-      isDisabled={isLoading}
+      isDisabled={isButtonDisabled}
       onPress={onCartItemDeleteButtonPress}
     >
       <Trash2Icon aria-hidden />

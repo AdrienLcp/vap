@@ -26,7 +26,7 @@
     "typescript": "5.9.3"
   },
   "name": "vap",
-  "packageManager": "pnpm@10.20.0",
+  "packageManager": "pnpm@10.21.0",
   "scripts": {
     "auth:generate": "pnpx @better-auth/cli generate --config ./src/features/auth/infrastructure/auth-lib.ts",
     "build": "next build",

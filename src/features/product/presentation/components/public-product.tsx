@@ -23,7 +23,7 @@ export const PublicProduct: React.FC<PublicProductProps> = ({ product }) => (
       <div className='detail'>
         <p className='price'>{formatPrice(product.price)}</p>
 
-        <PublicProductActions productId={product.id} />
+        <PublicProductActions product={product} />
       </div>
     </div>
   </div>

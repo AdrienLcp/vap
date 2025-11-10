@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Dialog, DialogTrigger, Modal, ModalOverlay } from 'react-aria-components'
 
+import { useAuth } from '@/features/auth/application/use-auth'
 import { useCartStore } from '@/features/cart/application/use-cart-store'
 import { CartClient } from '@/features/cart/infrastructure/cart-client'
 import { CartButton } from '@/features/cart/presentation/components/cart-button'
@@ -17,11 +18,13 @@ import { ToastService } from '@/presentation/services/toast-service'
 import './cart.sass'
 
 export const Cart: React.FC = () => {
-  const [isLoadingCart, setIsLoadingCart] = useState(true)
+  const { auth } = useAuth()
+
+  const [isLoadingCart, setIsLoadingCart] = useState(false)
 
   const syncCartStore = useCartStore((state) => state.syncItems)
 
-  const loadUserCart = useCallback(async () => {
+  const loadRemoteUserCart = useCallback(async () => {
     setIsLoadingCart(true)
     const cartResponse = await CartClient.findUserCartItems()
     setIsLoadingCart(false)
@@ -30,11 +33,21 @@ export const Cart: React.FC = () => {
       if (cartResponse.status !== UNAUTHORIZED_STATUS) {
         ToastService.error(t('cart.list.error'))
       }
+
       return
     }
 
     syncCartStore(cartResponse.data)
   }, [syncCartStore])
+
+  const loadUserCart = useCallback(async () => {
+    if (auth.status === 'authenticated') {
+      await loadRemoteUserCart()
+      return
+    }
+
+    syncCartStore()
+  }, [auth.status, loadRemoteUserCart, syncCartStore])
 
   useEffect(() => {
     loadUserCart()

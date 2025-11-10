@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from 'react'
 
+import { useAuth } from '@/features/auth/application/use-auth'
 import { useCartStore } from '@/features/cart/application/use-cart-store'
 import { CART_CONSTANTS } from '@/features/cart/domain/cart-constants'
 import { CartClient } from '@/features/cart/infrastructure/cart-client'
@@ -19,6 +20,8 @@ export const ProductQuantitySelector: React.FC<ProductQuantitySelectorProps> = (
   productId,
   setIsLoading
 }) => {
+  const { auth } = useAuth()
+
   const cartProductQuantity = useCartStore((state) => state.getProductQuantity(productId))
   const updateProductCartStoreQuantity = useCartStore((state) => state.updateQuantity)
 
@@ -32,7 +35,7 @@ export const ProductQuantitySelector: React.FC<ProductQuantitySelectorProps> = (
     [setIsLoading]
   )
 
-  const updateProductCartQuantity = useCallback(
+  const updateProductRemoteCartQuantity = useCallback(
     async (newQuantity: number) => {
       setIsProductQuantitySelectorLoading(true)
       const cartProductUpdateResponse = await CartClient.updateUserCartItemQuantity(
@@ -51,11 +54,23 @@ export const ProductQuantitySelector: React.FC<ProductQuantitySelectorProps> = (
     [productId, setIsProductQuantitySelectorLoading, updateProductCartStoreQuantity]
   )
 
+  const onProductQuantityChange = useCallback(
+    async (newQuantity: number) => {
+      if (auth.status === 'authenticated') {
+        await updateProductRemoteCartQuantity(newQuantity)
+        return
+      }
+
+      updateProductCartStoreQuantity(productId, newQuantity)
+    },
+    [auth.status, productId, updateProductRemoteCartQuantity, updateProductCartStoreQuantity]
+  )
+
   return (
     <QuantitySelector
-      isDisabled={isUpdatingCartProduct}
+      isDisabled={auth.status === 'loading' || isUpdatingCartProduct}
       max={CART_CONSTANTS.MAX_ITEM_QUANTITY}
-      onQuantityChange={updateProductCartQuantity}
+      onQuantityChange={onProductQuantityChange}
       quantity={cartProductQuantity}
     />
   )

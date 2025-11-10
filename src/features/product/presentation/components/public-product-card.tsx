@@ -23,7 +23,7 @@ export const PublicProductCard: React.FC<PublicProductCardProps> = ({ product })
       <div className='details'>
         <span>{formatPrice(product.price)}</span>
 
-        <PublicProductActions productId={product.id} />
+        <PublicProductActions product={product} />
       </div>
     </CardFooter>
   </Card>

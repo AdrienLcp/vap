@@ -1,7 +1,6 @@
 'use client'
 
 import { DEFAULT_ROUTE } from '@/domain/navigation'
-import { useAuth } from '@/features/auth/application/use-auth'
 import { AuthButton } from '@/features/auth/presentation/components/auth-button'
 import { Cart } from '@/features/cart/presentation/components/cart'
 import { Logo } from '@/presentation/components/ui/logo'
@@ -9,20 +8,16 @@ import { Link } from '@/presentation/components/ui/pressables/link'
 
 import './header.sass'
 
-export const Header: React.FC = () => {
-  const { auth } = useAuth()
+export const Header: React.FC = () => (
+  <header className='header'>
+    <Link className='home-link' href={DEFAULT_ROUTE}>
+      <Logo />
+    </Link>
 
-  return (
-    <header className='header'>
-      <Link className='home-link' href={DEFAULT_ROUTE}>
-        <Logo />
-      </Link>
+    <div className='buttons'>
+      <Cart />
 
-      <div className='buttons'>
-        {auth.status === 'authenticated' && <Cart />}
-
-        <AuthButton />
-      </div>
-    </header>
-  )
-}
+      <AuthButton />
+    </div>
+  </header>
+)
