@@ -12,7 +12,7 @@ import type {
 } from '@/features/product/domain/product-entities'
 import { type ErrorResult, failure, type Result, success } from '@/helpers/result'
 import { type EntitySelectedFields, ProductDatabase } from '@/infrastructure/database'
-import { getDatabaseError } from '@/infrastructure/database/database-helpers'
+import { contains, getDatabaseError } from '@/infrastructure/database/database-helpers'
 
 const PRODUCT_SELECTED_FIELDS = {
   description: true,
@@ -118,7 +118,14 @@ const findProducts = async (filters?: ProductFilters): Promise<Result<ProductDTO
       select: productSelectedFields,
       where: {
         categoryId: filters?.categoryIds ? { in: filters.categoryIds } : undefined,
-        name: filters?.search ? { contains: filters.search, mode: 'insensitive' } : undefined,
+        OR: filters?.search
+          ? [
+              { category: { name: contains(filters.search) } },
+              { description: contains(filters.search) },
+              { name: contains(filters.search) },
+              { sku: contains(filters.search) }
+            ]
+          : undefined,
         price: {
           gte: filters?.minPrice,
           lte: filters?.maxPrice

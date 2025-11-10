@@ -2,11 +2,10 @@ import 'server-only'
 
 import { Prisma } from '@prisma/client'
 
-export const isKnownDatabaseError = (
-  error: unknown
-): error is Prisma.PrismaClientKnownRequestError => {
-  return error instanceof Prisma.PrismaClientKnownRequestError
-}
+export const contains = (searchTerm: string) => ({
+  contains: searchTerm,
+  mode: 'insensitive'
+}) as const
 
 export const DATABASE_CONSTANTS = {
   DUPLICATE_ERROR: 'P2002'
@@ -24,4 +23,10 @@ export const getDatabaseError = (error: unknown): DatabaseError => {
   }
 
   return { code: 'UNKNOWN' }
+}
+
+export const isKnownDatabaseError = (
+  error: unknown
+): error is Prisma.PrismaClientKnownRequestError => {
+  return error instanceof Prisma.PrismaClientKnownRequestError
 }

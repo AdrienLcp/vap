@@ -6,6 +6,7 @@ import type { NotFound } from '@/domain/entities'
 import type { UserDTO, UserFilters, UserRole } from '@/features/user/domain/user-entities'
 import { failure, type Result, success } from '@/helpers/result'
 import { type EntitySelectedFields, UserDatabase } from '@/infrastructure/database'
+import { contains } from '@/infrastructure/database/database-helpers'
 
 const USER_SELECTED_FIELDS = {
   email: true,
@@ -42,10 +43,7 @@ const findUsers = async (filters?: UserFilters): Promise<Result<UserDTO[]>> => {
     const users = await UserDatabase.findMany({
       select: USER_SELECTED_FIELDS,
       where: {
-        email: {
-          contains: filters?.email ? filters.email : undefined,
-          mode: 'insensitive'
-        },
+        email: contains(filters.email ?? ''),
         role: filters?.roles ? { in: filters.roles } : undefined
       }
     })
