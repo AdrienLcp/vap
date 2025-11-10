@@ -20,7 +20,10 @@ const buildUsersFiltersQueryString = (filters?: UserFilters): string => {
   }
 
   if (filters.roles) {
-    userFiltersQueryParams.set(USER_SEARCH_PARAMS.ROLES, filters.roles.join(USER_SEARCH_PARAMS.ROLES_SEPARATOR))
+    userFiltersQueryParams.set(
+      USER_SEARCH_PARAMS.ROLES,
+      filters.roles.join(USER_SEARCH_PARAMS.ROLES_SEPARATOR)
+    )
   }
 
   return `?${userFiltersQueryParams.toString()}`

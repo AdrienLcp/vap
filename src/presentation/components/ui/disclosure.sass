@@ -1,0 +1,18 @@
+.disclosure
+  & button[slot='trigger']
+    align-items: center
+    display: flex
+    gap: var(--size-80, 0.5rem)
+    inline-size: 100%
+    justify-content: space-between
+
+    & .chevron-icon
+      transition: rotate var(--transition-150) var(--timing, ease-in-out)
+
+  &-panel
+    block-size: var(--disclosure-panel-height, 100%)
+    overflow: clip
+    transition: height var(--transition-150) var(--timing, ease-in-out)
+
+  &[data-expanded] .chevron-icon
+    rotate: 180deg

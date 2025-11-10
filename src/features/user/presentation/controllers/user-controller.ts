@@ -9,7 +9,12 @@ import type {
   UserRole,
   UserUpdateResponse
 } from '@/features/user/domain/user-entities'
-import { UserDTOSchema, UserFiltersSchema, UserIdSchema, UserUpdateSchema } from '@/features/user/domain/user-schemas'
+import {
+  UserDTOSchema,
+  UserFiltersSchema,
+  UserIdSchema,
+  UserUpdateSchema
+} from '@/features/user/domain/user-schemas'
 import { HttpResponse } from '@/infrastructure/api/http-response'
 
 const extractSearchParams = (request?: Request): UserFilters | null => {

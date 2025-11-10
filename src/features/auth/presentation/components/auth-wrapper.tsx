@@ -1,5 +1,11 @@
+import classNames from 'classnames'
+
 import './auth-wrapper.sass'
 
-export const AuthWrapper: React.FC<React.PropsWithChildren> = ({ children }) => (
-  <main className='auth-wrapper'>{children}</main>
+type AuthWrapperProps = React.PropsWithChildren & {
+  className?: string
+}
+
+export const AuthWrapper: React.FC<AuthWrapperProps> = ({ children, className }) => (
+  <main className={classNames('auth-wrapper', className)}>{children}</main>
 )

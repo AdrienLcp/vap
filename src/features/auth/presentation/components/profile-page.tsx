@@ -1,14 +1,11 @@
 import { redirect } from 'next/navigation'
 
 import { ROUTES } from '@/domain/navigation'
-import { AccountDelete } from '@/features/auth/presentation/components/account-delete'
-import { ChangeEmailForm } from '@/features/auth/presentation/components/forms/change-email-form'
-import { ChangePasswordForm } from '@/features/auth/presentation/components/forms/change-password-form'
+import { AuthWrapper } from '@/features/auth/presentation/components/auth-wrapper'
+import { ProfileDashboard } from '@/features/auth/presentation/components/profile-dashboard'
 import { AuthController } from '@/features/auth/presentation/controllers/auth-controller'
 import { OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
-
-import './profile-page.sass'
 
 export const ProfilePage: React.FC = async () => {
   const userResponse = await AuthController.findUser()
@@ -19,23 +16,10 @@ export const ProfilePage: React.FC = async () => {
   }
 
   return (
-    <>
+    <AuthWrapper>
       <h1>{t('auth.profile.title')}</h1>
 
-      <section>
-        <h2>{t('auth.profile.changeEmail')}</h2>
-        <ChangeEmailForm />
-      </section>
-
-      <section>
-        <h2>{t('auth.profile.changePassword')}</h2>
-        <ChangePasswordForm />
-      </section>
-
-      <section>
-        <h2>{t('auth.profile.deleteAccount')}</h2>
-        <AccountDelete />
-      </section>
-    </>
+      <ProfileDashboard />
+    </AuthWrapper>
   )
 }

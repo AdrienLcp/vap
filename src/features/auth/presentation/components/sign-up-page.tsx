@@ -1,32 +1,19 @@
-'use server'
-
-import { redirect } from 'next/navigation'
-
-import { DEFAULT_ROUTE } from '@/domain/navigation'
 import { AlreadyRegistered } from '@/features/auth/presentation/components/already-registered'
+import { AuthWrapper } from '@/features/auth/presentation/components/auth-wrapper'
 import { SignUpForm } from '@/features/auth/presentation/components/forms/sign-up-form'
 import { GoogleAuthentication } from '@/features/auth/presentation/components/google-authentication'
-import { AuthController } from '@/features/auth/presentation/controllers/auth-controller'
-import { OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 
-export const SignUpPage: React.FC = async () => {
-  const userResponse = await AuthController.findUser()
-  const isUserAuthenticated = userResponse.status === OK_STATUS
+import './sign-up-page.sass'
 
-  if (isUserAuthenticated) {
-    redirect(DEFAULT_ROUTE)
-  }
+export const SignUpPage: React.FC = () => (
+  <AuthWrapper className='sign-up-page'>
+    <h1>{t('auth.signUp.title')}</h1>
 
-  return (
-    <>
-      <h1>{t('auth.signUp.title')}</h1>
+    <SignUpForm />
 
-      <SignUpForm />
+    <AlreadyRegistered />
 
-      <AlreadyRegistered />
-
-      <GoogleAuthentication />
-    </>
-  )
-}
+    <GoogleAuthentication />
+  </AuthWrapper>
+)
