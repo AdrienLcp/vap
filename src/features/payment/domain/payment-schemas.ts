@@ -3,7 +3,15 @@ import { z } from 'zod'
 import { PAYMENT_METHOD_CONSTANTS } from '@/features/payment/domain/payment-constants'
 
 export const PaymentMethodIdSchema = z.string()
-export const PaymentMethodTypeSchema = z.enum(PAYMENT_METHOD_CONSTANTS.TYPES)
+
+export const CardPaymentMethodTypeSchema = z.enum(PAYMENT_METHOD_CONSTANTS.CARD_PAYMENT_METHOD_TYPES)
+export const NonCardPaymentMethodTypeSchema = z.enum(PAYMENT_METHOD_CONSTANTS.NON_CARD_PAYMENT_METHODS_TYPES)
+
+export const PaymentMethodTypeSchema = z.union([
+  CardPaymentMethodTypeSchema,
+  NonCardPaymentMethodTypeSchema
+])
+
 export const PaymentMethodProviderSchema = z.enum(PAYMENT_METHOD_CONSTANTS.PROVIDERS)
 
 export const PaymentMethodExpiryMonthSchema = z
@@ -21,12 +29,24 @@ export const PaymentMethodLast4Schema = z
   .length(4)
   .regex(/^\d{4}$/)
 
-export const PaymentMethodDTOSchema = z.object({
-  expiryMonth: PaymentMethodExpiryMonthSchema.optional(),
-  expiryYear: PaymentMethodExpiryYearSchema.optional(),
+const BasePaymentMethodSchema = z.object({
   id: PaymentMethodIdSchema,
   isDefault: z.boolean(),
-  last4: PaymentMethodLast4Schema.optional(),
-  provider: PaymentMethodProviderSchema,
-  type: PaymentMethodTypeSchema
+  provider: PaymentMethodProviderSchema
 })
+
+const CardPaymentMethodSchema = BasePaymentMethodSchema.extend({
+  expiryMonth: PaymentMethodExpiryMonthSchema,
+  expiryYear: PaymentMethodExpiryYearSchema,
+  last4: PaymentMethodLast4Schema,
+  type: CardPaymentMethodTypeSchema
+})
+
+const NonCardPaymentMethodSchema = BasePaymentMethodSchema.extend({
+  type: NonCardPaymentMethodTypeSchema
+})
+
+export const PaymentMethodDTOSchema = z.discriminatedUnion('type', [
+  CardPaymentMethodSchema,
+  NonCardPaymentMethodSchema
+])
