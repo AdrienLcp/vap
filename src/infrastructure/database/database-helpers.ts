@@ -2,10 +2,11 @@ import 'server-only'
 
 import { Prisma } from '@prisma/client'
 
-export const contains = (searchTerm: string) => ({
-  contains: searchTerm,
-  mode: 'insensitive'
-}) as const
+export const contains = (searchTerm: string) =>
+  ({
+    contains: searchTerm,
+    mode: 'insensitive'
+  }) as const
 
 export const DATABASE_CONSTANTS = {
   DUPLICATE_ERROR: 'P2002'

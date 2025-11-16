@@ -26,7 +26,7 @@ export const Disclosure: React.FC<DisclosureProps> = ({
   ...disclosureRestProps
 }) => (
   <ReactAriaDisclosure
-    className={values => reactAriaClassNames(values, className, 'disclosure')}
+    className={(values) => reactAriaClassNames(values, className, 'disclosure')}
     {...disclosureRestProps}
   >
     <Heading>

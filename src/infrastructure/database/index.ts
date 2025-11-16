@@ -12,6 +12,8 @@ if (process.env.NODE_ENV !== 'production') {
 
 export const CartDatabase = prisma.cartItem
 export const CategoryDatabase = prisma.category
+export const OrderDatabase = prisma.order
+export const OrderItemDatabase = prisma.orderItem
 export const ProductDatabase = prisma.product
 export const UserDatabase = prisma.user
 

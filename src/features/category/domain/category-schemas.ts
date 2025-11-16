@@ -37,5 +37,5 @@ export const CategorySchema = z.object({
 })
 
 export const CategoryDTOSchema = CategorySchema.extend({
-  productCount: z.number()
+  productCount: z.int()
 })

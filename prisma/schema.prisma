@@ -123,6 +123,56 @@ model CartItem {
   @@map("cart_items")
 }
 
+model Address {
+  id           String  @id @default(cuid())
+  userId       String
+  user         User    @relation(fields: [userId], references: [id])
+
+  street       String
+  city         String
+  postalCode   String
+  country      String
+  isDefault    Boolean @default(false)
+
+  orders       Order[]
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now()) @updatedAt
+
+  @@map("addresses")
+}
+
+enum PaymentType {
+  BANK_TRANSFER
+  CREDIT_CARD
+  DEBIT_CARD
+  PAYPAL
+}
+
+enum PaymentProvider {
+  STRIPE
+}
+
+model PaymentMethod {
+  id           String  @id @default(cuid())
+  userId       String
+  user         User    @relation(fields: [userId], references: [id])
+
+  type         PaymentType
+  provider     PaymentProvider @default(STRIPE)
+  last4        String?
+  expiryMonth  Int?
+  expiryYear   Int?
+  isDefault    Boolean @default(false)
+
+  orders       Order[]
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now()) @updatedAt
+
+  @@map("payment_methods")
+}
+
 model OrderItem {
   id        String  @id @default(cuid())
   order     Order   @relation(fields: [orderId], references: [id])
@@ -138,45 +188,50 @@ model OrderItem {
   @@map("order_items")
 }
 
-enum OrderStatus {
-  PENDING
-  PAID
-  SHIPPED
-  COMPLETED
-  CANCELLED
-}
-
 model Order {
-  id              String      @id @default(cuid())
-  user            User        @relation(fields: [userId], references: [id])
-  userId          String
-  items           OrderItem[]
-  totalPrice      Float
-  status          OrderStatus @default(PENDING)
-  paymentMethod   String?
-  shippingAddress String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-
+  id                String         @id @default(cuid())
+  user              User           @relation(fields: [userId], references: [id])
+  userId            String
+  shippingAddress   Address        @relation(fields: [shippingAddressId], references: [id])
+  shippingAddressId String
+  paymentMethod     PaymentMethod  @relation(fields: [paymentMethodId], references: [id])
+  paymentMethodId   String
+  
+  items             OrderItem[]
+  totalPrice        Float
+  status            OrderStatus    @default(PENDING)
+  
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @default(now()) @updatedAt
+  
   @@map("orders")
 }
 
+enum OrderStatus {
+  CANCELLED
+  COMPLETED
+  PAID
+  PENDING
+  SHIPPED
+}
+
 model User {
-  id            String  @id
-  name          String
-  email         String
-  emailVerified Boolean
-  image         String?
-  role          Role    @default(USER)
+  id              String  @id
+  name            String
+  email           String
+  emailVerified   Boolean
+  image           String?
+  role            Role    @default(USER)
 
-  createdAt DateTime
-  updatedAt DateTime
-  sessions  Session[]
-  accounts  Account[]
+  createdAt       DateTime
+  updatedAt       DateTime
+  sessions        Session[]
+  accounts        Account[]
 
-  cartItems CartItem[]
-  orders    Order[]
+  cartItems       CartItem[]
+  orders          Order[]
+  addresses       Address[]
+  paymentMethods  PaymentMethod[]
 
   @@unique([email])
   @@map("users")

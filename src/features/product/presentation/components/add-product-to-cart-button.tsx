@@ -54,10 +54,7 @@ export const AddProductToCartButton: React.FC<AddProductToCartButtonProps> = ({ 
       return
     }
 
-    addProductToCartStore(
-      product,
-      CART_ITEM_CREATION_INITIAL_QUANTITY
-    )
+    addProductToCartStore(product, CART_ITEM_CREATION_INITIAL_QUANTITY)
   }, [addProductToCartStore, addProductToRemoteCart, auth.status, product])
 
   return (

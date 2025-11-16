@@ -1,10 +1,10 @@
-import z from 'zod'
+import { z } from 'zod'
 
 import { CART_CONSTANTS, CART_ERRORS } from '@/features/cart/domain/cart-constants'
 import { ProductIdSchema, ProductPublicDTOSchema } from '@/features/product/domain/product-schemas'
 
 export const CartItemQuantitySchema = z
-  .number()
+  .int()
   .max(CART_CONSTANTS.MAX_ITEM_QUANTITY, CART_ERRORS.QUANTITY_TOO_HIGH)
   .min(CART_CONSTANTS.MIN_ITEM_QUANTITY, CART_ERRORS.QUANTITY_TOO_LOW)
 
@@ -32,7 +32,7 @@ export const CartItemCreationDataSchema = z.object({
 })
 
 const CartItemQuantityUpdateSchema = z
-  .number()
+  .int()
   .max(CART_CONSTANTS.MAX_ITEM_QUANTITY, CART_ERRORS.QUANTITY_TOO_HIGH)
 
 export const CartItemUpdateDataSchema = z.object({
