@@ -8,6 +8,7 @@ import type {
 import type {
   CategoryCreationSchema,
   CategoryDTOSchema,
+  CategoryIdSchema,
   CategorySchema,
   CategoryUpdateSchema
 } from '@/features/category/domain/category-schemas'
@@ -24,6 +25,8 @@ import type {
 } from '@/infrastructure/api/http-response'
 import type { ValueOf } from '@/utils/object-utils'
 import type { Issues, ValidationErrors } from '@/utils/validation-utils'
+
+export type CategoryId = z.infer<typeof CategoryIdSchema>
 
 export type Category = z.infer<typeof CategorySchema>
 
@@ -42,7 +45,7 @@ export type CategoryListResponse = Response<OkResponse<CategoryDTO[]>>
 
 type CategoryResult =
   | OkResponse<CategoryDTO>
-  | BadRequestResponse<Issues<string>>
+  | BadRequestResponse<Issues<CategoryId>>
   | NotFoundResponse
 
 export type CategoryResponse = Response<CategoryResult>
@@ -58,7 +61,7 @@ export type CategoryCreationResponse = Response<CategoryCreationResult>
 
 type CategoryDeletionResult =
   | NoContentResponse
-  | BadRequestResponse<Issues<string>>
+  | BadRequestResponse<Issues<CategoryId>>
   | UnauthorizedResponse
   | ForbiddenResponse
 
@@ -66,7 +69,7 @@ export type CategoryDeletionResponse = Response<CategoryDeletionResult>
 
 type CategoryUpdateResult =
   | OkResponse<CategoryDTO>
-  | BadRequestResponse<Issues<CategoryUpdateData | string>>
+  | BadRequestResponse<Issues<CategoryUpdateData | CategoryId>>
   | ConflictResponse<CategoryNameAlreadyExists>
   | UnauthorizedResponse
   | ForbiddenResponse

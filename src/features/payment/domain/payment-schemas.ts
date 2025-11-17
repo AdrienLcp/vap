@@ -1,18 +1,19 @@
 import { z } from 'zod'
 
-import { PAYMENT_METHOD_CONSTANTS } from '@/features/payment/domain/payment-constants'
+import {
+  CARD_PAYMENT_METHOD_TYPES,
+  NON_CARD_PAYMENT_METHODS_TYPES,
+  PAYMENT_METHOD_CONSTANTS
+} from '@/features/payment/domain/payment-constants'
 
-export const PaymentMethodIdSchema = z.string()
-
-export const CardPaymentMethodTypeSchema = z.enum(PAYMENT_METHOD_CONSTANTS.CARD_PAYMENT_METHOD_TYPES)
-export const NonCardPaymentMethodTypeSchema = z.enum(PAYMENT_METHOD_CONSTANTS.NON_CARD_PAYMENT_METHODS_TYPES)
-
+export const PaymentMethodIdSchema = z.cuid()
+export const PaymentMethodProviderSchema = z.enum(PAYMENT_METHOD_CONSTANTS.PROVIDERS)
+export const CardPaymentMethodTypeSchema = z.enum(CARD_PAYMENT_METHOD_TYPES)
+export const NonCardPaymentMethodTypeSchema = z.enum(NON_CARD_PAYMENT_METHODS_TYPES)
 export const PaymentMethodTypeSchema = z.union([
   CardPaymentMethodTypeSchema,
   NonCardPaymentMethodTypeSchema
 ])
-
-export const PaymentMethodProviderSchema = z.enum(PAYMENT_METHOD_CONSTANTS.PROVIDERS)
 
 export const PaymentMethodExpiryMonthSchema = z
   .int()

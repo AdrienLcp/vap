@@ -9,7 +9,7 @@ import {
 } from '@/features/product/domain/product-schemas'
 import { UserDTOSchema, UserIdSchema } from '@/features/user/domain/user-schemas'
 
-export const OrderIdSchema = z.string()
+export const OrderIdSchema = z.cuid()
 
 export const OrderItemIdSchema = z.string()
 

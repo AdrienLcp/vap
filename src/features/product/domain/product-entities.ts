@@ -7,6 +7,7 @@ import type {
   ProductCreationSchema,
   ProductDTOSchema,
   ProductFiltersSchema,
+  ProductIdSchema,
   ProductPublicDTOSchema,
   ProductSchema,
   ProductStatusSchema,
@@ -25,6 +26,8 @@ import type {
 } from '@/infrastructure/api/http-response'
 import type { ValueOf } from '@/utils/object-utils'
 import type { Issues, ValidationErrors } from '@/utils/validation-utils'
+
+export type ProductId = z.infer<typeof ProductIdSchema>
 
 export type ProductStatus = z.infer<typeof ProductStatusSchema>
 
@@ -56,7 +59,7 @@ export type ProductListResponse = Response<ProductListResult>
 
 type ProductResult =
   | OkResponse<ProductDTO>
-  | BadRequestResponse<Issues<string>>
+  | BadRequestResponse<Issues<ProductId>>
   | UnauthorizedResponse
   | ForbiddenResponse
   | NotFoundResponse
@@ -67,7 +70,7 @@ export type ProductPublicListResponse = Response<OkResponse<ProductPublicDTO[]>>
 
 type ProductPublicResult =
   | OkResponse<ProductPublicDTO>
-  | BadRequestResponse<Issues<string | ProductFilters>>
+  | BadRequestResponse<Issues<ProductId | ProductFilters>>
   | NotFoundResponse
 
 export type ProductPublicResponse = Response<ProductPublicResult>
@@ -83,7 +86,7 @@ export type ProductCreationResponse = Response<ProductCreationResult>
 
 type ProductUpdateResult =
   | OkResponse<ProductDTO>
-  | BadRequestResponse<Issues<ProductUpdateData | string>>
+  | BadRequestResponse<Issues<ProductUpdateData | ProductId>>
   | UnauthorizedResponse
   | ForbiddenResponse
   | ConflictResponse<ProductConflictError>
@@ -92,7 +95,7 @@ export type ProductUpdateResponse = Response<ProductUpdateResult>
 
 type ProductDeletionResult =
   | NoContentResponse
-  | BadRequestResponse<Issues<string>>
+  | BadRequestResponse<Issues<ProductId>>
   | UnauthorizedResponse
   | ForbiddenResponse
 

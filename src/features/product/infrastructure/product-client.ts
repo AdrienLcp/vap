@@ -49,7 +49,6 @@ const buildProductFiltersQueryString = (productFilters?: ProductFilters): string
   if (productFilters.search) {
     productFiltersQueryParams.set(PRODUCT_SEARCH_PARAMS.SEARCH, productFilters.search)
   }
-  0
 
   if (productFilters.status) {
     productFiltersQueryParams.set(PRODUCT_SEARCH_PARAMS.STATUS, productFilters.status)

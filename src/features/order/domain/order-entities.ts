@@ -3,11 +3,14 @@ import type { z } from 'zod'
 import type {
   OrderCreationDataSchema,
   OrderDTOSchema,
+  OrderIdSchema,
   OrderItemDTOSchema,
   OrderItemProductCategoryDTOSchema,
   OrderItemProductDTOSchema,
   OrderStatusSchema
 } from '@/features/order/domain/order-schemas'
+
+export type OrderId = z.infer<typeof OrderIdSchema>
 
 export type OrderStatus = z.infer<typeof OrderStatusSchema>
 
