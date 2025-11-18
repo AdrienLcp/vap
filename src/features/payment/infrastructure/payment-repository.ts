@@ -28,7 +28,9 @@ const createUserPaymentMethod = async (
   try {
     const createdPaymentMethod = await PaymentMethodDatabase.create({
       data: {
-        
+        isDefault: paymentMethodCreationData.isDefault ?? false,
+        provider: paymentMethodCreationData.provider,
+        userId
       },
       select: METHOD_PAYMENT_SELECTED_FIELDS
     })
@@ -53,7 +55,30 @@ const deleteUserPaymentMethod = async (
   }
 }
 
+const updateUserDefaultPaymentMethod = async (
+  userId: UserId,
+  paymentMethodId: PaymentMethodId
+): Promise<Result<PaymentMethodDTO>> => {
+  try {
+    await PaymentMethodDatabase.updateMany({
+      data: { isDefault: false },
+      where: { userId }
+    })
+
+    const updatedPaymentMethod = await PaymentMethodDatabase.update({
+      data: { isDefault: true },
+      where: { id: paymentMethodId, userId }
+    })
+
+    return success(updatedPaymentMethod)
+  } catch (error) {
+    console.error('Unknown error in PaymentRepository.updateUserDefaultPaymentMethod:', error)
+    return failure()
+  }
+}
+
 export const PaymentRepository = {
   createUserPaymentMethod,
-  deleteUserPaymentMethod
+  deleteUserPaymentMethod,
+  updateUserDefaultPaymentMethod
 }

@@ -58,5 +58,10 @@ export const PaymentMethodCreationSchema = z.object({
   expiryYear: PaymentMethodExpiryYearSchema,
   isDefault: z.boolean().nullish(),
   last4: PaymentMethodLast4Schema,
+  provider: PaymentMethodProviderSchema,
   type: CardPaymentMethodTypeSchema.optional()
+})
+
+export const PaymentMethodCreationDTOSchema = PaymentMethodCreationSchema.omit({
+  provider: true
 })
