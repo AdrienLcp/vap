@@ -27,7 +27,9 @@ const createUserPaymentMethod = async (
 ): Promise<Result<PaymentMethodDTO>> => {
   try {
     const createdPaymentMethod = await PaymentMethodDatabase.create({
-      data: {},
+      data: {
+        
+      },
       select: METHOD_PAYMENT_SELECTED_FIELDS
     })
 
