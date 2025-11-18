@@ -68,16 +68,12 @@ const deleteUserAddress = async (
   addressId: AddressId
 ): Promise<Result<null, NotFound>> => {
   try {
-    const deletedAddress = await AddressDatabase.delete({
+    await AddressDatabase.delete({
       where: {
         id: addressId,
         userId
       }
     })
-
-    if (!deletedAddress) {
-      return failure('NOT_FOUND')
-    }
 
     return success()
   } catch (error) {
@@ -153,9 +149,7 @@ const updateUserAddress = async (
       }
     })
 
-    if (!updatedAddress) {
-      return failure('NOT_FOUND')
-    }
+    console.log('Updated address:', updatedAddress)
 
     return success(updatedAddress)
   } catch (error) {

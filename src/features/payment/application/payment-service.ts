@@ -50,7 +50,18 @@ const deleteUserPaymentMethod = async (paymentMethodId: PaymentMethodId) => {
   return await PaymentRepository.deleteUserPaymentMethod(userResult.data.id, paymentMethodId)
 }
 
+const findUserPaymentMethods = async () => {
+  const userResult = await AuthService.findUser()
+
+  if (userResult.status === 'ERROR') {
+    return userResult
+  }
+
+  return await PaymentRepository.findUserPaymentMethods(userResult.data.id)
+}
+
 export const PaymentService = {
   createUserPaymentMethod,
-  deleteUserPaymentMethod
+  deleteUserPaymentMethod,
+  findUserPaymentMethods
 }

@@ -59,7 +59,7 @@ export const PaymentMethodCreationSchema = z.object({
   isDefault: z.boolean().nullish(),
   last4: PaymentMethodLast4Schema,
   provider: PaymentMethodProviderSchema,
-  type: CardPaymentMethodTypeSchema.optional()
+  type: CardPaymentMethodTypeSchema
 })
 
 export const PaymentMethodCreationDTOSchema = PaymentMethodCreationSchema.omit({

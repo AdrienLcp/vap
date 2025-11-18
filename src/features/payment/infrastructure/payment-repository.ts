@@ -28,8 +28,12 @@ const createUserPaymentMethod = async (
   try {
     const createdPaymentMethod = await PaymentMethodDatabase.create({
       data: {
+        expiryMonth: paymentMethodCreationData.expiryMonth,
+        expiryYear: paymentMethodCreationData.expiryYear,
         isDefault: paymentMethodCreationData.isDefault ?? false,
+        last4: paymentMethodCreationData.last4,
         provider: paymentMethodCreationData.provider,
+        type: paymentMethodCreationData.type,
         userId
       },
       select: METHOD_PAYMENT_SELECTED_FIELDS
@@ -47,7 +51,10 @@ const deleteUserPaymentMethod = async (
   paymentMethodId: PaymentMethodId
 ): Promise<Result> => {
   try {
-    await PaymentMethodDatabase.delete({ where: { id: paymentMethodId, userId } })
+    await PaymentMethodDatabase.delete({
+      where: { id: paymentMethodId, userId }
+    })
+
     return success()
   } catch (error) {
     console.error('Unknown error in PaymentRepository.deleteUserPaymentMethod:', error)
@@ -55,9 +62,23 @@ const deleteUserPaymentMethod = async (
   }
 }
 
+const findUserPaymentMethods = async (userId: UserId): Promise<Result<PaymentMethodDTO[]>> => {
+  try {
+    const paymentMethods = await PaymentMethodDatabase.findMany({
+      select: METHOD_PAYMENT_SELECTED_FIELDS,
+      where: { userId }
+    })
+
+    return success(paymentMethods)
+  } catch (error) {
+    console.error('Unknown error in PaymentRepository.findUserPaymentMethods:', error)
+    return failure()
+  }
+}
+
 const updateUserDefaultPaymentMethod = async (
   userId: UserId,
-  paymentMethodId: PaymentMethodId
+  newDefaultPaymentMethodId: PaymentMethodId
 ): Promise<Result<PaymentMethodDTO>> => {
   try {
     await PaymentMethodDatabase.updateMany({
@@ -67,7 +88,7 @@ const updateUserDefaultPaymentMethod = async (
 
     const updatedPaymentMethod = await PaymentMethodDatabase.update({
       data: { isDefault: true },
-      where: { id: paymentMethodId, userId }
+      where: { id: newDefaultPaymentMethodId, userId }
     })
 
     return success(updatedPaymentMethod)
@@ -80,5 +101,6 @@ const updateUserDefaultPaymentMethod = async (
 export const PaymentRepository = {
   createUserPaymentMethod,
   deleteUserPaymentMethod,
+  findUserPaymentMethods,
   updateUserDefaultPaymentMethod
 }

@@ -20,7 +20,7 @@ export const AddressCreationSchema = AddressDTOSchema.omit({ id: true })
 export const AddressUpdateSchema = z.object({
   city: AddressCitySchema.optional(),
   country: AddressCountrySchema.optional(),
-  isDefault: z.boolean(),
-  postalCode: AddressPostalCodeSchema,
-  street: AddressStreetSchema
+  isDefault: z.boolean().optional(),
+  postalCode: AddressPostalCodeSchema.optional(),
+  street: AddressStreetSchema.optional()
 })
