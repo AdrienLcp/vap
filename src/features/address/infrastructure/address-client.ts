@@ -36,9 +36,7 @@ const deleteUserAddress = async (
   }
 }
 
-const findUserAddress = async (
-  addressId: string
-): Promise<ClientResponse<AddressResponse>> => {
+const findUserAddress = async (addressId: string): Promise<ClientResponse<AddressResponse>> => {
   try {
     const addressApiUrl = `/${ADDRESS_API_BASE_URL}/${encodeURIComponent(addressId)}`
     return await ApiClient.GET<AddressResponse>(addressApiUrl)

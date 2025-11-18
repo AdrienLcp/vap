@@ -54,5 +54,9 @@ export const PaymentMethodDTOSchema = z.discriminatedUnion('type', [
 ])
 
 export const PaymentMethodCreationSchema = z.object({
+  expiryMonth: PaymentMethodExpiryMonthSchema,
+  expiryYear: PaymentMethodExpiryYearSchema,
   isDefault: z.boolean().nullish(),
+  last4: PaymentMethodLast4Schema,
+  type: CardPaymentMethodTypeSchema.optional()
 })
