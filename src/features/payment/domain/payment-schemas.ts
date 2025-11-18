@@ -3,7 +3,8 @@ import { z } from 'zod'
 import {
   CARD_PAYMENT_METHOD_TYPES,
   NON_CARD_PAYMENT_METHODS_TYPES,
-  PAYMENT_METHOD_CONSTANTS
+  PAYMENT_METHOD_CONSTANTS,
+  PAYMENT_METHOD_ERRORS
 } from '@/features/payment/domain/payment-constants'
 
 export const PaymentMethodIdSchema = z.cuid()
@@ -17,18 +18,18 @@ export const PaymentMethodTypeSchema = z.union([
 
 export const PaymentMethodExpiryMonthSchema = z
   .int()
-  .min(PAYMENT_METHOD_CONSTANTS.MIN_EXPIRY_MONTH)
-  .max(PAYMENT_METHOD_CONSTANTS.MAX_EXPIRY_MONTH)
+  .min(PAYMENT_METHOD_CONSTANTS.MIN_EXPIRY_MONTH, PAYMENT_METHOD_ERRORS.INVALID_EXPIRY_DATE)
+  .max(PAYMENT_METHOD_CONSTANTS.MAX_EXPIRY_MONTH, PAYMENT_METHOD_ERRORS.INVALID_EXPIRY_DATE)
 
 export const PaymentMethodExpiryYearSchema = z
   .int()
-  .min(PAYMENT_METHOD_CONSTANTS.MIN_EXPIRY_YEAR)
-  .max(PAYMENT_METHOD_CONSTANTS.MAX_EXPIRY_YEAR)
+  .min(PAYMENT_METHOD_CONSTANTS.MIN_EXPIRY_YEAR, PAYMENT_METHOD_ERRORS.INVALID_EXPIRY_DATE)
+  .max(PAYMENT_METHOD_CONSTANTS.MAX_EXPIRY_YEAR, PAYMENT_METHOD_ERRORS.INVALID_EXPIRY_DATE)
 
 export const PaymentMethodLast4Schema = z
   .string()
-  .length(4)
-  .regex(/^\d{4}$/)
+  .trim()
+  .regex(/^\d{4}$/, PAYMENT_METHOD_ERRORS.INVALID_LAST4)
 
 const BasePaymentMethodSchema = z.object({
   id: PaymentMethodIdSchema,
@@ -51,3 +52,7 @@ export const PaymentMethodDTOSchema = z.discriminatedUnion('type', [
   CardPaymentMethodSchema,
   NonCardPaymentMethodSchema
 ])
+
+export const PaymentMethodCreationSchema = z.object({
+  isDefault: z.boolean().nullish(),
+})
