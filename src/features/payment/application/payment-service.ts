@@ -43,8 +43,6 @@ const createUserPaymentMethod = async (paymentMethodCreationData: PaymentMethodC
 const deleteUserPaymentMethod = async (paymentMethodId: PaymentMethodId) => {
   const userResult = await AuthService.findUser()
 
-  console.log('test')
-
   if (userResult.status === 'ERROR') {
     return userResult
   }
