@@ -16,7 +16,7 @@ import {
 } from '@/features/cart/domain/cart-schemas'
 import { ProductIdSchema } from '@/features/product/domain/product-schemas'
 import { HttpResponse } from '@/infrastructure/api/http-response'
-import { buildLocationUrl } from '@/infrastructure/env/client'
+import { buildLocationUrl } from '@/utils/url-utils'
 
 const addItemToUserCart = async (
   cartItemCreationRequest: Request

@@ -24,7 +24,7 @@ import {
   ProductUpdateSchema
 } from '@/features/product/domain/product-schemas'
 import { HttpResponse } from '@/infrastructure/api/http-response'
-import { buildLocationUrl } from '@/infrastructure/env/client'
+import { buildLocationUrl } from '@/utils/url-utils'
 
 const extractSearchParams = (request?: Request): ProductFilters | null => {
   if (!request?.url) {

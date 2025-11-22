@@ -7,7 +7,7 @@
     "js-sha256": "^0.11.1",
     "lucide-react": "^0.554.0",
     "next": "16.0.3",
-    "nuqs": "^2.8.0",
+    "nuqs": "^2.8.1",
     "react": "19.2.0",
     "react-aria-components": "^1.13.0",
     "react-dom": "19.2.0",
@@ -16,17 +16,17 @@
     "zustand": "^5.0.8"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.3.6",
+    "@biomejs/biome": "2.3.7",
     "@types/node": "^24.10.1",
     "@types/react": "19.2.6",
     "@types/react-dom": "19.2.3",
     "prisma": "6.19.0",
-    "sass": "^1.94.1",
+    "sass": "^1.94.2",
     "ts-node": "^10.9.2",
     "typescript": "5.9.3"
   },
   "name": "vap",
-  "packageManager": "pnpm@10.22.0",
+  "packageManager": "pnpm@10.23.0",
   "scripts": {
     "auth:generate": "pnpx @better-auth/cli generate --config ./src/features/auth/infrastructure/auth-lib.ts",
     "build": "next build",

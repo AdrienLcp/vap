@@ -1,5 +1,7 @@
 import type { PaymentProvider, PaymentType } from '@prisma/client'
 
+export const PAYMENT_API_BASE_URL = 'payments'
+
 const CURRENT_YEAR = new Date().getFullYear()
 export const CARD_PAYMENT_METHOD_TYPES: PaymentType[] = ['CREDIT_CARD', 'DEBIT_CARD']
 export const NON_CARD_PAYMENT_METHODS_TYPES: PaymentType[] = ['BANK_TRANSFER', 'PAYPAL']

@@ -1,6 +1,7 @@
 import 'server-only'
 
 import { AddressService } from '@/features/address/application/address-service'
+import { ADDRESS_API_BASE_URL } from '@/features/address/domain/address-constants'
 import type {
   AddressCreationResponse,
   AddressDeletionResponse,
@@ -14,8 +15,7 @@ import {
   AddressIdSchema
 } from '@/features/address/domain/address-schemas'
 import { HttpResponse } from '@/infrastructure/api/http-response'
-import { buildLocationUrl } from '@/infrastructure/env/client'
-import { ADDRESS_API_BASE_URL } from '../../domain/address-constants'
+import { buildLocationUrl } from '@/utils/url-utils'
 
 const createUserAddress = async (request: Request): Promise<AddressCreationResponse> => {
   try {

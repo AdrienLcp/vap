@@ -5,15 +5,20 @@ import type {
   PaymentMethodCreationSchema,
   PaymentMethodDTOSchema,
   PaymentMethodIdSchema,
-  PaymentMethodProviderSchema
+  PaymentMethodProviderSchema,
+  PaymentMethodUpdateDTOSchema,
+  PaymentMethodUpdateSchema
 } from '@/features/payment/domain/payment-schemas'
 import type {
+  BadRequestResponse,
   CreatedResponse,
   NoContentResponse,
+  NotFoundResponse,
   OkResponse,
   Response,
   UnauthorizedResponse
 } from '@/infrastructure/api/http-response'
+import type { Issues } from '@/utils/validation-utils'
 
 export type PaymentMethodId = z.infer<typeof PaymentMethodIdSchema>
 
@@ -25,17 +30,35 @@ export type PaymentMethodCreationData = z.infer<typeof PaymentMethodCreationSche
 
 export type PaymentMethodCreationDTO = z.infer<typeof PaymentMethodCreationDTOSchema>
 
-export type PaymentMethodCreationResponse = Response<
-  CreatedResponse<PaymentMethodDTO> | UnauthorizedResponse
->
+export type PaymentMethodUpdateData = z.infer<typeof PaymentMethodUpdateSchema>
 
-export type PaymentMethodsResponse = Response<
-  | OkResponse<PaymentMethodDTO[]>
+export type PaymentMethodUpdateDTO = z.infer<typeof PaymentMethodUpdateDTOSchema>
+
+export type PaymentMethodCreationResponse = Response<
+  | CreatedResponse<PaymentMethodDTO>
+  | BadRequestResponse<Issues<PaymentMethodCreationDTO>>
   | UnauthorizedResponse
 >
 
-export type PaymentMethodDeletionResponse = Response<NoContentResponse | UnauthorizedResponse>
+export type PaymentMethodResponse = Response<
+  | OkResponse<PaymentMethodDTO>
+  | BadRequestResponse<Issues<PaymentMethodId>>
+  | UnauthorizedResponse
+  | NotFoundResponse
+>
+
+export type PaymentMethodsResponse = Response<OkResponse<PaymentMethodDTO[]> | UnauthorizedResponse>
+
+export type PaymentMethodDeletionResponse = Response<
+  | NoContentResponse
+  | BadRequestResponse<Issues<PaymentMethodId>>
+  | UnauthorizedResponse
+  | NotFoundResponse
+>
 
 export type PaymentMethodUpdateResponse = Response<
-  OkResponse<PaymentMethodDTO> | UnauthorizedResponse
+  | OkResponse<PaymentMethodDTO>
+  | BadRequestResponse<Issues<PaymentMethodUpdateDTO>>
+  | UnauthorizedResponse
+  | NotFoundResponse
 >

@@ -61,7 +61,7 @@ const updateUserAddress = async (
 ): Promise<ClientResponse<AddressResponse>> => {
   try {
     const addressApiUrl = `/${ADDRESS_API_BASE_URL}/${encodeURIComponent(addressId)}`
-    return await ApiClient.PUT<AddressResponse, AddressCreationData>(
+    return await ApiClient.PATCH<AddressResponse, AddressCreationData>(
       addressApiUrl,
       addressUpdateData
     )
