@@ -14,7 +14,7 @@ const renderEmptyState = () => <p className='empty-message'>{t('address.list.emp
 export const AddressList: React.FC<AddressListProps> = ({ addresses }) => {
   const addressListItems = addresses.map((address) => ({
     ...address,
-    textValue: `${address.street}, ${address.city}, ${address.country}, ${address.postalCode}`
+    textValue: `${address.street}, ${address.postalCode}, ${address.city}, ${address.country}${address.isDefault ? ` (${t('address.card.isDefault')})` : ''}`
   }))
 
   return (

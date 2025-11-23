@@ -2,6 +2,10 @@ import { dt, type LanguageMessages } from '@/infrastructure/i18n/lib'
 
 export const fr = {
   address: {
+    card: {
+      isDefault: 'Adresse par défaut',
+      makeDefault: 'Définir comme adresse par défaut',
+    },
     create: {
       error: "Une erreur est survenue lors de la création de l'adresse.",
       link: 'Ajouter une adresse',
@@ -30,8 +34,8 @@ export const fr = {
       },
       street: {
         invalid: "La rue fournie n'est pas valide.",
-        label: 'Rue',
-        placeholder: 'Entrez la rue'
+        label: 'Adresse',
+        placeholder: 'Numéro et nom de la rue'
       }
     },
     list: {
