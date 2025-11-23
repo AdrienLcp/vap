@@ -1,4 +1,5 @@
 const PARAMS = {
+  addressId: 'addressId',
   categoryId: 'categoryId',
   orderId: 'orderId',
   productId: 'productId',
@@ -6,6 +7,9 @@ const PARAMS = {
 } as const
 
 export const ROUTES = {
+  address: `/auth/addresses/:${PARAMS.addressId}`,
+  addressCreation: '/auth/addresses/create',
+
   admin: '/admin',
   adminCategories: '/admin/categories',
   adminCategory: `/admin/categories/:${PARAMS.categoryId}`,

@@ -12,7 +12,8 @@ import type {
 import {
   AddressCreationSchema,
   AddressDTOSchema,
-  AddressIdSchema
+  AddressIdSchema,
+  AddressUpdateSchema
 } from '@/features/address/domain/address-schemas'
 import { HttpResponse } from '@/infrastructure/api/http-response'
 import { buildLocationUrl } from '@/utils/url-utils'
@@ -168,7 +169,7 @@ const updateUserAddress = async (
     }
 
     const addressUpdateData = await request.json()
-    const addressUpdateValidation = AddressDTOSchema.safeParse(addressUpdateData)
+    const addressUpdateValidation = AddressUpdateSchema.safeParse(addressUpdateData)
 
     if (!addressUpdateValidation.success) {
       return HttpResponse.badRequest(addressUpdateValidation.error.issues)

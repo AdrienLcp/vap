@@ -1,6 +1,45 @@
 import { dt, type LanguageMessages } from '@/infrastructure/i18n/lib'
 
 export const fr = {
+  address: {
+    create: {
+      error: "Une erreur est survenue lors de la création de l'adresse.",
+      link: 'Ajouter une adresse',
+      submit: 'Créer',
+      success: "L'adresse a été créée avec succès.",
+      title: 'Créer une adresse'
+    },
+    fields: {
+      city: {
+        invalid: "La ville fournie n'est pas valide.",
+        label: 'Ville',
+        placeholder: 'Entrez la ville'
+      },
+      country: {
+        invalid: "Le pays fourni n'est pas valide.",
+        label: 'Pays',
+        placeholder: 'Entrez le pays'
+      },
+      isDefault: {
+        label: 'Définir comme adresse par défaut'
+      },
+      postalCode: {
+        invalid: "Le code postal fourni n'est pas valide.",
+        label: 'Code postal',
+        placeholder: 'Entrez le code postal'
+      },
+      street: {
+        invalid: "La rue fournie n'est pas valide.",
+        label: 'Rue',
+        placeholder: 'Entrez la rue'
+      }
+    },
+    list: {
+      ariaLabel: 'Liste des adresses',
+      empty: "Vous n'avez pas encore ajouté d'adresse.",
+      error: 'Une erreur est survenue lors du chargement des adresses.'
+    }
+  },
   admin: {
     nav: {
       admin: 'Administration',
@@ -105,9 +144,11 @@ export const fr = {
       signOut: 'Se déconnecter'
     },
     profile: {
+      addresses: 'Adresses',
       changeEmail: "Changer l'email",
       changePassword: 'Changer le mot de passe',
       deleteAccount: 'Supprimer le compte',
+      paymentMethods: 'Moyens de paiement',
       title: 'Mon profil'
     },
     signIn: {

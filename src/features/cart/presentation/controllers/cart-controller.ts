@@ -132,6 +132,8 @@ const removeItemFromUserCart = async (productId: string): Promise<CartItemDeleti
 
     if (cartItemDeletionResult.status === 'ERROR') {
       switch (cartItemDeletionResult.error) {
+        case 'NOT_FOUND':
+          return HttpResponse.notFound()
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
         default:
@@ -175,6 +177,8 @@ const updateUserCartItemQuantity = async (
 
     if (cartItemUpdateResult.status === 'ERROR') {
       switch (cartItemUpdateResult.error) {
+        case 'NOT_FOUND':
+          return HttpResponse.notFound()
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
         default:

@@ -13,6 +13,7 @@ import type {
   CreatedResponse,
   ForbiddenResponse,
   NoContentResponse,
+  NotFoundResponse,
   OkResponse,
   Response,
   UnauthorizedResponse
@@ -47,6 +48,7 @@ type CartItemUpdateResult =
   | BadRequestResponse<Issues<CartItemUpdateData | CartItemId>>
   | UnauthorizedResponse
   | ForbiddenResponse
+  | NotFoundResponse
 
 export type CartItemUpdateResponse = Response<CartItemUpdateResult>
 
@@ -55,6 +57,7 @@ type CartItemDeletionResult =
   | BadRequestResponse<Issues<CartItemId>>
   | UnauthorizedResponse
   | ForbiddenResponse
+  | NotFoundResponse
 
 export type CartItemDeletionResponse = Response<CartItemDeletionResult>
 
@@ -63,6 +66,7 @@ type CartItemQuantityUpdateResult =
   | BadRequestResponse<Issues<CartItemUpdateData>>
   | UnauthorizedResponse
   | ForbiddenResponse
+  | NotFoundResponse
 
 export type CartItemQuantityUpdateResponse = Response<CartItemQuantityUpdateResult>
 

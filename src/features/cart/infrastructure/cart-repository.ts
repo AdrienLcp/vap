@@ -9,6 +9,7 @@ import type {
 } from '@/features/cart/domain/cart-entities'
 import { failure, type Result, success } from '@/helpers/result'
 import { CartDatabase, type EntitySelectedFields } from '@/infrastructure/database'
+import { getDatabaseError } from '@/infrastructure/database/database-helpers'
 
 const CART_ITEM_SELECTED_FIELDS = {
   quantity: true
@@ -117,8 +118,15 @@ const removeItemFromUserCart = async (
 
     return success()
   } catch (error) {
-    console.error('Unknown error in CartRepository.removeItemFromUserCart:', error)
-    return failure()
+    const databaseError = getDatabaseError(error)
+
+    switch (databaseError.code) {
+      case 'NOT_FOUND':
+        return failure('NOT_FOUND')
+      default:
+        console.error('Unknown error in CartRepository.removeItemFromUserCart:', error)
+        return failure()
+    }
   }
 }
 
@@ -141,8 +149,15 @@ const updateUserCartItemQuantity = async (
 
     return success(updatedCartItem)
   } catch (error) {
-    console.error('Unknown error in CartRepository.updateUserCartItemQuantity:', error)
-    return failure()
+    const databaseError = getDatabaseError(error)
+
+    switch (databaseError.code) {
+      case 'NOT_FOUND':
+        return failure('NOT_FOUND')
+      default:
+        console.error('Unknown error in CartRepository.updateUserCartItemQuantity:', error)
+        return failure()
+    }
   }
 }
 

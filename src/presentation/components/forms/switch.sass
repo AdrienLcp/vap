@@ -1,0 +1,65 @@
+@use '@/presentation/styles/animations'
+@use '@/presentation/styles/selectors'
+
+.switch
+  align-items: center
+  display: flex
+  gap: var(--size-80, 0.25rem)
+
+  & .track
+    @include animations.color-transitions
+
+    &
+      block-size: var(--size-240, 1.5rem)
+      border: var(--element-stroke, 0.125rem) solid var(--neutral-border-muted)
+      border-radius: var(--circular, 99rem)
+      inline-size: var(--size-400, 2.5rem)
+      padding: var(--size-20, 0.125rem)
+
+    & .thumb
+      @include animations.color-transitions
+
+      &
+        aspect-ratio: 1
+        background-color: var(--neutral-foreground)
+        block-size: stretch
+        border-radius: var(--circular, 99rem)
+        transition: translate var(--transition-150) var(--ease-spring)
+
+  @include selectors.focus-visible
+    & .track
+      outline-offset: var(--size-20, 0.125rem)
+      outline: var(--element-stroke, 0.125rem) solid var(--neutral-ring)
+
+  @include selectors.hovered
+    & .track
+      border-color: var(--neutral-border-hovered)
+
+      & .thumb
+        background-color: var(--neutral-foreground-soft)
+
+  @include selectors.pressed
+    & .track
+      border-color: var(--neutral-border-pressed)
+
+      & .thumb
+        background-color: var(--neutral-foreground-muted)
+
+  @include selectors.selected
+    & .track
+      background-color: var(--brand-background)
+      border-color: var(--brand-background)
+
+      & .thumb
+        background-color: var(--neutral-background)
+        translate: calc(var(--size-160, 1rem)) 0
+
+    @include selectors.hovered
+      & .track
+        background-color: var(--brand-background-hovered)
+        border-color: var(--brand-background-hovered)
+
+    @include selectors.pressed
+      & .track
+        background-color: var(--brand-background-pressed)
+        border-color: var(--brand-background-pressed)

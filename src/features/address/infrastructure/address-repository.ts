@@ -10,6 +10,7 @@ import type {
 import type { UserId } from '@/features/user/domain/user-entities'
 import { failure, type Result, success } from '@/helpers/result'
 import { AddressDatabase, type EntitySelectedFields } from '@/infrastructure/database'
+import { getDatabaseError } from '@/infrastructure/database/database-helpers'
 
 const ADDRESS_SELECTED_FIELDS = {
   city: true,
@@ -77,8 +78,15 @@ const deleteUserAddress = async (
 
     return success()
   } catch (error) {
-    console.error('Unknown error in AddressRepository.deleteUserAddress:', error)
-    return failure()
+    const databaseError = getDatabaseError(error)
+
+    switch (databaseError.code) {
+      case 'NOT_FOUND':
+        return failure('NOT_FOUND')
+      default:
+        console.error('Unknown error in AddressRepository.deleteUserAddress:', error)
+        return failure()
+    }
   }
 }
 
@@ -109,8 +117,15 @@ const findUserAddress = async (
 
     return success(userAddress)
   } catch (error) {
-    console.error('Unknown error in AddressRepository.findUserAddresses:', error)
-    return failure()
+    const databaseError = getDatabaseError(error)
+
+    switch (databaseError.code) {
+      case 'NOT_FOUND':
+        return failure('NOT_FOUND')
+      default:
+        console.error('Unknown error in AddressRepository.findUserAddresses:', error)
+        return failure()
+    }
   }
 }
 
@@ -149,12 +164,17 @@ const updateUserAddress = async (
       }
     })
 
-    console.log('Updated address:', updatedAddress)
-
     return success(updatedAddress)
   } catch (error) {
-    console.error('Unknown error in AddressRepository.updateUserAddress:', error)
-    return failure()
+    const databaseError = getDatabaseError(error)
+
+    switch (databaseError.code) {
+      case 'NOT_FOUND':
+        return failure('NOT_FOUND')
+      default:
+        console.error('Unknown error in AddressRepository.updateUserAddress:', error)
+        return failure()
+    }
   }
 }
 

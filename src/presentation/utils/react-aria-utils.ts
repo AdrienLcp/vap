@@ -11,6 +11,7 @@ import type {
   SearchFieldRenderProps,
   SelectRenderProps,
   SliderRenderProps,
+  SwitchRenderProps,
   TextFieldRenderProps,
   TooltipRenderProps
 } from 'react-aria-components'
@@ -27,6 +28,7 @@ export type ReactAriaComponentRenderProps =
   | SearchFieldRenderProps
   | SelectRenderProps
   | SliderRenderProps
+  | SwitchRenderProps
   | TextFieldRenderProps
   | TooltipRenderProps
 
