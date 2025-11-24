@@ -2,22 +2,22 @@
 
 import { SaveIcon } from 'lucide-react'
 import { useCallback, useState } from 'react'
-
 import { ROUTES } from '@/domain/navigation'
 import { ADDRESS_ERRORS, ADDRESS_FORM_FIELDS } from '@/features/address/domain/address-constants'
 import type {
-  AddressCreationData,
+  AddressDTO,
   AddressField,
-  AddressFormErrors
+  AddressFormErrors,
+  AddressUpdateData
 } from '@/features/address/domain/address-entities'
-import { AddressCreationSchema } from '@/features/address/domain/address-schemas'
+import { AddressUpdateSchema } from '@/features/address/domain/address-schemas'
 import { AddressClient } from '@/features/address/infrastructure/address-client'
 import { AddressCityField } from '@/features/address/presentation/components/forms/address-city-field'
 import { AddressCountryField } from '@/features/address/presentation/components/forms/address-country-field'
 import { AddressDefaultSwitch } from '@/features/address/presentation/components/forms/address-default-switch'
 import { AddressPostalCodeField } from '@/features/address/presentation/components/forms/address-postal-code-field'
 import { AddressStreetField } from '@/features/address/presentation/components/forms/address-street-field'
-import { BAD_REQUEST_STATUS, CREATED_STATUS } from '@/infrastructure/api/http-response'
+import { BAD_REQUEST_STATUS, OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
 import { Form } from '@/presentation/components/forms/form'
@@ -27,11 +27,15 @@ import { SubmitButton } from '@/presentation/components/ui/pressables/submit-but
 import { ToastService } from '@/presentation/services/toast-service'
 import type { Issues } from '@/utils/validation-utils'
 
-export const AddressCreationForm: React.FC = () => {
-  const [isAddressCreationLoading, setIsAddressCreationLoading] = useState(false)
+type AddressUpdateFormProps = {
+  address: AddressDTO
+}
+
+export const AddressUpdateForm: React.FC<AddressUpdateFormProps> = ({ address }) => {
+  const [isAddressUpdating, setIsAddressUpdating] = useState(false)
   const [addressFormErrors, setAddressFormErrors] = useState<AddressFormErrors>(null)
 
-  const onAddressValidationError = useCallback((issues: Issues<AddressCreationData>) => {
+  const onAddressValidationError = useCallback((issues: Issues<AddressUpdateData>) => {
     const formErrors: string[] = []
     const cityErrors: string[] = []
     const streetErrors: string[] = []
@@ -66,12 +70,12 @@ export const AddressCreationForm: React.FC = () => {
     })
   }, [])
 
-  const onAddressCreationFormSubmit = useCallback(
+  const onAddressUpdateFormSubmit = useCallback(
     async (formData: FormData) => {
-      setIsAddressCreationLoading(true)
+      setIsAddressUpdating(true)
       setAddressFormErrors(null)
 
-      const addressCreationData: Record<AddressField, unknown> = {
+      const addressUpdateData: Record<AddressField, unknown> = {
         [ADDRESS_FORM_FIELDS.CITY]: formData.get(ADDRESS_FORM_FIELDS.CITY),
         [ADDRESS_FORM_FIELDS.COUNTRY]: formData.get(ADDRESS_FORM_FIELDS.COUNTRY),
         [ADDRESS_FORM_FIELDS.IS_DEFAULT]: formData.get(ADDRESS_FORM_FIELDS.IS_DEFAULT) === 'on',
@@ -79,53 +83,54 @@ export const AddressCreationForm: React.FC = () => {
         [ADDRESS_FORM_FIELDS.STREET]: formData.get(ADDRESS_FORM_FIELDS.STREET)
       }
 
-      const addressCreationValidation = AddressCreationSchema.safeParse(addressCreationData)
+      const addressUpdateValidation = AddressUpdateSchema.safeParse(addressUpdateData)
 
-      if (!addressCreationValidation.success) {
-        onAddressValidationError(addressCreationValidation.error.issues)
-        setIsAddressCreationLoading(false)
+      if (!addressUpdateValidation.success) {
+        onAddressValidationError(addressUpdateValidation.error.issues)
+        setIsAddressUpdating(false)
         return
       }
 
-      const addressCreationResponse = await AddressClient.createUserAddress(
-        addressCreationValidation.data
+      const addressUpdateResponse = await AddressClient.updateUserAddress(
+        address.id,
+        addressUpdateValidation.data
       )
 
-      switch (addressCreationResponse.status) {
-        case CREATED_STATUS:
-          ToastService.success(t('address.create.success'))
+      switch (addressUpdateResponse.status) {
+        case OK_STATUS:
+          ToastService.success(t('address.update.success'))
           break
         case BAD_REQUEST_STATUS:
-          onAddressValidationError(addressCreationResponse.issues)
+          onAddressValidationError(addressUpdateResponse.issues)
           break
         default:
-          setAddressFormErrors({ form: t('address.create.error') })
+          setAddressFormErrors({ form: t('address.update.error') })
           break
       }
 
-      setIsAddressCreationLoading(false)
+      setIsAddressUpdating(false)
     },
-    [onAddressValidationError]
+    [address.id, onAddressValidationError]
   )
 
   return (
-    <Form onSubmit={onAddressCreationFormSubmit} validationErrors={addressFormErrors}>
-      <FieldSet isDisabled={isAddressCreationLoading}>
-        <AddressStreetField />
+    <Form onSubmit={onAddressUpdateFormSubmit} validationErrors={addressFormErrors}>
+      <FieldSet isDisabled={isAddressUpdating}>
+        <AddressStreetField defaultValue={address.street} />
 
-        <AddressPostalCodeField />
+        <AddressPostalCodeField defaultValue={address.postalCode} />
 
-        <AddressCityField />
+        <AddressCityField defaultValue={address.city} />
 
-        <AddressCountryField />
+        <AddressCountryField defaultValue={address.country} />
 
-        <AddressDefaultSwitch />
+        <AddressDefaultSwitch isSelected={address.isDefault} />
       </FieldSet>
 
       <FormError errors={addressFormErrors?.form} />
 
-      <SubmitButton Icon={<SaveIcon />} isPending={isAddressCreationLoading}>
-        {t('address.create.title')}
+      <SubmitButton Icon={<SaveIcon />} isPending={isAddressUpdating}>
+        {t('address.update.submit')}
       </SubmitButton>
 
       <Link href={ROUTES.profile} variant='underlined'>

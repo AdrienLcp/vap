@@ -1,11 +1,17 @@
 import { ADDRESS_FORM_FIELDS } from '@/features/address/domain/address-constants'
 import { t } from '@/infrastructure/i18n'
-import { TextField } from '@/presentation/components/forms/text-field'
+import { TextField, type TextFieldProps } from '@/presentation/components/forms/text-field'
 
-export const AddressCountryField: React.FC = () => (
+export const AddressCountryField: React.FC<Partial<TextFieldProps>> = ({
+  label = t('address.fields.country.label'),
+  name = ADDRESS_FORM_FIELDS.COUNTRY,
+  placeholder = t('address.fields.country.placeholder'),
+  ...addressCountryFieldRestProps
+}) => (
   <TextField
-    label={t('address.fields.country.label')}
-    name={ADDRESS_FORM_FIELDS.COUNTRY}
-    placeholder={t('address.fields.country.placeholder')}
+    {...addressCountryFieldRestProps}
+    label={label}
+    name={name}
+    placeholder={placeholder}
   />
 )

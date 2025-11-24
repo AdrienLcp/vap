@@ -6,7 +6,8 @@ import type {
   AddressCreationResponse,
   AddressDeletionResponse,
   AddressListResponse,
-  AddressResponse
+  AddressResponse,
+  AddressUpdateData
 } from '@/features/address/domain/address-entities'
 import { ApiClient, type ClientResponse, unknownError } from '@/infrastructure/api/api-client'
 
@@ -57,11 +58,11 @@ const findUserAddresses = async (): Promise<ClientResponse<AddressListResponse>>
 
 const updateUserAddress = async (
   addressId: string,
-  addressUpdateData: AddressCreationData
+  addressUpdateData: AddressUpdateData
 ): Promise<ClientResponse<AddressResponse>> => {
   try {
     const addressApiUrl = `/${ADDRESS_API_BASE_URL}/${encodeURIComponent(addressId)}`
-    return await ApiClient.PATCH<AddressResponse, AddressCreationData>(
+    return await ApiClient.PATCH<AddressResponse, AddressUpdateData>(
       addressApiUrl,
       addressUpdateData
     )

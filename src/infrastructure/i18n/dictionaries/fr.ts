@@ -2,9 +2,10 @@ import { dt, type LanguageMessages } from '@/infrastructure/i18n/lib'
 
 export const fr = {
   address: {
+    backToProfile: 'Retour à mon profil',
     card: {
       isDefault: 'Adresse par défaut',
-      makeDefault: 'Définir comme adresse par défaut',
+      makeDefault: 'Définir comme adresse par défaut'
     },
     create: {
       error: "Une erreur est survenue lors de la création de l'adresse.",
@@ -42,6 +43,12 @@ export const fr = {
       ariaLabel: 'Liste des adresses',
       empty: "Vous n'avez pas encore ajouté d'adresse.",
       error: 'Une erreur est survenue lors du chargement des adresses.'
+    },
+    update: {
+      error: "Une erreur est survenue lors de la mise à jour de l'adresse.",
+      submit: 'Mettre à jour',
+      success: "L'adresse a été mise à jour avec succès.",
+      title: 'Modifier mon adresse'
     }
   },
   admin: {

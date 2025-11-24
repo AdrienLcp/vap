@@ -7,7 +7,7 @@ import { reactAriaClassNames } from '@/presentation/utils/react-aria-utils'
 
 import './switch.sass'
 
-type SwitchProps = ReactAriaSwitchProps & {
+export type SwitchProps = ReactAriaSwitchProps & {
   label: string
 }
 
