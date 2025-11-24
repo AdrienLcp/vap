@@ -5,7 +5,8 @@ export const fr = {
     backToProfile: 'Retour à mon profil',
     card: {
       isDefault: 'Adresse par défaut',
-      makeDefault: 'Définir comme adresse par défaut'
+      makeDefault: 'Définir comme adresse par défaut',
+      updateDefaultAddressError: "Une erreur est survenue lors de la définition de l'adresse par défaut."
     },
     create: {
       error: "Une erreur est survenue lors de la création de l'adresse.",

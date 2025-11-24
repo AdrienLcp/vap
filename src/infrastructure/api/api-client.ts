@@ -48,7 +48,7 @@ const DELETE = async <Response>(route: string, options?: RequestOptions) =>
 const GET = async <Response>(route: string, options?: RequestOptions) =>
   await request<Response>(route, 'GET', options)
 
-const PATCH = async <Response, RequestBody>(
+const PATCH = async <Response, RequestBody = undefined>(
   route: string,
   body?: RequestBody,
   options?: RequestOptions

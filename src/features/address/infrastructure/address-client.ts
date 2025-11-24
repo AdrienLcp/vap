@@ -56,6 +56,18 @@ const findUserAddresses = async (): Promise<ClientResponse<AddressListResponse>>
   }
 }
 
+const setUserDefaultAddress = async (
+  addressId: string
+): Promise<ClientResponse<AddressResponse>> => {
+  try {
+    const addressApiUrl = `/${ADDRESS_API_BASE_URL}/${encodeURIComponent(addressId)}/set-default`
+    return await ApiClient.PATCH<AddressResponse>(addressApiUrl)
+  } catch (error) {
+    console.error('Update default address error:', error)
+    return unknownError()
+  }
+}
+
 const updateUserAddress = async (
   addressId: string,
   addressUpdateData: AddressUpdateData
@@ -77,5 +89,6 @@ export const AddressClient = {
   deleteUserAddress,
   findUserAddress,
   findUserAddresses,
-  updateUserAddress
+  setUserDefaultAddress,
+  updateUserAddress,
 }

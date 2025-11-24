@@ -157,6 +157,44 @@ const findUserAddresses = async (): Promise<AddressListResponse> => {
   }
 }
 
+const setUserDefaultAddress = async (addressId: string): Promise<AddressUpdateResponse> => {
+  try {
+    const addressIdValidation = AddressIdSchema.safeParse(addressId)
+
+    if (!addressIdValidation.success) {
+      return HttpResponse.badRequest(addressIdValidation.error.issues)
+    }
+
+    const addressUpdateResult = await AddressService.setUserDefaultAddress(addressId)
+
+    if (addressUpdateResult.status === 'ERROR') {
+      switch (addressUpdateResult.error) {
+        case 'NOT_FOUND':
+          return HttpResponse.notFound()
+        case 'UNAUTHORIZED':
+          return HttpResponse.unauthorized()
+        default:
+          console.error(
+            'Unknown error in AddressController.updateUserDefaultAddress:',
+            addressUpdateResult.error
+          )
+          return HttpResponse.internalServerError()
+      }
+    }
+
+    const updatedAddressValidation = AddressDTOSchema.safeParse(addressUpdateResult.data)
+
+    if (!updatedAddressValidation.success) {
+      return HttpResponse.internalServerError()
+    }
+
+    return HttpResponse.ok(updatedAddressValidation.data)
+  } catch (error) {
+    console.error('Error in AddressController.updateUserDefaultAddress:', error)
+    return HttpResponse.internalServerError()
+  }
+}
+
 const updateUserAddress = async (
   addressId: string,
   request: Request
@@ -213,5 +251,6 @@ export const AddressController = {
   deleteUserAddress,
   findUserAddress,
   findUserAddresses,
+  setUserDefaultAddress,
   updateUserAddress
 }

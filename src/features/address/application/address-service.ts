@@ -58,6 +58,24 @@ const findUserAddresses = async () => {
   return await AddressRepository.findUserAddresses(userResult.data.id)
 }
 
+const setUserDefaultAddress = async (addressId: AddressId) => {
+  const userResult = await AuthService.findUser()
+
+  if (userResult.status === 'ERROR') {
+    return userResult
+  }
+
+  const userId = userResult.data.id
+
+  const addressesUpdateResult = await AddressRepository.clearUserDefaultAddresses(userId)
+
+  if (addressesUpdateResult.status === 'ERROR') {
+    return addressesUpdateResult
+  }
+
+  return await AddressRepository.updateUserAddress(userId, addressId, { isDefault: true })
+}
+
 const updateUserAddress = async (addressId: AddressId, addressUpdateData: AddressUpdateData) => {
   const userResult = await AuthService.findUser()
 
@@ -84,5 +102,6 @@ export const AddressService = {
   deleteUserAddresses,
   findUserAddress,
   findUserAddresses,
+  setUserDefaultAddress,
   updateUserAddress
 }
