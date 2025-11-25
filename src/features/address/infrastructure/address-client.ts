@@ -4,6 +4,7 @@ import { ADDRESS_API_BASE_URL } from '@/features/address/domain/address-constant
 import type {
   AddressCreationData,
   AddressCreationResponse,
+  AddressDefaultResponse,
   AddressDeletionResponse,
   AddressListResponse,
   AddressResponse,
@@ -58,10 +59,10 @@ const findUserAddresses = async (): Promise<ClientResponse<AddressListResponse>>
 
 const setUserDefaultAddress = async (
   addressId: string
-): Promise<ClientResponse<AddressResponse>> => {
+): Promise<ClientResponse<AddressDefaultResponse>> => {
   try {
     const addressApiUrl = `/${ADDRESS_API_BASE_URL}/${encodeURIComponent(addressId)}/set-default`
-    return await ApiClient.PATCH<AddressResponse>(addressApiUrl)
+    return await ApiClient.PATCH<AddressDefaultResponse>(addressApiUrl)
   } catch (error) {
     console.error('Update default address error:', error)
     return unknownError()
@@ -90,5 +91,5 @@ export const AddressClient = {
   findUserAddress,
   findUserAddresses,
   setUserDefaultAddress,
-  updateUserAddress,
+  updateUserAddress
 }

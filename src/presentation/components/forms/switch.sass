@@ -63,3 +63,13 @@
       & .track
         background-color: var(--brand-background-pressed)
         border-color: var(--brand-background-pressed)
+
+  @include selectors.read-only
+    & .label,
+    & .track
+      cursor: default
+
+  @include selectors.disabled
+    & .label,
+    & .track
+      cursor: default

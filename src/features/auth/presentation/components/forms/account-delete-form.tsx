@@ -9,12 +9,12 @@ import { AUTH_FORM_FIELDS } from '@/features/auth/domain/auth-constants'
 import { DeleteAccountPasswordSchema } from '@/features/auth/domain/auth-schemas'
 import { AuthClient } from '@/features/auth/infrastructure/auth-client'
 import { UserPasswordField } from '@/features/auth/presentation/components/forms/user-password-field'
+import type { ValidationErrors } from '@/helpers/validation'
 import { BAD_REQUEST_STATUS, NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { Form } from '@/presentation/components/forms/form'
 import { Button } from '@/presentation/components/ui/pressables/button'
 import { ToastService } from '@/presentation/services/toast-service'
-import type { ValidationErrors } from '@/utils/validation-utils'
 
 type SignInFormErrors = ValidationErrors<typeof AUTH_FORM_FIELDS.PASSWORD>
 

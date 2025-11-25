@@ -7,6 +7,7 @@ import { OK_STATUS, UNAUTHORIZED_STATUS } from '@/infrastructure/api/http-respon
 import { t } from '@/infrastructure/i18n'
 
 import './address-page.sass'
+import { Link } from '@/presentation/components/ui/pressables/link'
 
 type AddressPageProps = {
   addressId: string
@@ -28,6 +29,10 @@ export const AddressPage: React.FC<AddressPageProps> = async ({ addressId }) => 
       <h1>{t('address.update.title')}</h1>
 
       <AddressUpdateForm address={addressResponse.data} />
+
+      <Link href={ROUTES.addressCreation} variant='filled'>
+        {t('address.create.link')}
+      </Link>
     </main>
   )
 }

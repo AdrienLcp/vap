@@ -19,6 +19,8 @@ import { CategoryClient } from '@/features/category/infrastructure/category-clie
 import { CategoryDescriptionField } from '@/features/category/presentation/components/forms/category-description-field'
 import { CategoryImagePreviewField } from '@/features/category/presentation/components/forms/category-image-preview-field'
 import { CategoryNameField } from '@/features/category/presentation/components/forms/category-name-field'
+import { getUniqueStringsArray } from '@/helpers/array'
+import type { Issues } from '@/helpers/validation'
 import { BAD_REQUEST_STATUS, CONFLICT_STATUS, OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
@@ -27,8 +29,6 @@ import { FormError } from '@/presentation/components/forms/form-error'
 import { RequiredFieldsMessage } from '@/presentation/components/forms/required-fields-message'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import { ToastService } from '@/presentation/services/toast-service'
-import { getUniqueStringsArray } from '@/utils/array-utils'
-import type { Issues } from '@/utils/validation-utils'
 
 type CategoryUpdateFormProps = {
   category: CategoryDTO

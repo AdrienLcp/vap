@@ -17,6 +17,7 @@ import { AddressCountryField } from '@/features/address/presentation/components/
 import { AddressDefaultSwitch } from '@/features/address/presentation/components/forms/address-default-switch'
 import { AddressPostalCodeField } from '@/features/address/presentation/components/forms/address-postal-code-field'
 import { AddressStreetField } from '@/features/address/presentation/components/forms/address-street-field'
+import type { Issues } from '@/helpers/validation'
 import { BAD_REQUEST_STATUS, OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
@@ -25,7 +26,6 @@ import { FormError } from '@/presentation/components/forms/form-error'
 import { Link } from '@/presentation/components/ui/pressables/link'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import { ToastService } from '@/presentation/services/toast-service'
-import type { Issues } from '@/utils/validation-utils'
 
 type AddressUpdateFormProps = {
   address: AddressDTO

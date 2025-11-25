@@ -9,6 +9,7 @@ import type {
   PaymentMethodUpdateDTOSchema,
   PaymentMethodUpdateSchema
 } from '@/features/payment/domain/payment-schemas'
+import type { Issues } from '@/helpers/validation'
 import type {
   BadRequestResponse,
   CreatedResponse,
@@ -18,7 +19,6 @@ import type {
   Response,
   UnauthorizedResponse
 } from '@/infrastructure/api/http-response'
-import type { Issues } from '@/utils/validation-utils'
 
 export type PaymentMethodId = z.infer<typeof PaymentMethodIdSchema>
 

@@ -1,4 +1,5 @@
 import type { z } from 'zod'
+
 import type { ADDRESS_FORM_FIELDS } from '@/features/address/domain/address-constants'
 import type {
   AddressCreationSchema,
@@ -6,6 +7,8 @@ import type {
   AddressIdSchema,
   AddressUpdateSchema
 } from '@/features/address/domain/address-schemas'
+import type { ValueOf } from '@/helpers/object'
+import type { Issues, ValidationErrors } from '@/helpers/validation'
 import type {
   BadRequestResponse,
   CreatedResponse,
@@ -15,8 +18,6 @@ import type {
   Response,
   UnauthorizedResponse
 } from '@/infrastructure/api/http-response'
-import type { ValueOf } from '@/utils/object-utils'
-import type { Issues, ValidationErrors } from '@/utils/validation-utils'
 
 export type AddressId = z.infer<typeof AddressIdSchema>
 
@@ -50,6 +51,13 @@ export type AddressUpdateResponse = Response<
 
 export type AddressDeletionResponse = Response<
   | NoContentResponse
+  | BadRequestResponse<Issues<AddressId>>
+  | UnauthorizedResponse
+  | NotFoundResponse
+>
+
+export type AddressDefaultResponse = Response<
+  | OkResponse<AddressDTO[]>
   | BadRequestResponse<Issues<AddressId>>
   | UnauthorizedResponse
   | NotFoundResponse

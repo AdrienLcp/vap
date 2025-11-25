@@ -1,30 +1,39 @@
-import { ListBox, ListBoxItem } from 'react-aria-components'
+import { useCallback, useEffect, useState } from 'react'
 
 import type { AddressDTO } from '@/features/address/domain/address-entities'
-import { t } from '@/infrastructure/i18n'
+import { AddressClient } from '@/features/address/infrastructure/address-client'
+import { AddressGridList } from '@/features/address/presentation/components/address-grid-list'
+import { OK_STATUS } from '@/infrastructure/api/http-response'
+import { Loader } from '@/presentation/components/ui/loaders/loader'
+import { ToastService } from '@/presentation/services/toast-service'
 
 import './address-list.sass'
 
-type AddressListProps = {
-  addresses: AddressDTO[]
-}
+export const AddressList: React.FC = () => {
+  const [addresses, setAddresses] = useState<AddressDTO[]>([])
+  const [isLoadingAddresses, setIsLoadingAddresses] = useState(false)
 
-const renderEmptyState = () => <p className='empty-message'>{t('address.list.empty')}</p>
+  const loadAddresses = useCallback(async () => {
+    setIsLoadingAddresses(true)
+    const addressesResponse = await AddressClient.findUserAddresses()
+    setIsLoadingAddresses(false)
 
-export const AddressList: React.FC<AddressListProps> = ({ addresses }) => {
-  const addressListItems = addresses.map((address) => ({
-    ...address,
-    textValue: `${address.street}, ${address.postalCode}, ${address.city}, ${address.country}${address.isDefault ? ` (${t('address.card.isDefault')})` : ''}`
-  }))
+    switch (addressesResponse.status) {
+      case OK_STATUS:
+        setAddresses(addressesResponse.data)
+        break
+      default:
+        ToastService.error('address.list.error')
+    }
+  }, [])
 
-  return (
-    <ListBox
-      aria-label={t('address.list.ariaLabel')}
-      className='address-list'
-      items={addressListItems}
-      renderEmptyState={renderEmptyState}
-    >
-      {(address) => <ListBoxItem textValue={address.textValue}>{address.textValue}</ListBoxItem>}
-    </ListBox>
-  )
+  useEffect(() => {
+    loadAddresses()
+  }, [loadAddresses])
+
+  if (isLoadingAddresses) {
+    return <Loader />
+  }
+
+  return <AddressGridList addresses={addresses} setAddresses={setAddresses} />
 }

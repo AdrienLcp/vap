@@ -7,9 +7,9 @@ import type {
   ProductConflictError,
   ProductValidationErrors
 } from '@/features/product/domain/product-entities'
+import { getUniqueStringsArray } from '@/helpers/array'
+import type { Issues } from '@/helpers/validation'
 import { t } from '@/infrastructure/i18n'
-import { getUniqueStringsArray } from '@/utils/array-utils'
-import type { Issues } from '@/utils/validation-utils'
 
 export const getBadRequestProductFormErrors = (issues: Issues): ProductValidationErrors => {
   const formErrors: string[] = []

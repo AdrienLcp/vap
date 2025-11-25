@@ -12,6 +12,8 @@ import type {
   CategorySchema,
   CategoryUpdateSchema
 } from '@/features/category/domain/category-schemas'
+import type { ValueOf } from '@/helpers/object'
+import type { Issues, ValidationErrors } from '@/helpers/validation'
 import type {
   BadRequestResponse,
   ConflictResponse,
@@ -23,8 +25,6 @@ import type {
   Response,
   UnauthorizedResponse
 } from '@/infrastructure/api/http-response'
-import type { ValueOf } from '@/utils/object-utils'
-import type { Issues, ValidationErrors } from '@/utils/validation-utils'
 
 export type CategoryId = z.infer<typeof CategoryIdSchema>
 

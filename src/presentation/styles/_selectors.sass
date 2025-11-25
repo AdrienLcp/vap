@@ -42,6 +42,11 @@
   &[data-pressed]
     @content
 
+@mixin read-only
+  &.read-only:not([data-rac]),
+  &[data-read-only]
+    @content
+
 @mixin required
   &[required]:not([data-rac]),
   &[data-required]

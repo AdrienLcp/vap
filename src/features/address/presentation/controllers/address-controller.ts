@@ -4,6 +4,7 @@ import { AddressService } from '@/features/address/application/address-service'
 import { ADDRESS_API_BASE_URL } from '@/features/address/domain/address-constants'
 import type {
   AddressCreationResponse,
+  AddressDefaultResponse,
   AddressDeletionResponse,
   AddressListResponse,
   AddressResponse,
@@ -16,7 +17,7 @@ import {
   AddressUpdateSchema
 } from '@/features/address/domain/address-schemas'
 import { HttpResponse } from '@/infrastructure/api/http-response'
-import { buildLocationUrl } from '@/utils/url-utils'
+import { buildLocationUrl } from '@/infrastructure/url/url-builder'
 
 const createUserAddress = async (request: Request): Promise<AddressCreationResponse> => {
   try {
@@ -157,7 +158,7 @@ const findUserAddresses = async (): Promise<AddressListResponse> => {
   }
 }
 
-const setUserDefaultAddress = async (addressId: string): Promise<AddressUpdateResponse> => {
+const setUserDefaultAddress = async (addressId: string): Promise<AddressDefaultResponse> => {
   try {
     const addressIdValidation = AddressIdSchema.safeParse(addressId)
 
@@ -165,7 +166,7 @@ const setUserDefaultAddress = async (addressId: string): Promise<AddressUpdateRe
       return HttpResponse.badRequest(addressIdValidation.error.issues)
     }
 
-    const addressUpdateResult = await AddressService.setUserDefaultAddress(addressId)
+    const addressUpdateResult = await AddressService.setUserDefaultAddress(addressIdValidation.data)
 
     if (addressUpdateResult.status === 'ERROR') {
       switch (addressUpdateResult.error) {
@@ -182,7 +183,7 @@ const setUserDefaultAddress = async (addressId: string): Promise<AddressUpdateRe
       }
     }
 
-    const updatedAddressValidation = AddressDTOSchema.safeParse(addressUpdateResult.data)
+    const updatedAddressValidation = AddressDTOSchema.array().safeParse(addressUpdateResult.data)
 
     if (!updatedAddressValidation.success) {
       return HttpResponse.internalServerError()

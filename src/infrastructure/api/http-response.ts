@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 
 import { DEFAULT_ROUTE, ROUTES } from '@/domain/navigation'
-import type { ValueOf } from '@/utils/object-utils'
+import type { ValueOf } from '@/helpers/object'
 
 export const OK_STATUS = 200
 export const CREATED_STATUS = 201

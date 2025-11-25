@@ -1,7 +1,7 @@
 import { PRODUCT_CONSTANTS, PRODUCT_FORM_FIELDS } from '@/features/product/domain/product-constants'
+import { priceFormatOptions } from '@/infrastructure/format/price-formatter'
 import { t } from '@/infrastructure/i18n'
 import { NumberField, type NumberFieldProps } from '@/presentation/components/forms/number-field'
-import { priceFormatOptions } from '@/utils/format-utils'
 
 export const ProductPriceField: React.FC<Partial<NumberFieldProps>> = ({
   isRequired = true,

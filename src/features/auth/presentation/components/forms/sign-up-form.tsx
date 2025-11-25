@@ -21,6 +21,8 @@ import { AuthClient } from '@/features/auth/infrastructure/auth-client'
 import { UserEmailField } from '@/features/auth/presentation/components/forms/user-email-field'
 import { UserNameField } from '@/features/auth/presentation/components/forms/user-name-field'
 import { UserPasswordField } from '@/features/auth/presentation/components/forms/user-password-field'
+import type { ValueOf } from '@/helpers/object'
+import type { Issues, ValidationErrors } from '@/helpers/validation'
 import {
   BAD_REQUEST_STATUS,
   CONFLICT_STATUS,
@@ -32,8 +34,6 @@ import { Form } from '@/presentation/components/forms/form'
 import { FormError } from '@/presentation/components/forms/form-error'
 import { RequiredFieldsMessage } from '@/presentation/components/forms/required-fields-message'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
-import type { ValueOf } from '@/utils/object-utils'
-import type { Issues, ValidationErrors } from '@/utils/validation-utils'
 
 type SignUpFormErrors = ValidationErrors<ValueOf<typeof AUTH_FORM_FIELDS>>
 

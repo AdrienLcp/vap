@@ -16,7 +16,7 @@ import {
   PaymentMethodUpdateDTOSchema
 } from '@/features/payment/domain/payment-schemas'
 import { HttpResponse } from '@/infrastructure/api/http-response'
-import { buildLocationUrl } from '@/utils/url-utils'
+import { buildLocationUrl } from '@/infrastructure/url/url-builder'
 
 const createUserPaymentMethod = async (
   request: Request

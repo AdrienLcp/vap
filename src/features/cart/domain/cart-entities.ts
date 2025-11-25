@@ -8,6 +8,7 @@ import type {
   CartItemSchema,
   CartItemUpdateDataSchema
 } from '@/features/cart/domain/cart-schemas'
+import type { Issues } from '@/helpers/validation'
 import type {
   BadRequestResponse,
   CreatedResponse,
@@ -18,7 +19,6 @@ import type {
   Response,
   UnauthorizedResponse
 } from '@/infrastructure/api/http-response'
-import type { Issues } from '@/utils/validation-utils'
 
 export type CartItemId = z.infer<typeof CartItemIdSchema>
 

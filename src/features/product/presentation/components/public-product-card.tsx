@@ -1,9 +1,9 @@
 import type { ProductPublicDTO } from '@/features/product/domain/product-entities'
 import { ProductImage } from '@/features/product/presentation/components/product-image'
 import { PublicProductActions } from '@/features/product/presentation/components/public-product-actions'
+import { formatPrice } from '@/infrastructure/format/price-formatter'
 import { t } from '@/infrastructure/i18n'
 import { Card, CardBody, CardFooter, CardTitle } from '@/presentation/components/ui/card'
-import { formatPrice } from '@/utils/format-utils'
 
 import './public-product-card.sass'
 

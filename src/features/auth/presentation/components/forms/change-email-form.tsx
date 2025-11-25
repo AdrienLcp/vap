@@ -7,13 +7,13 @@ import { AUTH_FORM_FIELDS } from '@/features/auth/domain/auth-constants'
 import { UserEmailSchema } from '@/features/auth/domain/auth-schemas'
 import { AuthClient } from '@/features/auth/infrastructure/auth-client'
 import { UserEmailField } from '@/features/auth/presentation/components/forms/user-email-field'
+import type { ValueOf } from '@/helpers/object'
+import type { ValidationErrors } from '@/helpers/validation'
 import { BAD_REQUEST_STATUS, NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { Form } from '@/presentation/components/forms/form'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import { ToastService } from '@/presentation/services/toast-service'
-import type { ValueOf } from '@/utils/object-utils'
-import type { ValidationErrors } from '@/utils/validation-utils'
 
 type ChangeEmailFormErrors = ValidationErrors<ValueOf<typeof AUTH_FORM_FIELDS>>
 

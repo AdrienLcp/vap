@@ -1,6 +1,6 @@
 import { CircleAlertIcon } from 'lucide-react'
 
-import { getUniqueStringsArray } from '@/utils/array-utils'
+import { getUniqueStringsArray } from '@/helpers/array'
 
 import './form-error.sass'
 

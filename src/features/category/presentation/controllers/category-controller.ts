@@ -19,7 +19,7 @@ import {
   CategoryUpdateSchema
 } from '@/features/category/domain/category-schemas'
 import { HttpResponse } from '@/infrastructure/api/http-response'
-import { buildLocationUrl } from '@/utils/url-utils'
+import { buildLocationUrl } from '@/infrastructure/url/url-builder'
 
 const createCategory = async (
   categoryCreationRequest: Request

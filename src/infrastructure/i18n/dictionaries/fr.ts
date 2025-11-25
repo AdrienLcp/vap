@@ -6,7 +6,8 @@ export const fr = {
     card: {
       isDefault: 'Adresse par défaut',
       makeDefault: 'Définir comme adresse par défaut',
-      updateDefaultAddressError: "Une erreur est survenue lors de la définition de l'adresse par défaut."
+      updateDefaultAddressError:
+        "Une erreur est survenue lors de la définition de l'adresse par défaut."
     },
     create: {
       error: "Une erreur est survenue lors de la création de l'adresse.",

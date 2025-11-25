@@ -13,6 +13,8 @@ import type {
   ProductStatusSchema,
   ProductUpdateSchema
 } from '@/features/product/domain/product-schemas'
+import type { ValueOf } from '@/helpers/object'
+import type { Issues, ValidationErrors } from '@/helpers/validation'
 import type {
   BadRequestResponse,
   ConflictResponse,
@@ -24,8 +26,6 @@ import type {
   Response,
   UnauthorizedResponse
 } from '@/infrastructure/api/http-response'
-import type { ValueOf } from '@/utils/object-utils'
-import type { Issues, ValidationErrors } from '@/utils/validation-utils'
 
 export type ProductId = z.infer<typeof ProductIdSchema>
 

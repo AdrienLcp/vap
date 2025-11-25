@@ -132,6 +132,7 @@ const findUserAddress = async (
 const findUserAddresses = async (userId: UserId): Promise<Result<AddressDTO[]>> => {
   try {
     const userAddresses = await AddressDatabase.findMany({
+      orderBy: { isDefault: 'desc' },
       select: ADDRESS_SELECTED_FIELDS,
       where: { userId }
     })

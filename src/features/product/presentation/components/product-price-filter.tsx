@@ -2,9 +2,9 @@ import { useCallback } from 'react'
 
 import { PRODUCT_CONSTANTS } from '@/features/product/domain/product-constants'
 import type { ProductPriceFilters } from '@/features/product/domain/product-entities'
+import { priceFormatOptions } from '@/infrastructure/format/price-formatter'
 import { t } from '@/infrastructure/i18n'
 import { Slider } from '@/presentation/components/ui/slider'
-import { priceFormatOptions } from '@/utils/format-utils'
 
 import './product-price-filter.sass'
 
