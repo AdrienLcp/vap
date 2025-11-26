@@ -1,18 +1,18 @@
 import 'server-only'
 
+import { AddressService } from '@/features/address/application/address-service'
 import type { AuthUser, AuthUserDTO, AuthUserError } from '@/features/auth/domain/auth-entities'
 import { getAuthUserPermissionsByRole } from '@/features/auth/domain/auth-permissions'
 import { AuthRepository } from '@/features/auth/infrastructure/auth-repository'
 import { CartService } from '@/features/cart/application/cart-service'
-import type { UserId } from '@/features/user/domain/user-entities'
 import { failure, type Result, success } from '@/helpers/result'
 
-const deleteUser = async (userId: UserId): Promise<Result> => {
+const deleteUser = async (): Promise<Result> => {
   try {
     await Promise.all([
-      AddressService.deleteUserAddresses(userId),
-      CartService.deleteUserCart(userId),
-      PaymentMethodService.deleteUserPaymentMethods(userId)
+      AddressService.deleteUserAddresses(),
+      CartService.clearUserCart(),
+      // PaymentMethodService.deleteUserPaymentMethods()
     ])
 
     return success()

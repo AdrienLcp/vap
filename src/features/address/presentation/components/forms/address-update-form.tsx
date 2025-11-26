@@ -2,11 +2,9 @@
 
 import { SaveIcon } from 'lucide-react'
 import { useCallback, useState } from 'react'
-import { ROUTES } from '@/domain/navigation'
 import { ADDRESS_ERRORS, ADDRESS_FORM_FIELDS } from '@/features/address/domain/address-constants'
 import type {
   AddressDTO,
-  AddressField,
   AddressFormErrors,
   AddressUpdateData
 } from '@/features/address/domain/address-entities'
@@ -15,15 +13,17 @@ import { AddressClient } from '@/features/address/infrastructure/address-client'
 import { AddressCityField } from '@/features/address/presentation/components/forms/address-city-field'
 import { AddressCountryField } from '@/features/address/presentation/components/forms/address-country-field'
 import { AddressDefaultSwitch } from '@/features/address/presentation/components/forms/address-default-switch'
+import { AddressNameField } from '@/features/address/presentation/components/forms/address-name-field'
 import { AddressPostalCodeField } from '@/features/address/presentation/components/forms/address-postal-code-field'
 import { AddressStreetField } from '@/features/address/presentation/components/forms/address-street-field'
+import { getUniqueStringsArray } from '@/helpers/array'
+import type { FormDataShape } from '@/helpers/form'
 import type { Issues } from '@/helpers/validation'
 import { BAD_REQUEST_STATUS, OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
 import { Form } from '@/presentation/components/forms/form'
 import { FormError } from '@/presentation/components/forms/form-error'
-import { Link } from '@/presentation/components/ui/pressables/link'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import { ToastService } from '@/presentation/services/toast-service'
 
@@ -37,6 +37,7 @@ export const AddressUpdateForm: React.FC<AddressUpdateFormProps> = ({ address })
 
   const onAddressValidationError = useCallback((issues: Issues<AddressUpdateData>) => {
     const formErrors: string[] = []
+    const nameErrors: string[] = []
     const cityErrors: string[] = []
     const streetErrors: string[] = []
     const postalCodeErrors: string[] = []
@@ -44,6 +45,9 @@ export const AddressUpdateForm: React.FC<AddressUpdateFormProps> = ({ address })
 
     for (const issue of issues) {
       switch (issue.message) {
+        case ADDRESS_ERRORS.INVALID_NAME:
+          nameErrors.push(t('address.fields.name.invalid'))
+          break
         case ADDRESS_ERRORS.INVALID_CITY:
           cityErrors.push(t('address.fields.city.invalid'))
           break
@@ -62,11 +66,12 @@ export const AddressUpdateForm: React.FC<AddressUpdateFormProps> = ({ address })
     }
 
     setAddressFormErrors({
-      form: formErrors,
-      [ADDRESS_FORM_FIELDS.CITY]: cityErrors,
-      [ADDRESS_FORM_FIELDS.COUNTRY]: countryErrors,
-      [ADDRESS_FORM_FIELDS.POSTAL_CODE]: postalCodeErrors,
-      [ADDRESS_FORM_FIELDS.STREET]: streetErrors
+      form: getUniqueStringsArray(formErrors),
+      [ADDRESS_FORM_FIELDS.CITY]: getUniqueStringsArray(cityErrors),
+      [ADDRESS_FORM_FIELDS.COUNTRY]: getUniqueStringsArray(countryErrors),
+      [ADDRESS_FORM_FIELDS.NAME]: getUniqueStringsArray(nameErrors),
+      [ADDRESS_FORM_FIELDS.POSTAL_CODE]: getUniqueStringsArray(postalCodeErrors),
+      [ADDRESS_FORM_FIELDS.STREET]: getUniqueStringsArray(streetErrors)
     })
   }, [])
 
@@ -75,12 +80,13 @@ export const AddressUpdateForm: React.FC<AddressUpdateFormProps> = ({ address })
       setIsAddressUpdating(true)
       setAddressFormErrors(null)
 
-      const addressUpdateData: Record<AddressField, unknown> = {
-        [ADDRESS_FORM_FIELDS.CITY]: formData.get(ADDRESS_FORM_FIELDS.CITY),
-        [ADDRESS_FORM_FIELDS.COUNTRY]: formData.get(ADDRESS_FORM_FIELDS.COUNTRY),
-        [ADDRESS_FORM_FIELDS.IS_DEFAULT]: formData.get(ADDRESS_FORM_FIELDS.IS_DEFAULT) === 'on',
-        [ADDRESS_FORM_FIELDS.POSTAL_CODE]: formData.get(ADDRESS_FORM_FIELDS.POSTAL_CODE),
-        [ADDRESS_FORM_FIELDS.STREET]: formData.get(ADDRESS_FORM_FIELDS.STREET)
+      const addressUpdateData: FormDataShape<AddressUpdateData> = {
+        city: formData.get(ADDRESS_FORM_FIELDS.CITY),
+        country: formData.get(ADDRESS_FORM_FIELDS.COUNTRY),
+        isDefault: formData.get(ADDRESS_FORM_FIELDS.IS_DEFAULT) === 'on',
+        name: formData.get(ADDRESS_FORM_FIELDS.NAME),
+        postalCode: formData.get(ADDRESS_FORM_FIELDS.POSTAL_CODE),
+        street: formData.get(ADDRESS_FORM_FIELDS.STREET)
       }
 
       const addressUpdateValidation = AddressUpdateSchema.safeParse(addressUpdateData)
@@ -116,6 +122,8 @@ export const AddressUpdateForm: React.FC<AddressUpdateFormProps> = ({ address })
   return (
     <Form onSubmit={onAddressUpdateFormSubmit} validationErrors={addressFormErrors}>
       <FieldSet isDisabled={isAddressUpdating}>
+        <AddressNameField defaultValue={address.name} />
+
         <AddressStreetField defaultValue={address.street} />
 
         <AddressPostalCodeField defaultValue={address.postalCode} />
@@ -129,13 +137,9 @@ export const AddressUpdateForm: React.FC<AddressUpdateFormProps> = ({ address })
 
       <FormError errors={addressFormErrors?.form} />
 
-      <SubmitButton Icon={<SaveIcon />} isPending={isAddressUpdating}>
+      <SubmitButton Icon={<SaveIcon aria-hidden />} isPending={isAddressUpdating}>
         {t('address.update.submit')}
       </SubmitButton>
-
-      <Link href={ROUTES.profile} variant='underlined'>
-        {t('address.backToProfile')}
-      </Link>
     </Form>
   )
 }

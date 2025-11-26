@@ -7,8 +7,6 @@ import { OK_STATUS } from '@/infrastructure/api/http-response'
 import { Loader } from '@/presentation/components/ui/loaders/loader'
 import { ToastService } from '@/presentation/services/toast-service'
 
-import './address-list.sass'
-
 export const AddressList: React.FC = () => {
   const [addresses, setAddresses] = useState<AddressDTO[]>([])
   const [isLoadingAddresses, setIsLoadingAddresses] = useState(false)

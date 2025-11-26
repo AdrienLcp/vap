@@ -63,5 +63,4 @@ export type AddressDefaultResponse = Response<
   | NotFoundResponse
 >
 
-export type AddressField = ValueOf<typeof ADDRESS_FORM_FIELDS>
-export type AddressFormErrors = ValidationErrors<AddressField>
+export type AddressFormErrors = ValidationErrors<ValueOf<typeof ADDRESS_FORM_FIELDS>>

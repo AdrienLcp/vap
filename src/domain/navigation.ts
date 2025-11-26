@@ -40,6 +40,10 @@ export const ROUTES = {
 
 export const DEFAULT_ROUTE = ROUTES.home
 
+export const getAddressRoute = (addressId: string) => {
+  return ROUTES.address.replace(`:${PARAMS.addressId}`, addressId)
+}
+
 export const getAdminCategoryRoute = (categoryId: string) => {
   return ROUTES.adminCategory.replace(`:${PARAMS.categoryId}`, categoryId)
 }

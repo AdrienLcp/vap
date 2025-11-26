@@ -1,56 +1,80 @@
-import { useCallback } from 'react'
+import classNames from 'classnames'
+import { CheckIcon, PenIcon, TrashIcon } from 'lucide-react'
 
+import { getAddressRoute } from '@/domain/navigation'
 import type { AddressDTO } from '@/features/address/domain/address-entities'
-import { AddressClient } from '@/features/address/infrastructure/address-client'
-import { OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
-import { Switch } from '@/presentation/components/forms/switch'
-import { ToastService } from '@/presentation/services/toast-service'
+import { Card } from '@/presentation/components/ui/card'
+import { Button } from '@/presentation/components/ui/pressables/button'
+import { Link } from '@/presentation/components/ui/pressables/link'
 
 import './address-card.sass'
 
 type AddressCardProps = {
   address: AddressDTO
-  isUpdatingAddresses?: boolean
-  setAddresses: (newAddressList: AddressDTO[]) => void
-  setIsUpdatingAddresses: (isLoading: boolean) => void
+  deleteAddress: () => void
+  isLoading: boolean
+  setDefaultAddress: () => void
 }
 
 export const AddressCard: React.FC<AddressCardProps> = ({
   address,
-  isUpdatingAddresses,
-  setAddresses,
-  setIsUpdatingAddresses
+  deleteAddress,
+  isLoading,
+  setDefaultAddress
 }) => {
-  const setDefaultAddress = useCallback(async () => {
-    setIsUpdatingAddresses(true)
-
-    const addressUpdateResponse = await AddressClient.setUserDefaultAddress(address.id)
-
-    switch (addressUpdateResponse.status) {
-      case OK_STATUS:
-        setAddresses(addressUpdateResponse.data)
-        break
-      default:
-        ToastService.error(t('address.card.updateDefaultAddressError'))
-    }
-
-    setIsUpdatingAddresses(false)
-  }, [address.id, setAddresses, setIsUpdatingAddresses])
+  const postalCodeAndCity = [address.postalCode, address.city].filter(Boolean)
 
   return (
-    <div className='address-card'>
-      <div className='address-card__details'>
-        {address.street}, {address.postalCode}, {address.city}, {address.country}
+    <Card className={classNames('address-card', address.isDefault && 'selected')}>
+      <div className='address-header'>
+        <span className='name'>{address.name ?? address.street}</span>
+
+        <Link
+          aria-label={t('address.card.editLinkAriaLabel')}
+          href={getAddressRoute(address.id)}
+          Icon={<PenIcon aria-hidden />}
+          size='small'
+          variant='transparent'
+        />
+
+        <Button
+          aria-label={t('address.card.deleteButtonAriaLabel')}
+          Icon={<TrashIcon aria-hidden />}
+          isDisabled={isLoading}
+          onPress={deleteAddress}
+          size='small'
+          variant='transparent'
+        />
       </div>
 
-      <Switch
-        isDisabled={isUpdatingAddresses}
-        isReadOnly={address.isDefault}
-        isSelected={address.isDefault}
-        label={t('address.card.makeDefault')}
-        onChange={setDefaultAddress}
-      />
-    </div>
+      <div className='details'>
+        {address.name && address.street && <span>{address.street}</span>}
+        {postalCodeAndCity.length > 0 && (
+          <span>
+            {postalCodeAndCity.join(' ')}
+          </span>
+        )}
+        {address.country && <span>{address.country}</span>}
+      </div>
+
+      {address.isDefault ? (
+        <span className='default-address-label'>
+          <CheckIcon aria-hidden />
+
+          {t('address.card.isDefault')}
+        </span>
+      ) : (
+        <Button
+          className='default-address-button'
+          isDisabled={isLoading}
+          onPress={setDefaultAddress}
+          size='small'
+          variant='underlined'
+        >
+          {t('address.card.makeDefault')}
+        </Button>
+      )}
+    </Card>
   )
 }

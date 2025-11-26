@@ -4,6 +4,9 @@ export const fr = {
   address: {
     backToProfile: 'Retour à mon profil',
     card: {
+      deleteAddressError: "Une erreur est survenue lors de la suppression de l'adresse",
+      deleteButtonAriaLabel: 'Supprimer cette adresse',
+      editLinkAriaLabel: 'Modifier cette adresse',
       isDefault: 'Adresse par défaut',
       makeDefault: 'Définir comme adresse par défaut',
       updateDefaultAddressError:
@@ -29,6 +32,11 @@ export const fr = {
       },
       isDefault: {
         label: 'Définir comme adresse par défaut'
+      },
+      name: {
+        invalid: "Le nom fourni n'est pas valide.",
+        label: 'Nom',
+        placeholder: 'Donnez un nom à votre adresse'
       },
       postalCode: {
         invalid: "Le code postal fourni n'est pas valide.",

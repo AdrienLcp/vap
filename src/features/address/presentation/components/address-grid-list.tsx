@@ -2,8 +2,30 @@ import { useState } from 'react'
 import { GridList, GridListItem } from 'react-aria-components'
 
 import type { AddressDTO } from '@/features/address/domain/address-entities'
-import { AddressCard } from '@/features/address/presentation/components/address-card'
+import { AddressItem } from '@/features/address/presentation/components/address-item'
 import { t } from '@/infrastructure/i18n'
+
+import './address-grid-list.sass'
+
+const joinNonEmpty = (parts: (string | undefined)[], separator = ' ') => {
+  return parts.filter((p) => p && p.trim().length > 0).join(separator)
+}
+
+const buildAddressTextValue = (address: AddressDTO): string => {
+  const baseAddressTextValue = joinNonEmpty([
+    address.name,
+    address.street,
+    address.postalCode,
+    address.city,
+    address.country
+  ])
+
+  if (address.isDefault) {
+    return `${baseAddressTextValue} (${t('address.card.isDefault')})`
+  }
+
+  return baseAddressTextValue
+}
 
 type AddressGridListProps = {
   addresses: AddressDTO[]
@@ -17,7 +39,7 @@ export const AddressGridList: React.FC<AddressGridListProps> = ({ addresses, set
 
   const addressListItems = addresses.map((address) => ({
     ...address,
-    textValue: `${address.street}, ${address.postalCode}, ${address.city}, ${address.country}${address.isDefault ? ` (${t('address.card.isDefault')})` : ''}`
+    textValue: buildAddressTextValue(address)
   }))
 
   return (
@@ -29,7 +51,7 @@ export const AddressGridList: React.FC<AddressGridListProps> = ({ addresses, set
     >
       {(address) => (
         <GridListItem textValue={address.textValue}>
-          <AddressCard
+          <AddressItem
             address={address}
             isUpdatingAddresses={isUpdatingAddresses}
             setAddresses={setAddresses}

@@ -17,6 +17,7 @@ const ADDRESS_SELECTED_FIELDS = {
   country: true,
   id: true,
   isDefault: true,
+  name: true,
   postalCode: true,
   street: true
 } satisfies EntitySelectedFields<AddressDTO>
@@ -50,6 +51,7 @@ const createUserAddress = async (
         city: addressCreationData.city,
         country: addressCreationData.country,
         isDefault: addressCreationData.isDefault,
+        name: addressCreationData.name,
         postalCode: addressCreationData.postalCode,
         street: addressCreationData.street,
         userId

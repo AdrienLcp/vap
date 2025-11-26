@@ -10,6 +10,8 @@ export const AddressPostalCodeField: React.FC<Partial<TextFieldProps>> = ({
 }) => (
   <TextField
     {...addressPostalCodeFieldRestProps}
+    autoComplete='postal-code'
+    inputMode='numeric'
     label={label}
     name={name}
     placeholder={placeholder}

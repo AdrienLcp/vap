@@ -5,9 +5,9 @@ import { AddressUpdateForm } from '@/features/address/presentation/components/fo
 import { AddressController } from '@/features/address/presentation/controllers/address-controller'
 import { OK_STATUS, UNAUTHORIZED_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
+import { Link } from '@/presentation/components/ui/pressables/link'
 
 import './address-page.sass'
-import { Link } from '@/presentation/components/ui/pressables/link'
 
 type AddressPageProps = {
   addressId: string
@@ -30,8 +30,8 @@ export const AddressPage: React.FC<AddressPageProps> = async ({ addressId }) => 
 
       <AddressUpdateForm address={addressResponse.data} />
 
-      <Link href={ROUTES.addressCreation} variant='filled'>
-        {t('address.create.link')}
+      <Link href={ROUTES.profile} variant='underlined'>
+        {t('address.backToProfile')}
       </Link>
     </main>
   )
