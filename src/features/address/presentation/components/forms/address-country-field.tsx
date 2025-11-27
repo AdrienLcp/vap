@@ -10,6 +10,7 @@ export const AddressCountryField: React.FC<Partial<TextFieldProps>> = ({
 }) => (
   <TextField
     {...addressCountryFieldRestProps}
+    autoComplete='country'
     label={label}
     name={name}
     placeholder={placeholder}

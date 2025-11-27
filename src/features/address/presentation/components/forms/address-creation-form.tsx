@@ -1,6 +1,7 @@
 'use client'
 
 import { SaveIcon } from 'lucide-react'
+import { redirect } from 'next/navigation'
 import { useCallback, useState } from 'react'
 
 import { ROUTES } from '@/domain/navigation'
@@ -25,7 +26,6 @@ import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
 import { Form } from '@/presentation/components/forms/form'
 import { FormError } from '@/presentation/components/forms/form-error'
-import { Link } from '@/presentation/components/ui/pressables/link'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import { ToastService } from '@/presentation/services/toast-service'
 
@@ -102,6 +102,7 @@ export const AddressCreationForm: React.FC = () => {
       switch (addressCreationResponse.status) {
         case CREATED_STATUS:
           ToastService.success(t('address.create.success'))
+          redirect(ROUTES.profile)
           break
         case BAD_REQUEST_STATUS:
           onAddressValidationError(addressCreationResponse.issues)
@@ -117,7 +118,11 @@ export const AddressCreationForm: React.FC = () => {
   )
 
   return (
-    <Form onSubmit={onAddressCreationFormSubmit} validationErrors={addressFormErrors}>
+    <Form
+      autoComplete='on'
+      onSubmit={onAddressCreationFormSubmit}
+      validationErrors={addressFormErrors}
+    >
       <FieldSet isDisabled={isAddressCreationLoading}>
         <AddressNameField />
 
@@ -137,10 +142,6 @@ export const AddressCreationForm: React.FC = () => {
       <SubmitButton Icon={<SaveIcon aria-hidden />} isPending={isAddressCreationLoading}>
         {t('address.create.title')}
       </SubmitButton>
-
-      <Link href={ROUTES.profile} variant='underlined'>
-        {t('address.backToProfile')}
-      </Link>
     </Form>
   )
 }

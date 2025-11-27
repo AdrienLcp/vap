@@ -11,7 +11,7 @@ const deleteUser = async (): Promise<Result> => {
   try {
     await Promise.all([
       AddressService.deleteUserAddresses(),
-      CartService.clearUserCart(),
+      CartService.clearUserCart()
       // PaymentMethodService.deleteUserPaymentMethods()
     ])
 

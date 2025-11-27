@@ -11,6 +11,7 @@ import type {
   SearchFieldRenderProps,
   SelectRenderProps,
   SliderRenderProps,
+  StyleRenderProps,
   SwitchRenderProps,
   TextFieldRenderProps,
   TooltipRenderProps
@@ -36,14 +37,11 @@ export type RenderPropsValues<T extends ReactAriaComponentRenderProps> = T & {
   defaultClassName: string | undefined
 }
 
-export type ReactAriaClassName<T extends ReactAriaComponentRenderProps> =
-  | string
-  | ((values: RenderPropsValues<T>) => string)
-  | undefined
+export type ClassNameOrFunction<T> = StyleRenderProps<T>['className']
 
 export const reactAriaClassNames = <T extends ReactAriaComponentRenderProps>(
   values: RenderPropsValues<T>,
-  className: ReactAriaClassName<T>,
+  className: ClassNameOrFunction<T>,
   ...baseClassName: classNames.ArgumentArray
 ) => {
   const classNameOverride = typeof className === 'function' ? className(values) : className

@@ -8,5 +8,11 @@ export const AddressStreetField: React.FC<Partial<TextFieldProps>> = ({
   placeholder = t('address.fields.street.placeholder'),
   ...addressStreetFieldRestProps
 }) => (
-  <TextField {...addressStreetFieldRestProps} label={label} name={name} placeholder={placeholder} />
+  <TextField
+    {...addressStreetFieldRestProps}
+    autoComplete='address-line1'
+    label={label}
+    name={name}
+    placeholder={placeholder}
+  />
 )

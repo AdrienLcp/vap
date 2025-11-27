@@ -50,11 +50,7 @@ export const AddressCard: React.FC<AddressCardProps> = ({
 
       <div className='details'>
         {address.name && address.street && <span>{address.street}</span>}
-        {postalCodeAndCity.length > 0 && (
-          <span>
-            {postalCodeAndCity.join(' ')}
-          </span>
-        )}
+        {postalCodeAndCity.length > 0 && <span>{postalCodeAndCity.join(' ')}</span>}
         {address.country && <span>{address.country}</span>}
       </div>
 

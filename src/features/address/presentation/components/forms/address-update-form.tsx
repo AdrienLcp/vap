@@ -1,7 +1,10 @@
 'use client'
 
 import { SaveIcon } from 'lucide-react'
+import { redirect } from 'next/navigation'
 import { useCallback, useState } from 'react'
+
+import { ROUTES } from '@/domain/navigation'
 import { ADDRESS_ERRORS, ADDRESS_FORM_FIELDS } from '@/features/address/domain/address-constants'
 import type {
   AddressDTO,
@@ -105,6 +108,7 @@ export const AddressUpdateForm: React.FC<AddressUpdateFormProps> = ({ address })
       switch (addressUpdateResponse.status) {
         case OK_STATUS:
           ToastService.success(t('address.update.success'))
+          redirect(ROUTES.profile)
           break
         case BAD_REQUEST_STATUS:
           onAddressValidationError(addressUpdateResponse.issues)
@@ -120,7 +124,11 @@ export const AddressUpdateForm: React.FC<AddressUpdateFormProps> = ({ address })
   )
 
   return (
-    <Form onSubmit={onAddressUpdateFormSubmit} validationErrors={addressFormErrors}>
+    <Form
+      autoComplete='on'
+      onSubmit={onAddressUpdateFormSubmit}
+      validationErrors={addressFormErrors}
+    >
       <FieldSet isDisabled={isAddressUpdating}>
         <AddressNameField defaultValue={address.name} />
 

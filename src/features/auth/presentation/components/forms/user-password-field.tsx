@@ -5,6 +5,7 @@ import { AUTH_CONSTANTS, AUTH_FORM_FIELDS } from '@/features/auth/domain/auth-co
 import { t } from '@/infrastructure/i18n'
 import { TextField, type TextFieldProps } from '@/presentation/components/forms/text-field'
 import { Button } from '@/presentation/components/ui/pressables/button'
+import { reactAriaClassNames } from '@/presentation/utils/react-aria-utils'
 
 import './user-password-field.sass'
 
@@ -23,12 +24,15 @@ const EyeIconButton: React.FC<EyeIconButtonProps> = ({ isSlashed, onPress }) => 
 )
 
 export const UserPasswordField: React.FC<Partial<TextFieldProps>> = ({
+  className,
   description = t('auth.fields.password.description', {
     characterCount: AUTH_CONSTANTS.PASSWORD_MIN_LENGTH
   }),
+  isRequired = true,
   label = t('auth.fields.password.label'),
   name = AUTH_FORM_FIELDS.PASSWORD,
   placeholder = t('auth.fields.password.placeholder'),
+  StartContent = <LockIcon aria-hidden className='lock-icon' />,
   ...userPasswordFieldRestProps
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
@@ -43,16 +47,16 @@ export const UserPasswordField: React.FC<Partial<TextFieldProps>> = ({
 
   return (
     <TextField
-      className='user-password-field'
+      className={(values) => reactAriaClassNames(values, className, 'user-password-field')}
       description={description}
       EndContent={UserPasswordFieldEndContent}
-      isRequired
+      isRequired={isRequired}
       label={label}
       maxLength={AUTH_CONSTANTS.PASSWORD_MAX_LENGTH}
       minLength={AUTH_CONSTANTS.PASSWORD_MIN_LENGTH}
       name={name}
       placeholder={placeholder}
-      StartContent={<LockIcon aria-hidden className='lock-icon' />}
+      StartContent={StartContent}
       type={isPasswordVisible ? 'text' : 'password'}
       {...userPasswordFieldRestProps}
     />

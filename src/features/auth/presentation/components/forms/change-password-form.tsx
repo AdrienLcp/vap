@@ -112,11 +112,13 @@ export const ChangePasswordForm: React.FC = () => {
     <Form onSubmit={onChangePasswordFormSubmit} validationErrors={formErrors}>
       <FieldSet isDisabled={isChangePasswordLoading}>
         <UserPasswordField
+          autoComplete='current-password'
           label={t('auth.changePassword.form.currentPassword.label')}
           placeholder={t('auth.changePassword.form.currentPassword.placeholder')}
         />
 
         <UserPasswordField
+          autoComplete='new-password'
           label={t('auth.changePassword.form.newPassword.label')}
           name={AUTH_FORM_FIELDS.NEW_PASSWORD}
           placeholder={t('auth.changePassword.form.newPassword.placeholder')}

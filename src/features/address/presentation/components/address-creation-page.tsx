@@ -5,6 +5,7 @@ import { AddressCreationForm } from '@/features/address/presentation/components/
 import { AuthController } from '@/features/auth/presentation/controllers/auth-controller'
 import { OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
+import { Link } from '@/presentation/components/ui/pressables/link'
 
 import './address-creation-page.sass'
 
@@ -21,6 +22,10 @@ export const AddressCreationPage: React.FC = async () => {
       <h1>{t('address.create.title')}</h1>
 
       <AddressCreationForm />
+
+      <Link href={ROUTES.profile} variant='underlined'>
+        {t('address.backToProfile')}
+      </Link>
     </main>
   )
 }
