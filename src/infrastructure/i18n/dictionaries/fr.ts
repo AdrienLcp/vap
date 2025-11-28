@@ -343,6 +343,12 @@ export const fr = {
   },
   payment: {
     method: {
+      card: {
+        deletePaymentMethodError:
+          'Une erreur est survenue lors de la suppression du moyen de paiement',
+        updateDefaultPaymentMethodError:
+          'Une erreur est survenue lors de la mise à jour du moyen de paiement par défaut.'
+      },
       list: {
         ariaLabel: 'Liste des moyens de paiement',
         empty: "Vous n'avez pas encore ajouté de moyen de paiement.",

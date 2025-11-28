@@ -20,6 +20,22 @@ export const AddressItem: React.FC<AddressItemProps> = ({
   setAddresses,
   setIsUpdatingAddresses
 }) => {
+  const deleteAddress = useCallback(async () => {
+    setIsUpdatingAddresses(true)
+
+    const addressDeletionResponse = await AddressClient.deleteUserAddress(address.id)
+
+    switch (addressDeletionResponse.status) {
+      case NO_CONTENT_STATUS:
+        setAddresses((previousAddresses) => previousAddresses.filter((a) => a.id !== address.id))
+        break
+      default:
+        ToastService.error(t('address.card.deleteAddressError'))
+    }
+
+    setIsUpdatingAddresses(false)
+  }, [address.id, setAddresses, setIsUpdatingAddresses])
+
   const setDefaultAddress = useCallback(async () => {
     setIsUpdatingAddresses(true)
 
@@ -31,22 +47,6 @@ export const AddressItem: React.FC<AddressItemProps> = ({
         break
       default:
         ToastService.error(t('address.card.updateDefaultAddressError'))
-    }
-
-    setIsUpdatingAddresses(false)
-  }, [address.id, setAddresses, setIsUpdatingAddresses])
-
-  const deleteAddress = useCallback(async () => {
-    setIsUpdatingAddresses(true)
-
-    const addressDeleteResponse = await AddressClient.deleteUserAddress(address.id)
-
-    switch (addressDeleteResponse.status) {
-      case NO_CONTENT_STATUS:
-        setAddresses((previousAddresses) => previousAddresses.filter((a) => a.id !== address.id))
-        break
-      default:
-        ToastService.error(t('address.card.deleteAddressError'))
     }
 
     setIsUpdatingAddresses(false)

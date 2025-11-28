@@ -29,7 +29,7 @@ export const PaymentMethodGridList: React.FC<PaymentMethodGridListProps> = ({
 
   const paymentMethodListItems = paymentMethods.map((paymentMethod) => ({
     ...paymentMethod,
-    textValue: paymentMethod.last4
+    textValue: buildPaymentMethodTextValue(paymentMethod)
   }))
 
   return (

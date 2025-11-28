@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 import type { PaymentMethodDTO } from '@/features/payment/domain/payment-entities'
 import { PaymentClient } from '@/features/payment/infrastructure/payment-client'
+import { PaymentMethodGridList } from '@/features/payment/presentation/components/payment-method-grid-list'
 import { OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { Loader } from '@/presentation/components/ui/loaders/loader'
@@ -35,5 +36,7 @@ export const PaymentMethodList: React.FC = () => {
     return <Loader />
   }
 
-  return null
+  return (
+    <PaymentMethodGridList paymentMethods={paymentMethods} setPaymentMethods={setPaymentMethods} />
+  )
 }
