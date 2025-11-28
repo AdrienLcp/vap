@@ -1,10 +1,11 @@
 import classNames from 'classnames'
-import { CheckIcon, PenIcon, TrashIcon } from 'lucide-react'
+import { PenIcon, TrashIcon } from 'lucide-react'
 
 import { getAddressRoute } from '@/domain/navigation'
 import type { AddressDTO } from '@/features/address/domain/address-entities'
 import { t } from '@/infrastructure/i18n'
 import { Card } from '@/presentation/components/ui/card'
+import { DefaultSelector } from '@/presentation/components/ui/default-selector'
 import { Button } from '@/presentation/components/ui/pressables/button'
 import { Link } from '@/presentation/components/ui/pressables/link'
 
@@ -35,6 +36,7 @@ export const AddressCard: React.FC<AddressCardProps> = ({
           href={getAddressRoute(address.id)}
           Icon={<PenIcon aria-hidden />}
           size='small'
+          tooltip={t('address.card.editLinkAriaLabel')}
           variant='transparent'
         />
 
@@ -44,6 +46,7 @@ export const AddressCard: React.FC<AddressCardProps> = ({
           isDisabled={isLoading}
           onPress={deleteAddress}
           size='small'
+          tooltip={t('address.card.deleteButtonAriaLabel')}
           variant='transparent'
         />
       </div>
@@ -53,24 +56,14 @@ export const AddressCard: React.FC<AddressCardProps> = ({
         {postalCodeAndCity.length > 0 && <span>{postalCodeAndCity.join(' ')}</span>}
         {address.country && <span>{address.country}</span>}
       </div>
-
-      {address.isDefault ? (
-        <span className='default-address-label'>
-          <CheckIcon aria-hidden />
-
-          {t('address.card.isDefault')}
-        </span>
-      ) : (
-        <Button
-          className='default-address-button'
-          isDisabled={isLoading}
-          onPress={setDefaultAddress}
-          size='small'
-          variant='underlined'
-        >
-          {t('address.card.makeDefault')}
-        </Button>
-      )}
+      
+      <DefaultSelector
+        isDefault={address.isDefault}
+        isDefaultMessage={t('payment.method.card.isDefault')}
+        isDisabled={isLoading}
+        makeDefaultMessage={t('payment.method.card.makeDefault')}
+        onPress={setDefaultAddress}
+      />
     </Card>
   )
 }

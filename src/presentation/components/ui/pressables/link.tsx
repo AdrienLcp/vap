@@ -63,5 +63,9 @@ export const Link: React.FC<LinkWithTooltipProps> = ({ tooltip, ...linkRestProps
     return <BaseLink {...linkRestProps} />
   }
 
-  return <Tooltip Trigger={<BaseLink {...linkRestProps} />}>{tooltip}</Tooltip>
+  return (
+    <Tooltip Content={tooltip}>
+      <BaseLink {...linkRestProps} />
+    </Tooltip>
+  )
 }

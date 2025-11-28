@@ -68,7 +68,7 @@ const BaseButton: React.FC<ButtonProps> = ({
 )
 
 type ButtonWithTooltipProps = ButtonProps & {
-  tooltip?: TooltipProps['children']
+  tooltip?: TooltipProps['Content']
 }
 
 export const Button: React.FC<ButtonWithTooltipProps> = ({ tooltip, ...buttonRestProps }) => {
@@ -76,5 +76,9 @@ export const Button: React.FC<ButtonWithTooltipProps> = ({ tooltip, ...buttonRes
     return <BaseButton {...buttonRestProps} />
   }
 
-  return <Tooltip Trigger={<BaseButton {...buttonRestProps} />}>{tooltip}</Tooltip>
+  return (
+    <Tooltip Content={tooltip}>
+      <BaseButton {...buttonRestProps} />
+    </Tooltip>
+  )
 }

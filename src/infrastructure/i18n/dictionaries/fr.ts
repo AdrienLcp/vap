@@ -344,8 +344,12 @@ export const fr = {
   payment: {
     method: {
       card: {
+        deleteButtonAriaLabel: 'Supprimer ce moyen de paiement',
         deletePaymentMethodError:
           'Une erreur est survenue lors de la suppression du moyen de paiement',
+        editLinkAriaLabel: 'Modifier ce moyen de paiement',
+        isDefault: 'Moyen de paiement par défaut',
+        makeDefault: 'Définir comme moyen de paiement par défaut',
         updateDefaultPaymentMethodError:
           'Une erreur est survenue lors de la mise à jour du moyen de paiement par défaut.'
       },

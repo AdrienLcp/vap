@@ -4,12 +4,13 @@ import { useCallback } from 'react'
 
 import type { PaymentMethodDTO } from '@/features/payment/domain/payment-entities'
 import { PaymentClient } from '@/features/payment/infrastructure/payment-client'
-import { NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
+import { PaymentMethodCard } from '@/features/payment/presentation/components/payment-method-card'
+import { NO_CONTENT_STATUS, OK_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { ToastService } from '@/presentation/services/toast-service'
 
 type PaymentMethodItemProps = {
-  paymentMethod: PaymentMethodDTO
+  paymentMethod: PaymentMethodDTO & { textValue: string }
   isUpdatingPaymentMethods: boolean
   setPaymentMethods: React.Dispatch<React.SetStateAction<PaymentMethodDTO[]>>
   setIsUpdatingPaymentMethods: (isLoading: boolean) => void
@@ -35,7 +36,7 @@ export const PaymentMethodItem: React.FC<PaymentMethodItemProps> = ({
         )
         break
       default:
-      ToastService.error(t('payment.method.card.deletePaymentMethodError'))
+        ToastService.error(t('payment.method.card.deletePaymentMethodError'))
     }
 
     setIsUpdatingPaymentMethods(false)
@@ -58,15 +59,11 @@ export const PaymentMethodItem: React.FC<PaymentMethodItemProps> = ({
   }, [paymentMethod.id, setPaymentMethods, setIsUpdatingPaymentMethods])
 
   return (
-    <>
-      {/* 
-        <PaymentMethodCard
-          deletePaymentMethod={deletePaymentMethod}
-          isLoading={isUpdatingPaymentMethods}
-          paymentMethod={paymentMethod}
-          setDefaultPaymentMethod={setDefaultPaymentMethod}
-        />
-      */}
-    </>
+    <PaymentMethodCard
+      deletePaymentMethod={deletePaymentMethod}
+      isLoading={isUpdatingPaymentMethods}
+      paymentMethod={paymentMethod}
+      setDefaultPaymentMethod={setDefaultPaymentMethod}
+    />
   )
 }

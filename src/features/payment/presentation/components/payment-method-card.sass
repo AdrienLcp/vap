@@ -1,0 +1,18 @@
+@use '@/presentation/styles/typography'
+
+.payment-method-card
+  border-color: transparent
+  gap: var(--size-120, 0.75rem)
+  padding: var(--size-160, 1rem)
+
+  &.selected
+    border-color: var(--brand-foreground)
+
+  & .payment-method-header
+    align-items: center
+    display: grid
+    gap: var(--size-80, 0.5rem)
+    grid-template-columns: 1fr auto auto
+
+    & .name
+      @include typography.label-large
