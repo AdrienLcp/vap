@@ -341,6 +341,15 @@ export const fr = {
   icons: {
     googleAltText: 'Logo Google'
   },
+  payment: {
+    method: {
+      list: {
+        ariaLabel: 'Liste des moyens de paiement',
+        empty: "Vous n'avez pas encore ajouté de moyen de paiement.",
+        error: 'Une erreur est survenue lors du chargement des moyens de paiement.'
+      }
+    }
+  },
   product: {
     card: {
       delete: 'Supprimer',

@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from 'react'
 import { GridList, GridListItem } from 'react-aria-components'
 
@@ -32,7 +34,9 @@ type AddressGridListProps = {
   setAddresses: React.Dispatch<React.SetStateAction<AddressDTO[]>>
 }
 
-const renderEmptyState = () => <p className='empty-message'>{t('address.list.empty')}</p>
+const renderAddressGridListEmptyState = () => (
+  <p className='empty-message'>{t('address.list.empty')}</p>
+)
 
 export const AddressGridList: React.FC<AddressGridListProps> = ({ addresses, setAddresses }) => {
   const [isUpdatingAddresses, setIsUpdatingAddresses] = useState(false)
@@ -47,7 +51,7 @@ export const AddressGridList: React.FC<AddressGridListProps> = ({ addresses, set
       aria-label={t('address.list.ariaLabel')}
       className='address-list'
       items={addressListItems}
-      renderEmptyState={renderEmptyState}
+      renderEmptyState={renderAddressGridListEmptyState}
     >
       {(address) => (
         <GridListItem textValue={address.textValue}>

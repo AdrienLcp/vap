@@ -1,9 +1,12 @@
+'use client'
+
 import { useCallback, useEffect, useState } from 'react'
 
 import type { AddressDTO } from '@/features/address/domain/address-entities'
 import { AddressClient } from '@/features/address/infrastructure/address-client'
 import { AddressGridList } from '@/features/address/presentation/components/address-grid-list'
 import { OK_STATUS } from '@/infrastructure/api/http-response'
+import { t } from '@/infrastructure/i18n'
 import { Loader } from '@/presentation/components/ui/loaders/loader'
 import { ToastService } from '@/presentation/services/toast-service'
 
@@ -21,7 +24,7 @@ export const AddressList: React.FC = () => {
         setAddresses(addressesResponse.data)
         break
       default:
-        ToastService.error('address.list.error')
+        ToastService.error(t('address.list.error'))
     }
   }, [])
 
