@@ -9,6 +9,7 @@ import {
 
 export const PaymentMethodIdSchema = z.cuid()
 export const PaymentMethodProviderSchema = z.enum(PAYMENT_METHOD_CONSTANTS.PROVIDERS)
+
 export const CardPaymentMethodTypeSchema = z.enum(CARD_PAYMENT_METHOD_TYPES)
 export const NonCardPaymentMethodTypeSchema = z.enum(NON_CARD_PAYMENT_METHODS_TYPES)
 export const PaymentMethodTypeSchema = z.union([
@@ -37,14 +38,14 @@ const BasePaymentMethodSchema = z.object({
   provider: PaymentMethodProviderSchema
 })
 
-const CardPaymentMethodSchema = BasePaymentMethodSchema.extend({
+export const CardPaymentMethodSchema = BasePaymentMethodSchema.extend({
   expiryMonth: PaymentMethodExpiryMonthSchema,
   expiryYear: PaymentMethodExpiryYearSchema,
   last4: PaymentMethodLast4Schema,
   type: CardPaymentMethodTypeSchema
 })
 
-const NonCardPaymentMethodSchema = BasePaymentMethodSchema.extend({
+export const NonCardPaymentMethodSchema = BasePaymentMethodSchema.extend({
   type: NonCardPaymentMethodTypeSchema
 })
 
@@ -71,8 +72,8 @@ export const PaymentMethodUpdateSchema = z.object({
   expiryYear: PaymentMethodExpiryYearSchema.optional(),
   isDefault: z.boolean().nullish(),
   last4: PaymentMethodLast4Schema.optional(),
-  provider: PaymentMethodProviderSchema,
-  type: CardPaymentMethodTypeSchema
+  provider: PaymentMethodProviderSchema.optional(),
+  type: CardPaymentMethodTypeSchema.optional()
 })
 
 export const PaymentMethodUpdateDTOSchema = PaymentMethodUpdateSchema.omit({

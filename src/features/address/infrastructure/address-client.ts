@@ -64,7 +64,7 @@ const setUserDefaultAddress = async (
     const addressApiUrl = `/${ADDRESS_API_BASE_URL}/${encodeURIComponent(addressId)}/set-default`
     return await ApiClient.PATCH<AddressDefaultResponse>(addressApiUrl)
   } catch (error) {
-    console.error('Update default address error:', error)
+    console.error('Set default address error:', error)
     return unknownError()
   }
 }

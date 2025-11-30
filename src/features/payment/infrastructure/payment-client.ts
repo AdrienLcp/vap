@@ -58,6 +58,21 @@ const findUserPaymentMethods = async (): Promise<ClientResponse<PaymentMethodsRe
   }
 }
 
+const setUserDefaultPaymentMethod = async (
+  paymentMethodId: string
+): Promise<ClientResponse<PaymentMethodsResponse>> => {
+  try {
+    const encodedPaymentMethodId = encodeURIComponent(paymentMethodId)
+
+    return await ApiClient.PATCH<PaymentMethodsResponse>(
+      `/${PAYMENT_API_BASE_URL}/${encodedPaymentMethodId}/set-default`
+    )
+  } catch (error) {
+    console.error('Set default payment method error:', error)
+    return unknownError()
+  }
+}
+
 const updateUserPaymentMethod = async (
   paymentMethodId: string,
   paymentMethodUpdateData: PaymentMethodUpdateDTO
@@ -79,5 +94,6 @@ export const PaymentClient = {
   deleteUserPaymentMethod,
   findUserPaymentMethod,
   findUserPaymentMethods,
+  setUserDefaultPaymentMethod,
   updateUserPaymentMethod
 }

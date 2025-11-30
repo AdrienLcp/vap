@@ -56,7 +56,7 @@ export const AddressCard: React.FC<AddressCardProps> = ({
         {postalCodeAndCity.length > 0 && <span>{postalCodeAndCity.join(' ')}</span>}
         {address.country && <span>{address.country}</span>}
       </div>
-      
+
       <DefaultSelector
         isDefault={address.isDefault}
         isDefaultMessage={t('payment.method.card.isDefault')}

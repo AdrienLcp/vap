@@ -1,10 +1,9 @@
 import 'server-only'
 
-import type { PaymentMethod } from '@prisma/client'
 import type { NotFound } from '@/domain/entities'
 import type {
+  PaymentMethod,
   PaymentMethodCreationData,
-  PaymentMethodDTO,
   PaymentMethodId,
   PaymentMethodUpdateData
 } from '@/features/payment/domain/payment-entities'
@@ -23,10 +22,29 @@ const METHOD_PAYMENT_SELECTED_FIELDS = {
   type: true
 } satisfies EntitySelectedFields<PaymentMethod>
 
+const clearUserDefaultPaymentMethods = async (userId: UserId): Promise<Result> => {
+  try {
+    await PaymentMethodDatabase.updateMany({
+      data: {
+        isDefault: false
+      },
+      where: {
+        isDefault: true,
+        userId
+      }
+    })
+
+    return success()
+  } catch (error) {
+    console.error('Unknown error in PaymentRepository.clearUserDefaultPaymentMethods:', error)
+    return failure()
+  }
+}
+
 const createUserPaymentMethod = async (
   userId: UserId,
   paymentMethodCreationData: PaymentMethodCreationData
-): Promise<Result<PaymentMethodDTO>> => {
+): Promise<Result<PaymentMethod>> => {
   try {
     const createdPaymentMethod = await PaymentMethodDatabase.create({
       data: {
@@ -71,10 +89,23 @@ const deleteUserPaymentMethod = async (
   }
 }
 
+const deleteUserPaymentMethods = async (userId: UserId): Promise<Result> => {
+  try {
+    await PaymentMethodDatabase.deleteMany({
+      where: { userId }
+    })
+
+    return success()
+  } catch (error) {
+    console.error('Unknown error in PaymentRepository.deleteUserPaymentMethods:', error)
+    return failure()
+  }
+}
+
 const findUserPaymentMethod = async (
   userId: UserId,
   paymentMethodId: PaymentMethodId
-): Promise<Result<PaymentMethodDTO, NotFound>> => {
+): Promise<Result<PaymentMethod, NotFound>> => {
   try {
     const paymentMethod = await PaymentMethodDatabase.findFirst({
       select: METHOD_PAYMENT_SELECTED_FIELDS,
@@ -92,7 +123,7 @@ const findUserPaymentMethod = async (
   }
 }
 
-const findUserPaymentMethods = async (userId: UserId): Promise<Result<PaymentMethodDTO[]>> => {
+const findUserPaymentMethods = async (userId: UserId): Promise<Result<PaymentMethod[]>> => {
   try {
     const paymentMethods = await PaymentMethodDatabase.findMany({
       select: METHOD_PAYMENT_SELECTED_FIELDS,
@@ -106,40 +137,11 @@ const findUserPaymentMethods = async (userId: UserId): Promise<Result<PaymentMet
   }
 }
 
-const updateUserDefaultPaymentMethod = async (
-  userId: UserId,
-  newDefaultPaymentMethodId: PaymentMethodId
-): Promise<Result<PaymentMethodDTO, NotFound>> => {
-  try {
-    await PaymentMethodDatabase.updateMany({
-      data: { isDefault: false },
-      where: { userId }
-    })
-
-    const updatedPaymentMethod = await PaymentMethodDatabase.update({
-      data: { isDefault: true },
-      where: { id: newDefaultPaymentMethodId, userId }
-    })
-
-    return success(updatedPaymentMethod)
-  } catch (error) {
-    const databaseError = getDatabaseError(error)
-
-    switch (databaseError.code) {
-      case 'NOT_FOUND':
-        return failure('NOT_FOUND')
-      default:
-        console.error('Unknown error in PaymentRepository.updateUserDefaultPaymentMethod:', error)
-        return failure()
-    }
-  }
-}
-
 const updateUserPaymentMethod = async (
   userId: UserId,
   paymentMethodId: PaymentMethodId,
   updateData: PaymentMethodUpdateData
-): Promise<Result<PaymentMethodDTO, NotFound>> => {
+): Promise<Result<PaymentMethod, NotFound>> => {
   try {
     const updatedPaymentMethod = await PaymentMethodDatabase.update({
       data: {
@@ -169,10 +171,11 @@ const updateUserPaymentMethod = async (
 }
 
 export const PaymentRepository = {
+  clearUserDefaultPaymentMethods,
   createUserPaymentMethod,
   deleteUserPaymentMethod,
+  deleteUserPaymentMethods,
   findUserPaymentMethod,
   findUserPaymentMethods,
-  updateUserDefaultPaymentMethod,
   updateUserPaymentMethod
 }

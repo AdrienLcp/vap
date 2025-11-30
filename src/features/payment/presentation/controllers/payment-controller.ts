@@ -4,6 +4,7 @@ import { PaymentService } from '@/features/payment/application/payment-service'
 import { PAYMENT_API_BASE_URL } from '@/features/payment/domain/payment-constants'
 import type {
   PaymentMethodCreationResponse,
+  PaymentMethodDefaultResponse,
   PaymentMethodDeletionResponse,
   PaymentMethodResponse,
   PaymentMethodsResponse,
@@ -175,6 +176,50 @@ const findUserPaymentMethods = async (): Promise<PaymentMethodsResponse> => {
   }
 }
 
+const setUserDefaultPaymentMethod = async (
+  paymentMethodId: string
+): Promise<PaymentMethodDefaultResponse> => {
+  try {
+    const paymentMethodIdValidation = PaymentMethodIdSchema.safeParse(paymentMethodId)
+
+    if (!paymentMethodIdValidation.success) {
+      return HttpResponse.badRequest(paymentMethodIdValidation.error.issues)
+    }
+
+    const userDefaultPaymentMethodResult = await PaymentService.setUserDefaultPaymentMethod(
+      paymentMethodIdValidation.data
+    )
+
+    if (userDefaultPaymentMethodResult.status === 'ERROR') {
+      switch (userDefaultPaymentMethodResult.error) {
+        case 'NOT_FOUND':
+          return HttpResponse.notFound()
+        case 'UNAUTHORIZED':
+          return HttpResponse.unauthorized()
+        default:
+          console.error(
+            'Unknown error in PaymentController.setUserDefaultPaymentMethod:',
+            userDefaultPaymentMethodResult.error
+          )
+          return HttpResponse.internalServerError()
+      }
+    }
+
+    const defaultPaymentMethodValidation = PaymentMethodDTOSchema.array().safeParse(
+      userDefaultPaymentMethodResult.data
+    )
+
+    if (!defaultPaymentMethodValidation.success) {
+      return HttpResponse.internalServerError()
+    }
+
+    return HttpResponse.ok(defaultPaymentMethodValidation.data)
+  } catch (error) {
+    console.error('Error in PaymentController.setUserDefaultPaymentMethod:', error)
+    return HttpResponse.internalServerError()
+  }
+}
+
 const updateUserPaymentMethod = async (
   paymentMethodId: string,
   request: Request
@@ -234,5 +279,6 @@ export const PaymentController = {
   deleteUserPaymentMethod,
   findUserPaymentMethod,
   findUserPaymentMethods,
+  setUserDefaultPaymentMethod,
   updateUserPaymentMethod
 }

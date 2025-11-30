@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { GridList, GridListItem } from 'react-aria-components'
 
 import type { PaymentMethodDTO } from '@/features/payment/domain/payment-entities'
+import { isCardPaymentMethod } from '@/features/payment/domain/payment-helpers'
+import { PaymentMethodItem } from '@/features/payment/presentation/components/payment-method-item'
 import { t } from '@/infrastructure/i18n'
 
 type PaymentMethodGridListProps = {
@@ -16,7 +18,7 @@ const renderPaymentMethodGridListEmptyState = () => (
 )
 
 const buildPaymentMethodTextValue = (paymentMethod: PaymentMethodDTO): string => {
-  if (paymentMethod.type === 'CARD') {
+  if (isCardPaymentMethod(paymentMethod)) {
     return `**** **** **** ${paymentMethod.last4}`
   }
 }
@@ -41,14 +43,12 @@ export const PaymentMethodGridList: React.FC<PaymentMethodGridListProps> = ({
     >
       {(paymentMethod) => (
         <GridListItem textValue={paymentMethod.textValue}>
-          {/*
           <PaymentMethodItem
-            paymentMethod={paymentMethod}
             isUpdatingPaymentMethods={isUpdatingPaymentMethods}
-            setPaymentMethods={setPaymentMethods}
+            paymentMethod={paymentMethod}
             setIsUpdatingPaymentMethods={setIsUpdatingPaymentMethods}
+            setPaymentMethods={setPaymentMethods}
           />
-          */}
         </GridListItem>
       )}
     </GridList>
