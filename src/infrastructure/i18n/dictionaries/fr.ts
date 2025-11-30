@@ -343,15 +343,25 @@ export const fr = {
   },
   payment: {
     method: {
+      backToProfile: 'Retour à mon profil',
       card: {
+        cardTextValue: 'Carte se terminant par {last4}',
         deleteButtonAriaLabel: 'Supprimer ce moyen de paiement',
         deletePaymentMethodError:
           'Une erreur est survenue lors de la suppression du moyen de paiement',
         editLinkAriaLabel: 'Modifier ce moyen de paiement',
         isDefault: 'Moyen de paiement par défaut',
         makeDefault: 'Définir comme moyen de paiement par défaut',
+        nonCardTextValue: 'Moyen de paiement',
         updateDefaultPaymentMethodError:
           'Une erreur est survenue lors de la mise à jour du moyen de paiement par défaut.'
+      },
+      create: {
+        error: 'Une erreur est survenue lors de la création du moyen de paiement.',
+        link: 'Ajouter un moyen de paiement',
+        submit: 'Créer',
+        success: 'Le moyen de paiement a été créé avec succès.',
+        title: 'Créer un moyen de paiement'
       },
       list: {
         ariaLabel: 'Liste des moyens de paiement',

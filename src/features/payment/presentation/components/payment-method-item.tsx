@@ -12,7 +12,7 @@ import { ToastService } from '@/presentation/services/toast-service'
 type PaymentMethodItemProps = {
   paymentMethod: PaymentMethodDTO & { textValue: string }
   isUpdatingPaymentMethods: boolean
-  setPaymentMethods: React.Dispatch<React.SetStateAction<PaymentMethodDTO[]>>
+  setPaymentMethods: React.Dispatch<React.SetStateAction<PaymentMethodDTO[] | null>>
   setIsUpdatingPaymentMethods: (isLoading: boolean) => void
 }
 
@@ -31,8 +31,9 @@ export const PaymentMethodItem: React.FC<PaymentMethodItemProps> = ({
 
     switch (paymentMethodDeletionResponse.status) {
       case NO_CONTENT_STATUS:
-        setPaymentMethods((previousPaymentMethods) =>
-          previousPaymentMethods.filter((pm) => pm.id !== paymentMethod.id)
+        setPaymentMethods(
+          (previousPaymentMethods) =>
+            previousPaymentMethods?.filter((pm) => pm.id !== paymentMethod.id) ?? null
         )
         break
       default:

@@ -11,7 +11,7 @@ import { Loader } from '@/presentation/components/ui/loaders/loader'
 import { ToastService } from '@/presentation/services/toast-service'
 
 export const PaymentMethodList: React.FC = () => {
-  const [paymentMethods, setPaymentMethods] = useState<PaymentMethodDTO[]>([])
+  const [paymentMethods, setPaymentMethods] = useState<PaymentMethodDTO[] | null>(null)
   const [isLoadingPaymentMethods, setIsLoadingPaymentMethods] = useState(false)
 
   const loadPaymentMethods = useCallback(async () => {
@@ -34,6 +34,10 @@ export const PaymentMethodList: React.FC = () => {
 
   if (isLoadingPaymentMethods) {
     return <Loader />
+  }
+
+  if (!paymentMethods) {
+    return null
   }
 
   return (

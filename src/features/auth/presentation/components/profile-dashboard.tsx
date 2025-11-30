@@ -6,6 +6,7 @@ import { Addresses } from '@/features/address/presentation/components/addresses'
 import { AccountDelete } from '@/features/auth/presentation/components/account-delete'
 import { ChangeEmailForm } from '@/features/auth/presentation/components/forms/change-email-form'
 import { ChangePasswordForm } from '@/features/auth/presentation/components/forms/change-password-form'
+import { PaymentMethods } from '@/features/payment/presentation/components/payment-methods'
 import { t } from '@/infrastructure/i18n'
 import { Disclosure } from '@/presentation/components/ui/disclosure'
 
@@ -20,7 +21,9 @@ export const ProfileDashboard: React.FC = () => (
     </Disclosure>
 
     <Disclosure Title={<h2>{t('auth.profile.paymentMethods')}</h2>}>
-      <section>vide</section>
+      <section>
+        <PaymentMethods />
+      </section>
     </Disclosure>
 
     <Disclosure Title={<h2>{t('auth.profile.changeEmail')}</h2>}>

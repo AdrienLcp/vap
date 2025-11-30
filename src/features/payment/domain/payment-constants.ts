@@ -18,4 +18,11 @@ export const PAYMENT_METHOD_CONSTANTS = {
 export const PAYMENT_METHOD_ERRORS = {
   INVALID_EXPIRY_DATE: 'INVALID_PAYMENT_METHOD_EXPIRY_DATE',
   INVALID_LAST4: 'INVALID_PAYMENT_METHOD_LAST4'
+} as const
+
+export const PAYMENT_METHOD_FORM_FIELDS = {
+  EXPIRY_MONTH: 'expiry-month',
+  EXPIRY_YEAR: 'expiry-year',
+  LAST4: 'last4',
+  TYPE: 'type'
 }

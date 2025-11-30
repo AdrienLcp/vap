@@ -1,3 +1,7 @@
+'use client'
+
+import { CheckIcon } from 'lucide-react'
+
 import { Button } from '@/presentation/components/ui/pressables/button'
 
 import './default-selector.sass'
@@ -25,5 +29,11 @@ export const DefaultSelector: React.FC<DefaultSelectorProps> = ({
     )
   }
 
-  return <span className='default-label'>{isDefaultMessage}</span>
+  return (
+    <span className='default-selector'>
+      <CheckIcon aria-hidden />
+
+      {isDefaultMessage}
+    </span>
+  )
 }

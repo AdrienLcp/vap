@@ -10,7 +10,7 @@ import { ToastService } from '@/presentation/services/toast-service'
 type AddressItemProps = {
   address: AddressDTO
   isUpdatingAddresses: boolean
-  setAddresses: React.Dispatch<React.SetStateAction<AddressDTO[]>>
+  setAddresses: React.Dispatch<React.SetStateAction<AddressDTO[] | null>>
   setIsUpdatingAddresses: (isLoading: boolean) => void
 }
 
@@ -27,7 +27,9 @@ export const AddressItem: React.FC<AddressItemProps> = ({
 
     switch (addressDeletionResponse.status) {
       case NO_CONTENT_STATUS:
-        setAddresses((previousAddresses) => previousAddresses.filter((a) => a.id !== address.id))
+        setAddresses(
+          (previousAddresses) => previousAddresses?.filter((a) => a.id !== address.id) ?? null
+        )
         break
       default:
         ToastService.error(t('address.card.deleteAddressError'))

@@ -14,7 +14,8 @@ import type {
   PaymentMethodUpdateDTOSchema,
   PaymentMethodUpdateSchema
 } from '@/features/payment/domain/payment-schemas'
-import type { Issues } from '@/helpers/validation'
+import type { ValueOf } from '@/helpers/object'
+import type { Issues, ValidationErrors } from '@/helpers/validation'
 import type {
   BadRequestResponse,
   CreatedResponse,
@@ -94,3 +95,5 @@ export type PaymentMethodDefaultResponse = Response<
   | UnauthorizedResponse
   | NotFoundResponse
 >
+
+export type PaymentMethodFormErrors = ValidationErrors<ValueOf<typeof ADDRESS_FORM_FIELDS>>

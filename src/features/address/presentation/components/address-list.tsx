@@ -11,7 +11,7 @@ import { Loader } from '@/presentation/components/ui/loaders/loader'
 import { ToastService } from '@/presentation/services/toast-service'
 
 export const AddressList: React.FC = () => {
-  const [addresses, setAddresses] = useState<AddressDTO[]>([])
+  const [addresses, setAddresses] = useState<AddressDTO[] | null>(null)
   const [isLoadingAddresses, setIsLoadingAddresses] = useState(false)
 
   const loadAddresses = useCallback(async () => {
@@ -34,6 +34,10 @@ export const AddressList: React.FC = () => {
 
   if (isLoadingAddresses) {
     return <Loader />
+  }
+
+  if (!addresses) {
+    return null
   }
 
   return <AddressGridList addresses={addresses} setAddresses={setAddresses} />

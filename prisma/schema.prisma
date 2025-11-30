@@ -159,6 +159,7 @@ model PaymentMethod {
   userId       String
   user         User    @relation(fields: [userId], references: [id])
 
+  name         String
   type         PaymentType
   provider     PaymentProvider @default(STRIPE)
   last4        String?

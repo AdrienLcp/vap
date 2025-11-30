@@ -8,9 +8,11 @@ import { isCardPaymentMethod } from '@/features/payment/domain/payment-helpers'
 import { PaymentMethodItem } from '@/features/payment/presentation/components/payment-method-item'
 import { t } from '@/infrastructure/i18n'
 
+import './payment-method-grid-list.sass'
+
 type PaymentMethodGridListProps = {
   paymentMethods: PaymentMethodDTO[]
-  setPaymentMethods: React.Dispatch<React.SetStateAction<PaymentMethodDTO[]>>
+  setPaymentMethods: React.Dispatch<React.SetStateAction<PaymentMethodDTO[] | null>>
 }
 
 const renderPaymentMethodGridListEmptyState = () => (
@@ -19,8 +21,10 @@ const renderPaymentMethodGridListEmptyState = () => (
 
 const buildPaymentMethodTextValue = (paymentMethod: PaymentMethodDTO): string => {
   if (isCardPaymentMethod(paymentMethod)) {
-    return `**** **** **** ${paymentMethod.last4}`
+    return t('payment.method.card.cardTextValue', { last4: paymentMethod.last4 })
   }
+
+  return t('payment.method.card.nonCardTextValue')
 }
 
 export const PaymentMethodGridList: React.FC<PaymentMethodGridListProps> = ({

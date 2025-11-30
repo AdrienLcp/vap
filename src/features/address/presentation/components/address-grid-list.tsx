@@ -31,7 +31,7 @@ const buildAddressTextValue = (address: AddressDTO): string => {
 
 type AddressGridListProps = {
   addresses: AddressDTO[]
-  setAddresses: React.Dispatch<React.SetStateAction<AddressDTO[]>>
+  setAddresses: React.Dispatch<React.SetStateAction<AddressDTO[] | null>>
 }
 
 const renderAddressGridListEmptyState = () => (
