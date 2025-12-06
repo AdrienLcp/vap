@@ -1,4 +1,4 @@
-import type { PaymentProvider, PaymentType } from '@prisma/client'
+import type { PaymentProvider, PaymentType } from '@/infrastructure/database/generated'
 
 export const PAYMENT_API_BASE_URL = 'payments' as const
 

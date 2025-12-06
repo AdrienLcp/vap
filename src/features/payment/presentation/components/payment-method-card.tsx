@@ -48,9 +48,7 @@ export const PaymentMethodCard: React.FC<PaymentMethodCardProps> = ({
       />
     </div>
 
-    <div>
-      
-    </div>
+    <div></div>
 
     <DefaultSelector
       isDefault={paymentMethod.isDefault}

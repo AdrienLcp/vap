@@ -1,4 +1,4 @@
-import type { OrderStatus } from '@prisma/client'
+import type { OrderStatus } from '@/infrastructure/database/generated'
 
 export const ORDER_CONSTANTS = {
   STATUS: ['CANCELLED', 'COMPLETED', 'PAID', 'PENDING', 'SHIPPED'] satisfies OrderStatus[]

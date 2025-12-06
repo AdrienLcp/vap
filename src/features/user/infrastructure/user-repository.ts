@@ -1,12 +1,11 @@
 import 'server-only'
 
-import type { User } from '@prisma/client'
-
 import type { NotFound } from '@/domain/entities'
 import type { UserDTO, UserFilters, UserRole } from '@/features/user/domain/user-entities'
 import { failure, type Result, success } from '@/helpers/result'
 import { type EntitySelectedFields, UserDatabase } from '@/infrastructure/database'
 import { contains } from '@/infrastructure/database/database-helpers'
+import type { User } from '@/infrastructure/database/generated'
 
 const USER_SELECTED_FIELDS = {
   email: true,

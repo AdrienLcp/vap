@@ -1,6 +1,6 @@
 import 'server-only'
 
-import { Prisma } from '@prisma/client'
+import { Prisma } from '@/infrastructure/database/generated'
 
 export const contains = (searchTerm: string) =>
   ({

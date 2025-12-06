@@ -1,6 +1,11 @@
-import { PrismaClient, type ProductStatus } from '@prisma/client'
+import 'dotenv/config'
+import { PrismaPg } from '@prisma/adapter-pg'
 
-const prisma = new PrismaClient()
+import { PrismaClient, type ProductStatus } from '@/infrastructure/database/generated'
+
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL })
+
+const prisma = new PrismaClient({ adapter })
 
 const categories = [
   { name: 'Category 1' },
