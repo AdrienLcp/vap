@@ -1,7 +1,7 @@
 'use client'
 
 import { LogInIcon } from 'lucide-react'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useCallback, useState } from 'react'
 
 import { DEFAULT_ROUTE } from '@/domain/navigation'
@@ -29,13 +29,14 @@ export const SignInForm: React.FC = () => {
   const [signInFormErrors, setSignInFormErrors] = useState<SignInFormErrors>(null)
 
   const { setUser } = useAuth()
+  const router = useRouter()
 
   const onSignInSuccess = useCallback(
     (authenticatedUser: AuthUserDTO) => {
       setUser(authenticatedUser)
-      redirect(DEFAULT_ROUTE)
+      router.push(DEFAULT_ROUTE)
     },
-    [setUser]
+    [router.push, setUser]
   )
 
   const onSignInBadRequest = useCallback(() => {

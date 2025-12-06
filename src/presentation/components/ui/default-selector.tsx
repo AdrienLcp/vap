@@ -23,17 +23,17 @@ export const DefaultSelector: React.FC<DefaultSelectorProps> = ({
 }) => {
   if (isDefault) {
     return (
-      <Button isDisabled={isDisabled} onPress={onPress} size='small' variant='underlined'>
-        {makeDefaultMessage}
-      </Button>
+      <span className='default-selector'>
+        <CheckIcon aria-hidden />
+
+        {isDefaultMessage}
+      </span>
     )
   }
 
   return (
-    <span className='default-selector'>
-      <CheckIcon aria-hidden />
-
-      {isDefaultMessage}
-    </span>
+    <Button isDisabled={isDisabled} onPress={onPress} size='small' variant='underlined'>
+      {makeDefaultMessage}
+    </Button>
   )
 }

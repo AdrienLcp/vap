@@ -1,7 +1,7 @@
 'use client'
 
 import { SaveIcon } from 'lucide-react'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useCallback, useState } from 'react'
 
 import { ROUTES } from '@/domain/navigation'
@@ -37,6 +37,8 @@ type AddressUpdateFormProps = {
 export const AddressUpdateForm: React.FC<AddressUpdateFormProps> = ({ address }) => {
   const [isAddressUpdating, setIsAddressUpdating] = useState(false)
   const [addressFormErrors, setAddressFormErrors] = useState<AddressFormErrors>(null)
+
+  const router = useRouter()
 
   const onAddressValidationError = useCallback((issues: Issues<AddressUpdateData>) => {
     const formErrors: string[] = []
@@ -108,7 +110,7 @@ export const AddressUpdateForm: React.FC<AddressUpdateFormProps> = ({ address })
       switch (addressUpdateResponse.status) {
         case OK_STATUS:
           ToastService.success(t('address.update.success'))
-          redirect(ROUTES.profile)
+          router.push(ROUTES.profile)
           break
         case BAD_REQUEST_STATUS:
           onAddressValidationError(addressUpdateResponse.issues)
@@ -120,7 +122,7 @@ export const AddressUpdateForm: React.FC<AddressUpdateFormProps> = ({ address })
 
       setIsAddressUpdating(false)
     },
-    [address.id, onAddressValidationError]
+    [address.id, onAddressValidationError, router.push]
   )
 
   return (

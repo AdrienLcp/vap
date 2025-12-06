@@ -1,7 +1,7 @@
 'use client'
 
 import { Trash2Icon, XIcon } from 'lucide-react'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useCallback, useState } from 'react'
 
 import { DEFAULT_ROUTE } from '@/domain/navigation'
@@ -26,10 +26,12 @@ export const AccountDeleteForm: React.FC<AccountDeleteFormProps> = ({ onCloseBut
   const [isDeletingUserAccount, setIsDeletingUserAccount] = useState(false)
   const [accountDeletionFormErrors, setAccountDeletionFormErrors] = useState<SignInFormErrors>(null)
 
+  const router = useRouter()
+
   const onDeleteAccountSuccess = useCallback(() => {
     ToastService.success(t('auth.deleteAccount.success'))
-    redirect(DEFAULT_ROUTE)
-  }, [])
+    router.push(DEFAULT_ROUTE)
+  }, [router.push])
 
   const onDeleteAccountBadRequest = useCallback(() => {
     setAccountDeletionFormErrors({
@@ -75,7 +77,7 @@ export const AccountDeleteForm: React.FC<AccountDeleteFormProps> = ({ onCloseBut
 
       <p className='warning'>{t('auth.deleteAccount.warning')}</p>
 
-      <UserPasswordField />
+      <UserPasswordField autoComplete='current-password' />
 
       <div className='actions'>
         <Button

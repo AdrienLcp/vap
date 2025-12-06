@@ -1,7 +1,7 @@
 'use client'
 
 import { Trash2Icon } from 'lucide-react'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useCallback } from 'react'
 
 import { ROUTES } from '@/domain/navigation'
@@ -19,6 +19,8 @@ export const ProductDeleteButton: React.FC<ProductDeleteButtonProps> = ({
   productId,
   ...productDeleteButtonRestProps
 }) => {
+  const router = useRouter()
+
   const deleteProduct = useCallback(async () => {
     const deletedProductResponse = await ProductClient.deleteProduct(productId)
 
@@ -28,8 +30,8 @@ export const ProductDeleteButton: React.FC<ProductDeleteButtonProps> = ({
     }
 
     ToastService.success(t('product.delete.success'))
-    redirect(ROUTES.adminProducts)
-  }, [productId])
+    router.push(ROUTES.adminProducts)
+  }, [productId, router.push])
 
   return (
     <Button

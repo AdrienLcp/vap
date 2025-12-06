@@ -1,7 +1,7 @@
 'use client'
 
 import { SaveIcon } from 'lucide-react'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useCallback, useState } from 'react'
 
 import { ROUTES } from '@/domain/navigation'
@@ -32,6 +32,8 @@ import { ToastService } from '@/presentation/services/toast-service'
 export const AddressCreationForm: React.FC = () => {
   const [isAddressCreationLoading, setIsAddressCreationLoading] = useState(false)
   const [addressFormErrors, setAddressFormErrors] = useState<AddressFormErrors>(null)
+
+  const router = useRouter()
 
   const onAddressValidationError = useCallback((issues: Issues<AddressCreationData>) => {
     const formErrors: string[] = []
@@ -102,7 +104,7 @@ export const AddressCreationForm: React.FC = () => {
       switch (addressCreationResponse.status) {
         case CREATED_STATUS:
           ToastService.success(t('address.create.success'))
-          redirect(ROUTES.profile)
+          router.push(ROUTES.profile)
           break
         case BAD_REQUEST_STATUS:
           onAddressValidationError(addressCreationResponse.issues)
@@ -114,15 +116,11 @@ export const AddressCreationForm: React.FC = () => {
 
       setIsAddressCreationLoading(false)
     },
-    [onAddressValidationError]
+    [onAddressValidationError, router.push]
   )
 
   return (
-    <Form
-      autoComplete='on'
-      onSubmit={onAddressCreationFormSubmit}
-      validationErrors={addressFormErrors}
-    >
+    <Form onSubmit={onAddressCreationFormSubmit} validationErrors={addressFormErrors}>
       <FieldSet isDisabled={isAddressCreationLoading}>
         <AddressNameField />
 

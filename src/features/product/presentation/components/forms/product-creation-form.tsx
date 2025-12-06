@@ -1,7 +1,7 @@
 'use client'
 
 import { SaveIcon } from 'lucide-react'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useCallback, useState } from 'react'
 
 import { getAdminProductRoute } from '@/domain/navigation'
@@ -47,11 +47,13 @@ export const ProductCreationForm: React.FC<ProductCreationFormProps> = ({ catego
   const [isProductCreationLoading, setIsProductCreationLoading] = useState<boolean>(false)
   const [formErrors, setFormErrors] = useState<ProductValidationErrors>(null)
 
+  const router = useRouter()
+
   const onProductCreationSuccess = useCallback((createdProduct: ProductDTO) => {
     ToastService.success(t('product.creation.success', { productName: createdProduct.name }))
     const createdProductRoute = getAdminProductRoute(createdProduct.id)
-    redirect(createdProductRoute)
-  }, [])
+    router.push(createdProductRoute)
+  }, [router.push])
 
   const onProductCreationFormSubmit = useCallback(
     async (formData: FormData) => {

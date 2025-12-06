@@ -1,7 +1,7 @@
 'use client'
 
 import { Trash2Icon } from 'lucide-react'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useCallback } from 'react'
 
 import { ROUTES } from '@/domain/navigation'
@@ -19,6 +19,8 @@ export const CategoryDeleteButton: React.FC<CategoryDeleteButtonProps> = ({
   categoryId,
   ...categoryDeleteButtonRestProps
 }) => {
+  const router = useRouter()
+
   const deleteCategory = useCallback(async () => {
     const categoryDeletionResponse = await CategoryClient.deleteCategory(categoryId)
 
@@ -28,8 +30,8 @@ export const CategoryDeleteButton: React.FC<CategoryDeleteButtonProps> = ({
     }
 
     ToastService.success(t('category.delete.success'))
-    redirect(ROUTES.adminCategories)
-  }, [categoryId])
+    router.push(ROUTES.adminCategories)
+  }, [categoryId, router.push])
 
   return (
     <Button

@@ -1,7 +1,7 @@
 'use client'
 
 import { LogInIcon } from 'lucide-react'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useCallback, useState } from 'react'
 
 import { DEFAULT_ROUTE } from '@/domain/navigation'
@@ -42,13 +42,14 @@ export const SignUpForm: React.FC = () => {
   const [signUpFormErrors, setSignUpFormErrors] = useState<SignUpFormErrors>(null)
 
   const { setUser } = useAuth()
+  const router = useRouter()
 
   const onSignUpSuccess = useCallback(
     (createdUser: AuthUserDTO) => {
       setUser(createdUser)
-      redirect(DEFAULT_ROUTE)
+      router.push(DEFAULT_ROUTE)
     },
-    [setUser]
+    [router.push, setUser]
   )
 
   const onSignUpBadRequest = useCallback((signUpBadRequestError: SignUpBadRequestError) => {
