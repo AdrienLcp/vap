@@ -43,26 +43,29 @@ export const PersonaMenu: React.FC<PersonaMenuProps> = ({ user }) => {
     }
   }, [router.push])
 
-  const menuItems: MenuItem[] = useMemo(() => [
-    {
-      href: ROUTES.profile,
-      Icon: <UserIcon aria-hidden />,
-      id: 'profile',
-      textValue: t('auth.persona.profile')
-    },
-    {
-      href: ROUTES.admin,
-      Icon: <ShieldIcon aria-hidden />,
-      id: MENU_ITEM_ADMIN_ID,
-      textValue: t('auth.persona.admin')
-    },
-    {
-      Icon: <LogOutIcon aria-hidden />,
-      id: 'sign-out',
-      onAction: signOut,
-      textValue: t('auth.persona.signOut')
-    }
-  ], [signOut])
+  const menuItems: MenuItem[] = useMemo(
+    () => [
+      {
+        href: ROUTES.profile,
+        Icon: <UserIcon aria-hidden />,
+        id: 'profile',
+        textValue: t('auth.persona.profile')
+      },
+      {
+        href: ROUTES.admin,
+        Icon: <ShieldIcon aria-hidden />,
+        id: MENU_ITEM_ADMIN_ID,
+        textValue: t('auth.persona.admin')
+      },
+      {
+        Icon: <LogOutIcon aria-hidden />,
+        id: 'sign-out',
+        onAction: signOut,
+        textValue: t('auth.persona.signOut')
+      }
+    ],
+    [signOut]
+  )
 
   const filteredMenuItems = useMemo(() => {
     return user.permissions.canAccessAdmin

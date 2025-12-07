@@ -52,6 +52,7 @@ const createUserPaymentMethod = async (
         expiryYear: paymentMethodCreationData.expiryYear,
         isDefault: paymentMethodCreationData.isDefault ?? false,
         last4: paymentMethodCreationData.last4,
+        name: paymentMethodCreationData.name,
         provider: paymentMethodCreationData.provider,
         type: paymentMethodCreationData.type,
         userId

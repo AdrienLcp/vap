@@ -2,8 +2,9 @@ import 'dotenv/config'
 import { PrismaPg } from '@prisma/adapter-pg'
 
 import { PrismaClient, type ProductStatus } from '@/infrastructure/database/generated'
+import { SERVER_ENV } from '@/infrastructure/env/server'
 
-const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL })
+const adapter = new PrismaPg({ connectionString: SERVER_ENV.DATABASE_URL })
 
 const prisma = new PrismaClient({ adapter })
 
@@ -69,9 +70,6 @@ const executeSeed = async () => {
     await seed()
   } catch (error) {
     console.error('Error during seeding:', error)
-    process.exit(1)
-  } finally {
-    await prisma.$disconnect()
   }
 }
 

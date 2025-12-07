@@ -8,12 +8,12 @@ export const contains = (searchTerm: string) =>
     mode: 'insensitive'
   }) as const
 
-export const DATABASE_CONSTANTS = {
+const DATABASE_CONSTANTS = {
   DUPLICATE_ERROR: 'P2002',
   NOT_FOUND_ERROR: 'P2025'
 } as const
 
-export type DatabaseError =
+type DatabaseError =
   | { code: 'DUPLICATE'; duplicatedKeys: string[] }
   | { code: 'NOT_FOUND' }
   | { code: 'UNKNOWN' }

@@ -81,11 +81,14 @@ export const CategoryCreationForm: React.FC = () => {
     }
   }, [])
 
-  const onCategoryCreationSuccess = useCallback((createdCategory: CategoryDTO) => {
-    ToastService.success(t('category.creation.success', { categoryName: createdCategory.name }))
-    const createdCategoryRoute = getAdminCategoryRoute(createdCategory.id)
-    router.push(createdCategoryRoute)
-  }, [router.push])
+  const onCategoryCreationSuccess = useCallback(
+    (createdCategory: CategoryDTO) => {
+      ToastService.success(t('category.creation.success', { categoryName: createdCategory.name }))
+      const createdCategoryRoute = getAdminCategoryRoute(createdCategory.id)
+      router.push(createdCategoryRoute)
+    },
+    [router.push]
+  )
 
   const onCategoryCreationFormSubmit = useCallback(
     async (formData: FormData) => {

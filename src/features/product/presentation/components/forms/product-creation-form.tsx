@@ -49,11 +49,14 @@ export const ProductCreationForm: React.FC<ProductCreationFormProps> = ({ catego
 
   const router = useRouter()
 
-  const onProductCreationSuccess = useCallback((createdProduct: ProductDTO) => {
-    ToastService.success(t('product.creation.success', { productName: createdProduct.name }))
-    const createdProductRoute = getAdminProductRoute(createdProduct.id)
-    router.push(createdProductRoute)
-  }, [router.push])
+  const onProductCreationSuccess = useCallback(
+    (createdProduct: ProductDTO) => {
+      ToastService.success(t('product.creation.success', { productName: createdProduct.name }))
+      const createdProductRoute = getAdminProductRoute(createdProduct.id)
+      router.push(createdProductRoute)
+    },
+    [router.push]
+  )
 
   const onProductCreationFormSubmit = useCallback(
     async (formData: FormData) => {
