@@ -24,7 +24,7 @@ export const CartItemDeleteButton: React.FC<CartItemDeleteButtonProps> = ({
   productId,
   setIsLoading
 }) => {
-  const { auth } = useAuth()
+  const { userAuthState } = useAuth()
 
   const removeCartItem = useCartStore((state) => state.removeItem)
 
@@ -42,15 +42,15 @@ export const CartItemDeleteButton: React.FC<CartItemDeleteButtonProps> = ({
   }, [productId, removeCartItem, setIsLoading])
 
   const onCartItemDeleteButtonPress = useCallback(async () => {
-    if (auth.status === 'authenticated') {
+    if (userAuthState.status === 'authenticated') {
       await removeRemoteCartItem()
       return
     }
 
     removeCartItem(productId)
-  }, [auth.status, removeRemoteCartItem, removeCartItem, productId])
+  }, [productId, removeCartItem, removeRemoteCartItem, userAuthState.status])
 
-  const isButtonDisabled = auth.status === 'loading' || isLoading
+  const isButtonDisabled = userAuthState.status === 'loading' || isLoading
 
   return (
     <Button

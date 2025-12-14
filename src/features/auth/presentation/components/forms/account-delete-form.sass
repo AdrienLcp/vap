@@ -1,0 +1,17 @@
+@use '@/presentation/styles/breakpoints'
+
+.account-delete-form
+  display: grid
+  gap: var(--size-160, 1rem)
+
+  & .warning-message
+    color: var(--destructive-background)
+
+  & .actions
+    align-items: center
+    display: flex
+    gap: var(--size-80, 0.5rem)
+    justify-content: space-between
+
+    @include breakpoints.is-mobile
+      flex-direction: column

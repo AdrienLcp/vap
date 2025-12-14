@@ -3,6 +3,7 @@
 import { CheckIcon } from 'lucide-react'
 
 import { Button } from '@/presentation/components/ui/pressables/button'
+import { Tag } from '@/presentation/components/ui/tag'
 
 import './default-selector.sass'
 
@@ -23,16 +24,22 @@ export const DefaultSelector: React.FC<DefaultSelectorProps> = ({
 }) => {
   if (isDefault) {
     return (
-      <span className='default-selector'>
+      <Tag>
         <CheckIcon aria-hidden />
 
         {isDefaultMessage}
-      </span>
+      </Tag>
     )
   }
 
   return (
-    <Button isDisabled={isDisabled} onPress={onPress} size='small' variant='underlined'>
+    <Button
+      className='default-selector-button'
+      isDisabled={isDisabled}
+      onPress={onPress}
+      size='small'
+      variant='underlined'
+    >
       {makeDefaultMessage}
     </Button>
   )

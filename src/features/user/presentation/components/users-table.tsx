@@ -35,7 +35,7 @@ const renderUserTableCell = (user: UserDTO, column: UserTableColumn) => {
 }
 
 const renderUserTableEmptyState = () => (
-  <p className='users-table empty-message'>{t('user.list.table.empty')}</p>
+  <p className='empty-message'>{t('user.list.table.empty')}</p>
 )
 
 export const UsersTable: React.FC<UsersTableProps> = ({ users }) => {

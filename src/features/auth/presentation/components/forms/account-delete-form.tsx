@@ -16,6 +16,8 @@ import { Form } from '@/presentation/components/forms/form'
 import { Button } from '@/presentation/components/ui/pressables/button'
 import { ToastService } from '@/presentation/services/toast-service'
 
+import './account-delete-form.sass'
+
 type SignInFormErrors = ValidationErrors<typeof AUTH_FORM_FIELDS.PASSWORD>
 
 type AccountDeleteFormProps = {
@@ -72,10 +74,14 @@ export const AccountDeleteForm: React.FC<AccountDeleteFormProps> = ({ onCloseBut
   )
 
   return (
-    <Form onSubmit={deleteAccount} validationErrors={accountDeletionFormErrors}>
+    <Form
+      className='account-delete-form'
+      onSubmit={deleteAccount}
+      validationErrors={accountDeletionFormErrors}
+    >
       <h3>{t('auth.deleteAccount.title')}</h3>
 
-      <p className='warning'>{t('auth.deleteAccount.warning')}</p>
+      <p className='warning-message'>{t('auth.deleteAccount.warning')}</p>
 
       <UserPasswordField autoComplete='current-password' />
 

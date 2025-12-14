@@ -18,7 +18,7 @@ import { ToastService } from '@/presentation/services/toast-service'
 import './cart.sass'
 
 export const Cart: React.FC = () => {
-  const { auth } = useAuth()
+  const { userAuthState } = useAuth()
 
   const [isLoadingCart, setIsLoadingCart] = useState(false)
 
@@ -41,13 +41,13 @@ export const Cart: React.FC = () => {
   }, [syncCartStore])
 
   const loadUserCart = useCallback(async () => {
-    if (auth.status === 'authenticated') {
+    if (userAuthState.status === 'authenticated') {
       await loadRemoteUserCart()
       return
     }
 
     syncCartStore()
-  }, [auth.status, loadRemoteUserCart, syncCartStore])
+  }, [loadRemoteUserCart, syncCartStore, userAuthState.status])
 
   useEffect(() => {
     loadUserCart()

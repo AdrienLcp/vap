@@ -7,11 +7,8 @@ export const priceFormatOptions: Intl.NumberFormatOptions = {
   style: 'currency'
 }
 
-type FormatPriceOptions = {
-  currency?: string
+type FormatPriceOptions = Intl.NumberFormatOptions & {
   locale?: string
-  maximumFractionDigits?: number
-  minimumFractionDigits?: number
 }
 
 /**

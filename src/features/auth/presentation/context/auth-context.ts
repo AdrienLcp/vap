@@ -4,14 +4,14 @@ import { createContext } from 'react'
 
 import type { AuthUserDTO } from '@/features/auth/domain/auth-entities'
 
-export type Auth =
+export type UserAuthState =
   | { status: 'authenticated'; user: AuthUserDTO }
   | { status: 'loading' }
   | { status: 'unauthenticated' }
 
 type AuthContextValue = {
-  auth: Auth
   setUser: (user: AuthUserDTO) => void
+  userAuthState: UserAuthState
 }
 
 export const AuthContext = createContext<AuthContextValue | null>(null)

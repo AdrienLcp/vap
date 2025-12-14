@@ -92,9 +92,7 @@ const deleteUserPaymentMethod = async (
 
 const deleteUserPaymentMethods = async (userId: UserId): Promise<Result> => {
   try {
-    await PaymentMethodDatabase.deleteMany({
-      where: { userId }
-    })
+    await PaymentMethodDatabase.deleteMany({ where: { userId } })
 
     return success()
   } catch (error) {

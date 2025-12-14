@@ -5,16 +5,17 @@ import { useCallback, useEffect, useState } from 'react'
 import { useSession } from '@/features/auth/application/use-session'
 import type { AuthUserDTO } from '@/features/auth/domain/auth-entities'
 import { AuthClient } from '@/features/auth/infrastructure/auth-client'
-import { type Auth, AuthContext } from '@/features/auth/presentation/context/auth-context'
+import { AuthContext, type UserAuthState } from '@/features/auth/presentation/context/auth-context'
 import { OK_STATUS } from '@/infrastructure/api/http-response'
 
 export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const [auth, setAuth] = useState<Auth>({ status: 'loading' })
+  const [userAuthState, setUserAuthState] = useState<UserAuthState>({ status: 'loading' })
 
   const session = useSession()
+  const hasSessionData = Boolean(session.data)
 
   const setUser = useCallback((user: AuthUserDTO) => {
-    setAuth({ status: 'authenticated', user })
+    setUserAuthState({ status: 'authenticated', user })
   }, [])
 
   const loadUser = useCallback(async () => {
@@ -25,22 +26,22 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
       return
     }
 
-    setAuth({ status: 'unauthenticated' })
+    setUserAuthState({ status: 'unauthenticated' })
   }, [setUser])
 
   useEffect(() => {
     if (session.isPending) {
-      setAuth({ status: 'loading' })
+      setUserAuthState({ status: 'loading' })
       return
     }
 
-    if (!session.data) {
-      setAuth({ status: 'unauthenticated' })
+    if (!hasSessionData) {
+      setUserAuthState({ status: 'unauthenticated' })
       return
     }
 
     loadUser()
-  }, [loadUser, session])
+  }, [hasSessionData, loadUser, session.isPending])
 
-  return <AuthContext value={{ auth, setUser }}>{children}</AuthContext>
+  return <AuthContext value={{ setUser, userAuthState }}>{children}</AuthContext>
 }
