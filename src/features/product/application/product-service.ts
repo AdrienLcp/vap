@@ -2,6 +2,7 @@ import 'server-only'
 
 import type { Forbidden, NotFound, Unauthorized } from '@/domain/entities'
 import { AuthService } from '@/features/auth/application/auth-service'
+import { can } from '@/features/auth/domain/auth-permissions'
 import type {
   ProductCreationData,
   ProductDTO,
@@ -27,6 +28,14 @@ const createProduct = async (
   if (!userResult.data.permissions.canCreateProduct) {
     return failure('FORBIDDEN')
   }
+
+  // const user = {
+  //   ...userResult.data,
+  //   role: 'ADMIN' as const
+  // }
+
+  // if (can(user, 'create', 'category')) {
+  // }
 
   const productCreationResult = await ProductRepository.createProduct(productCreationData)
 
