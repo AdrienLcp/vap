@@ -48,35 +48,6 @@ const ROLE_RIGHTS: Record<UserRole, Readonly<Right[]>> = {
   USER: USER_RIGHTS
 }
 
-type Action = 'access' | 'create' | 'delete' | 'read' | 'update'
-type Entity = 'admin' | 'category' | 'product' | 'user'
-
-const ACTION_ENTITY_TO_RIGHT: Readonly<Record<string, Right>> = {
-  'admin:access': RIGHTS.ADMIN_READ,
-
-  'category:create': RIGHTS.CATEGORY_CREATE,
-  'category:delete': RIGHTS.CATEGORY_DELETE,
-  'category:update': RIGHTS.CATEGORY_UPDATE,
-
-  'product:create': RIGHTS.PRODUCT_CREATE,
-  'product:delete': RIGHTS.PRODUCT_DELETE,
-  'product:read': RIGHTS.PRODUCT_READ,
-  'product:update': RIGHTS.PRODUCT_UPDATE,
-
-  'user:read': RIGHTS.USER_READ,
-  'user:update': RIGHTS.USER_UPDATE
-}
-
-type UserWithRole = { role: UserRole }
-
-export const can = (user: UserWithRole, action: Action, entity: Entity): boolean => {
-  const key = `${entity}:${action}`
-  const right = ACTION_ENTITY_TO_RIGHT[key] ?? null
-  if (right == null) return false
-  const rights = ROLE_RIGHTS[user.role] ?? USER_RIGHTS
-  return rights.includes(right)
-}
-
 export const getAuthUserPermissionsByRole = (role: UserRole): AuthPermissions => {
   const rights = ROLE_RIGHTS[role] ?? ROLE_RIGHTS.USER
 

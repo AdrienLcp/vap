@@ -24,11 +24,8 @@ export type AuthPermissions = z.infer<typeof AuthPermissionsSchema>
 
 export type AuthUserDTO = z.infer<typeof AuthUserDTOSchema>
 
-export type AuthUser = AuthUserDTO & {
+export type User = Omit<AuthUserDTO, 'permissions'> & {
   id: string
-}
-
-export type User = Omit<AuthUser, 'permissions'> & {
   role: UserRole
 }
 
