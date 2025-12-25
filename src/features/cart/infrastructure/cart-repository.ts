@@ -49,7 +49,9 @@ const addItemToUserCart = async (
 
     if (existingItem) {
       const updatedCartItem = await CartDatabase.update({
-        data: { quantity: existingItem.quantity + cartItemCreationData.quantity },
+        data: {
+          quantity: existingItem.quantity + cartItemCreationData.quantity
+        },
         select: cartItemSelectedFields,
         where: {
           productId_userId: {

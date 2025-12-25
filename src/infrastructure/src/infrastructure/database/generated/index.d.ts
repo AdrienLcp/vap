@@ -2458,7 +2458,10 @@ export namespace Prisma {
     ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
     GlobalOmitOptions = {}
   > {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Session']; meta: { name: 'Session' } }
+    [K: symbol]: {
+      types: Prisma.TypeMap<ExtArgs>['model']['Session']
+      meta: { name: 'Session' }
+    }
     /**
      * Find zero or one Session that matches the filter.
      * @param {SessionFindUniqueArgs} args - Arguments to find a Session
@@ -3779,7 +3782,10 @@ export namespace Prisma {
     ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
     GlobalOmitOptions = {}
   > {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Account']; meta: { name: 'Account' } }
+    [K: symbol]: {
+      types: Prisma.TypeMap<ExtArgs>['model']['Account']
+      meta: { name: 'Account' }
+    }
     /**
      * Find zero or one Account that matches the filter.
      * @param {AccountFindUniqueArgs} args - Arguments to find a Account
@@ -6177,7 +6183,10 @@ export namespace Prisma {
     ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
     GlobalOmitOptions = {}
   > {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Category']; meta: { name: 'Category' } }
+    [K: symbol]: {
+      types: Prisma.TypeMap<ExtArgs>['model']['Category']
+      meta: { name: 'Category' }
+    }
     /**
      * Find zero or one Category that matches the filter.
      * @param {CategoryFindUniqueArgs} args - Arguments to find a Category
@@ -7574,7 +7583,10 @@ export namespace Prisma {
     ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
     GlobalOmitOptions = {}
   > {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Product']; meta: { name: 'Product' } }
+    [K: symbol]: {
+      types: Prisma.TypeMap<ExtArgs>['model']['Product']
+      meta: { name: 'Product' }
+    }
     /**
      * Find zero or one Product that matches the filter.
      * @param {ProductFindUniqueArgs} args - Arguments to find a Product
@@ -8921,7 +8933,10 @@ export namespace Prisma {
     ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
     GlobalOmitOptions = {}
   > {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CartItem']; meta: { name: 'CartItem' } }
+    [K: symbol]: {
+      types: Prisma.TypeMap<ExtArgs>['model']['CartItem']
+      meta: { name: 'CartItem' }
+    }
     /**
      * Find zero or one CartItem that matches the filter.
      * @param {CartItemFindUniqueArgs} args - Arguments to find a CartItem
@@ -10229,7 +10244,10 @@ export namespace Prisma {
     ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
     GlobalOmitOptions = {}
   > {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Address']; meta: { name: 'Address' } }
+    [K: symbol]: {
+      types: Prisma.TypeMap<ExtArgs>['model']['Address']
+      meta: { name: 'Address' }
+    }
     /**
      * Find zero or one Address that matches the filter.
      * @param {AddressFindUniqueArgs} args - Arguments to find a Address
@@ -14289,7 +14307,10 @@ export namespace Prisma {
     ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
     GlobalOmitOptions = {}
   > {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Order']; meta: { name: 'Order' } }
+    [K: symbol]: {
+      types: Prisma.TypeMap<ExtArgs>['model']['Order']
+      meta: { name: 'Order' }
+    }
     /**
      * Find zero or one Order that matches the filter.
      * @param {OrderFindUniqueArgs} args - Arguments to find a Order
@@ -15592,7 +15613,10 @@ export namespace Prisma {
     ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
     GlobalOmitOptions = {}
   > {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['User']; meta: { name: 'User' } }
+    [K: symbol]: {
+      types: Prisma.TypeMap<ExtArgs>['model']['User']
+      meta: { name: 'User' }
+    }
     /**
      * Find zero or one User that matches the filter.
      * @param {UserFindUniqueArgs} args - Arguments to find a User

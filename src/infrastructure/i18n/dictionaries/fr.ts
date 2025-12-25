@@ -91,7 +91,11 @@ export const fr = {
           'Le mot de passe doit comporter entre {minLength:number} et {maxLength:plural}',
           {
             plural: {
-              maxLength: { one: '1 caractère', other: '{?} caractères', zero: '0 caractère' }
+              maxLength: {
+                one: '1 caractère',
+                other: '{?} caractères',
+                zero: '0 caractère'
+              }
             }
           }
         ),
@@ -147,7 +151,11 @@ export const fr = {
       password: {
         description: dt('Au moins {characterCount:plural}', {
           plural: {
-            characterCount: { one: '1 caractère', other: '{?} caractères', zero: '0 caractère' }
+            characterCount: {
+              one: '1 caractère',
+              other: '{?} caractères',
+              zero: '0 caractère'
+            }
           }
         }),
         label: 'Mot de passe',
@@ -199,7 +207,11 @@ export const fr = {
           'Le mot de passe doit comporter entre {minLength:number} et {maxLength:plural}',
           {
             plural: {
-              maxLength: { one: '1 caractère', other: '{?} caractères', zero: '0 caractère' }
+              maxLength: {
+                one: '1 caractère',
+                other: '{?} caractères',
+                zero: '0 caractère'
+              }
             }
           }
         ),
@@ -228,7 +240,13 @@ export const fr = {
     button: {
       ariaLabel: 'Panier',
       itemCountTooltip: dt('{itemCount:plural} dans le panier', {
-        plural: { itemCount: { one: '1 article', other: '{?} articles', zero: 'Aucun article' } }
+        plural: {
+          itemCount: {
+            one: '1 article',
+            other: '{?} articles',
+            zero: 'Aucun article'
+          }
+        }
       })
     },
     clear: {
@@ -247,7 +265,13 @@ export const fr = {
     },
     pay: 'Payer',
     title: dt('Votre panier ({itemCount:plural})', {
-      plural: { itemCount: { one: '1 article', other: '{?} articles', zero: 'Aucun article' } }
+      plural: {
+        itemCount: {
+          one: '1 article',
+          other: '{?} articles',
+          zero: 'Aucun article'
+        }
+      }
     }),
     totalPrice: 'Prix total : {totalPrice}'
   },

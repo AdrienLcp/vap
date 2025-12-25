@@ -88,7 +88,9 @@ const createProduct = async (productCreationRequest: Request): Promise<ProductCr
     const productDTO = productDTOValidation.data
     const createdProductLocationUrl = buildLocationUrl(PRODUCT_API_BASE_URL, productDTO.id)
 
-    return HttpResponse.created(productDTO, { Location: createdProductLocationUrl })
+    return HttpResponse.created(productDTO, {
+      Location: createdProductLocationUrl
+    })
   } catch (error) {
     console.error('Unknown error in ProductController.createProduct:', error)
     return HttpResponse.internalServerError()

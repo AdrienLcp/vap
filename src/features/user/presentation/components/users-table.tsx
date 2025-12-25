@@ -17,7 +17,11 @@ type UserTableColumn = TableColumn<TableColumnKey>
 
 const userTableColumns: UserTableColumn[] = [
   { children: t('user.list.table.columns.name'), id: 'name' },
-  { children: t('user.list.table.columns.email'), id: 'email', isRowHeader: true },
+  {
+    children: t('user.list.table.columns.email'),
+    id: 'email',
+    isRowHeader: true
+  },
   { children: t('user.list.table.columns.role'), id: 'role' }
 ]
 

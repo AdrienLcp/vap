@@ -66,7 +66,9 @@ export const AccountDeleteForm: React.FC<AccountDeleteFormProps> = ({ onCloseBut
           onDeleteAccountBadRequest()
           break
         default:
-          setAccountDeletionFormErrors({ form: t('auth.deleteAccount.errors.unknown') })
+          setAccountDeletionFormErrors({
+            form: t('auth.deleteAccount.errors.unknown')
+          })
           break
       }
     },

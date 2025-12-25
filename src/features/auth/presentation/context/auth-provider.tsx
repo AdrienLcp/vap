@@ -9,7 +9,9 @@ import { AuthContext, type UserAuthState } from '@/features/auth/presentation/co
 import { OK_STATUS } from '@/infrastructure/api/http-response'
 
 export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const [userAuthState, setUserAuthState] = useState<UserAuthState>({ status: 'loading' })
+  const [userAuthState, setUserAuthState] = useState<UserAuthState>({
+    status: 'loading'
+  })
 
   const session = useSession()
   const hasSessionData = Boolean(session.data)

@@ -18,7 +18,10 @@ var L = (e, t) => () => (t || e((t = { exports: {} }).exports, t), t.exports),
       for (let i of Pl(t))
         !Sl.call(e, i) &&
           i !== r &&
-          $t(e, i, { get: () => t[i], enumerable: !(n = Tl(t, i)) || n.enumerable })
+          $t(e, i, {
+            get: () => t[i],
+            enumerable: !(n = Tl(t, i)) || n.enumerable
+          })
     return e
   }
 var V = (e, t, r) => (
@@ -852,7 +855,9 @@ var Qr,
 typeof process < 'u' &&
   (({ FORCE_COLOR: Qr, NODE_DISABLE_COLORS: di, NO_COLOR: mi, TERM: fi } = process.env || {}),
   (gi = process.stdout && process.stdout.isTTY))
-var yi = { enabled: !di && mi == null && fi !== 'dumb' && ((Qr != null && Qr !== '0') || gi) }
+var yi = {
+  enabled: !di && mi == null && fi !== 'dumb' && ((Qr != null && Qr !== '0') || gi)
+}
 function T(e, t) {
   let r = new RegExp(`\\x1b\\[${t}m`, 'g'),
     n = `\x1B[${e}m`,
@@ -1083,7 +1088,10 @@ Ae(lt, {
   datamodelSchemaEnumToSchemaEnum: () => tc
 })
 function ec(e) {
-  return { name: e.name, data: e.values.map((t) => ({ key: t.name, value: t.dbName ?? t.name })) }
+  return {
+    name: e.name,
+    data: e.values.map((t) => ({ key: t.name, value: t.dbName ?? t.name }))
+  }
 }
 function tc(e) {
   return { name: e.name, data: e.values.map((t) => ({ key: t, value: t })) }
@@ -1316,7 +1324,10 @@ f.languages.clike = {
     { pattern: /(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/, lookbehind: !0 },
     { pattern: /(^|[^\\:])\/\/.*/, lookbehind: !0, greedy: !0 }
   ],
-  string: { pattern: /(["'])(?:\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/, greedy: !0 },
+  string: {
+    pattern: /(["'])(?:\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/,
+    greedy: !0
+  },
   'class-name': {
     pattern:
       /((?:\b(?:class|interface|extends|implements|trait|instanceof|new)\s+)|(?:catch\s+\())[\w.\\]+/i,
@@ -1375,7 +1386,10 @@ f.languages.insertBefore('javascript', 'keyword', {
       lookbehind: !0,
       inside: f.languages.javascript
     },
-    { pattern: /[_$a-z\xA0-\uFFFF][$\w\xA0-\uFFFF]*(?=\s*=>)/i, inside: f.languages.javascript },
+    {
+      pattern: /[_$a-z\xA0-\uFFFF][$\w\xA0-\uFFFF]*(?=\s*=>)/i,
+      inside: f.languages.javascript
+    },
     {
       pattern: /(\(\s*)(?!\s)(?:[^()]|\([^()]*\))+?(?=\s*\)\s*=>)/,
       lookbehind: !0,
@@ -1510,7 +1524,12 @@ var sc = {
     highlightSource: (e) => e
   }
 function lc({ message: e, originalMethod: t, isPanic: r, callArguments: n }) {
-  return { functionName: `prisma.${t}()`, message: e, isPanic: r ?? !1, callArguments: n }
+  return {
+    functionName: `prisma.${t}()`,
+    message: e,
+    isPanic: r ?? !1,
+    callArguments: n
+  }
 }
 function cc({ callsite: e, message: t, originalMethod: r, isPanic: n, callArguments: i }, o) {
   let s = lc({ message: t, originalMethod: r, isPanic: n, callArguments: i })
@@ -1624,7 +1643,10 @@ function fc(e) {
     o
       ? t.set(i, {
           ...n,
-          argument: { ...n.argument, typeNames: gc(o.argument.typeNames, n.argument.typeNames) }
+          argument: {
+            ...n.argument,
+            typeNames: gc(o.argument.typeNames, n.argument.typeNames)
+          }
         })
       : t.set(i, n)
   }
@@ -2506,7 +2528,11 @@ function oo(e, t, r) {
   let n = G(r)
   return !t.result || !(t.result.$allModels || t.result[n])
     ? e
-    : qc({ ...e, ...io(t.name, e, t.result.$allModels), ...io(t.name, e, t.result[n]) })
+    : qc({
+        ...e,
+        ...io(t.name, e, t.result.$allModels),
+        ...io(t.name, e, t.result[n])
+      })
 }
 function qc(e) {
   let t = new J(),
@@ -2551,7 +2577,10 @@ var rr = class {
     queryCallbacksCache = new J()
     clientExtensions = ze(() =>
       this.extension.client
-        ? { ...this.previous?.getAllClientExtensions(), ...this.extension.client }
+        ? {
+            ...this.previous?.getAllClientExtensions(),
+            ...this.extension.client
+          }
         : this.previous?.getAllClientExtensions()
     )
     batchCallbacks = ze(() => {
@@ -2824,7 +2853,11 @@ function mo(e, t) {
     })
   }
   if (lo(e)) return { $type: 'Param', value: e.name }
-  if (De(e)) return { $type: 'FieldRef', value: { _ref: e.name, _container: e.modelName } }
+  if (De(e))
+    return {
+      $type: 'FieldRef',
+      value: { _ref: e.name, _container: e.modelName }
+    }
   if (Array.isArray(e)) return Wc(e, t)
   if (ArrayBuffer.isView(e)) {
     let { buffer: r, byteOffset: n, byteLength: i } = e
@@ -3001,7 +3034,10 @@ var nn = class e {
     }
   }
   nestArgument(t) {
-    return new e({ ...this.params, argumentPath: this.params.argumentPath.concat(t) })
+    return new e({
+      ...this.params,
+      argumentPath: this.params.argumentPath.concat(t)
+    })
   }
 }
 function go(e, t) {
@@ -3009,7 +3045,9 @@ function go(e, t) {
   Object.defineProperty(e, 'dmmf', { get: () => r.get() })
 }
 function zc(e) {
-  return { datamodel: { models: sn(e.models), enums: sn(e.enums), types: sn(e.types) } }
+  return {
+    datamodel: { models: sn(e.models), enums: sn(e.enums), types: sn(e.types) }
+  }
 }
 function sn(e) {
   return Object.entries(e).map(([t, r]) => ({ name: t, ...r }))
@@ -3524,7 +3562,13 @@ function Cu(e, t) {
 function pr({ visitor: e, result: t, args: r, runtimeDataModel: n, modelName: i }) {
   if (Array.isArray(t)) {
     for (let s = 0; s < t.length; s++)
-      t[s] = pr({ result: t[s], args: r, modelName: i, runtimeDataModel: n, visitor: e })
+      t[s] = pr({
+        result: t[s],
+        args: r,
+        modelName: i,
+        runtimeDataModel: n,
+        visitor: e
+      })
     return t
   }
   let o = e(t, i, r) ?? t
@@ -3560,7 +3604,13 @@ function Mo({
     let l = n.models[r].fields.find((u) => u.name === o)
     if (!l || l.kind !== 'object' || !l.relationName) continue
     let c = typeof s == 'object' ? s : {}
-    t[o] = pr({ visitor: i, result: t[o], args: c, modelName: l.type, runtimeDataModel: n })
+    t[o] = pr({
+      visitor: i,
+      result: t[o],
+      args: c,
+      modelName: l.type,
+      runtimeDataModel: n
+    })
   }
 }
 function Do({
@@ -3679,7 +3729,11 @@ function Uo(e, t, r, n) {
     o = e.requests[0].transaction
   return t[r]({
     args: {
-      queries: e.requests.map((s) => ({ model: s.modelName, operation: s.action, args: s.args })),
+      queries: e.requests.map((s) => ({
+        model: s.modelName,
+        operation: s.action,
+        args: s.args
+      })),
       transaction: o ? { isolationLevel: o.kind === 'batch' ? o.isolationLevel : void 0 } : void 0
     },
     __internalParams: e,
@@ -4176,7 +4230,10 @@ function hn(e, t, r, n) {
         case 'hex':
           if (typeof e != 'string' || !e.startsWith('\\x'))
             throw new A(`Expected a hex-encoded byte array in column '${t}', got ${typeof e}: ${e}`)
-          return { $type: 'Bytes', value: Buffer.from(e.slice(2), 'hex').toString('base64') }
+          return {
+            $type: 'Bytes',
+            value: Buffer.from(e.slice(2), 'hex').toString('base64')
+          }
         case 'array':
           if (Array.isArray(e)) return { $type: 'Bytes', value: Buffer.from(e).toString('base64') }
           if (e instanceof Uint8Array)
@@ -5118,7 +5175,9 @@ var kt = class e {
         let o = await Promise.all(
           t.args.map((s) => this.interpretNode(s, r, n, i).then((a) => a.value))
         )
-        return { value: o.length > 0 ? o.reduce((s, a) => s.concat(Wn(a)), []) : [] }
+        return {
+          value: o.length > 0 ? o.reduce((s, a) => s.concat(Wn(a)), []) : []
+        }
       }
       case 'sum': {
         let o = await Promise.all(
@@ -5410,7 +5469,11 @@ var od = 100,
   It = F('prisma:client:transactionManager'),
   sd = () => ({ sql: 'COMMIT', args: [], argTypes: [] }),
   ad = () => ({ sql: 'ROLLBACK', args: [], argTypes: [] }),
-  ld = () => ({ sql: '-- Implicit "COMMIT" query via underlying driver', args: [], argTypes: [] }),
+  ld = () => ({
+    sql: '-- Implicit "COMMIT" query via underlying driver',
+    args: [],
+    argTypes: []
+  }),
   cd = () => ({
     sql: '-- Implicit "ROLLBACK" query via underlying driver',
     args: [],
@@ -5506,7 +5569,11 @@ var od = 100,
         let i = this.closedTransactions.find((o) => o.id === t)
         if (i)
           switch (
-            (It('Transaction already closed.', { transactionId: t, status: i.status }), i.status)
+            (It('Transaction already closed.', {
+              transactionId: t,
+              status: i.status
+            }),
+            i.status)
           ) {
             case 'closing':
             case 'waiting':
@@ -5517,7 +5584,10 @@ var od = 100,
             case 'rolled_back':
               throw new vr(r)
             case 'timed_out':
-              throw new Rr(r, { timeout: i.timeout, timeTaken: Date.now() - i.startedAt })
+              throw new Rr(r, {
+                timeout: i.timeout,
+                timeTaken: Date.now() - i.startedAt
+              })
           }
         else throw (It('Transaction not found.', t), new Ot())
       }
@@ -5533,7 +5603,11 @@ var od = 100,
     #l(t, r) {
       let n = Date.now(),
         i = ga(async () => {
-          It('Transaction timed out.', { transactionId: t, timeoutStartedAt: n, timeout: r })
+          It('Transaction timed out.', {
+            transactionId: t,
+            timeoutStartedAt: n,
+            timeout: r
+          })
           let o = this.transactions.get(t)
           o && ['running', 'waiting'].includes(o.status)
             ? await this.#i(o, 'timed_out')
@@ -5736,7 +5810,10 @@ var Ir = class e {
         tracingHelper: this.#t.tracingHelper,
         provider: this.#t.provider,
         connectionInfo: this.#n,
-        sqlCommenter: this.#t.sqlCommenters && { plugins: this.#t.sqlCommenters, queryInfo: o }
+        sqlCommenter: this.#t.sqlCommenters && {
+          plugins: this.#t.sqlCommenters,
+          queryInfo: o
+        }
       })
       .run(t, s)
   }
@@ -6029,7 +6106,11 @@ var Ra = F('prisma:client:clientEngine:remoteExecutor'),
     }
     async startTransaction(t) {
       return {
-        ...(await this.#s({ path: '/transaction/start', method: 'POST', body: t })),
+        ...(await this.#s({
+          path: '/transaction/start',
+          method: 'POST',
+          body: t
+        })),
         payload: void 0
       }
     }
@@ -6168,7 +6249,13 @@ var Ra = F('prisma:client:clientEngine:remoteExecutor'),
           s = o.domain ?? t.hostname,
           a = o.path ?? '/',
           l = `${s}:${a}:${o.name}`
-        this.#e.set(l, { name: o.name, value: o.value, domain: s, path: a, expires: o.expires })
+        this.#e.set(l, {
+          name: o.name,
+          value: o.value,
+          domain: s,
+          path: a,
+          expires: o.expires
+        })
       }
     }
   }
@@ -6246,7 +6333,11 @@ var Dt = class {
       t.enableDebugLogs && (this.logLevel = 'debug'),
       this.logQueries &&
         (this.#l = (n) => {
-          this.logEmitter.emit('query', { ...n, params: bt(n.params), target: 'ClientEngine' })
+          this.logEmitter.emit('query', {
+            ...n,
+            params: bt(n.params),
+            target: 'ClientEngine'
+          })
         })
   }
   async #i() {
@@ -6413,7 +6504,10 @@ ${n.backtrace}`,
     try {
       if (t === 'start') {
         let s = n
-        i = await o.startTransaction({ ...s, isolationLevel: this.#d(s.isolationLevel) })
+        i = await o.startTransaction({
+          ...s,
+          isolationLevel: this.#d(s.isolationLevel)
+        })
       } else if (t === 'commit') {
         let s = n
         await o.commitTransaction(s)
@@ -6449,7 +6543,12 @@ ${n.backtrace}`,
           transaction: r,
           batchIndex: void 0,
           customFetch: n?.(globalThis.fetch),
-          queryInfo: { type: 'single', modelName: t.modelName, action: t.action, query: t.query }
+          queryInfo: {
+            type: 'single',
+            modelName: t.modelName,
+            action: t.action,
+            query: t.query
+          }
         })
       return Mt('query plan executed'), { data: { [t.action]: c } }
     } catch (l) {
@@ -6478,7 +6577,10 @@ ${n.backtrace}`,
         case 'multi': {
           if (r?.kind !== 'itx') {
             let g = r?.options.isolationLevel
-              ? { ...this.config.transactionOptions, isolationLevel: r.options.isolationLevel }
+              ? {
+                  ...this.config.transactionOptions,
+                  isolationLevel: r.options.isolationLevel
+                }
               : this.config.transactionOptions
             u = await this.transaction('start', {}, g)
           }
@@ -6530,7 +6632,12 @@ ${n.backtrace}`,
             batchIndex: void 0,
             transaction: u,
             customFetch: n?.(globalThis.fetch),
-            queryInfo: { type: 'compacted', action: i, modelName: o, queries: t }
+            queryInfo: {
+              type: 'compacted',
+              action: i,
+              modelName: o,
+              queries: t
+            }
           })
           return zo(y, c).map((g) => ({ data: { [i]: g } }))
         }
@@ -6614,10 +6721,17 @@ function $a(e, t) {
   if (ve(e)) return { prisma__type: 'date', prisma__value: e.toJSON() }
   if (La.Decimal.isDecimal(e)) return { prisma__type: 'decimal', prisma__value: e.toJSON() }
   if (Buffer.isBuffer(e)) return { prisma__type: 'bytes', prisma__value: e.toString('base64') }
-  if (gd(e)) return { prisma__type: 'bytes', prisma__value: Buffer.from(e).toString('base64') }
+  if (gd(e))
+    return {
+      prisma__type: 'bytes',
+      prisma__value: Buffer.from(e).toString('base64')
+    }
   if (ArrayBuffer.isView(e)) {
     let { buffer: r, byteOffset: n, byteLength: i } = e
-    return { prisma__type: 'bytes', prisma__value: Buffer.from(r, n, i).toString('base64') }
+    return {
+      prisma__type: 'bytes',
+      prisma__value: Buffer.from(r, n, i).toString('base64')
+    }
   }
   return typeof e == 'object' && t === 'slow' ? qa(e) : e
 }
@@ -7422,7 +7536,10 @@ function cl(e) {
 }
 var _t = F('prisma:client')
 typeof globalThis == 'object' && (globalThis.NODE_CLIENT = !0)
-var Md = { requestArgsToMiddlewareArgs: (e) => e, middlewareArgsToRequestArgs: (e) => e },
+var Md = {
+    requestArgsToMiddlewareArgs: (e) => e,
+    middlewareArgsToRequestArgs: (e) => e
+  },
   Dd = Symbol.for('prisma.client.transaction.id'),
   Nd = {
     id: 0,

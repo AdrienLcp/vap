@@ -54,7 +54,9 @@ const createUserAddress = async (request: Request): Promise<AddressCreationRespo
     const createdAddressDTO = createdAddressValidation.data
     const createdAddressLocationUrl = buildLocationUrl(ADDRESS_API_BASE_URL, createdAddressDTO.id)
 
-    return HttpResponse.created(createdAddressDTO, { Location: createdAddressLocationUrl })
+    return HttpResponse.created(createdAddressDTO, {
+      Location: createdAddressLocationUrl
+    })
   } catch (error) {
     console.error('Error in AddressController.createUserAddress:', error)
     return HttpResponse.internalServerError()

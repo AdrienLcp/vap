@@ -53,7 +53,9 @@ export const CategoryCreationForm: React.FC = () => {
           break
         case CATEGORY_ERRORS.NAME_TOO_LONG:
           nameErrors.push(
-            t('category.errors.categoryNameTooLong', { max: CATEGORY_CONSTANTS.NAME_MAX_LENGTH })
+            t('category.errors.categoryNameTooLong', {
+              max: CATEGORY_CONSTANTS.NAME_MAX_LENGTH
+            })
           )
           break
         default:
@@ -76,7 +78,9 @@ export const CategoryCreationForm: React.FC = () => {
         })
         break
       default:
-        setFormErrors({ form: t('components.forms.formValidationErrorDefaultMessage') })
+        setFormErrors({
+          form: t('components.forms.formValidationErrorDefaultMessage')
+        })
         break
     }
   }, [])

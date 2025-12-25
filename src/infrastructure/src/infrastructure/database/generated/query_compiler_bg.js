@@ -11,7 +11,10 @@ var D = (e, t) => {
       for (let r of M(t))
         !j.call(e, r) &&
           r !== n &&
-          h(e, r, { get: () => t[r], enumerable: !(_ = T(t, r)) || _.enumerable })
+          h(e, r, {
+            get: () => t[r],
+            enumerable: !(_ = T(t, r)) || _.enumerable
+          })
     return e
   }
 var B = (e) => O(h({}, '__esModule', { value: !0 }), e)

@@ -61,7 +61,9 @@ const createUserPaymentMethod = async (
       createdPaymentMethodDTO.id
     )
 
-    return HttpResponse.created(createdPaymentMethodDTO, { Location: createdAddressLocationUrl })
+    return HttpResponse.created(createdPaymentMethodDTO, {
+      Location: createdAddressLocationUrl
+    })
   } catch (error) {
     console.error('Error in PaymentController.createUserPaymentMethod:', error)
     return HttpResponse.internalServerError()

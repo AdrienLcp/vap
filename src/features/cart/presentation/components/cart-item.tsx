@@ -18,7 +18,11 @@ export const CartItem: React.FC<CartItemProps> = ({ item }) => (
       <div>
         <div>{item.product.name}</div>
         <div>{t('cart.item.quantity', { quantity: item.quantity })}</div>
-        <div>{t('cart.item.unitPrice', { unitPrice: formatPrice(item.product.price) })}</div>
+        <div>
+          {t('cart.item.unitPrice', {
+            unitPrice: formatPrice(item.product.price)
+          })}
+        </div>
         <div>
           {t('cart.item.totalPrice', {
             totalPrice: formatPrice(item.product.price * item.quantity)

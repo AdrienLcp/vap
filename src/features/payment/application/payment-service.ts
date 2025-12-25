@@ -141,7 +141,9 @@ const setUserDefaultPaymentMethod = async (
   const defaultPaymentMethodUpdateResult = await PaymentRepository.updateUserPaymentMethod(
     userId,
     paymentMethodId,
-    { isDefault: true }
+    {
+      isDefault: true
+    }
   )
 
   if (defaultPaymentMethodUpdateResult.status === 'ERROR') {

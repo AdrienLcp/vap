@@ -143,7 +143,9 @@ const findProducts = async (filters?: ProductFilters): Promise<Result<ProductDTO
 
 const getCategoryProductCount = async (categoryId: string): Promise<Result<number>> => {
   try {
-    const categoryProductCount = await ProductDatabase.count({ where: { categoryId } })
+    const categoryProductCount = await ProductDatabase.count({
+      where: { categoryId }
+    })
     return success(categoryProductCount)
   } catch (error) {
     console.error('Unknown error in ProductRepository.getCategoryProductCount:', error)

@@ -14,7 +14,10 @@ var a = (e, t) => {
       for (let i of p(t))
         !f.call(e, i) &&
           i !== n &&
-          s(e, i, { get: () => t[i], enumerable: !(r = g(t, i)) || r.enumerable })
+          s(e, i, {
+            get: () => t[i],
+            enumerable: !(r = g(t, i)) || r.enumerable
+          })
     return e
   }
 var x = (e) => y(s({}, '__esModule', { value: !0 }), e)

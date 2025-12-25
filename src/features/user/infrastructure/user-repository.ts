@@ -35,7 +35,9 @@ const findUser = async (userId: string): Promise<Result<UserDTO, NotFound>> => {
 const findUsers = async (filters?: UserFilters): Promise<Result<UserDTO[]>> => {
   try {
     if (!filters) {
-      const users = await UserDatabase.findMany({ select: USER_SELECTED_FIELDS })
+      const users = await UserDatabase.findMany({
+        select: USER_SELECTED_FIELDS
+      })
       return success(users)
     }
 

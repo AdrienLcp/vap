@@ -11,7 +11,9 @@ import { type PressableProps, reactAriaPressableClassNames } from './pressable'
 
 export type ButtonProps = PressableProps & ReactAriaButtonProps
 
-type ButtonRenderPropsValues = ButtonRenderProps & { defaultChildren: React.ReactNode | undefined }
+type ButtonRenderPropsValues = ButtonRenderProps & {
+  defaultChildren: React.ReactNode | undefined
+}
 
 const renderButtonChildren = (
   children: ButtonProps['children'],

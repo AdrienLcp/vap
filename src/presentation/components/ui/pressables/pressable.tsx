@@ -4,7 +4,9 @@ import { type RenderPropsValues, reactAriaClassNames } from '@/presentation/util
 
 import './pressable.sass'
 
-export type DefaultChildrenProps = { defaultChildren: React.ReactNode | undefined }
+export type DefaultChildrenProps = {
+  defaultChildren: React.ReactNode | undefined
+}
 
 export type PressableIconSide = 'left' | 'right'
 export type PressableSize = 'medium' | 'small'

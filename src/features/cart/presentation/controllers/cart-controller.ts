@@ -62,7 +62,9 @@ const addItemToUserCart = async (
       createdCartItem.product.id
     )
 
-    return HttpResponse.created(createdCartItem, { Location: createdCartItemLocationUrl })
+    return HttpResponse.created(createdCartItem, {
+      Location: createdCartItemLocationUrl
+    })
   } catch (error) {
     console.error('Unknown error in CartRepository.addItemToUserCart:', error)
     return HttpResponse.internalServerError()

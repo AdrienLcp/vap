@@ -21,7 +21,9 @@ const renderPaymentMethodGridListEmptyState = () => (
 
 const buildPaymentMethodTextValue = (paymentMethod: PaymentMethodDTO): string => {
   if (isCardPaymentMethod(paymentMethod)) {
-    return t('payment.method.card.cardTextValue', { last4: paymentMethod.last4 })
+    return t('payment.method.card.cardTextValue', {
+      last4: paymentMethod.last4
+    })
   }
 
   return t('payment.method.card.nonCardTextValue')

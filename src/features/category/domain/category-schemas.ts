@@ -10,7 +10,9 @@ export const CategoryNameSchema = z
   .string()
   .trim()
   .min(1, { message: CATEGORY_ERRORS.NAME_REQUIRED })
-  .max(CATEGORY_CONSTANTS.NAME_MAX_LENGTH, { message: CATEGORY_ERRORS.NAME_TOO_LONG })
+  .max(CATEGORY_CONSTANTS.NAME_MAX_LENGTH, {
+    message: CATEGORY_ERRORS.NAME_TOO_LONG
+  })
 
 export const CategoryDescriptionSchema = z
   .string()

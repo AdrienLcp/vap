@@ -49,7 +49,9 @@ export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = ({ category
           break
         case CATEGORY_ERRORS.NAME_TOO_LONG:
           nameErrors.push(
-            t('category.errors.categoryNameTooLong', { max: CATEGORY_CONSTANTS.NAME_MAX_LENGTH })
+            t('category.errors.categoryNameTooLong', {
+              max: CATEGORY_CONSTANTS.NAME_MAX_LENGTH
+            })
           )
           break
         default:

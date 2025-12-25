@@ -66,7 +66,9 @@ const createCategory = async (
     const categoryDTO = categoryDTOValidation.data
     const createdCategoryLocationUrl = buildLocationUrl(CATEGORY_API_BASE_URL, categoryDTO.id)
 
-    return HttpResponse.created(categoryDTO, { Location: createdCategoryLocationUrl })
+    return HttpResponse.created(categoryDTO, {
+      Location: createdCategoryLocationUrl
+    })
   } catch (error) {
     console.error('Unknown error in CategoryController.createCategory:', error)
     return HttpResponse.internalServerError()

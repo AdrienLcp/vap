@@ -77,7 +77,9 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({ categories
       switch (productUpdateResponse.status) {
         case OK_STATUS:
           ToastService.success(
-            t('product.update.success', { productName: productUpdateResponse.data.name })
+            t('product.update.success', {
+              productName: productUpdateResponse.data.name
+            })
           )
           break
         case BAD_REQUEST_STATUS:

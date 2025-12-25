@@ -18,7 +18,10 @@ var oe = (e, t) => () => (t || e((t = { exports: {} }).exports, t), t.exports),
       for (let i of ou(t))
         !au.call(e, i) &&
           i !== r &&
-          pr(e, i, { get: () => t[i], enumerable: !(n = iu(t, i)) || n.enumerable })
+          pr(e, i, {
+            get: () => t[i],
+            enumerable: !(n = iu(t, i)) || n.enumerable
+          })
     return e
   }
 var Ue = (e, t, r) => (
@@ -1393,7 +1396,13 @@ var kt,
         return new Uint8Array(n)
       }
     }),
-      (rt = { webcrypto: kt, randomUUID: hr, randomFillSync: wr, createHash: yo, Hash: Ot })
+      (rt = {
+        webcrypto: kt,
+        randomUUID: hr,
+        randomFillSync: wr,
+        createHash: yo,
+        Hash: Ot
+      })
   })
 var ho = oe(() => {
   'use strict'
@@ -2355,7 +2364,9 @@ var Sn,
 typeof g < 'u' &&
   (({ FORCE_COLOR: Sn, NODE_DISABLE_COLORS: ro, NO_COLOR: no, TERM: io } = g.env || {}),
   (oo = g.stdout && g.stdout.isTTY))
-var bu = { enabled: !ro && no == null && io !== 'dumb' && ((Sn != null && Sn !== '0') || oo) }
+var bu = {
+  enabled: !ro && no == null && io !== 'dumb' && ((Sn != null && Sn !== '0') || oo)
+}
 function U(e, t) {
   let r = new RegExp(`\\x1b\\[${t}m`, 'g'),
     n = `\x1B[${e}m`,
@@ -2660,7 +2671,10 @@ c()
 p()
 m()
 function Ou(e) {
-  return { name: e.name, data: e.values.map((t) => ({ key: t.name, value: t.dbName ?? t.name })) }
+  return {
+    name: e.name,
+    data: e.values.map((t) => ({ key: t.name, value: t.dbName ?? t.name }))
+  }
 }
 function ku(e) {
   return { name: e.name, data: e.values.map((t) => ({ key: t, value: t })) }
@@ -2710,7 +2724,12 @@ var Du = {
     highlightSource: (e) => e
   }
 function Lu({ message: e, originalMethod: t, isPanic: r, callArguments: n }) {
-  return { functionName: `prisma.${t}()`, message: e, isPanic: r ?? !1, callArguments: n }
+  return {
+    functionName: `prisma.${t}()`,
+    message: e,
+    isPanic: r ?? !1,
+    callArguments: n
+  }
 }
 function _u(
   { functionName: e, location: t, message: r, isPanic: n, contextLines: i, callArguments: o },
@@ -2788,7 +2807,10 @@ function Uu(e) {
     o
       ? t.set(i, {
           ...n,
-          argument: { ...n.argument, typeNames: $u(o.argument.typeNames, n.argument.typeNames) }
+          argument: {
+            ...n.argument,
+            typeNames: $u(o.argument.typeNames, n.argument.typeNames)
+          }
         })
       : t.set(i, n)
   }
@@ -3755,7 +3777,11 @@ function Go(e, t, r) {
   let n = be(r)
   return !t.result || !(t.result.$allModels || t.result[n])
     ? e
-    : uc({ ...e, ...Wo(t.name, e, t.result.$allModels), ...Wo(t.name, e, t.result[n]) })
+    : uc({
+        ...e,
+        ...Wo(t.name, e, t.result.$allModels),
+        ...Wo(t.name, e, t.result[n])
+      })
 }
 function uc(e) {
   let t = new he(),
@@ -3800,7 +3826,10 @@ var Dr = class {
     queryCallbacksCache = new he()
     clientExtensions = St(() =>
       this.extension.client
-        ? { ...this.previous?.getAllClientExtensions(), ...this.extension.client }
+        ? {
+            ...this.previous?.getAllClientExtensions(),
+            ...this.extension.client
+          }
         : this.previous?.getAllClientExtensions()
     )
     batchCallbacks = St(() => {
@@ -4088,7 +4117,11 @@ function ts(e, t) {
     })
   }
   if (Zo(e)) return { $type: 'Param', value: e.name }
-  if (pt(e)) return { $type: 'FieldRef', value: { _ref: e.name, _container: e.modelName } }
+  if (pt(e))
+    return {
+      $type: 'FieldRef',
+      value: { _ref: e.name, _container: e.modelName }
+    }
   if (Array.isArray(e)) return hc(e, t)
   if (ArrayBuffer.isView(e)) {
     let { buffer: r, byteOffset: n, byteLength: i } = e
@@ -4265,7 +4298,10 @@ var $n = class e {
     }
   }
   nestArgument(t) {
-    return new e({ ...this.params, argumentPath: this.params.argumentPath.concat(t) })
+    return new e({
+      ...this.params,
+      argumentPath: this.params.argumentPath.concat(t)
+    })
   }
 }
 l()
@@ -4813,7 +4849,13 @@ m()
 function jr({ visitor: e, result: t, args: r, runtimeDataModel: n, modelName: i }) {
   if (Array.isArray(t)) {
     for (let s = 0; s < t.length; s++)
-      t[s] = jr({ result: t[s], args: r, modelName: i, runtimeDataModel: n, visitor: e })
+      t[s] = jr({
+        result: t[s],
+        args: r,
+        modelName: i,
+        runtimeDataModel: n,
+        visitor: e
+      })
     return t
   }
   let o = e(t, i, r) ?? t
@@ -4849,7 +4891,13 @@ function Es({
     let d = n.models[r].fields.find((P) => P.name === o)
     if (!d || d.kind !== 'object' || !d.relationName) continue
     let f = typeof s == 'object' ? s : {}
-    t[o] = jr({ visitor: i, result: t[o], args: f, modelName: d.type, runtimeDataModel: n })
+    t[o] = jr({
+      visitor: i,
+      result: t[o],
+      args: f,
+      modelName: d.type,
+      runtimeDataModel: n
+    })
   }
 }
 function Ts({
@@ -4983,7 +5031,11 @@ function Is(e, t, r, n) {
     o = e.requests[0].transaction
   return t[r]({
     args: {
-      queries: e.requests.map((s) => ({ model: s.modelName, operation: s.action, args: s.args })),
+      queries: e.requests.map((s) => ({
+        model: s.modelName,
+        operation: s.action,
+        args: s.args
+      })),
       transaction: o ? { isolationLevel: o.kind === 'batch' ? o.isolationLevel : void 0 } : void 0
     },
     __internalParams: e,
@@ -5540,7 +5592,10 @@ function Zn(e, t, r, n) {
         case 'hex':
           if (typeof e != 'string' || !e.startsWith('\\x'))
             throw new q(`Expected a hex-encoded byte array in column '${t}', got ${typeof e}: ${e}`)
-          return { $type: 'Bytes', value: y.from(e.slice(2), 'hex').toString('base64') }
+          return {
+            $type: 'Bytes',
+            value: y.from(e.slice(2), 'hex').toString('base64')
+          }
         case 'array':
           if (Array.isArray(e)) return { $type: 'Bytes', value: y.from(e).toString('base64') }
           if (e instanceof Uint8Array)
@@ -6604,7 +6659,9 @@ var tr = class e {
         let o = await Promise.all(
           t.args.map((s) => this.interpretNode(s, r, n, i).then((a) => a.value))
         )
-        return { value: o.length > 0 ? o.reduce((s, a) => s.concat(Ci(a)), []) : [] }
+        return {
+          value: o.length > 0 ? o.reduce((s, a) => s.concat(Ci(a)), []) : []
+        }
       }
       case 'sum': {
         let o = await Promise.all(
@@ -6916,7 +6973,11 @@ var hm = 100,
   nr = Y('prisma:client:transactionManager'),
   wm = () => ({ sql: 'COMMIT', args: [], argTypes: [] }),
   bm = () => ({ sql: 'ROLLBACK', args: [], argTypes: [] }),
-  xm = () => ({ sql: '-- Implicit "COMMIT" query via underlying driver', args: [], argTypes: [] }),
+  xm = () => ({
+    sql: '-- Implicit "COMMIT" query via underlying driver',
+    args: [],
+    argTypes: []
+  }),
   Em = () => ({
     sql: '-- Implicit "ROLLBACK" query via underlying driver',
     args: [],
@@ -7012,7 +7073,11 @@ var hm = 100,
         let i = this.closedTransactions.find((o) => o.id === t)
         if (i)
           switch (
-            (nr('Transaction already closed.', { transactionId: t, status: i.status }), i.status)
+            (nr('Transaction already closed.', {
+              transactionId: t,
+              status: i.status
+            }),
+            i.status)
           ) {
             case 'closing':
             case 'waiting':
@@ -7023,7 +7088,10 @@ var hm = 100,
             case 'rolled_back':
               throw new on(r)
             case 'timed_out':
-              throw new an(r, { timeout: i.timeout, timeTaken: Date.now() - i.startedAt })
+              throw new an(r, {
+                timeout: i.timeout,
+                timeTaken: Date.now() - i.startedAt
+              })
           }
         else throw (nr('Transaction not found.', t), new rr())
       }
@@ -7039,7 +7107,11 @@ var hm = 100,
     #l(t, r) {
       let n = Date.now(),
         i = tl(async () => {
-          nr('Transaction timed out.', { transactionId: t, timeoutStartedAt: n, timeout: r })
+          nr('Transaction timed out.', {
+            transactionId: t,
+            timeoutStartedAt: n,
+            timeout: r
+          })
           let o = this.transactions.get(t)
           o && ['running', 'waiting'].includes(o.status)
             ? await this.#i(o, 'timed_out')
@@ -7272,7 +7344,10 @@ var cn = class e {
         tracingHelper: this.#t.tracingHelper,
         provider: this.#t.provider,
         connectionInfo: this.#n,
-        sqlCommenter: this.#t.sqlCommenters && { plugins: this.#t.sqlCommenters, queryInfo: o }
+        sqlCommenter: this.#t.sqlCommenters && {
+          plugins: this.#t.sqlCommenters,
+          queryInfo: o
+        }
       })
       .run(t, s)
   }
@@ -7610,7 +7685,11 @@ var fl = Y('prisma:client:clientEngine:remoteExecutor'),
     }
     async startTransaction(t) {
       return {
-        ...(await this.#s({ path: '/transaction/start', method: 'POST', body: t })),
+        ...(await this.#s({
+          path: '/transaction/start',
+          method: 'POST',
+          body: t
+        })),
         payload: void 0
       }
     }
@@ -7749,7 +7828,13 @@ var fl = Y('prisma:client:clientEngine:remoteExecutor'),
           s = o.domain ?? t.hostname,
           a = o.path ?? '/',
           d = `${s}:${a}:${o.name}`
-        this.#e.set(d, { name: o.name, value: o.value, domain: s, path: a, expires: o.expires })
+        this.#e.set(d, {
+          name: o.name,
+          value: o.value,
+          domain: s,
+          path: a,
+          expires: o.expires
+        })
       }
     }
   }
@@ -7832,7 +7917,11 @@ var sr = class {
       t.enableDebugLogs && (this.logLevel = 'debug'),
       this.logQueries &&
         (this.#l = (n) => {
-          this.logEmitter.emit('query', { ...n, params: Wt(n.params), target: 'ClientEngine' })
+          this.logEmitter.emit('query', {
+            ...n,
+            params: Wt(n.params),
+            target: 'ClientEngine'
+          })
         })
   }
   async #i() {
@@ -7999,7 +8088,10 @@ ${n.backtrace}`,
     try {
       if (t === 'start') {
         let s = n
-        i = await o.startTransaction({ ...s, isolationLevel: this.#m(s.isolationLevel) })
+        i = await o.startTransaction({
+          ...s,
+          isolationLevel: this.#m(s.isolationLevel)
+        })
       } else if (t === 'commit') {
         let s = n
         await o.commitTransaction(s)
@@ -8035,7 +8127,12 @@ ${n.backtrace}`,
           transaction: r,
           batchIndex: void 0,
           customFetch: n?.(globalThis.fetch),
-          queryInfo: { type: 'single', modelName: t.modelName, action: t.action, query: t.query }
+          queryInfo: {
+            type: 'single',
+            modelName: t.modelName,
+            action: t.action,
+            query: t.query
+          }
         })
       return or('query plan executed'), { data: { [t.action]: f } }
     } catch (d) {
@@ -8064,7 +8161,10 @@ ${n.backtrace}`,
         case 'multi': {
           if (r?.kind !== 'itx') {
             let M = r?.options.isolationLevel
-              ? { ...this.config.transactionOptions, isolationLevel: r.options.isolationLevel }
+              ? {
+                  ...this.config.transactionOptions,
+                  isolationLevel: r.options.isolationLevel
+                }
               : this.config.transactionOptions
             P = await this.transaction('start', {}, M)
           }
@@ -8116,7 +8216,12 @@ ${n.backtrace}`,
             batchIndex: void 0,
             transaction: P,
             customFetch: n?.(globalThis.fetch),
-            queryInfo: { type: 'compacted', action: i, modelName: o, queries: t }
+            queryInfo: {
+              type: 'compacted',
+              action: i,
+              modelName: o,
+              queries: t
+            }
           })
           return Us(S, f).map((M) => ({ data: { [i]: M } }))
         }
@@ -8220,10 +8325,17 @@ function Al(e, t) {
   if (it(e)) return { prisma__type: 'date', prisma__value: e.toJSON() }
   if (Pl.Decimal.isDecimal(e)) return { prisma__type: 'decimal', prisma__value: e.toJSON() }
   if (y.isBuffer(e)) return { prisma__type: 'bytes', prisma__value: e.toString('base64') }
-  if (Sm(e)) return { prisma__type: 'bytes', prisma__value: y.from(e).toString('base64') }
+  if (Sm(e))
+    return {
+      prisma__type: 'bytes',
+      prisma__value: y.from(e).toString('base64')
+    }
   if (ArrayBuffer.isView(e)) {
     let { buffer: r, byteOffset: n, byteLength: i } = e
-    return { prisma__type: 'bytes', prisma__value: y.from(r, n, i).toString('base64') }
+    return {
+      prisma__type: 'bytes',
+      prisma__value: y.from(r, n, i).toString('base64')
+    }
   }
   return typeof e == 'object' && t === 'slow' ? vl(e) : e
 }
@@ -9103,7 +9215,10 @@ function Kl(e) {
 }
 var lr = Y('prisma:client')
 typeof globalThis == 'object' && (globalThis.NODE_CLIENT = !0)
-var Hm = { requestArgsToMiddlewareArgs: (e) => e, middlewareArgsToRequestArgs: (e) => e },
+var Hm = {
+    requestArgsToMiddlewareArgs: (e) => e,
+    middlewareArgsToRequestArgs: (e) => e
+  },
   Jm = Symbol.for('prisma.client.transaction.id'),
   Wm = {
     id: 0,

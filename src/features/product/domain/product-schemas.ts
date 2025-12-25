@@ -21,7 +21,9 @@ export const ProductDiscountedPriceSchema = z.coerce
   .min(PRODUCT_CONSTANTS.MIN_PRICE, PRODUCT_ERRORS.DISCOUNTED_PRICE_TOO_LOW)
   .max(PRODUCT_CONSTANTS.MAX_PRICE, PRODUCT_ERRORS.DISCOUNTED_PRICE_TOO_HIGH)
 
-export const ProductImageUrlSchema = z.url({ error: PRODUCT_ERRORS.INVALID_IMAGE_URL })
+export const ProductImageUrlSchema = z.url({
+  error: PRODUCT_ERRORS.INVALID_IMAGE_URL
+})
 
 export const ProductNameSchema = z
   .string()
