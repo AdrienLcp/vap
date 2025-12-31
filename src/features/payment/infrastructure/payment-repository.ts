@@ -9,7 +9,10 @@ import type {
 } from '@/features/payment/domain/payment-entities'
 import type { UserId } from '@/features/user/domain/user-entities'
 import { failure, type Result, success } from '@/helpers/result'
-import { type EntitySelectedFields, PaymentMethodDatabase } from '@/infrastructure/database'
+import {
+  type EntitySelectedFields,
+  PaymentMethodDatabase
+} from '@/infrastructure/database'
 import { getDatabaseError } from '@/infrastructure/database/database-helpers'
 
 const METHOD_PAYMENT_SELECTED_FIELDS = {
@@ -22,7 +25,9 @@ const METHOD_PAYMENT_SELECTED_FIELDS = {
   type: true
 } satisfies EntitySelectedFields<PaymentMethod>
 
-const clearUserDefaultPaymentMethods = async (userId: UserId): Promise<Result> => {
+const clearUserDefaultPaymentMethods = async (
+  userId: UserId
+): Promise<Result> => {
   try {
     await PaymentMethodDatabase.updateMany({
       data: {
@@ -36,7 +41,10 @@ const clearUserDefaultPaymentMethods = async (userId: UserId): Promise<Result> =
 
     return success()
   } catch (error) {
-    console.error('Unknown error in PaymentRepository.clearUserDefaultPaymentMethods:', error)
+    console.error(
+      'Unknown error in PaymentRepository.clearUserDefaultPaymentMethods:',
+      error
+    )
     return failure()
   }
 }
@@ -62,7 +70,10 @@ const createUserPaymentMethod = async (
 
     return success(createdPaymentMethod)
   } catch (error) {
-    console.error('Unknown error in PaymentRepository.createUserPaymentMethod:', error)
+    console.error(
+      'Unknown error in PaymentRepository.createUserPaymentMethod:',
+      error
+    )
     return failure()
   }
 }
@@ -84,7 +95,10 @@ const deleteUserPaymentMethod = async (
       case 'NOT_FOUND':
         return failure('NOT_FOUND')
       default:
-        console.error('Unknown error in PaymentRepository.deleteUserPaymentMethod:', error)
+        console.error(
+          'Unknown error in PaymentRepository.deleteUserPaymentMethod:',
+          error
+        )
         return failure()
     }
   }
@@ -96,7 +110,10 @@ const deleteUserPaymentMethods = async (userId: UserId): Promise<Result> => {
 
     return success()
   } catch (error) {
-    console.error('Unknown error in PaymentRepository.deleteUserPaymentMethods:', error)
+    console.error(
+      'Unknown error in PaymentRepository.deleteUserPaymentMethods:',
+      error
+    )
     return failure()
   }
 }
@@ -117,12 +134,17 @@ const findUserPaymentMethod = async (
 
     return success(paymentMethod)
   } catch (error) {
-    console.error('Unknown error in PaymentRepository.findUserPaymentMethod:', error)
+    console.error(
+      'Unknown error in PaymentRepository.findUserPaymentMethod:',
+      error
+    )
     return failure()
   }
 }
 
-const findUserPaymentMethods = async (userId: UserId): Promise<Result<PaymentMethod[]>> => {
+const findUserPaymentMethods = async (
+  userId: UserId
+): Promise<Result<PaymentMethod[]>> => {
   try {
     const paymentMethods = await PaymentMethodDatabase.findMany({
       select: METHOD_PAYMENT_SELECTED_FIELDS,
@@ -131,7 +153,10 @@ const findUserPaymentMethods = async (userId: UserId): Promise<Result<PaymentMet
 
     return success(paymentMethods)
   } catch (error) {
-    console.error('Unknown error in PaymentRepository.findUserPaymentMethods:', error)
+    console.error(
+      'Unknown error in PaymentRepository.findUserPaymentMethods:',
+      error
+    )
     return failure()
   }
 }
@@ -163,7 +188,10 @@ const updateUserPaymentMethod = async (
       case 'NOT_FOUND':
         return failure('NOT_FOUND')
       default:
-        console.error('Unknown error in PaymentRepository.updateUserPaymentMethod:', error)
+        console.error(
+          'Unknown error in PaymentRepository.updateUserPaymentMethod:',
+          error
+        )
         return failure()
     }
   }

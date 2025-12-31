@@ -11,7 +11,11 @@ export type SwitchProps = ReactAriaSwitchProps & {
   label: string
 }
 
-export const Switch: React.FC<SwitchProps> = ({ className, label, ...switchRestProps }) => (
+export const Switch: React.FC<SwitchProps> = ({
+  className,
+  label,
+  ...switchRestProps
+}) => (
   <ReactAriaSwitch
     className={(values) => reactAriaClassNames(values, className, 'switch')}
     {...switchRestProps}

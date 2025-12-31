@@ -7,7 +7,10 @@ import {
   ProductIdSchema,
   ProductPublicDTOSchema
 } from '@/features/product/domain/product-schemas'
-import { UserDTOSchema, UserIdSchema } from '@/features/user/domain/user-schemas'
+import {
+  UserDTOSchema,
+  UserIdSchema
+} from '@/features/user/domain/user-schemas'
 
 export const OrderIdSchema = z.cuid()
 
@@ -47,7 +50,8 @@ export const OrderUserDTOSchema = UserDTOSchema.pick({
   id: true
 })
 
-export const OrderItemProductCategoryDTOSchema = ProductCategoryDTOSchema.nullable()
+export const OrderItemProductCategoryDTOSchema =
+  ProductCategoryDTOSchema.nullable()
 
 export const OrderItemProductDTOSchema = ProductPublicDTOSchema.pick({
   category: true,

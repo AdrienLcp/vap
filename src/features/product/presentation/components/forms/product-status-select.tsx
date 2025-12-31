@@ -1,7 +1,14 @@
-import { PRODUCT_CONSTANTS, PRODUCT_FORM_FIELDS } from '@/features/product/domain/product-constants'
+import {
+  PRODUCT_CONSTANTS,
+  PRODUCT_FORM_FIELDS
+} from '@/features/product/domain/product-constants'
 import type { ProductStatus } from '@/features/product/domain/product-entities'
 import { t } from '@/infrastructure/i18n'
-import { Select, type SelectItem, type SelectProps } from '@/presentation/components/forms/select'
+import {
+  Select,
+  type SelectItem,
+  type SelectProps
+} from '@/presentation/components/forms/select'
 
 const productStatusSelectItems: SelectItem<ProductStatus>[] = [
   { id: 'ACTIVE', textValue: t('product.status.active') },
@@ -9,7 +16,9 @@ const productStatusSelectItems: SelectItem<ProductStatus>[] = [
   { id: 'FEATURED', textValue: t('product.status.featured') }
 ]
 
-export const ProductStatusSelect: React.FC<Partial<SelectProps<ProductStatus>>> = ({
+export const ProductStatusSelect: React.FC<
+  Partial<SelectProps<ProductStatus>>
+> = ({
   defaultValue = PRODUCT_CONSTANTS.DEFAULT_STATUS,
   isRequired = true,
   items = productStatusSelectItems,

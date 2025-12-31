@@ -48,7 +48,9 @@ const ROLE_RIGHTS: Record<UserRole, Readonly<Right[]>> = {
   USER: USER_RIGHTS
 }
 
-export const getAuthUserPermissionsByRole = (role: UserRole): AuthPermissions => {
+export const getAuthUserPermissionsByRole = (
+  role: UserRole
+): AuthPermissions => {
   const rights = ROLE_RIGHTS[role] ?? ROLE_RIGHTS.USER
 
   const permissions: AuthPermissions = {

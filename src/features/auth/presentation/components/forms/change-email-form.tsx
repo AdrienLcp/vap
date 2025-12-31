@@ -9,7 +9,10 @@ import { AuthClient } from '@/features/auth/infrastructure/auth-client'
 import { UserEmailField } from '@/features/auth/presentation/components/forms/user-email-field'
 import type { ValueOf } from '@/helpers/object'
 import type { ValidationErrors } from '@/helpers/validation'
-import { BAD_REQUEST_STATUS, NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
+import {
+  BAD_REQUEST_STATUS,
+  NO_CONTENT_STATUS
+} from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { Form } from '@/presentation/components/forms/form'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
@@ -19,7 +22,8 @@ type ChangeEmailFormErrors = ValidationErrors<ValueOf<typeof AUTH_FORM_FIELDS>>
 
 export const ChangeEmailForm: React.FC = () => {
   const [isChangeEmailLoading, setIsChangeEmailLoading] = useState(false)
-  const [changeEmailFormErrors, setChangeEmailFormErrors] = useState<ChangeEmailFormErrors>(null)
+  const [changeEmailFormErrors, setChangeEmailFormErrors] =
+    useState<ChangeEmailFormErrors>(null)
 
   const onChangeEmailFormSubmit = useCallback(async (formData: FormData) => {
     setIsChangeEmailLoading(true)
@@ -36,7 +40,9 @@ export const ChangeEmailForm: React.FC = () => {
       return
     }
 
-    const changeEmailResponse = await AuthClient.changeEmail(emailValidation.data)
+    const changeEmailResponse = await AuthClient.changeEmail(
+      emailValidation.data
+    )
 
     setIsChangeEmailLoading(false)
 
@@ -55,15 +61,23 @@ export const ChangeEmailForm: React.FC = () => {
   }, [])
 
   return (
-    <Form onSubmit={onChangeEmailFormSubmit} validationErrors={changeEmailFormErrors}>
+    <Form
+      onSubmit={onChangeEmailFormSubmit}
+      validationErrors={changeEmailFormErrors}
+    >
       <UserEmailField
         isDisabled={isChangeEmailLoading}
         label={t('auth.fields.email.label')}
         placeholder={t('auth.fields.email.placeholder')}
       />
 
-      <SubmitButton Icon={<SaveIcon aria-hidden />} isPending={isChangeEmailLoading}>
-        {({ isPending }) => t(`auth.changeEmail.submit.${isPending ? 'loading' : 'label'}`)}
+      <SubmitButton
+        Icon={<SaveIcon aria-hidden />}
+        isPending={isChangeEmailLoading}
+      >
+        {({ isPending }) =>
+          t(`auth.changeEmail.submit.${isPending ? 'loading' : 'label'}`)
+        }
       </SubmitButton>
     </Form>
   )

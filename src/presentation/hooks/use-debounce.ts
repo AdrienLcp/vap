@@ -32,7 +32,11 @@ export const useDebounce = <T>(value: T, delay = 500): T => {
  * @param callback The function to debounce
  * @param delay The delay in milliseconds (default: 500ms)
  */
-export const useDebounceCallback = <T>(value: T, callback: (value: T) => void, delay = 500) => {
+export const useDebounceCallback = <T>(
+  value: T,
+  callback: (value: T) => void,
+  delay = 500
+) => {
   const callbackRef = useRef(callback)
   useEffect(() => {
     callbackRef.current = callback

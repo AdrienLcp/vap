@@ -16,9 +16,15 @@ import type {
   ProductUpdateData,
   ProductUpdateResponse
 } from '@/features/product/domain/product-entities'
-import { ApiClient, type ClientResponse, unknownError } from '@/infrastructure/api/api-client'
+import {
+  ApiClient,
+  type ClientResponse,
+  unknownError
+} from '@/infrastructure/api/api-client'
 
-const buildProductFiltersQueryString = (productFilters?: ProductFilters): string => {
+const buildProductFiltersQueryString = (
+  productFilters?: ProductFilters
+): string => {
   if (!productFilters) {
     return ''
   }
@@ -47,11 +53,17 @@ const buildProductFiltersQueryString = (productFilters?: ProductFilters): string
   }
 
   if (productFilters.search) {
-    productFiltersQueryParams.set(PRODUCT_SEARCH_PARAMS.SEARCH, productFilters.search)
+    productFiltersQueryParams.set(
+      PRODUCT_SEARCH_PARAMS.SEARCH,
+      productFilters.search
+    )
   }
 
   if (productFilters.status) {
-    productFiltersQueryParams.set(PRODUCT_SEARCH_PARAMS.STATUS, productFilters.status)
+    productFiltersQueryParams.set(
+      PRODUCT_SEARCH_PARAMS.STATUS,
+      productFilters.status
+    )
   }
 
   return `?${productFiltersQueryParams.toString()}`
@@ -76,17 +88,23 @@ const deleteProduct = async (
 ): Promise<ClientResponse<ProductDeletionResponse>> => {
   try {
     const productDeletionApiUrl = `/${PRODUCT_API_BASE_URL}/${encodeURIComponent(productId)}`
-    return await ApiClient.DELETE<ProductDeletionResponse>(productDeletionApiUrl)
+    return await ApiClient.DELETE<ProductDeletionResponse>(
+      productDeletionApiUrl
+    )
   } catch (error) {
     console.error('Delete product error:', error)
     return unknownError()
   }
 }
 
-const findProduct = async (productId: string): Promise<ClientResponse<ProductResponse>> => {
+const findProduct = async (
+  productId: string
+): Promise<ClientResponse<ProductResponse>> => {
   try {
     const encodedProductId = encodeURIComponent(productId)
-    return await ApiClient.GET<ProductResponse>(`/${PRODUCT_API_BASE_URL}/${encodedProductId}`)
+    return await ApiClient.GET<ProductResponse>(
+      `/${PRODUCT_API_BASE_URL}/${encodedProductId}`
+    )
   } catch (error) {
     console.error('Find product error:', error)
     return unknownError()
@@ -119,7 +137,8 @@ const findPublicProducts = async (
   productFilters?: ProductFilters
 ): Promise<ClientResponse<ProductPublicListResponse>> => {
   try {
-    const productFilterQueryString = buildProductFiltersQueryString(productFilters)
+    const productFilterQueryString =
+      buildProductFiltersQueryString(productFilters)
 
     return await ApiClient.GET<ProductPublicListResponse>(
       `/${PRODUCT_API_BASE_URL}/public${productFilterQueryString}`

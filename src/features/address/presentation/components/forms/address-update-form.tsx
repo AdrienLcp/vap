@@ -5,7 +5,10 @@ import { useRouter } from 'next/navigation'
 import { useCallback, useState } from 'react'
 
 import { ROUTES } from '@/domain/navigation'
-import { ADDRESS_ERRORS, ADDRESS_FORM_FIELDS } from '@/features/address/domain/address-constants'
+import {
+  ADDRESS_ERRORS,
+  ADDRESS_FORM_FIELDS
+} from '@/features/address/domain/address-constants'
 import type {
   AddressDTO,
   AddressFormErrors,
@@ -22,7 +25,10 @@ import { AddressStreetField } from '@/features/address/presentation/components/f
 import { getUniqueStringsArray } from '@/helpers/array'
 import type { FormDataShape } from '@/helpers/form'
 import type { Issues } from '@/helpers/validation'
-import { BAD_REQUEST_STATUS, OK_STATUS } from '@/infrastructure/api/http-response'
+import {
+  BAD_REQUEST_STATUS,
+  OK_STATUS
+} from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
 import { Form } from '@/presentation/components/forms/form'
@@ -34,51 +40,58 @@ type AddressUpdateFormProps = {
   address: AddressDTO
 }
 
-export const AddressUpdateForm: React.FC<AddressUpdateFormProps> = ({ address }) => {
+export const AddressUpdateForm: React.FC<AddressUpdateFormProps> = ({
+  address
+}) => {
   const [isAddressUpdating, setIsAddressUpdating] = useState(false)
-  const [addressFormErrors, setAddressFormErrors] = useState<AddressFormErrors>(null)
+  const [addressFormErrors, setAddressFormErrors] =
+    useState<AddressFormErrors>(null)
 
   const router = useRouter()
 
-  const onAddressValidationError = useCallback((issues: Issues<AddressUpdateData>) => {
-    const formErrors: string[] = []
-    const nameErrors: string[] = []
-    const cityErrors: string[] = []
-    const streetErrors: string[] = []
-    const postalCodeErrors: string[] = []
-    const countryErrors: string[] = []
+  const onAddressValidationError = useCallback(
+    (issues: Issues<AddressUpdateData>) => {
+      const formErrors: string[] = []
+      const nameErrors: string[] = []
+      const cityErrors: string[] = []
+      const streetErrors: string[] = []
+      const postalCodeErrors: string[] = []
+      const countryErrors: string[] = []
 
-    for (const issue of issues) {
-      switch (issue.message) {
-        case ADDRESS_ERRORS.INVALID_NAME:
-          nameErrors.push(t('address.fields.name.invalid'))
-          break
-        case ADDRESS_ERRORS.INVALID_CITY:
-          cityErrors.push(t('address.fields.city.invalid'))
-          break
-        case ADDRESS_ERRORS.INVALID_STREET:
-          streetErrors.push(t('address.fields.street.invalid'))
-          break
-        case ADDRESS_ERRORS.INVALID_POSTAL_CODE:
-          postalCodeErrors.push(t('address.fields.postalCode.invalid'))
-          break
-        case ADDRESS_ERRORS.INVALID_COUNTRY:
-          countryErrors.push(t('address.fields.country.invalid'))
-          break
-        default:
-          formErrors.push(t('address.create.error'))
+      for (const issue of issues) {
+        switch (issue.message) {
+          case ADDRESS_ERRORS.INVALID_NAME:
+            nameErrors.push(t('address.fields.name.invalid'))
+            break
+          case ADDRESS_ERRORS.INVALID_CITY:
+            cityErrors.push(t('address.fields.city.invalid'))
+            break
+          case ADDRESS_ERRORS.INVALID_STREET:
+            streetErrors.push(t('address.fields.street.invalid'))
+            break
+          case ADDRESS_ERRORS.INVALID_POSTAL_CODE:
+            postalCodeErrors.push(t('address.fields.postalCode.invalid'))
+            break
+          case ADDRESS_ERRORS.INVALID_COUNTRY:
+            countryErrors.push(t('address.fields.country.invalid'))
+            break
+          default:
+            formErrors.push(t('address.create.error'))
+        }
       }
-    }
 
-    setAddressFormErrors({
-      form: getUniqueStringsArray(formErrors),
-      [ADDRESS_FORM_FIELDS.CITY]: getUniqueStringsArray(cityErrors),
-      [ADDRESS_FORM_FIELDS.COUNTRY]: getUniqueStringsArray(countryErrors),
-      [ADDRESS_FORM_FIELDS.NAME]: getUniqueStringsArray(nameErrors),
-      [ADDRESS_FORM_FIELDS.POSTAL_CODE]: getUniqueStringsArray(postalCodeErrors),
-      [ADDRESS_FORM_FIELDS.STREET]: getUniqueStringsArray(streetErrors)
-    })
-  }, [])
+      setAddressFormErrors({
+        form: getUniqueStringsArray(formErrors),
+        [ADDRESS_FORM_FIELDS.CITY]: getUniqueStringsArray(cityErrors),
+        [ADDRESS_FORM_FIELDS.COUNTRY]: getUniqueStringsArray(countryErrors),
+        [ADDRESS_FORM_FIELDS.NAME]: getUniqueStringsArray(nameErrors),
+        [ADDRESS_FORM_FIELDS.POSTAL_CODE]:
+          getUniqueStringsArray(postalCodeErrors),
+        [ADDRESS_FORM_FIELDS.STREET]: getUniqueStringsArray(streetErrors)
+      })
+    },
+    []
+  )
 
   const onAddressUpdateFormSubmit = useCallback(
     async (formData: FormData) => {
@@ -94,7 +107,8 @@ export const AddressUpdateForm: React.FC<AddressUpdateFormProps> = ({ address })
         street: formData.get(ADDRESS_FORM_FIELDS.STREET)
       }
 
-      const addressUpdateValidation = AddressUpdateSchema.safeParse(addressUpdateData)
+      const addressUpdateValidation =
+        AddressUpdateSchema.safeParse(addressUpdateData)
 
       if (!addressUpdateValidation.success) {
         onAddressValidationError(addressUpdateValidation.error.issues)
@@ -147,7 +161,10 @@ export const AddressUpdateForm: React.FC<AddressUpdateFormProps> = ({ address })
 
       <FormError errors={addressFormErrors?.form} />
 
-      <SubmitButton Icon={<SaveIcon aria-hidden />} isPending={isAddressUpdating}>
+      <SubmitButton
+        Icon={<SaveIcon aria-hidden />}
+        isPending={isAddressUpdating}
+      >
         {t('address.update.submit')}
       </SubmitButton>
     </Form>

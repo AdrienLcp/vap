@@ -13,8 +13,9 @@ type EventHandlers<T = HTMLElement> = {
 const stopPropagation = <T extends HTMLElement>(event: MouseEvent<T>): void =>
   event.stopPropagation()
 
-const stopPropagationTouch = <T extends HTMLElement>(event: TouchEvent<T>): void =>
-  event.stopPropagation()
+const stopPropagationTouch = <T extends HTMLElement>(
+  event: TouchEvent<T>
+): void => event.stopPropagation()
 
 export const stopPropagationHandlers: EventHandlers = {
   onClick: stopPropagation,

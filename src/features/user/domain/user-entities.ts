@@ -24,7 +24,10 @@ export type UserDTO = z.infer<typeof UserDTOSchema>
 
 export type UserUpdateData = z.infer<typeof UserUpdateSchema>
 
-type UserListResult = OkResponse<UserDTO[]> | ForbiddenResponse | UnauthorizedResponse
+type UserListResult =
+  | OkResponse<UserDTO[]>
+  | ForbiddenResponse
+  | UnauthorizedResponse
 
 export type UserListResponse = Response<UserListResult>
 

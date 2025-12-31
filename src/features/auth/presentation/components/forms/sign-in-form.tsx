@@ -14,7 +14,10 @@ import { UserEmailField } from '@/features/auth/presentation/components/forms/us
 import { UserPasswordField } from '@/features/auth/presentation/components/forms/user-password-field'
 import type { ValueOf } from '@/helpers/object'
 import type { ValidationErrors } from '@/helpers/validation'
-import { BAD_REQUEST_STATUS, OK_STATUS } from '@/infrastructure/api/http-response'
+import {
+  BAD_REQUEST_STATUS,
+  OK_STATUS
+} from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
 import { Form } from '@/presentation/components/forms/form'
@@ -25,8 +28,10 @@ import { SubmitButton } from '@/presentation/components/ui/pressables/submit-but
 type SignInFormErrors = ValidationErrors<ValueOf<typeof AUTH_FORM_FIELDS>>
 
 export const SignInForm: React.FC = () => {
-  const [isUserAuthenticationLoading, setIsUserAuthenticationLoading] = useState(false)
-  const [signInFormErrors, setSignInFormErrors] = useState<SignInFormErrors>(null)
+  const [isUserAuthenticationLoading, setIsUserAuthenticationLoading] =
+    useState(false)
+  const [signInFormErrors, setSignInFormErrors] =
+    useState<SignInFormErrors>(null)
 
   const { setUser } = useAuth()
   const router = useRouter()
@@ -61,7 +66,9 @@ export const SignInForm: React.FC = () => {
         return
       }
 
-      const signInResponse = await AuthClient.emailSignIn(credentialsValidation.data)
+      const signInResponse = await AuthClient.emailSignIn(
+        credentialsValidation.data
+      )
 
       setIsUserAuthenticationLoading(false)
 
@@ -92,8 +99,13 @@ export const SignInForm: React.FC = () => {
 
       <FormError errors={signInFormErrors?.form} />
 
-      <SubmitButton Icon={<LogInIcon aria-hidden />} isPending={isUserAuthenticationLoading}>
-        {({ isPending }) => t(`auth.signIn.submit.${isPending ? 'loading' : 'label'}`)}
+      <SubmitButton
+        Icon={<LogInIcon aria-hidden />}
+        isPending={isUserAuthenticationLoading}
+      >
+        {({ isPending }) =>
+          t(`auth.signIn.submit.${isPending ? 'loading' : 'label'}`)
+        }
       </SubmitButton>
     </Form>
   )

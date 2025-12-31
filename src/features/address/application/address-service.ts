@@ -18,7 +18,8 @@ const createUserAddress = async (addressCreationData: AddressCreationData) => {
   const userId = userResult.data.id
 
   if (addressCreationData.isDefault) {
-    const addressesUpdateResult = await AddressRepository.clearUserDefaultAddresses(userId)
+    const addressesUpdateResult =
+      await AddressRepository.clearUserDefaultAddresses(userId)
 
     if (addressesUpdateResult.status === 'ERROR') {
       return addressesUpdateResult
@@ -35,7 +36,10 @@ const deleteUserAddress = async (addressId: AddressId) => {
     return userResult
   }
 
-  return await AddressRepository.deleteUserAddress(userResult.data.id, addressId)
+  return await AddressRepository.deleteUserAddress(
+    userResult.data.id,
+    addressId
+  )
 }
 
 const deleteUserAddresses = async () => {
@@ -77,15 +81,20 @@ const setUserDefaultAddress = async (addressId: AddressId) => {
 
   const userId = userResult.data.id
 
-  const addressesUpdateResult = await AddressRepository.clearUserDefaultAddresses(userId)
+  const addressesUpdateResult =
+    await AddressRepository.clearUserDefaultAddresses(userId)
 
   if (addressesUpdateResult.status === 'ERROR') {
     return addressesUpdateResult
   }
 
-  const defaultAddressUpdatedResult = await AddressRepository.updateUserAddress(userId, addressId, {
-    isDefault: true
-  })
+  const defaultAddressUpdatedResult = await AddressRepository.updateUserAddress(
+    userId,
+    addressId,
+    {
+      isDefault: true
+    }
+  )
 
   if (defaultAddressUpdatedResult.status === 'ERROR') {
     return defaultAddressUpdatedResult
@@ -94,7 +103,10 @@ const setUserDefaultAddress = async (addressId: AddressId) => {
   return await AddressRepository.findUserAddresses(userId)
 }
 
-const updateUserAddress = async (addressId: AddressId, addressUpdateData: AddressUpdateData) => {
+const updateUserAddress = async (
+  addressId: AddressId,
+  addressUpdateData: AddressUpdateData
+) => {
   const userResult = await AuthService.findUser()
 
   if (userResult.status === 'ERROR') {
@@ -104,14 +116,19 @@ const updateUserAddress = async (addressId: AddressId, addressUpdateData: Addres
   const userId = userResult.data.id
 
   if (addressUpdateData.isDefault) {
-    const addressesUpdateResult = await AddressRepository.clearUserDefaultAddresses(userId)
+    const addressesUpdateResult =
+      await AddressRepository.clearUserDefaultAddresses(userId)
 
     if (addressesUpdateResult.status === 'ERROR') {
       return addressesUpdateResult
     }
   }
 
-  return await AddressRepository.updateUserAddress(userId, addressId, addressUpdateData)
+  return await AddressRepository.updateUserAddress(
+    userId,
+    addressId,
+    addressUpdateData
+  )
 }
 
 export const AddressService = {

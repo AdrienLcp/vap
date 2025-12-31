@@ -4,7 +4,8 @@ export const fr = {
   address: {
     backToProfile: 'Retour à mon profil',
     card: {
-      deleteAddressError: "Une erreur est survenue lors de la suppression de l'adresse",
+      deleteAddressError:
+        "Une erreur est survenue lors de la suppression de l'adresse",
       deleteButtonAriaLabel: 'Supprimer cette adresse',
       editLinkAriaLabel: 'Modifier cette adresse',
       isDefault: 'Adresse par défaut',
@@ -182,7 +183,8 @@ export const fr = {
     },
     signIn: {
       errors: {
-        invalidCredentials: "L'adresse mail et le mot de passe ne correspondent pas.",
+        invalidCredentials:
+          "L'adresse mail et le mot de passe ne correspondent pas.",
         unknown: 'Une erreur inconnue est survenue.'
       },
       label: 'Se connecter',
@@ -254,14 +256,16 @@ export const fr = {
       label: 'Vider le panier'
     },
     item: {
-      deleteError: "Une erreur est survenue lors de la suppression de l'article du panier.",
+      deleteError:
+        "Une erreur est survenue lors de la suppression de l'article du panier.",
       quantity: 'Quantité : {quantity:number}',
       totalPrice: 'Prix total : {totalPrice}',
       unitPrice: "Prix à l'unité : {unitPrice}"
     },
     list: {
       empty: 'Votre panier est vide.',
-      error: 'Une erreur est survenue lors du chargement des articles du panier.'
+      error:
+        'Une erreur est survenue lors du chargement des articles du panier.'
     },
     pay: 'Payer',
     title: dt('Votre panier ({itemCount:plural})', {
@@ -299,7 +303,8 @@ export const fr = {
     errors: {
       categoryNameAlreadyExists: 'Une catégorie avec ce nom existe déjà.',
       categoryNameRequired: 'Le nom de la catégorie est requis.',
-      categoryNameTooLong: 'Le nom de la catégorie ne doit pas dépasser {max:number} caractères.'
+      categoryNameTooLong:
+        'Le nom de la catégorie ne doit pas dépasser {max:number} caractères.'
     },
     fields: {
       description: {
@@ -330,17 +335,21 @@ export const fr = {
   },
   components: {
     fallback: {
-      description: 'Veuillez réessayer plus tard ou contacter le support si le problème persiste.',
+      description:
+        'Veuillez réessayer plus tard ou contacter le support si le problème persiste.',
       resetButton: 'Réessayer',
       title: 'Une erreur est survenue'
     },
     forms: {
       fieldError: {
-        lengthValues: 'La valeur doit être comprise entre {min:number} et {max:number} caractères.',
+        lengthValues:
+          'La valeur doit être comprise entre {min:number} et {max:number} caractères.',
         tooLong: 'La valeur saisie est trop longue.',
-        tooLongValue: 'La valeur saisie doit faire moins de {max:number} caractères.',
+        tooLongValue:
+          'La valeur saisie doit faire moins de {max:number} caractères.',
         tooShort: 'La valeur saisie est trop courte.',
-        tooShortValue: 'La valeur saisie doit faire au moins {min:number} caractères.',
+        tooShortValue:
+          'La valeur saisie doit faire au moins {min:number} caractères.',
         valueMissing: 'Ce champ est requis.'
       },
       formValidationErrorDefaultMessage: 'Le formulaire contient des erreurs.',
@@ -381,7 +390,8 @@ export const fr = {
           'Une erreur est survenue lors de la mise à jour du moyen de paiement par défaut.'
       },
       create: {
-        error: 'Une erreur est survenue lors de la création du moyen de paiement.',
+        error:
+          'Une erreur est survenue lors de la création du moyen de paiement.',
         link: 'Ajouter un moyen de paiement',
         submit: 'Créer',
         success: 'Le moyen de paiement a été créé avec succès.',
@@ -390,7 +400,8 @@ export const fr = {
       list: {
         ariaLabel: 'Liste des moyens de paiement',
         empty: "Vous n'avez pas encore ajouté de moyen de paiement.",
-        error: 'Une erreur est survenue lors du chargement des moyens de paiement.'
+        error:
+          'Une erreur est survenue lors du chargement des moyens de paiement.'
       }
     }
   },
@@ -409,7 +420,8 @@ export const fr = {
       },
       success: '"{productName}" a été créé avec succès.',
       title: 'Créer un produit',
-      unknownError: 'Une erreur inconnue est survenue durant la création du produit.'
+      unknownError:
+        'Une erreur inconnue est survenue durant la création du produit.'
     },
     delete: {
       error: 'Une erreur est survenue lors de la suppression du produit.',
@@ -423,7 +435,8 @@ export const fr = {
       },
       description: {
         errors: {
-          tooLong: 'La description du produit ne doit pas dépasser {max:number} caractères.'
+          tooLong:
+            'La description du produit ne doit pas dépasser {max:number} caractères.'
         },
         label: 'Description',
         placeholder: 'Décrivez le produit'
@@ -431,8 +444,10 @@ export const fr = {
       discountedPrice: {
         description: 'Ajouter un prix ici pour créer une réduction',
         errors: {
-          tooHigh: 'Le prix réduit du produit ne doit pas dépasser {max:number}.',
-          tooLow: 'Le prix réduit du produit doit être au moins de {min:number}.'
+          tooHigh:
+            'Le prix réduit du produit ne doit pas dépasser {max:number}.',
+          tooLow:
+            'Le prix réduit du produit doit être au moins de {min:number}.'
         },
         label: 'Prix réduit'
       },
@@ -445,7 +460,8 @@ export const fr = {
       name: {
         errors: {
           required: 'Le nom du produit est requis.',
-          tooLong: 'Le nom du produit ne doit pas dépasser {max:number} caractères.'
+          tooLong:
+            'Le nom du produit ne doit pas dépasser {max:number} caractères.'
         },
         label: 'Nom',
         placeholder: 'Nom du produit'
@@ -462,7 +478,8 @@ export const fr = {
         errors: {
           alreadyExists: 'Un produit avec ce SKU existe déjà.',
           required: 'Le SKU du produit est requis.',
-          tooLong: 'Le SKU du produit ne doit pas dépasser {max:number} caractères.'
+          tooLong:
+            'Le SKU du produit ne doit pas dépasser {max:number} caractères.'
         },
         label: 'SKU'
       },
@@ -515,7 +532,8 @@ export const fr = {
         updating: 'Mise à jour en cours...'
       },
       success: '"{productName}" a été mis à jour avec succès.',
-      unknownError: 'Une erreur inconnue est survenue durant la mise à jour du produit.'
+      unknownError:
+        'Une erreur inconnue est survenue durant la mise à jour du produit.'
     }
   },
   user: {

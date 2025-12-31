@@ -33,17 +33,19 @@ const createUserPaymentMethod = async (
   const userId = userResult.data.id
 
   if (paymentMethodCreationData.isDefault) {
-    const clearDefaultResult = await PaymentRepository.clearUserDefaultPaymentMethods(userId)
+    const clearDefaultResult =
+      await PaymentRepository.clearUserDefaultPaymentMethods(userId)
 
     if (clearDefaultResult.status === 'ERROR') {
       return clearDefaultResult
     }
   }
 
-  const paymentMethodCreationResult = await PaymentRepository.createUserPaymentMethod(
-    userResult.data.id,
-    paymentMethodCreationData
-  )
+  const paymentMethodCreationResult =
+    await PaymentRepository.createUserPaymentMethod(
+      userResult.data.id,
+      paymentMethodCreationData
+    )
 
   if (paymentMethodCreationResult.status === 'ERROR') {
     return paymentMethodCreationResult
@@ -59,7 +61,10 @@ const deleteUserPaymentMethod = async (paymentMethodId: PaymentMethodId) => {
     return userResult
   }
 
-  return await PaymentRepository.deleteUserPaymentMethod(userResult.data.id, paymentMethodId)
+  return await PaymentRepository.deleteUserPaymentMethod(
+    userResult.data.id,
+    paymentMethodId
+  )
 }
 
 const deleteUserPaymentMethods = async () => {
@@ -93,14 +98,18 @@ const findUserPaymentMethod = async (
   return toPaymentMethodDTO(paymentMethodResult.data)
 }
 
-const findUserPaymentMethods = async (): Promise<Result<PaymentMethodDTO[], Unauthorized>> => {
+const findUserPaymentMethods = async (): Promise<
+  Result<PaymentMethodDTO[], Unauthorized>
+> => {
   const userResult = await AuthService.findUser()
 
   if (userResult.status === 'ERROR') {
     return userResult
   }
 
-  const paymentListResult = await PaymentRepository.findUserPaymentMethods(userResult.data.id)
+  const paymentListResult = await PaymentRepository.findUserPaymentMethods(
+    userResult.data.id
+  )
 
   if (paymentListResult.status === 'ERROR') {
     return paymentListResult
@@ -132,25 +141,24 @@ const setUserDefaultPaymentMethod = async (
 
   const userId = userResult.data.id
 
-  const paymentMethodsUpdateResult = await PaymentRepository.clearUserDefaultPaymentMethods(userId)
+  const paymentMethodsUpdateResult =
+    await PaymentRepository.clearUserDefaultPaymentMethods(userId)
 
   if (paymentMethodsUpdateResult.status === 'ERROR') {
     return paymentMethodsUpdateResult
   }
 
-  const defaultPaymentMethodUpdateResult = await PaymentRepository.updateUserPaymentMethod(
-    userId,
-    paymentMethodId,
-    {
+  const defaultPaymentMethodUpdateResult =
+    await PaymentRepository.updateUserPaymentMethod(userId, paymentMethodId, {
       isDefault: true
-    }
-  )
+    })
 
   if (defaultPaymentMethodUpdateResult.status === 'ERROR') {
     return defaultPaymentMethodUpdateResult
   }
 
-  const paymentMethodListResult = await PaymentRepository.findUserPaymentMethods(userId)
+  const paymentMethodListResult =
+    await PaymentRepository.findUserPaymentMethods(userId)
 
   if (paymentMethodListResult.status === 'ERROR') {
     return paymentMethodListResult
@@ -189,18 +197,20 @@ const updateUserPaymentMethod = async (
   }
 
   if (paymentMethodUpdate.isDefault) {
-    const clearDefaultResult = await PaymentRepository.clearUserDefaultPaymentMethods(userId)
+    const clearDefaultResult =
+      await PaymentRepository.clearUserDefaultPaymentMethods(userId)
 
     if (clearDefaultResult.status === 'ERROR') {
       return clearDefaultResult
     }
   }
 
-  const paymentMethodUpdateResult = await PaymentRepository.updateUserPaymentMethod(
-    userResult.data.id,
-    paymentMethodId,
-    paymentMethodUpdate
-  )
+  const paymentMethodUpdateResult =
+    await PaymentRepository.updateUserPaymentMethod(
+      userResult.data.id,
+      paymentMethodId,
+      paymentMethodUpdate
+    )
 
   if (paymentMethodUpdateResult.status === 'ERROR') {
     return paymentMethodUpdateResult

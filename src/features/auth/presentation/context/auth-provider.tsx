@@ -5,10 +5,15 @@ import { useCallback, useEffect, useState } from 'react'
 import { useSession } from '@/features/auth/application/use-session'
 import type { AuthUserDTO } from '@/features/auth/domain/auth-entities'
 import { AuthClient } from '@/features/auth/infrastructure/auth-client'
-import { AuthContext, type UserAuthState } from '@/features/auth/presentation/context/auth-context'
+import {
+  AuthContext,
+  type UserAuthState
+} from '@/features/auth/presentation/context/auth-context'
 import { OK_STATUS } from '@/infrastructure/api/http-response'
 
-export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
+export const AuthProvider: React.FC<React.PropsWithChildren> = ({
+  children
+}) => {
   const [userAuthState, setUserAuthState] = useState<UserAuthState>({
     status: 'loading'
   })
@@ -45,5 +50,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     loadUser()
   }, [hasSessionData, loadUser, session.isPending])
 
-  return <AuthContext value={{ setUser, userAuthState }}>{children}</AuthContext>
+  return (
+    <AuthContext value={{ setUser, userAuthState }}>{children}</AuthContext>
+  )
 }

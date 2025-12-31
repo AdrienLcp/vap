@@ -12,14 +12,18 @@ import './payment-method-grid-list.sass'
 
 type PaymentMethodGridListProps = {
   paymentMethods: PaymentMethodDTO[]
-  setPaymentMethods: React.Dispatch<React.SetStateAction<PaymentMethodDTO[] | null>>
+  setPaymentMethods: React.Dispatch<
+    React.SetStateAction<PaymentMethodDTO[] | null>
+  >
 }
 
 const renderPaymentMethodGridListEmptyState = () => (
   <p className='empty-message'>{t('payment.method.list.empty')}</p>
 )
 
-const buildPaymentMethodTextValue = (paymentMethod: PaymentMethodDTO): string => {
+const buildPaymentMethodTextValue = (
+  paymentMethod: PaymentMethodDTO
+): string => {
   if (isCardPaymentMethod(paymentMethod)) {
     return t('payment.method.card.cardTextValue', {
       last4: paymentMethod.last4
@@ -33,7 +37,8 @@ export const PaymentMethodGridList: React.FC<PaymentMethodGridListProps> = ({
   paymentMethods,
   setPaymentMethods
 }) => {
-  const [isUpdatingPaymentMethods, setIsUpdatingPaymentMethods] = useState(false)
+  const [isUpdatingPaymentMethods, setIsUpdatingPaymentMethods] =
+    useState(false)
 
   const paymentMethodListItems = paymentMethods.map((paymentMethod) => ({
     ...paymentMethod,

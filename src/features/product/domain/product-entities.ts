@@ -53,7 +53,10 @@ export type ProductEditError = ProductError | ProductConflictError
 
 export type ProductFilters = z.infer<typeof ProductFiltersSchema>
 
-type ProductListResult = OkResponse<ProductDTO[]> | UnauthorizedResponse | ForbiddenResponse
+type ProductListResult =
+  | OkResponse<ProductDTO[]>
+  | UnauthorizedResponse
+  | ForbiddenResponse
 
 export type ProductListResponse = Response<ProductListResult>
 
@@ -101,7 +104,9 @@ type ProductDeletionResult =
 
 export type ProductDeletionResponse = Response<ProductDeletionResult>
 
-export type ProductValidationErrors = ValidationErrors<ValueOf<typeof PRODUCT_FORM_FIELDS>>
+export type ProductValidationErrors = ValidationErrors<
+  ValueOf<typeof PRODUCT_FORM_FIELDS>
+>
 
 export type ProductPriceFilters = {
   maxPrice?: number

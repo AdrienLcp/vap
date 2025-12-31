@@ -40,4 +40,6 @@ export type SuccessResult<Data = null> = Data extends undefined | null
   ? { status: typeof STATUS_SUCCESS }
   : { data: Data; status: typeof STATUS_SUCCESS }
 
-export type Result<Data = null, Error = null> = ErrorResult<Error> | SuccessResult<Data>
+export type Result<Data = null, Error = null> =
+  | ErrorResult<Error>
+  | SuccessResult<Data>

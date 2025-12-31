@@ -27,7 +27,9 @@ export const getDatabaseError = (error: unknown): DatabaseError => {
     case DATABASE_CONSTANTS.DUPLICATE_ERROR:
       return {
         code: 'DUPLICATE',
-        duplicatedKeys: Array.isArray(error.meta?.target) ? error.meta.target : []
+        duplicatedKeys: Array.isArray(error.meta?.target)
+          ? error.meta.target
+          : []
       }
     case DATABASE_CONSTANTS.NOT_FOUND_ERROR:
       return { code: 'NOT_FOUND' }

@@ -3,7 +3,10 @@ import {
   CATEGORY_FORM_FIELDS
 } from '@/features/category/domain/category-constants'
 import { t } from '@/infrastructure/i18n'
-import { TextField, type TextFieldProps } from '@/presentation/components/forms/text-field'
+import {
+  TextField,
+  type TextFieldProps
+} from '@/presentation/components/forms/text-field'
 
 export const CategoryNameField: React.FC<Partial<TextFieldProps>> = ({
   isRequired = true,

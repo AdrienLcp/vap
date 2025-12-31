@@ -38,7 +38,10 @@ const renderAddressGridListEmptyState = () => (
   <p className='empty-message'>{t('address.list.empty')}</p>
 )
 
-export const AddressGridList: React.FC<AddressGridListProps> = ({ addresses, setAddresses }) => {
+export const AddressGridList: React.FC<AddressGridListProps> = ({
+  addresses,
+  setAddresses
+}) => {
   const [isUpdatingAddresses, setIsUpdatingAddresses] = useState(false)
 
   const addressListItems = addresses.map((address) => ({

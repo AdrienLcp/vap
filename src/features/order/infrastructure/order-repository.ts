@@ -64,7 +64,9 @@ const ORDER_ITEM_WITH_RELATIONS_SELECTED_FIELDS = {
   }
 }
 
-const createOrder = async (orderCreationData: OrderCreationData): Promise<Result<OrderDTO>> => {
+const createOrder = async (
+  orderCreationData: OrderCreationData
+): Promise<Result<OrderDTO>> => {
   try {
     const createdOrder = await OrderDatabase.create({
       data: {

@@ -23,7 +23,8 @@ const addItemToUserCart = async (
 ): Promise<CartItemCreationResponse> => {
   try {
     const cartItemCreationData = await cartItemCreationRequest.json()
-    const cartItemCreationValidation = CartItemCreationDataSchema.safeParse(cartItemCreationData)
+    const cartItemCreationValidation =
+      CartItemCreationDataSchema.safeParse(cartItemCreationData)
 
     if (!cartItemCreationValidation.success) {
       return HttpResponse.badRequest(cartItemCreationValidation.error.issues)
@@ -46,7 +47,9 @@ const addItemToUserCart = async (
       }
     }
 
-    const cartItemDTOValidation = CartItemDTOSchema.safeParse(cartItemCreationResult.data)
+    const cartItemDTOValidation = CartItemDTOSchema.safeParse(
+      cartItemCreationResult.data
+    )
 
     if (!cartItemDTOValidation.success) {
       console.error(
@@ -80,7 +83,10 @@ const clearUserCart = async (): Promise<CartClearResponse> => {
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
         default:
-          console.error('Unknown error in CartController.clearUserCart:', clearCartResult.error)
+          console.error(
+            'Unknown error in CartController.clearUserCart:',
+            clearCartResult.error
+          )
           return HttpResponse.internalServerError()
       }
     }
@@ -101,7 +107,10 @@ const findUserCartItems = async (): Promise<CartItemListResponse> => {
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
         default:
-          console.error('Unknown error in CartController.findUserCartItems:', cartResult.error)
+          console.error(
+            'Unknown error in CartController.findUserCartItems:',
+            cartResult.error
+          )
           return HttpResponse.internalServerError()
       }
     }
@@ -109,7 +118,10 @@ const findUserCartItems = async (): Promise<CartItemListResponse> => {
     const cartValidation = CartItemDTOSchema.array().safeParse(cartResult.data)
 
     if (!cartValidation.success) {
-      console.error('Validation error in CartController.findUserCartItems:', cartValidation.error)
+      console.error(
+        'Validation error in CartController.findUserCartItems:',
+        cartValidation.error
+      )
       return HttpResponse.internalServerError()
     }
 
@@ -120,7 +132,9 @@ const findUserCartItems = async (): Promise<CartItemListResponse> => {
   }
 }
 
-const removeItemFromUserCart = async (productId: string): Promise<CartItemDeletionResponse> => {
+const removeItemFromUserCart = async (
+  productId: string
+): Promise<CartItemDeletionResponse> => {
   try {
     const productIdValidation = ProductIdSchema.safeParse(productId)
 
@@ -149,7 +163,10 @@ const removeItemFromUserCart = async (productId: string): Promise<CartItemDeleti
 
     return HttpResponse.noContent()
   } catch (error) {
-    console.error('Unknown error in CartRepository.removeItemFromUserCart:', error)
+    console.error(
+      'Unknown error in CartRepository.removeItemFromUserCart:',
+      error
+    )
     return HttpResponse.internalServerError()
   }
 }
@@ -166,7 +183,8 @@ const updateUserCartItemQuantity = async (
     }
 
     const cartItemUpdateData = await request.json()
-    const cartItemUpdateDataValidation = CartItemUpdateDataSchema.safeParse(cartItemUpdateData)
+    const cartItemUpdateDataValidation =
+      CartItemUpdateDataSchema.safeParse(cartItemUpdateData)
 
     if (!cartItemUpdateDataValidation.success) {
       return HttpResponse.badRequest(cartItemUpdateDataValidation.error.issues)
@@ -194,7 +212,10 @@ const updateUserCartItemQuantity = async (
 
     return HttpResponse.noContent()
   } catch (error) {
-    console.error('Unknown error in CartRepository.updateCartItemQuantity:', error)
+    console.error(
+      'Unknown error in CartRepository.updateCartItemQuantity:',
+      error
+    )
     return HttpResponse.internalServerError()
   }
 }

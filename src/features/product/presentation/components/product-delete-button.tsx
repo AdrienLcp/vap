@@ -8,7 +8,10 @@ import { ROUTES } from '@/domain/navigation'
 import { ProductClient } from '@/features/product/infrastructure/product-client'
 import { NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
-import { Button, type ButtonProps } from '@/presentation/components/ui/pressables/button'
+import {
+  Button,
+  type ButtonProps
+} from '@/presentation/components/ui/pressables/button'
 import { ToastService } from '@/presentation/services/toast-service'
 
 type ProductDeleteButtonProps = Partial<ButtonProps> & {

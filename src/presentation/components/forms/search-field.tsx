@@ -31,7 +31,9 @@ export const SearchField: React.FC<SearchFieldProps> = ({
 }) => (
   <ReactAriaSearchField
     {...searchFieldRestProps}
-    className={(values) => reactAriaClassNames(values, className, 'search-field')}
+    className={(values) =>
+      reactAriaClassNames(values, className, 'search-field')
+    }
     isDisabled={isDisabled || isPending}
   >
     {({ isInvalid, state }) => (
@@ -39,7 +41,9 @@ export const SearchField: React.FC<SearchFieldProps> = ({
         <Label>{label}</Label>
 
         <div className='input-wrapper'>
-          <div className='search-icon'>{isPending ? <Spinner /> : <SearchIcon aria-hidden />}</div>
+          <div className='search-icon'>
+            {isPending ? <Spinner /> : <SearchIcon aria-hidden />}
+          </div>
 
           <Input />
 

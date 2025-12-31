@@ -10,7 +10,10 @@ import { DeleteAccountPasswordSchema } from '@/features/auth/domain/auth-schemas
 import { AuthClient } from '@/features/auth/infrastructure/auth-client'
 import { UserPasswordField } from '@/features/auth/presentation/components/forms/user-password-field'
 import type { ValidationErrors } from '@/helpers/validation'
-import { BAD_REQUEST_STATUS, NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
+import {
+  BAD_REQUEST_STATUS,
+  NO_CONTENT_STATUS
+} from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { Form } from '@/presentation/components/forms/form'
 import { Button } from '@/presentation/components/ui/pressables/button'
@@ -24,9 +27,12 @@ type AccountDeleteFormProps = {
   onCloseButtonPress: () => void
 }
 
-export const AccountDeleteForm: React.FC<AccountDeleteFormProps> = ({ onCloseButtonPress }) => {
+export const AccountDeleteForm: React.FC<AccountDeleteFormProps> = ({
+  onCloseButtonPress
+}) => {
   const [isDeletingUserAccount, setIsDeletingUserAccount] = useState(false)
-  const [accountDeletionFormErrors, setAccountDeletionFormErrors] = useState<SignInFormErrors>(null)
+  const [accountDeletionFormErrors, setAccountDeletionFormErrors] =
+    useState<SignInFormErrors>(null)
 
   const router = useRouter()
 
@@ -37,7 +43,9 @@ export const AccountDeleteForm: React.FC<AccountDeleteFormProps> = ({ onCloseBut
 
   const onDeleteAccountBadRequest = useCallback(() => {
     setAccountDeletionFormErrors({
-      [AUTH_FORM_FIELDS.PASSWORD]: t('auth.deleteAccount.errors.invalidPassword')
+      [AUTH_FORM_FIELDS.PASSWORD]: t(
+        'auth.deleteAccount.errors.invalidPassword'
+      )
     })
   }, [])
 
@@ -54,7 +62,9 @@ export const AccountDeleteForm: React.FC<AccountDeleteFormProps> = ({ onCloseBut
         return
       }
 
-      const accountDeletionResponse = await AuthClient.deleteUser(passwordValidation.data)
+      const accountDeletionResponse = await AuthClient.deleteUser(
+        passwordValidation.data
+      )
 
       setIsDeletingUserAccount(false)
 

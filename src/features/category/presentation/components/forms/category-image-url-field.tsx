@@ -1,8 +1,14 @@
 import { CATEGORY_FORM_FIELDS } from '@/features/category/domain/category-constants'
 import { t } from '@/infrastructure/i18n'
-import { TextField, type TextFieldProps } from '@/presentation/components/forms/text-field'
+import {
+  TextField,
+  type TextFieldProps
+} from '@/presentation/components/forms/text-field'
 
-type CategoryImageUrlFieldProps = Omit<Partial<TextFieldProps>, 'defaultValue' | 'value'> & {
+type CategoryImageUrlFieldProps = Omit<
+  Partial<TextFieldProps>,
+  'defaultValue' | 'value'
+> & {
   defaultValue?: string | null
   value?: string | null
 }

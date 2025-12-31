@@ -31,7 +31,9 @@ export function Menu<T>({ Trigger, ...menuRestProps }: MenuProps<T>) {
         <ReactAriaMenu className='menu' {...menuRestProps}>
           {({ className, Icon, textValue, ...restItemProps }) => (
             <ReactAriaMenuItem
-              className={(values) => reactAriaClassNames(values, className, 'item')}
+              className={(values) =>
+                reactAriaClassNames(values, className, 'item')
+              }
               textValue={textValue}
               {...restItemProps}
             >

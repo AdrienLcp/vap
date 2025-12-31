@@ -5,7 +5,10 @@ import { useRouter } from 'next/navigation'
 import { useCallback, useState } from 'react'
 
 import { ROUTES } from '@/domain/navigation'
-import { ADDRESS_ERRORS, ADDRESS_FORM_FIELDS } from '@/features/address/domain/address-constants'
+import {
+  ADDRESS_ERRORS,
+  ADDRESS_FORM_FIELDS
+} from '@/features/address/domain/address-constants'
 import type {
   AddressCreationData,
   AddressFormErrors
@@ -21,7 +24,10 @@ import { AddressStreetField } from '@/features/address/presentation/components/f
 import { getUniqueStringsArray } from '@/helpers/array'
 import type { FormDataShape } from '@/helpers/form'
 import type { Issues } from '@/helpers/validation'
-import { BAD_REQUEST_STATUS, CREATED_STATUS } from '@/infrastructure/api/http-response'
+import {
+  BAD_REQUEST_STATUS,
+  CREATED_STATUS
+} from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
 import { Form } from '@/presentation/components/forms/form'
@@ -30,50 +36,56 @@ import { SubmitButton } from '@/presentation/components/ui/pressables/submit-but
 import { ToastService } from '@/presentation/services/toast-service'
 
 export const AddressCreationForm: React.FC = () => {
-  const [isAddressCreationLoading, setIsAddressCreationLoading] = useState(false)
-  const [addressFormErrors, setAddressFormErrors] = useState<AddressFormErrors>(null)
+  const [isAddressCreationLoading, setIsAddressCreationLoading] =
+    useState(false)
+  const [addressFormErrors, setAddressFormErrors] =
+    useState<AddressFormErrors>(null)
 
   const router = useRouter()
 
-  const onAddressValidationError = useCallback((issues: Issues<AddressCreationData>) => {
-    const formErrors: string[] = []
-    const nameErrors: string[] = []
-    const cityErrors: string[] = []
-    const streetErrors: string[] = []
-    const postalCodeErrors: string[] = []
-    const countryErrors: string[] = []
+  const onAddressValidationError = useCallback(
+    (issues: Issues<AddressCreationData>) => {
+      const formErrors: string[] = []
+      const nameErrors: string[] = []
+      const cityErrors: string[] = []
+      const streetErrors: string[] = []
+      const postalCodeErrors: string[] = []
+      const countryErrors: string[] = []
 
-    for (const issue of issues) {
-      switch (issue.message) {
-        case ADDRESS_ERRORS.INVALID_NAME:
-          nameErrors.push(t('address.fields.name.invalid'))
-          break
-        case ADDRESS_ERRORS.INVALID_CITY:
-          cityErrors.push(t('address.fields.city.invalid'))
-          break
-        case ADDRESS_ERRORS.INVALID_STREET:
-          streetErrors.push(t('address.fields.street.invalid'))
-          break
-        case ADDRESS_ERRORS.INVALID_POSTAL_CODE:
-          postalCodeErrors.push(t('address.fields.postalCode.invalid'))
-          break
-        case ADDRESS_ERRORS.INVALID_COUNTRY:
-          countryErrors.push(t('address.fields.country.invalid'))
-          break
-        default:
-          formErrors.push(t('address.create.error'))
+      for (const issue of issues) {
+        switch (issue.message) {
+          case ADDRESS_ERRORS.INVALID_NAME:
+            nameErrors.push(t('address.fields.name.invalid'))
+            break
+          case ADDRESS_ERRORS.INVALID_CITY:
+            cityErrors.push(t('address.fields.city.invalid'))
+            break
+          case ADDRESS_ERRORS.INVALID_STREET:
+            streetErrors.push(t('address.fields.street.invalid'))
+            break
+          case ADDRESS_ERRORS.INVALID_POSTAL_CODE:
+            postalCodeErrors.push(t('address.fields.postalCode.invalid'))
+            break
+          case ADDRESS_ERRORS.INVALID_COUNTRY:
+            countryErrors.push(t('address.fields.country.invalid'))
+            break
+          default:
+            formErrors.push(t('address.create.error'))
+        }
       }
-    }
 
-    setAddressFormErrors({
-      form: getUniqueStringsArray(formErrors),
-      [ADDRESS_FORM_FIELDS.CITY]: getUniqueStringsArray(cityErrors),
-      [ADDRESS_FORM_FIELDS.COUNTRY]: getUniqueStringsArray(countryErrors),
-      [ADDRESS_FORM_FIELDS.NAME]: getUniqueStringsArray(nameErrors),
-      [ADDRESS_FORM_FIELDS.POSTAL_CODE]: getUniqueStringsArray(postalCodeErrors),
-      [ADDRESS_FORM_FIELDS.STREET]: getUniqueStringsArray(streetErrors)
-    })
-  }, [])
+      setAddressFormErrors({
+        form: getUniqueStringsArray(formErrors),
+        [ADDRESS_FORM_FIELDS.CITY]: getUniqueStringsArray(cityErrors),
+        [ADDRESS_FORM_FIELDS.COUNTRY]: getUniqueStringsArray(countryErrors),
+        [ADDRESS_FORM_FIELDS.NAME]: getUniqueStringsArray(nameErrors),
+        [ADDRESS_FORM_FIELDS.POSTAL_CODE]:
+          getUniqueStringsArray(postalCodeErrors),
+        [ADDRESS_FORM_FIELDS.STREET]: getUniqueStringsArray(streetErrors)
+      })
+    },
+    []
+  )
 
   const onAddressCreationFormSubmit = useCallback(
     async (formData: FormData) => {
@@ -89,7 +101,8 @@ export const AddressCreationForm: React.FC = () => {
         street: formData.get(ADDRESS_FORM_FIELDS.STREET)
       }
 
-      const addressCreationValidation = AddressCreationSchema.safeParse(addressCreationData)
+      const addressCreationValidation =
+        AddressCreationSchema.safeParse(addressCreationData)
 
       if (!addressCreationValidation.success) {
         onAddressValidationError(addressCreationValidation.error.issues)
@@ -120,7 +133,10 @@ export const AddressCreationForm: React.FC = () => {
   )
 
   return (
-    <Form onSubmit={onAddressCreationFormSubmit} validationErrors={addressFormErrors}>
+    <Form
+      onSubmit={onAddressCreationFormSubmit}
+      validationErrors={addressFormErrors}
+    >
       <FieldSet isDisabled={isAddressCreationLoading}>
         <AddressNameField />
 
@@ -137,7 +153,10 @@ export const AddressCreationForm: React.FC = () => {
 
       <FormError errors={addressFormErrors?.form} />
 
-      <SubmitButton Icon={<SaveIcon aria-hidden />} isPending={isAddressCreationLoading}>
+      <SubmitButton
+        Icon={<SaveIcon aria-hidden />}
+        isPending={isAddressCreationLoading}
+      >
         {t('address.create.title')}
       </SubmitButton>
     </Form>

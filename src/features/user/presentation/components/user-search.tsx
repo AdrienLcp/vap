@@ -12,7 +12,11 @@ type UserSearchProps = {
   value: string
 }
 
-export const UserSearch: React.FC<UserSearchProps> = ({ isDisabled, onChange, value }) => {
+export const UserSearch: React.FC<UserSearchProps> = ({
+  isDisabled,
+  onChange,
+  value
+}) => {
   const [searchValue, setSearchValue] = useState(value)
 
   useDebounceCallback(searchValue, onChange)

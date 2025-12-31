@@ -2,9 +2,14 @@
 
 import { ListBox, ListBoxItem } from 'react-aria-components'
 
-import { adminNavItems } from '@/features/admin/admin-nav'
+import { adminNavItems } from '@/features/admin/admin-nav-items'
 import { t } from '@/infrastructure/i18n'
-import { Card, CardBody, CardFooter, CardTitle } from '@/presentation/components/ui/card'
+import {
+  Card,
+  CardBody,
+  CardFooter,
+  CardTitle
+} from '@/presentation/components/ui/card'
 
 import './admin-page.sass'
 

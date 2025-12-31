@@ -1,7 +1,13 @@
 import { z } from 'zod'
 
-import { CART_CONSTANTS, CART_ERRORS } from '@/features/cart/domain/cart-constants'
-import { ProductIdSchema, ProductPublicDTOSchema } from '@/features/product/domain/product-schemas'
+import {
+  CART_CONSTANTS,
+  CART_ERRORS
+} from '@/features/cart/domain/cart-constants'
+import {
+  ProductIdSchema,
+  ProductPublicDTOSchema
+} from '@/features/product/domain/product-schemas'
 
 export const CartItemIdSchema = z.cuid()
 

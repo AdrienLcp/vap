@@ -27,7 +27,9 @@ export const AddressCard: React.FC<AddressCardProps> = ({
   const postalCodeAndCity = [address.postalCode, address.city].filter(Boolean)
 
   return (
-    <Card className={classNames('address-card', address.isDefault && 'selected')}>
+    <Card
+      className={classNames('address-card', address.isDefault && 'selected')}
+    >
       <div className='address-header'>
         <span className='name'>{address.name ?? address.street}</span>
 
@@ -53,7 +55,9 @@ export const AddressCard: React.FC<AddressCardProps> = ({
 
       <div className='details'>
         {address.name && address.street && <span>{address.street}</span>}
-        {postalCodeAndCity.length > 0 && <span>{postalCodeAndCity.join(' ')}</span>}
+        {postalCodeAndCity.length > 0 && (
+          <span>{postalCodeAndCity.join(' ')}</span>
+        )}
         {address.country && <span>{address.country}</span>}
       </div>
 

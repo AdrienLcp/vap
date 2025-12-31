@@ -9,7 +9,10 @@ import type {
 } from '@/features/address/domain/address-entities'
 import type { UserId } from '@/features/user/domain/user-entities'
 import { failure, type Result, success } from '@/helpers/result'
-import { AddressDatabase, type EntitySelectedFields } from '@/infrastructure/database'
+import {
+  AddressDatabase,
+  type EntitySelectedFields
+} from '@/infrastructure/database'
 import { getDatabaseError } from '@/infrastructure/database/database-helpers'
 
 const ADDRESS_SELECTED_FIELDS = {
@@ -36,7 +39,10 @@ const clearUserDefaultAddresses = async (userId: UserId): Promise<Result> => {
 
     return success()
   } catch (error) {
-    console.error('Unknown error in AddressRepository.clearUserDefaultAddresses:', error)
+    console.error(
+      'Unknown error in AddressRepository.clearUserDefaultAddresses:',
+      error
+    )
     return failure()
   }
 }
@@ -61,7 +67,10 @@ const createUserAddress = async (
 
     return success(createdAddress)
   } catch (error) {
-    console.error('Unknown error in AddressRepository.createUserAddress:', error)
+    console.error(
+      'Unknown error in AddressRepository.createUserAddress:',
+      error
+    )
     return failure()
   }
 }
@@ -86,7 +95,10 @@ const deleteUserAddress = async (
       case 'NOT_FOUND':
         return failure('NOT_FOUND')
       default:
-        console.error('Unknown error in AddressRepository.deleteUserAddress:', error)
+        console.error(
+          'Unknown error in AddressRepository.deleteUserAddress:',
+          error
+        )
         return failure()
     }
   }
@@ -98,7 +110,10 @@ const deleteUserAddresses = async (userId: UserId): Promise<Result> => {
 
     return success()
   } catch (error) {
-    console.error('Unknown error in AddressRepository.deleteUserAddresses:', error)
+    console.error(
+      'Unknown error in AddressRepository.deleteUserAddresses:',
+      error
+    )
     return failure()
   }
 }
@@ -125,13 +140,18 @@ const findUserAddress = async (
       case 'NOT_FOUND':
         return failure('NOT_FOUND')
       default:
-        console.error('Unknown error in AddressRepository.findUserAddresses:', error)
+        console.error(
+          'Unknown error in AddressRepository.findUserAddresses:',
+          error
+        )
         return failure()
     }
   }
 }
 
-const findUserAddresses = async (userId: UserId): Promise<Result<AddressDTO[]>> => {
+const findUserAddresses = async (
+  userId: UserId
+): Promise<Result<AddressDTO[]>> => {
   try {
     const userAddresses = await AddressDatabase.findMany({
       orderBy: { isDefault: 'desc' },
@@ -141,7 +161,10 @@ const findUserAddresses = async (userId: UserId): Promise<Result<AddressDTO[]>> 
 
     return success(userAddresses)
   } catch (error) {
-    console.error('Unknown error in AddressRepository.findUserAddresses:', error)
+    console.error(
+      'Unknown error in AddressRepository.findUserAddresses:',
+      error
+    )
     return failure()
   }
 }
@@ -175,7 +198,10 @@ const updateUserAddress = async (
       case 'NOT_FOUND':
         return failure('NOT_FOUND')
       default:
-        console.error('Unknown error in AddressRepository.updateUserAddress:', error)
+        console.error(
+          'Unknown error in AddressRepository.updateUserAddress:',
+          error
+        )
         return failure()
     }
   }

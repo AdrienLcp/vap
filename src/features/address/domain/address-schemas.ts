@@ -1,12 +1,19 @@
 import { z } from 'zod'
+
 import { ADDRESS_ERRORS } from './address-constants'
 
 export const AddressIdSchema = z.cuid()
 export const AddressCitySchema = z.string(ADDRESS_ERRORS.INVALID_CITY).trim()
-export const AddressCountrySchema = z.string(ADDRESS_ERRORS.INVALID_COUNTRY).trim()
+export const AddressCountrySchema = z
+  .string(ADDRESS_ERRORS.INVALID_COUNTRY)
+  .trim()
 export const AddressNameSchema = z.string(ADDRESS_ERRORS.INVALID_NAME).trim()
-export const AddressStreetSchema = z.string(ADDRESS_ERRORS.INVALID_STREET).trim()
-export const AddressPostalCodeSchema = z.string(ADDRESS_ERRORS.INVALID_POSTAL_CODE).trim()
+export const AddressStreetSchema = z
+  .string(ADDRESS_ERRORS.INVALID_STREET)
+  .trim()
+export const AddressPostalCodeSchema = z
+  .string(ADDRESS_ERRORS.INVALID_POSTAL_CODE)
+  .trim()
 
 export const AddressDTOSchema = z.object({
   city: AddressCitySchema.catch(''),

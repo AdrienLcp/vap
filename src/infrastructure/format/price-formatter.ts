@@ -17,11 +17,16 @@ type FormatPriceOptions = Intl.NumberFormatOptions & {
  * @param options - Additional formatting options
  * @returns The formatted price as a string
  */
-export const formatPrice = (value: number, options?: FormatPriceOptions): string => {
+export const formatPrice = (
+  value: number,
+  options?: FormatPriceOptions
+): string => {
   const formatOptions: FormatPriceOptions = {
     ...priceFormatOptions,
     ...options
   }
 
-  return new Intl.NumberFormat(options?.locale ?? locale, formatOptions).format(value)
+  return new Intl.NumberFormat(options?.locale ?? locale, formatOptions).format(
+    value
+  )
 }

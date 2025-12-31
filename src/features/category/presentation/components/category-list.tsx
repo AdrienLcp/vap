@@ -18,11 +18,13 @@ const renderCategoryListEmptyState = () => <p>{t('category.list.empty')}</p>
 export const CategoryList: React.FC<CategoryListProps> = ({ categories }) => {
   const [categoryList, setCategoryList] = useState<CategoryDTO[]>(categories)
 
-  const categoryGridItems: GridItem<CategoryDTO>[] = categoryList.map((category) => ({
-    ...category,
-    href: getAdminCategoryRoute(category.id),
-    textValue: category.name
-  }))
+  const categoryGridItems: GridItem<CategoryDTO>[] = categoryList.map(
+    (category) => ({
+      ...category,
+      href: getAdminCategoryRoute(category.id),
+      textValue: category.name
+    })
+  )
 
   const renderCategoryItem = useCallback(
     (categoryItem: GridItem<CategoryDTO>) => (

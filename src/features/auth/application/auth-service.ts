@@ -2,7 +2,11 @@ import 'server-only'
 
 import type { Unauthorized } from '@/domain/entities'
 import { AddressService } from '@/features/address/application/address-service'
-import type { AuthUserDTO, AuthUserError, User } from '@/features/auth/domain/auth-entities'
+import type {
+  AuthUserDTO,
+  AuthUserError,
+  User
+} from '@/features/auth/domain/auth-entities'
 import { getAuthUserPermissionsByRole } from '@/features/auth/domain/auth-permissions'
 import { AuthRepository } from '@/features/auth/infrastructure/auth-repository'
 import { CartService } from '@/features/cart/application/cart-service'

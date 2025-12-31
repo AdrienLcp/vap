@@ -1,11 +1,17 @@
 import { useCallback } from 'react'
-import { Form as ReactAriaForm, type FormProps as ReactAriaFormProps } from 'react-aria-components'
+import {
+  Form as ReactAriaForm,
+  type FormProps as ReactAriaFormProps
+} from 'react-aria-components'
 
 import './form.sass'
 
 export type FormTarget = EventTarget & HTMLFormElement
 
-export type FormProps = Omit<ReactAriaFormProps, 'onSubmit' | 'validationErrors'> & {
+export type FormProps = Omit<
+  ReactAriaFormProps,
+  'onSubmit' | 'validationErrors'
+> & {
   hasResetAfterSubmit?: boolean
   onSubmit?: (formData: FormData, currentTarget: FormTarget) => void
   validationErrors?: ReactAriaFormProps['validationErrors'] | null

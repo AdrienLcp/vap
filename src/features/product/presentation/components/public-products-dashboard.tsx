@@ -1,13 +1,21 @@
 'use client'
 
-import { parseAsArrayOf, parseAsInteger, parseAsString, useQueryState } from 'nuqs'
+import {
+  parseAsArrayOf,
+  parseAsInteger,
+  parseAsString,
+  useQueryState
+} from 'nuqs'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import {
   PRODUCT_CONSTANTS,
   PRODUCT_SEARCH_PARAMS
 } from '@/features/product/domain/product-constants'
-import type { ProductFilters, ProductPublicDTO } from '@/features/product/domain/product-entities'
+import type {
+  ProductFilters,
+  ProductPublicDTO
+} from '@/features/product/domain/product-entities'
 import { ProductClient } from '@/features/product/infrastructure/product-client'
 import { PublicProductList } from '@/features/product/presentation/components/public-product-list'
 import { PublicProductsFilters } from '@/features/product/presentation/components/public-products-filters'
@@ -24,7 +32,10 @@ export const PublicProductsDashboard: React.FC = () => {
 
   const [categoryIdsFilter, setCategoryIdsFilter] = useQueryState(
     PRODUCT_SEARCH_PARAMS.CATEGORY_IDS,
-    parseAsArrayOf<string>(parseAsString, PRODUCT_SEARCH_PARAMS.CATEGORY_IDS_SEPARATOR)
+    parseAsArrayOf<string>(
+      parseAsString,
+      PRODUCT_SEARCH_PARAMS.CATEGORY_IDS_SEPARATOR
+    )
   )
 
   const [maxPriceFilter, setMaxPriceFilter] = useQueryState(
@@ -37,9 +48,12 @@ export const PublicProductsDashboard: React.FC = () => {
     parseAsInteger.withDefault(Math.floor(PRODUCT_CONSTANTS.MIN_PRICE))
   )
 
-  const [productSearch, setProductSearch] = useQueryState(PRODUCT_SEARCH_PARAMS.SEARCH, {
-    defaultValue: ''
-  })
+  const [productSearch, setProductSearch] = useQueryState(
+    PRODUCT_SEARCH_PARAMS.SEARCH,
+    {
+      defaultValue: ''
+    }
+  )
 
   const loadProducts = useCallback(async (filters?: ProductFilters) => {
     setIsLoadingProducts(true)
@@ -58,12 +72,20 @@ export const PublicProductsDashboard: React.FC = () => {
   useEffect(() => {
     loadProducts({
       categoryIds:
-        categoryIdsFilter && categoryIdsFilter.length > 0 ? categoryIdsFilter : undefined,
+        categoryIdsFilter && categoryIdsFilter.length > 0
+          ? categoryIdsFilter
+          : undefined,
       maxPrice: maxPriceFilter,
       minPrice: minPriceFilter,
       search: productSearch
     })
-  }, [categoryIdsFilter, loadProducts, maxPriceFilter, minPriceFilter, productSearch])
+  }, [
+    categoryIdsFilter,
+    loadProducts,
+    maxPriceFilter,
+    minPriceFilter,
+    productSearch
+  ])
 
   const filters: ProductFilters = useMemo(
     () => ({
@@ -78,7 +100,9 @@ export const PublicProductsDashboard: React.FC = () => {
   const onFilterChange = useCallback(
     (newFilters: ProductFilters) => {
       if (newFilters.categoryIds) {
-        setCategoryIdsFilter(newFilters.categoryIds.length > 0 ? newFilters.categoryIds : null)
+        setCategoryIdsFilter(
+          newFilters.categoryIds.length > 0 ? newFilters.categoryIds : null
+        )
       }
 
       if (newFilters.maxPrice != null) {
@@ -93,7 +117,12 @@ export const PublicProductsDashboard: React.FC = () => {
         setProductSearch(newFilters.search)
       }
     },
-    [setCategoryIdsFilter, setMaxPriceFilter, setMinPriceFilter, setProductSearch]
+    [
+      setCategoryIdsFilter,
+      setMaxPriceFilter,
+      setMinPriceFilter,
+      setProductSearch
+    ]
   )
 
   return (
@@ -104,7 +133,11 @@ export const PublicProductsDashboard: React.FC = () => {
         onFilterChange={onFilterChange}
       />
 
-      {isLoadingProducts ? <Loader /> : <PublicProductList products={products} />}
+      {isLoadingProducts ? (
+        <Loader />
+      ) : (
+        <PublicProductList products={products} />
+      )}
     </>
   )
 }

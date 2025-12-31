@@ -28,7 +28,9 @@ const createUserPaymentMethod = async (
       PaymentMethodCreationDTOSchema.safeParse(paymentMethodCreationDto)
 
     if (!paymentMethodCreationDtoValidation.success) {
-      return HttpResponse.badRequest(paymentMethodCreationDtoValidation.error.issues)
+      return HttpResponse.badRequest(
+        paymentMethodCreationDtoValidation.error.issues
+      )
     }
 
     const paymentMethodCreationResult =
@@ -74,15 +76,17 @@ const deleteUserPaymentMethod = async (
   paymentMethodId: string
 ): Promise<PaymentMethodDeletionResponse> => {
   try {
-    const paymentMethodIdValidation = PaymentMethodIdSchema.safeParse(paymentMethodId)
+    const paymentMethodIdValidation =
+      PaymentMethodIdSchema.safeParse(paymentMethodId)
 
     if (!paymentMethodIdValidation.success) {
       return HttpResponse.badRequest(paymentMethodIdValidation.error.issues)
     }
 
-    const paymentMethodDeletionResult = await PaymentService.deleteUserPaymentMethod(
-      paymentMethodIdValidation.data
-    )
+    const paymentMethodDeletionResult =
+      await PaymentService.deleteUserPaymentMethod(
+        paymentMethodIdValidation.data
+      )
 
     if (paymentMethodDeletionResult.status === 'ERROR') {
       switch (paymentMethodDeletionResult.error) {
@@ -106,9 +110,12 @@ const deleteUserPaymentMethod = async (
   }
 }
 
-const findUserPaymentMethod = async (paymentMethodId: string): Promise<PaymentMethodResponse> => {
+const findUserPaymentMethod = async (
+  paymentMethodId: string
+): Promise<PaymentMethodResponse> => {
   try {
-    const paymentMethodIdValidation = PaymentMethodIdSchema.safeParse(paymentMethodId)
+    const paymentMethodIdValidation =
+      PaymentMethodIdSchema.safeParse(paymentMethodId)
 
     if (!paymentMethodIdValidation.success) {
       return HttpResponse.badRequest(paymentMethodIdValidation.error.issues)
@@ -133,7 +140,9 @@ const findUserPaymentMethod = async (paymentMethodId: string): Promise<PaymentMe
       }
     }
 
-    const paymentMethodValidation = PaymentMethodDTOSchema.safeParse(paymentMethodResult.data)
+    const paymentMethodValidation = PaymentMethodDTOSchema.safeParse(
+      paymentMethodResult.data
+    )
 
     if (!paymentMethodValidation.success) {
       return HttpResponse.internalServerError()
@@ -182,15 +191,17 @@ const setUserDefaultPaymentMethod = async (
   paymentMethodId: string
 ): Promise<PaymentMethodDefaultResponse> => {
   try {
-    const paymentMethodIdValidation = PaymentMethodIdSchema.safeParse(paymentMethodId)
+    const paymentMethodIdValidation =
+      PaymentMethodIdSchema.safeParse(paymentMethodId)
 
     if (!paymentMethodIdValidation.success) {
       return HttpResponse.badRequest(paymentMethodIdValidation.error.issues)
     }
 
-    const userDefaultPaymentMethodResult = await PaymentService.setUserDefaultPaymentMethod(
-      paymentMethodIdValidation.data
-    )
+    const userDefaultPaymentMethodResult =
+      await PaymentService.setUserDefaultPaymentMethod(
+        paymentMethodIdValidation.data
+      )
 
     if (userDefaultPaymentMethodResult.status === 'ERROR') {
       switch (userDefaultPaymentMethodResult.error) {
@@ -207,9 +218,10 @@ const setUserDefaultPaymentMethod = async (
       }
     }
 
-    const defaultPaymentMethodValidation = PaymentMethodDTOSchema.array().safeParse(
-      userDefaultPaymentMethodResult.data
-    )
+    const defaultPaymentMethodValidation =
+      PaymentMethodDTOSchema.array().safeParse(
+        userDefaultPaymentMethodResult.data
+      )
 
     if (!defaultPaymentMethodValidation.success) {
       return HttpResponse.internalServerError()
@@ -217,7 +229,10 @@ const setUserDefaultPaymentMethod = async (
 
     return HttpResponse.ok(defaultPaymentMethodValidation.data)
   } catch (error) {
-    console.error('Error in PaymentController.setUserDefaultPaymentMethod:', error)
+    console.error(
+      'Error in PaymentController.setUserDefaultPaymentMethod:',
+      error
+    )
     return HttpResponse.internalServerError()
   }
 }
@@ -227,7 +242,8 @@ const updateUserPaymentMethod = async (
   request: Request
 ): Promise<PaymentMethodUpdateResponse> => {
   try {
-    const paymentMethodIdValidation = PaymentMethodIdSchema.safeParse(paymentMethodId)
+    const paymentMethodIdValidation =
+      PaymentMethodIdSchema.safeParse(paymentMethodId)
 
     if (!paymentMethodIdValidation.success) {
       return HttpResponse.badRequest(paymentMethodIdValidation.error.issues)
@@ -238,13 +254,16 @@ const updateUserPaymentMethod = async (
       PaymentMethodUpdateDTOSchema.safeParse(paymentMethodUpdateDto)
 
     if (!paymentMethodUpdateDtoValidation.success) {
-      return HttpResponse.badRequest(paymentMethodUpdateDtoValidation.error.issues)
+      return HttpResponse.badRequest(
+        paymentMethodUpdateDtoValidation.error.issues
+      )
     }
 
-    const paymentMethodUpdateResult = await PaymentService.updateUserPaymentMethod(
-      paymentMethodIdValidation.data,
-      paymentMethodUpdateDtoValidation.data
-    )
+    const paymentMethodUpdateResult =
+      await PaymentService.updateUserPaymentMethod(
+        paymentMethodIdValidation.data,
+        paymentMethodUpdateDtoValidation.data
+      )
 
     if (paymentMethodUpdateResult.status === 'ERROR') {
       switch (paymentMethodUpdateResult.error) {

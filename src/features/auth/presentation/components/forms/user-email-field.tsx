@@ -2,7 +2,10 @@ import { MailIcon } from 'lucide-react'
 
 import { AUTH_FORM_FIELDS } from '@/features/auth/domain/auth-constants'
 import { t } from '@/infrastructure/i18n'
-import { TextField, type TextFieldProps } from '@/presentation/components/forms/text-field'
+import {
+  TextField,
+  type TextFieldProps
+} from '@/presentation/components/forms/text-field'
 import { reactAriaClassNames } from '@/presentation/utils/react-aria-utils'
 
 import './user-email-field.sass'
@@ -21,7 +24,9 @@ export const UserEmailField: React.FC<Partial<TextFieldProps>> = ({
   <TextField
     {...userEmailFieldRestProps}
     autoComplete={autoComplete}
-    className={(values) => reactAriaClassNames(values, className, 'user-email-field')}
+    className={(values) =>
+      reactAriaClassNames(values, className, 'user-email-field')
+    }
     isRequired={isRequired}
     label={label}
     name={name}

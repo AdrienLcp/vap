@@ -19,10 +19,13 @@ import {
 import { HttpResponse } from '@/infrastructure/api/http-response'
 import { buildLocationUrl } from '@/infrastructure/url/url-builder'
 
-const createUserAddress = async (request: Request): Promise<AddressCreationResponse> => {
+const createUserAddress = async (
+  request: Request
+): Promise<AddressCreationResponse> => {
   try {
     const addressCreationData = await request.json()
-    const addressCreationValidation = AddressCreationSchema.safeParse(addressCreationData)
+    const addressCreationValidation =
+      AddressCreationSchema.safeParse(addressCreationData)
 
     if (!addressCreationValidation.success) {
       return HttpResponse.badRequest(addressCreationValidation.error.issues)
@@ -45,14 +48,19 @@ const createUserAddress = async (request: Request): Promise<AddressCreationRespo
       }
     }
 
-    const createdAddressValidation = AddressDTOSchema.safeParse(addressCreationResult.data)
+    const createdAddressValidation = AddressDTOSchema.safeParse(
+      addressCreationResult.data
+    )
 
     if (!createdAddressValidation.success) {
       return HttpResponse.internalServerError()
     }
 
     const createdAddressDTO = createdAddressValidation.data
-    const createdAddressLocationUrl = buildLocationUrl(ADDRESS_API_BASE_URL, createdAddressDTO.id)
+    const createdAddressLocationUrl = buildLocationUrl(
+      ADDRESS_API_BASE_URL,
+      createdAddressDTO.id
+    )
 
     return HttpResponse.created(createdAddressDTO, {
       Location: createdAddressLocationUrl
@@ -63,7 +71,9 @@ const createUserAddress = async (request: Request): Promise<AddressCreationRespo
   }
 }
 
-const deleteUserAddress = async (addressId: string): Promise<AddressDeletionResponse> => {
+const deleteUserAddress = async (
+  addressId: string
+): Promise<AddressDeletionResponse> => {
   try {
     const addressIdValidation = AddressIdSchema.safeParse(addressId)
 
@@ -71,7 +81,8 @@ const deleteUserAddress = async (addressId: string): Promise<AddressDeletionResp
       return HttpResponse.badRequest(addressIdValidation.error.issues)
     }
 
-    const addressDeletionResult = await AddressService.deleteUserAddress(addressId)
+    const addressDeletionResult =
+      await AddressService.deleteUserAddress(addressId)
 
     if (addressDeletionResult.status === 'ERROR') {
       switch (addressDeletionResult.error) {
@@ -112,7 +123,10 @@ const findUserAddress = async (addressId: string): Promise<AddressResponse> => {
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
         default:
-          console.error('Unknown error in AddressController.findUserAddress:', addressResult.error)
+          console.error(
+            'Unknown error in AddressController.findUserAddress:',
+            addressResult.error
+          )
           return HttpResponse.internalServerError()
       }
     }
@@ -147,7 +161,9 @@ const findUserAddresses = async (): Promise<AddressListResponse> => {
       }
     }
 
-    const addressesValidation = AddressDTOSchema.array().safeParse(addressesResult.data)
+    const addressesValidation = AddressDTOSchema.array().safeParse(
+      addressesResult.data
+    )
 
     if (!addressesValidation.success) {
       return HttpResponse.internalServerError()
@@ -160,7 +176,9 @@ const findUserAddresses = async (): Promise<AddressListResponse> => {
   }
 }
 
-const setUserDefaultAddress = async (addressId: string): Promise<AddressDefaultResponse> => {
+const setUserDefaultAddress = async (
+  addressId: string
+): Promise<AddressDefaultResponse> => {
   try {
     const addressIdValidation = AddressIdSchema.safeParse(addressId)
 
@@ -168,7 +186,9 @@ const setUserDefaultAddress = async (addressId: string): Promise<AddressDefaultR
       return HttpResponse.badRequest(addressIdValidation.error.issues)
     }
 
-    const addressUpdateResult = await AddressService.setUserDefaultAddress(addressIdValidation.data)
+    const addressUpdateResult = await AddressService.setUserDefaultAddress(
+      addressIdValidation.data
+    )
 
     if (addressUpdateResult.status === 'ERROR') {
       switch (addressUpdateResult.error) {
@@ -185,7 +205,9 @@ const setUserDefaultAddress = async (addressId: string): Promise<AddressDefaultR
       }
     }
 
-    const updatedAddressValidation = AddressDTOSchema.array().safeParse(addressUpdateResult.data)
+    const updatedAddressValidation = AddressDTOSchema.array().safeParse(
+      addressUpdateResult.data
+    )
 
     if (!updatedAddressValidation.success) {
       return HttpResponse.internalServerError()
@@ -210,7 +232,8 @@ const updateUserAddress = async (
     }
 
     const addressUpdateData = await request.json()
-    const addressUpdateValidation = AddressUpdateSchema.safeParse(addressUpdateData)
+    const addressUpdateValidation =
+      AddressUpdateSchema.safeParse(addressUpdateData)
 
     if (!addressUpdateValidation.success) {
       return HttpResponse.badRequest(addressUpdateValidation.error.issues)
@@ -236,7 +259,9 @@ const updateUserAddress = async (
       }
     }
 
-    const updatedAddressValidation = AddressDTOSchema.safeParse(addressUpdateResult.data)
+    const updatedAddressValidation = AddressDTOSchema.safeParse(
+      addressUpdateResult.data
+    )
 
     if (!updatedAddressValidation.success) {
       return HttpResponse.internalServerError()

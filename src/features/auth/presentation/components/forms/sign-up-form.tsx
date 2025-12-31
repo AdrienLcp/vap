@@ -39,7 +39,8 @@ type SignUpFormErrors = ValidationErrors<ValueOf<typeof AUTH_FORM_FIELDS>>
 
 export const SignUpForm: React.FC = () => {
   const [isUserCreationLoading, setIsUserCreationLoading] = useState(false)
-  const [signUpFormErrors, setSignUpFormErrors] = useState<SignUpFormErrors>(null)
+  const [signUpFormErrors, setSignUpFormErrors] =
+    useState<SignUpFormErrors>(null)
 
   const { setUser } = useAuth()
   const router = useRouter()
@@ -52,26 +53,32 @@ export const SignUpForm: React.FC = () => {
     [router.push, setUser]
   )
 
-  const onSignUpBadRequest = useCallback((signUpBadRequestError: SignUpBadRequestError) => {
-    switch (signUpBadRequestError) {
-      case 'INVALID_EMAIL':
-        setSignUpFormErrors({
-          [AUTH_FORM_FIELDS.EMAIL]: t('auth.signUp.errors.invalidEmail')
-        })
-        return
-      case 'PASSWORD_TOO_SHORT':
-        setSignUpFormErrors({
-          [AUTH_FORM_FIELDS.PASSWORD]: t('auth.signUp.errors.invalidPasswordLength', {
-            maxLength: AUTH_CONSTANTS.PASSWORD_MAX_LENGTH,
-            minLength: AUTH_CONSTANTS.PASSWORD_MIN_LENGTH
+  const onSignUpBadRequest = useCallback(
+    (signUpBadRequestError: SignUpBadRequestError) => {
+      switch (signUpBadRequestError) {
+        case 'INVALID_EMAIL':
+          setSignUpFormErrors({
+            [AUTH_FORM_FIELDS.EMAIL]: t('auth.signUp.errors.invalidEmail')
           })
-        })
-        break
-      default:
-        setSignUpFormErrors({ form: t('auth.signUp.errors.unknown') })
-        return
-    }
-  }, [])
+          return
+        case 'PASSWORD_TOO_SHORT':
+          setSignUpFormErrors({
+            [AUTH_FORM_FIELDS.PASSWORD]: t(
+              'auth.signUp.errors.invalidPasswordLength',
+              {
+                maxLength: AUTH_CONSTANTS.PASSWORD_MAX_LENGTH,
+                minLength: AUTH_CONSTANTS.PASSWORD_MIN_LENGTH
+              }
+            )
+          })
+          break
+        default:
+          setSignUpFormErrors({ form: t('auth.signUp.errors.unknown') })
+          return
+      }
+    },
+    []
+  )
 
   const onSignUpValidationError = useCallback((issues: Issues<SignUpInfo>) => {
     const emailErrors: string[] = []
@@ -128,7 +135,9 @@ export const SignUpForm: React.FC = () => {
         return
       }
 
-      const signUpResponse = await AuthClient.emailSignUp(credentialsValidation.data)
+      const signUpResponse = await AuthClient.emailSignUp(
+        credentialsValidation.data
+      )
 
       setIsUserCreationLoading(false)
 
@@ -166,8 +175,13 @@ export const SignUpForm: React.FC = () => {
 
       <FormError errors={signUpFormErrors?.form} />
 
-      <SubmitButton Icon={<LogInIcon aria-hidden />} isPending={isUserCreationLoading}>
-        {({ isPending }) => t(`auth.signUp.submit.${isPending ? 'creating' : 'label'}`)}
+      <SubmitButton
+        Icon={<LogInIcon aria-hidden />}
+        isPending={isUserCreationLoading}
+      >
+        {({ isPending }) =>
+          t(`auth.signUp.submit.${isPending ? 'creating' : 'label'}`)
+        }
       </SubmitButton>
     </Form>
   )

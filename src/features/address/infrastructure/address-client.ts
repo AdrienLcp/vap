@@ -10,7 +10,11 @@ import type {
   AddressResponse,
   AddressUpdateData
 } from '@/features/address/domain/address-entities'
-import { ApiClient, type ClientResponse, unknownError } from '@/infrastructure/api/api-client'
+import {
+  ApiClient,
+  type ClientResponse,
+  unknownError
+} from '@/infrastructure/api/api-client'
 
 const createUserAddress = async (
   addressCreationData: AddressCreationData
@@ -31,14 +35,18 @@ const deleteUserAddress = async (
 ): Promise<ClientResponse<AddressDeletionResponse>> => {
   try {
     const addressDeletionApiUrl = `/${ADDRESS_API_BASE_URL}/${encodeURIComponent(addressId)}`
-    return await ApiClient.DELETE<AddressDeletionResponse>(addressDeletionApiUrl)
+    return await ApiClient.DELETE<AddressDeletionResponse>(
+      addressDeletionApiUrl
+    )
   } catch (error) {
     console.error('Delete address error:', error)
     return unknownError()
   }
 }
 
-const findUserAddress = async (addressId: string): Promise<ClientResponse<AddressResponse>> => {
+const findUserAddress = async (
+  addressId: string
+): Promise<ClientResponse<AddressResponse>> => {
   try {
     const addressApiUrl = `/${ADDRESS_API_BASE_URL}/${encodeURIComponent(addressId)}`
     return await ApiClient.GET<AddressResponse>(addressApiUrl)
@@ -48,7 +56,9 @@ const findUserAddress = async (addressId: string): Promise<ClientResponse<Addres
   }
 }
 
-const findUserAddresses = async (): Promise<ClientResponse<AddressListResponse>> => {
+const findUserAddresses = async (): Promise<
+  ClientResponse<AddressListResponse>
+> => {
   try {
     return await ApiClient.GET<AddressListResponse>(`/${ADDRESS_API_BASE_URL}`)
   } catch (error) {

@@ -10,7 +10,8 @@ import { Button } from '@/presentation/components/ui/pressables/button'
 import './google-authentication.sass'
 
 export const GoogleAuthentication: React.FC = () => {
-  const [isLoginWithGoogleLoading, setIsLoginWithGoogleLoading] = useState(false)
+  const [isLoginWithGoogleLoading, setIsLoginWithGoogleLoading] =
+    useState(false)
 
   const loginWithGoogle = useCallback(async () => {
     setIsLoginWithGoogleLoading(true)

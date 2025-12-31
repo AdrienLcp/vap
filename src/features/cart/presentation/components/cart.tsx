@@ -1,7 +1,12 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
-import { Dialog, DialogTrigger, Modal, ModalOverlay } from 'react-aria-components'
+import {
+  Dialog,
+  DialogTrigger,
+  Modal,
+  ModalOverlay
+} from 'react-aria-components'
 
 import { useAuth } from '@/features/auth/application/use-auth'
 import { useCartStore } from '@/features/cart/application/use-cart-store'
@@ -10,7 +15,10 @@ import { CartButton } from '@/features/cart/presentation/components/cart-button'
 import { CartItemList } from '@/features/cart/presentation/components/cart-item-list'
 import { CartPanelFooter } from '@/features/cart/presentation/components/cart-panel-footer'
 import { CartPanelHeader } from '@/features/cart/presentation/components/cart-panel-header'
-import { OK_STATUS, UNAUTHORIZED_STATUS } from '@/infrastructure/api/http-response'
+import {
+  OK_STATUS,
+  UNAUTHORIZED_STATUS
+} from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { Spinner } from '@/presentation/components/ui/loaders/spinner'
 import { ToastService } from '@/presentation/services/toast-service'

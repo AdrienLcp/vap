@@ -1,13 +1,24 @@
-import { PRODUCT_CONSTANTS, PRODUCT_FORM_FIELDS } from '@/features/product/domain/product-constants'
+import {
+  PRODUCT_CONSTANTS,
+  PRODUCT_FORM_FIELDS
+} from '@/features/product/domain/product-constants'
 import { t } from '@/infrastructure/i18n'
-import { TextArea, type TextAreaProps } from '@/presentation/components/forms/text-area'
+import {
+  TextArea,
+  type TextAreaProps
+} from '@/presentation/components/forms/text-area'
 
-type ProductDescriptionFieldProps = Omit<Partial<TextAreaProps>, 'defaultValue' | 'value'> & {
+type ProductDescriptionFieldProps = Omit<
+  Partial<TextAreaProps>,
+  'defaultValue' | 'value'
+> & {
   defaultValue?: string | null
   value?: string | null
 }
 
-export const ProductDescriptionField: React.FC<ProductDescriptionFieldProps> = ({
+export const ProductDescriptionField: React.FC<
+  ProductDescriptionFieldProps
+> = ({
   defaultValue,
   label = t('product.fields.description.label'),
   name = PRODUCT_FORM_FIELDS.DESCRIPTION,

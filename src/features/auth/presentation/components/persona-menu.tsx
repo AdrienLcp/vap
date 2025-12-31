@@ -24,7 +24,11 @@ const MENU_ITEM_ADMIN_ID = 'admin'
 
 const PersonaMenuTrigger: React.FC<PersonaMenuProps> = ({ user }) => (
   <Button className='persona-menu-trigger'>
-    <Avatar userEmail={user.email} userImageUrl={user.image} userName={user.name} />
+    <Avatar
+      userEmail={user.email}
+      userImageUrl={user.image}
+      userName={user.name}
+    />
   </Button>
 )
 
@@ -73,5 +77,10 @@ export const PersonaMenu: React.FC<PersonaMenuProps> = ({ user }) => {
       : menuItems.filter((item) => item.id !== MENU_ITEM_ADMIN_ID)
   }, [menuItems, user.permissions.canAccessAdmin])
 
-  return <Menu items={filteredMenuItems} Trigger={<PersonaMenuTrigger user={user} />} />
+  return (
+    <Menu
+      items={filteredMenuItems}
+      Trigger={<PersonaMenuTrigger user={user} />}
+    />
+  )
 }

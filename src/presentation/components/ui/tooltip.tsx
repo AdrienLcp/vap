@@ -8,7 +8,10 @@ import { reactAriaClassNames } from '@/presentation/utils/react-aria-utils'
 
 import './tooltip.sass'
 
-export type TooltipProps = Omit<ReactAriaTooltipProps, 'children' | 'className'> & {
+export type TooltipProps = Omit<
+  ReactAriaTooltipProps,
+  'children' | 'className'
+> & {
   children: React.ReactNode
   className?: string
   Content: React.ReactNode

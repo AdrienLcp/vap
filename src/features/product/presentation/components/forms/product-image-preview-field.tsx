@@ -9,12 +9,17 @@ type ProductImagePreviewFieldProps = {
   imageUrl?: string | null
 }
 
-export const ProductImagePreviewField: React.FC<ProductImagePreviewFieldProps> = ({ imageUrl }) => {
+export const ProductImagePreviewField: React.FC<
+  ProductImagePreviewFieldProps
+> = ({ imageUrl }) => {
   const [currentProductImageUrl, setCurrentProductImageUrl] = useState(imageUrl)
 
   return (
     <div className='product-image-preview-field'>
-      <ProductImageUrlField onChange={setCurrentProductImageUrl} value={currentProductImageUrl} />
+      <ProductImageUrlField
+        onChange={setCurrentProductImageUrl}
+        value={currentProductImageUrl}
+      />
 
       <ProductImage className='image' src={currentProductImageUrl} />
     </div>

@@ -44,19 +44,23 @@ export const reactAriaClassNames = <T extends ReactAriaComponentRenderProps>(
   className: ClassNameOrFunction<T>,
   ...baseClassName: classNames.ArgumentArray
 ) => {
-  const classNameOverride = typeof className === 'function' ? className(values) : className
+  const classNameOverride =
+    typeof className === 'function' ? className(values) : className
   return classNames(...baseClassName, classNameOverride)
 }
 
-type ReactAriaComponentChildrenValues<T extends ReactAriaComponentRenderProps> = T & {
-  defaultChildren: React.ReactNode | undefined
-}
+type ReactAriaComponentChildrenValues<T extends ReactAriaComponentRenderProps> =
+  T & {
+    defaultChildren: React.ReactNode | undefined
+  }
 
 type ReactAriaComponentChildren<T extends ReactAriaComponentRenderProps> =
   | ((values: ReactAriaComponentChildrenValues<T>) => React.ReactNode)
   | React.ReactNode
 
-export const renderReactAriaChildren = <T extends ReactAriaComponentRenderProps>(
+export const renderReactAriaChildren = <
+  T extends ReactAriaComponentRenderProps
+>(
   children: ReactAriaComponentChildren<T>,
   values: ReactAriaComponentChildrenValues<T>
 ) => {

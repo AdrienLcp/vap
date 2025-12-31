@@ -16,14 +16,17 @@ type ProductQuantitySelectorProps = {
   setIsLoading?: (isLoading: boolean) => void
 }
 
-export const ProductQuantitySelector: React.FC<ProductQuantitySelectorProps> = ({
-  productId,
-  setIsLoading
-}) => {
+export const ProductQuantitySelector: React.FC<
+  ProductQuantitySelectorProps
+> = ({ productId, setIsLoading }) => {
   const { userAuthState } = useAuth()
 
-  const cartProductQuantity = useCartStore((state) => state.getProductQuantity(productId))
-  const updateProductCartStoreQuantity = useCartStore((state) => state.updateQuantity)
+  const cartProductQuantity = useCartStore((state) =>
+    state.getProductQuantity(productId)
+  )
+  const updateProductCartStoreQuantity = useCartStore(
+    (state) => state.updateQuantity
+  )
 
   const [isUpdatingCartProduct, setIsUpdatingCartProduct] = useState(false)
 
@@ -38,10 +41,8 @@ export const ProductQuantitySelector: React.FC<ProductQuantitySelectorProps> = (
   const updateProductRemoteCartQuantity = useCallback(
     async (newQuantity: number) => {
       setIsProductQuantitySelectorLoading(true)
-      const cartProductUpdateResponse = await CartClient.updateUserCartItemQuantity(
-        productId,
-        newQuantity
-      )
+      const cartProductUpdateResponse =
+        await CartClient.updateUserCartItemQuantity(productId, newQuantity)
       setIsProductQuantitySelectorLoading(false)
 
       if (cartProductUpdateResponse.status === NO_CONTENT_STATUS) {
@@ -51,7 +52,11 @@ export const ProductQuantitySelector: React.FC<ProductQuantitySelectorProps> = (
 
       ToastService.error(t('product.quantitySelector.error'))
     },
-    [productId, setIsProductQuantitySelectorLoading, updateProductCartStoreQuantity]
+    [
+      productId,
+      setIsProductQuantitySelectorLoading,
+      updateProductCartStoreQuantity
+    ]
   )
 
   const onProductQuantityChange = useCallback(

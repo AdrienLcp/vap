@@ -14,7 +14,9 @@ type CategoryPageProps = {
   categoryId: string
 }
 
-export const CategoryPage: React.FC<CategoryPageProps> = async ({ categoryId }) => {
+export const CategoryPage: React.FC<CategoryPageProps> = async ({
+  categoryId
+}) => {
   const categoryResponse = await CategoryController.findCategory(categoryId)
 
   if (categoryResponse.status !== OK_STATUS) {
@@ -29,7 +31,10 @@ export const CategoryPage: React.FC<CategoryPageProps> = async ({ categoryId }) 
 
       <CategoryUpdateForm category={category} />
 
-      <CategoryDeleteButton categoryId={category.id} className='delete-button' />
+      <CategoryDeleteButton
+        categoryId={category.id}
+        className='delete-button'
+      />
     </section>
   )
 }

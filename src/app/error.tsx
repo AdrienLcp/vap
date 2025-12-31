@@ -6,6 +6,8 @@ type ErrorPageProps = {
   reset: () => void
 }
 
-const ErrorPage: React.FC<ErrorPageProps> = ({ reset }) => <Fallback reset={reset} />
+const ErrorPage: React.FC<ErrorPageProps> = ({ reset }) => (
+  <Fallback reset={reset} />
+)
 
 export default ErrorPage

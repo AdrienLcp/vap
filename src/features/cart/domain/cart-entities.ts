@@ -68,7 +68,8 @@ type CartItemQuantityUpdateResult =
   | ForbiddenResponse
   | NotFoundResponse
 
-export type CartItemQuantityUpdateResponse = Response<CartItemQuantityUpdateResult>
+export type CartItemQuantityUpdateResponse =
+  Response<CartItemQuantityUpdateResult>
 
 type CartClearResult = NoContentResponse | UnauthorizedResponse
 

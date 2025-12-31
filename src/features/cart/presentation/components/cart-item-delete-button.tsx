@@ -30,7 +30,8 @@ export const CartItemDeleteButton: React.FC<CartItemDeleteButtonProps> = ({
 
   const removeRemoteCartItem = useCallback(async () => {
     setIsLoading(true)
-    const cartItemDeletionResponse = await CartClient.removeItemFromUserCart(productId)
+    const cartItemDeletionResponse =
+      await CartClient.removeItemFromUserCart(productId)
     setIsLoading(false)
 
     if (cartItemDeletionResponse.status !== NO_CONTENT_STATUS) {

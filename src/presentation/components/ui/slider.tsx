@@ -30,7 +30,11 @@ export const Slider: React.FC<SliderProps> = ({
       <Label>{label}</Label>
 
       <SliderOutput className='output'>
-        {({ state }) => state.values.map((_, index) => state.getThumbValueLabel(index)).join(' - ')}
+        {({ state }) =>
+          state.values
+            .map((_, index) => state.getThumbValueLabel(index))
+            .join(' - ')
+        }
       </SliderOutput>
     </div>
 

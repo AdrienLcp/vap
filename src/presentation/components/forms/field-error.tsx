@@ -20,7 +20,9 @@ export const FieldError: React.FC<FieldErrorProps> = ({
   ...fieldErrorRestProps
 }) => (
   <ReactAriaFieldError
-    className={(values) => reactAriaClassNames(values, className, 'field-error')}
+    className={(values) =>
+      reactAriaClassNames(values, className, 'field-error')
+    }
     {...fieldErrorRestProps}
   >
     {({ defaultChildren, validationDetails, validationErrors }) => {

@@ -18,7 +18,11 @@ export const CartItemList: React.FC = () => {
   const cartItemList = Array.from(cartItems.values())
 
   return (
-    <GridList aria-label={t('cart.ariaLabel')} className='cart-list' items={cartItemList}>
+    <GridList
+      aria-label={t('cart.ariaLabel')}
+      className='cart-list'
+      items={cartItemList}
+    >
       {(item) => (
         <GridListItem id={item.product.id} textValue={item.product.name}>
           <CartItem item={item} />

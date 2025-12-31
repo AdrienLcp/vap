@@ -8,68 +8,92 @@ import {
   AUTH_ERRORS,
   AUTH_FORM_FIELDS
 } from '@/features/auth/domain/auth-constants'
-import type { ChangePasswordError, ChangePasswordInfo } from '@/features/auth/domain/auth-entities'
+import type {
+  ChangePasswordError,
+  ChangePasswordInfo
+} from '@/features/auth/domain/auth-entities'
 import { ChangePasswordSchema } from '@/features/auth/domain/auth-schemas'
 import { AuthClient } from '@/features/auth/infrastructure/auth-client'
 import { UserPasswordField } from '@/features/auth/presentation/components/forms/user-password-field'
 import type { ValueOf } from '@/helpers/object'
 import type { Issues, ValidationErrors } from '@/helpers/validation'
-import { BAD_REQUEST_STATUS, NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
+import {
+  BAD_REQUEST_STATUS,
+  NO_CONTENT_STATUS
+} from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
 import { Form } from '@/presentation/components/forms/form'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import { ToastService } from '@/presentation/services/toast-service'
 
-type ChangePasswordFormErrors = ValidationErrors<ValueOf<typeof AUTH_FORM_FIELDS>>
+type ChangePasswordFormErrors = ValidationErrors<
+  ValueOf<typeof AUTH_FORM_FIELDS>
+>
 
 export const ChangePasswordForm: React.FC = () => {
   const [isChangePasswordLoading, setIsChangePasswordLoading] = useState(false)
   const [formErrors, setFormErrors] = useState<ChangePasswordFormErrors>(null)
 
-  const onChangePasswordBadRequest = useCallback((errorCode: ChangePasswordError) => {
-    switch (errorCode) {
-      case 'INVALID_PASSWORD':
-        setFormErrors({
-          [AUTH_FORM_FIELDS.NEW_PASSWORD]: t('auth.changePassword.errors.invalidPassword')
-        })
-        break
-      case 'PASSWORD_TOO_SHORT':
-        setFormErrors({
-          [AUTH_FORM_FIELDS.NEW_PASSWORD]: t('auth.changePassword.errors.invalidPasswordLength', {
-            maxLength: AUTH_CONSTANTS.PASSWORD_MAX_LENGTH,
-            minLength: AUTH_CONSTANTS.PASSWORD_MIN_LENGTH
-          })
-        })
-        break
-      default:
-        setFormErrors({ form: t('auth.changePassword.errors.unknown') })
-        break
-    }
-  }, [])
-
-  const onChangePasswordValidationError = useCallback((issues: Issues<ChangePasswordInfo>) => {
-    for (const issue of issues) {
-      switch (issue.message) {
-        case AUTH_ERRORS.PASSWORD_REQUIRED:
+  const onChangePasswordBadRequest = useCallback(
+    (errorCode: ChangePasswordError) => {
+      switch (errorCode) {
+        case 'INVALID_PASSWORD':
           setFormErrors({
-            [AUTH_FORM_FIELDS.NEW_PASSWORD]: t('auth.changePassword.errors.newPasswordRequired')
+            [AUTH_FORM_FIELDS.NEW_PASSWORD]: t(
+              'auth.changePassword.errors.invalidPassword'
+            )
           })
           break
-        case AUTH_ERRORS.PASSWORD_TOO_SHORT:
+        case 'PASSWORD_TOO_SHORT':
           setFormErrors({
-            [AUTH_FORM_FIELDS.NEW_PASSWORD]: t('auth.changePassword.errors.invalidPasswordLength', {
-              maxLength: AUTH_CONSTANTS.PASSWORD_MAX_LENGTH,
-              minLength: AUTH_CONSTANTS.PASSWORD_MIN_LENGTH
-            })
+            [AUTH_FORM_FIELDS.NEW_PASSWORD]: t(
+              'auth.changePassword.errors.invalidPasswordLength',
+              {
+                maxLength: AUTH_CONSTANTS.PASSWORD_MAX_LENGTH,
+                minLength: AUTH_CONSTANTS.PASSWORD_MIN_LENGTH
+              }
+            )
           })
           break
         default:
           setFormErrors({ form: t('auth.changePassword.errors.unknown') })
           break
       }
-    }
-  }, [])
+    },
+    []
+  )
+
+  const onChangePasswordValidationError = useCallback(
+    (issues: Issues<ChangePasswordInfo>) => {
+      for (const issue of issues) {
+        switch (issue.message) {
+          case AUTH_ERRORS.PASSWORD_REQUIRED:
+            setFormErrors({
+              [AUTH_FORM_FIELDS.NEW_PASSWORD]: t(
+                'auth.changePassword.errors.newPasswordRequired'
+              )
+            })
+            break
+          case AUTH_ERRORS.PASSWORD_TOO_SHORT:
+            setFormErrors({
+              [AUTH_FORM_FIELDS.NEW_PASSWORD]: t(
+                'auth.changePassword.errors.invalidPasswordLength',
+                {
+                  maxLength: AUTH_CONSTANTS.PASSWORD_MAX_LENGTH,
+                  minLength: AUTH_CONSTANTS.PASSWORD_MIN_LENGTH
+                }
+              )
+            })
+            break
+          default:
+            setFormErrors({ form: t('auth.changePassword.errors.unknown') })
+            break
+        }
+      }
+    },
+    []
+  )
 
   const onChangePasswordFormSubmit = useCallback(
     async (formData: FormData) => {
@@ -81,7 +105,8 @@ export const ChangePasswordForm: React.FC = () => {
         newPassword: formData.get(AUTH_FORM_FIELDS.NEW_PASSWORD)
       }
 
-      const changePasswordValidation = ChangePasswordSchema.safeParse(changePasswordInfo)
+      const changePasswordValidation =
+        ChangePasswordSchema.safeParse(changePasswordInfo)
 
       if (!changePasswordValidation.success) {
         onChangePasswordValidationError(changePasswordValidation.error.issues)
@@ -89,7 +114,9 @@ export const ChangePasswordForm: React.FC = () => {
         return
       }
 
-      const changePasswordResponse = await AuthClient.changePassword(changePasswordValidation.data)
+      const changePasswordResponse = await AuthClient.changePassword(
+        changePasswordValidation.data
+      )
 
       setIsChangePasswordLoading(false)
 
@@ -114,7 +141,9 @@ export const ChangePasswordForm: React.FC = () => {
         <UserPasswordField
           autoComplete='current-password'
           label={t('auth.changePassword.form.currentPassword.label')}
-          placeholder={t('auth.changePassword.form.currentPassword.placeholder')}
+          placeholder={t(
+            'auth.changePassword.form.currentPassword.placeholder'
+          )}
         />
 
         <UserPasswordField
@@ -125,8 +154,15 @@ export const ChangePasswordForm: React.FC = () => {
         />
       </FieldSet>
 
-      <SubmitButton Icon={<SaveIcon aria-hidden />} isPending={isChangePasswordLoading}>
-        {({ isPending }) => t(`auth.changePassword.form.submit.${isPending ? 'loading' : 'label'}`)}
+      <SubmitButton
+        Icon={<SaveIcon aria-hidden />}
+        isPending={isChangePasswordLoading}
+      >
+        {({ isPending }) =>
+          t(
+            `auth.changePassword.form.submit.${isPending ? 'loading' : 'label'}`
+          )
+        }
       </SubmitButton>
     </Form>
   )

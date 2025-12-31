@@ -1,6 +1,9 @@
 import { create } from 'zustand'
 
-import type { CartItemDTO, CartProduct } from '@/features/cart/domain/cart-entities'
+import type {
+  CartItemDTO,
+  CartProduct
+} from '@/features/cart/domain/cart-entities'
 import { LocaleStorage } from '@/infrastructure/storage/local-storage'
 
 type CartStore = {
@@ -88,7 +91,10 @@ export const useCartStore = create<CartStore>((set, get) => ({
         if (!existingItem) {
           mergedMap.set(localItem.product.id, localItem)
         } else {
-          const mergedQuantity = Math.max(existingItem.quantity, localItem.quantity)
+          const mergedQuantity = Math.max(
+            existingItem.quantity,
+            localItem.quantity
+          )
           mergedMap.set(localItem.product.id, {
             ...existingItem,
             quantity: mergedQuantity

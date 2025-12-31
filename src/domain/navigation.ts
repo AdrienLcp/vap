@@ -61,7 +61,10 @@ export const getAdminUserRoute = (userId: string) => {
 }
 
 export const getPaymentMethodRoute = (paymentMethodId: string) => {
-  return ROUTES.paymentMethod.replace(`:${PARAMS.paymentMethodId}`, paymentMethodId)
+  return ROUTES.paymentMethod.replace(
+    `:${PARAMS.paymentMethodId}`,
+    paymentMethodId
+  )
 }
 
 export const getProductRoute = (productId: string) => {

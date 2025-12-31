@@ -15,7 +15,9 @@ export const SERVER_ENV = createEnv({
   },
   server: {
     AUTH_GOOGLE_CLIENT_ID: createRequiredEnvString('AUTH_GOOGLE_CLIENT_ID'),
-    AUTH_GOOGLE_CLIENT_SECRET: createRequiredEnvString('AUTH_GOOGLE_CLIENT_SECRET'),
+    AUTH_GOOGLE_CLIENT_SECRET: createRequiredEnvString(
+      'AUTH_GOOGLE_CLIENT_SECRET'
+    ),
     BETTER_AUTH_SECRET: createRequiredEnvString('BETTER_AUTH_SECRET'),
     DATABASE_URL: createRequiredEnvString('DATABASE_URL'),
     STRIPE_API_KEY: createRequiredEnvString('STRIPE_API_KEY')

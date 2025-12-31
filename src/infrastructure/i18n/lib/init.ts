@@ -1,5 +1,8 @@
 import type { fr } from '@/infrastructure/i18n/dictionaries/fr'
-import type { defineTranslation, ParamOptions } from '@/infrastructure/i18n/lib/defineTranslation'
+import type {
+  defineTranslation,
+  ParamOptions
+} from '@/infrastructure/i18n/lib/defineTranslation'
 
 type Register = { translations: typeof fr }
 
@@ -15,7 +18,11 @@ export type LanguageMessages = {
   [key: string]: I18nMessage | LanguageMessages
 }
 
-type Join<K, P> = K extends string ? (P extends string ? `${K}.${P}` : never) : never
+type Join<K, P> = K extends string
+  ? P extends string
+    ? `${K}.${P}`
+    : never
+  : never
 
 type DotPathsFor<T extends object = RegisteredTranslations> = {
   [K in keyof T]: T[K] extends I18nMessage
@@ -48,7 +55,10 @@ type ExtractParamArgs<
   Enums extends EnumMap
 > = S extends `${string}{${infer Param}}${infer Rest}`
   ? Param extends `${infer Name}:${infer Type}` // If the string contains a parameter
-    ? { [K in Name]: ParseArgType<Type, Name, Enums> } & ExtractParamArgs<Rest, Enums> // If the string contains a parameter with a type
+    ? { [K in Name]: ParseArgType<Type, Name, Enums> } & ExtractParamArgs<
+        Rest,
+        Enums
+      > // If the string contains a parameter with a type
     : { [K in Param]: string } & ExtractParamArgs<Rest, Enums> // If the string has no parameter type
   : unknown // If the string has no parameters
 
@@ -64,11 +74,14 @@ type TranslationAtKeyWithParams<
     : never
 
 type NormalizedTranslationAtKey<T> =
-  T extends ReturnType<typeof defineTranslation> ? T : [T, ReturnType<typeof defineTranslation>[1]]
+  T extends ReturnType<typeof defineTranslation>
+    ? T
+    : [T, ReturnType<typeof defineTranslation>[1]]
 
-type NormalizedTranslationAtKeyWithParams<Key extends string> = NormalizedTranslationAtKey<
-  TranslationAtKeyWithParams<RegisteredTranslations, Key>
->
+type NormalizedTranslationAtKeyWithParams<Key extends string> =
+  NormalizedTranslationAtKey<
+    TranslationAtKeyWithParams<RegisteredTranslations, Key>
+  >
 
 type Params<S extends DotPathsFor> = ExtractParamArgs<
   NormalizedTranslationAtKeyWithParams<S>[0],
@@ -98,7 +111,9 @@ export function initI18n({
   fallbackLocale: string | string[]
   translations: Record<Lowercase<string>, LanguageMessages>
 }) {
-  const fallbackLocales = Array.isArray(fallbackLocale) ? fallbackLocale : [fallbackLocale]
+  const fallbackLocales = Array.isArray(fallbackLocale)
+    ? fallbackLocale
+    : [fallbackLocale]
 
   const orderedLocales = new Set([
     ...getOrderedLocaleAndParentLocales(locale),
@@ -106,10 +121,14 @@ export function initI18n({
   ])
 
   function t<S extends PathsWithNoParams>(key: S): string
-  function t<S extends PathsWithParams, A extends Params<S>>(key: S, args: A): string
+  function t<S extends PathsWithParams, A extends Params<S>>(
+    key: S,
+    args: A
+  ): string
   function t<S extends DotPathsFor, A extends Params<S>>(key: S, args?: A) {
     for (const locale of orderedLocales) {
-      const translationFile = translations[locale.toLowerCase() as Lowercase<string>]
+      const translationFile =
+        translations[locale.toLowerCase() as Lowercase<string>]
       if (translationFile == null) continue
       const translation = getTranslation(locale, translationFile, key, args)
       if (translation) return translation
@@ -145,7 +164,12 @@ function getTranslation<S extends DotPathsFor, A extends Params<S>>(
 
     if (Array.isArray(translation)) {
       const [str, translationParams] = translation
-      return performSubstitution(locale, str, argObj, translationParams as ParamOptions)
+      return performSubstitution(
+        locale,
+        str,
+        argObj,
+        translationParams as ParamOptions
+      )
     }
   } catch {
     return undefined
@@ -197,7 +221,8 @@ function performSubstitution(
           const pluralRules = new Intl.PluralRules(locale, {
             type: pluralMap?.type
           })
-          replacement = pluralMap?.[pluralRules.select(argValue)] ?? pluralMap?.other
+          replacement =
+            pluralMap?.[pluralRules.select(argValue)] ?? pluralMap?.other
         }
 
         if (replacement == null) throw new Error('Missing replacement value')
@@ -220,20 +245,29 @@ function performSubstitution(
       }
       case 'number': {
         if (typeof argValue !== 'number') throw new Error('Invalid argument')
-        const numberFormat = new Intl.NumberFormat(locale, translationParams.number?.[argKey])
+        const numberFormat = new Intl.NumberFormat(
+          locale,
+          translationParams.number?.[argKey]
+        )
 
         return result.replace(replaceKey, numberFormat.format(argValue))
       }
       case 'list': {
         if (!Array.isArray(argValue)) throw new Error('Invalid argument')
 
-        const formatter = new Intl.ListFormat(locale, translationParams.list?.[argKey])
+        const formatter = new Intl.ListFormat(
+          locale,
+          translationParams.list?.[argKey]
+        )
         return result.replace(replaceKey, formatter.format(argValue))
       }
       case 'date': {
         if (!(argValue instanceof Date)) throw new Error('Invalid argument')
 
-        const dateFormat = new Intl.DateTimeFormat(locale, translationParams.date?.[argKey])
+        const dateFormat = new Intl.DateTimeFormat(
+          locale,
+          translationParams.date?.[argKey]
+        )
         return result.replace(replaceKey, dateFormat.format(argValue))
       }
       default:

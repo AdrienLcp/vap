@@ -28,7 +28,8 @@ const createProduct = async (
     return failure('FORBIDDEN')
   }
 
-  const productCreationResult = await ProductRepository.createProduct(productCreationData)
+  const productCreationResult =
+    await ProductRepository.createProduct(productCreationData)
 
   if (productCreationResult.status === 'ERROR') {
     return productCreationResult
@@ -37,7 +38,9 @@ const createProduct = async (
   return success(productCreationResult.data)
 }
 
-const deleteProduct = async (productId: string): Promise<Result<null, ProductError>> => {
+const deleteProduct = async (
+  productId: string
+): Promise<Result<null, ProductError>> => {
   const userResult = await AuthService.findUserDTO()
 
   if (userResult.status === 'ERROR') {
@@ -116,14 +119,19 @@ const findPublicProducts = async (
     return productsResult
   }
 
-  const filteredProducts = productsResult.data.filter((product) => product.status !== 'INACTIVE')
+  const filteredProducts = productsResult.data.filter(
+    (product) => product.status !== 'INACTIVE'
+  )
 
-  const publicProducts: ProductPublicDTO[] = filteredProducts.map(toProductPublicDTO)
+  const publicProducts: ProductPublicDTO[] =
+    filteredProducts.map(toProductPublicDTO)
 
   return success(publicProducts)
 }
 
-const getCategoryProductCount = async (categoryId: string): Promise<Result<number>> => {
+const getCategoryProductCount = async (
+  categoryId: string
+): Promise<Result<number>> => {
   return await ProductRepository.getCategoryProductCount(categoryId)
 }
 
@@ -157,7 +165,10 @@ const updateProduct = async (
     return failure('FORBIDDEN')
   }
 
-  const productUpdateResult = await ProductRepository.updateProduct(productId, productUpdateData)
+  const productUpdateResult = await ProductRepository.updateProduct(
+    productId,
+    productUpdateData
+  )
 
   if (productUpdateResult.status === 'ERROR') {
     return productUpdateResult

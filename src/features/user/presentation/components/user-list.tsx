@@ -3,8 +3,15 @@
 import { parseAsArrayOf, parseAsStringLiteral, useQueryState } from 'nuqs'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { USER_CONSTANTS, USER_SEARCH_PARAMS } from '@/features/user/domain/user-constants'
-import type { UserDTO, UserFilters, UserRole } from '@/features/user/domain/user-entities'
+import {
+  USER_CONSTANTS,
+  USER_SEARCH_PARAMS
+} from '@/features/user/domain/user-constants'
+import type {
+  UserDTO,
+  UserFilters,
+  UserRole
+} from '@/features/user/domain/user-entities'
 import { UserClient } from '@/features/user/infrastructure/user-client'
 import { UsersFilters } from '@/features/user/presentation/components/users-filters'
 import { UsersTable } from '@/features/user/presentation/components/users-table'
@@ -19,9 +26,12 @@ export const UserList: React.FC = () => {
   const [users, setUsers] = useState<UserDTO[]>([])
   const [isLoadingUsers, setIsLoadingUsers] = useState<boolean>(false)
 
-  const [userEmailFilter, setUserEmailFilter] = useQueryState(USER_SEARCH_PARAMS.EMAIL, {
-    defaultValue: ''
-  })
+  const [userEmailFilter, setUserEmailFilter] = useQueryState(
+    USER_SEARCH_PARAMS.EMAIL,
+    {
+      defaultValue: ''
+    }
+  )
 
   const [userRolesFilter, setUserRolesFilter] = useQueryState(
     USER_SEARCH_PARAMS.ROLES,

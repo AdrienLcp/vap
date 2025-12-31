@@ -41,13 +41,19 @@ export type PaymentMethod = {
   type: PaymentMethodType
 }
 
-export type PaymentMethodCreationData = z.infer<typeof PaymentMethodCreationSchema>
+export type PaymentMethodCreationData = z.infer<
+  typeof PaymentMethodCreationSchema
+>
 
-export type PaymentMethodCreationDTO = z.infer<typeof PaymentMethodCreationDTOSchema>
+export type PaymentMethodCreationDTO = z.infer<
+  typeof PaymentMethodCreationDTOSchema
+>
 
 export type PaymentMethodUpdateData = z.infer<typeof PaymentMethodUpdateSchema>
 
-export type PaymentMethodUpdateDTO = z.infer<typeof PaymentMethodUpdateDTOSchema>
+export type PaymentMethodUpdateDTO = z.infer<
+  typeof PaymentMethodUpdateDTOSchema
+>
 
 export type CardPaymentMethod = z.infer<typeof CardPaymentMethodSchema>
 
@@ -55,7 +61,9 @@ export type CardPaymentMethodType = z.infer<typeof CardPaymentMethodTypeSchema>
 
 export type NonCardPaymentMethod = z.infer<typeof NonCardPaymentMethodSchema>
 
-export type NonCardPaymentMethodType = z.infer<typeof NonCardPaymentMethodTypeSchema>
+export type NonCardPaymentMethodType = z.infer<
+  typeof NonCardPaymentMethodTypeSchema
+>
 
 export type PaymentMethodType = z.infer<typeof PaymentMethodTypeSchema>
 
@@ -72,7 +80,9 @@ export type PaymentMethodResponse = Response<
   | NotFoundResponse
 >
 
-export type PaymentMethodsResponse = Response<OkResponse<PaymentMethodDTO[]> | UnauthorizedResponse>
+export type PaymentMethodsResponse = Response<
+  OkResponse<PaymentMethodDTO[]> | UnauthorizedResponse
+>
 
 export type PaymentMethodDeletionResponse = Response<
   | NoContentResponse

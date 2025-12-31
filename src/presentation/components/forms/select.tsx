@@ -24,18 +24,24 @@ type BaseSelectItem<K extends Key = string> = {
   id: K
 }
 
-export type SelectItem<K extends Key = string> = Omit<ListBoxItemProps<BaseSelectItem<K>>, 'id'> &
+export type SelectItem<K extends Key = string> = Omit<
+  ListBoxItemProps<BaseSelectItem<K>>,
+  'id'
+> &
   BaseSelectItem<K>
 
-export type SelectProps<K extends Key = string, Mode extends SelectionMode = 'single'> = Omit<
-  ReactAriaSelectProps<SelectItem<K>, Mode>,
-  'children'
-> & {
+export type SelectProps<
+  K extends Key = string,
+  Mode extends SelectionMode = 'single'
+> = Omit<ReactAriaSelectProps<SelectItem<K>, Mode>, 'children'> & {
   items: SelectItem<K>[]
   label: string
 }
 
-export function Select<K extends Key = string, Mode extends SelectionMode = 'single'>({
+export function Select<
+  K extends Key = string,
+  Mode extends SelectionMode = 'single'
+>({
   className,
   label,
   items,
@@ -58,13 +64,20 @@ export function Select<K extends Key = string, Mode extends SelectionMode = 'sin
             <SelectValue className='value'>
               {({ isPlaceholder, selectedItems }) => {
                 if (isPlaceholder) {
-                  return placeholder ?? t('components.forms.select.defaultPlaceholder')
+                  return (
+                    placeholder ??
+                    t('components.forms.select.defaultPlaceholder')
+                  )
                 }
 
                 const textValues: string[] = []
 
                 for (const item of selectedItems) {
-                  if (item && 'textValue' in item && typeof item.textValue === 'string') {
+                  if (
+                    item &&
+                    'textValue' in item &&
+                    typeof item.textValue === 'string'
+                  ) {
                     textValues.push(item.textValue)
                   }
                 }
@@ -81,7 +94,9 @@ export function Select<K extends Key = string, Mode extends SelectionMode = 'sin
               {({ className, Icon, textValue, ...selectItemRestProps }) => (
                 <ListBoxItem
                   {...selectItemRestProps}
-                  className={(values) => reactAriaClassNames(values, className, 'item')}
+                  className={(values) =>
+                    reactAriaClassNames(values, className, 'item')
+                  }
                   textValue={textValue}
                 >
                   {({ isSelected }) => (
@@ -96,7 +111,9 @@ export function Select<K extends Key = string, Mode extends SelectionMode = 'sin
                         <span className='text'>{textValue}</span>
                       </div>
 
-                      {isSelected && <CheckIcon aria-hidden className='check-icon' />}
+                      {isSelected && (
+                        <CheckIcon aria-hidden className='check-icon' />
+                      )}
                     </>
                   )}
                 </ListBoxItem>

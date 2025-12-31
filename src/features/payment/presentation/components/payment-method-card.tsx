@@ -24,7 +24,12 @@ export const PaymentMethodCard: React.FC<PaymentMethodCardProps> = ({
   paymentMethod,
   setDefaultPaymentMethod
 }) => (
-  <Card className={classNames('payment-method-card', paymentMethod.isDefault && 'selected')}>
+  <Card
+    className={classNames(
+      'payment-method-card',
+      paymentMethod.isDefault && 'selected'
+    )}
+  >
     <div className='payment-method-header'>
       <span className='name'>{paymentMethod.textValue}</span>
 

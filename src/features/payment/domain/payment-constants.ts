@@ -1,10 +1,16 @@
-import type { PaymentProvider, PaymentType } from '@/infrastructure/database/generated'
+import type {
+  PaymentProvider,
+  PaymentType
+} from '@/infrastructure/database/generated'
 
 export const PAYMENT_API_BASE_URL = 'payments' as const
 
 const CURRENT_YEAR = new Date().getFullYear()
 export const CARD_PAYMENT_METHOD_TYPES = ['CREDIT_CARD', 'DEBIT_CARD'] as const
-export const NON_CARD_PAYMENT_METHODS_TYPES = ['BANK_TRANSFER', 'PAYPAL'] as const
+export const NON_CARD_PAYMENT_METHODS_TYPES = [
+  'BANK_TRANSFER',
+  'PAYPAL'
+] as const
 
 export const PAYMENT_METHOD_CONSTANTS = {
   MAX_EXPIRY_MONTH: 12,
@@ -12,7 +18,10 @@ export const PAYMENT_METHOD_CONSTANTS = {
   MIN_EXPIRY_MONTH: 1,
   MIN_EXPIRY_YEAR: CURRENT_YEAR,
   PROVIDERS: ['STRIPE'] satisfies PaymentProvider[],
-  TYPES: [...CARD_PAYMENT_METHOD_TYPES, ...NON_CARD_PAYMENT_METHODS_TYPES] satisfies PaymentType[]
+  TYPES: [
+    ...CARD_PAYMENT_METHOD_TYPES,
+    ...NON_CARD_PAYMENT_METHODS_TYPES
+  ] satisfies PaymentType[]
 } as const
 
 export const PAYMENT_METHOD_ERRORS = {

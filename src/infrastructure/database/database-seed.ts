@@ -1,7 +1,11 @@
 import 'dotenv/config'
+
 import { PrismaPg } from '@prisma/adapter-pg'
 
-import { PrismaClient, type ProductStatus } from '@/infrastructure/database/generated'
+import {
+  PrismaClient,
+  type ProductStatus
+} from '@/infrastructure/database/generated'
 import { SERVER_ENV } from '@/infrastructure/env/server'
 
 const adapter = new PrismaPg({ connectionString: SERVER_ENV.DATABASE_URL })
@@ -50,7 +54,8 @@ const seed = async () => {
   const createdCategories = await prisma.category.findMany()
 
   for (const product of products) {
-    const randomCategory = createdCategories[Math.floor(Math.random() * createdCategories.length)]
+    const randomCategory =
+      createdCategories[Math.floor(Math.random() * createdCategories.length)]
 
     await prisma.product.create({
       data: {

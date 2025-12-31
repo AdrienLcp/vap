@@ -36,10 +36,14 @@ export type CategoryUpdateData = z.infer<typeof CategoryUpdateSchema>
 
 export type CategoryDTO = z.infer<typeof CategoryDTOSchema>
 
-export type CategoryNameAlreadyExists = typeof CATEGORY_ERRORS.NAME_ALREADY_EXISTS
+export type CategoryNameAlreadyExists =
+  typeof CATEGORY_ERRORS.NAME_ALREADY_EXISTS
 export type CategoryConflictError = CategoryNameAlreadyExists
 
-export type CategoryEditError = CategoryNameAlreadyExists | Forbidden | Unauthorized
+export type CategoryEditError =
+  | CategoryNameAlreadyExists
+  | Forbidden
+  | Unauthorized
 
 export type CategoryListResponse = Response<OkResponse<CategoryDTO[]>>
 
@@ -76,4 +80,6 @@ type CategoryUpdateResult =
 
 export type CategoryUpdateResponse = Response<CategoryUpdateResult>
 
-export type CategoryValidationErrors = ValidationErrors<ValueOf<typeof CATEGORY_FORM_FIELDS>>
+export type CategoryValidationErrors = ValidationErrors<
+  ValueOf<typeof CATEGORY_FORM_FIELDS>
+>

@@ -5,7 +5,10 @@ import {
 } from 'react-aria-components'
 
 import { Spinner } from '@/presentation/components/ui/loaders/spinner'
-import { Tooltip, type TooltipProps } from '@/presentation/components/ui/tooltip'
+import {
+  Tooltip,
+  type TooltipProps
+} from '@/presentation/components/ui/tooltip'
 
 import { type PressableProps, reactAriaPressableClassNames } from './pressable'
 
@@ -49,7 +52,15 @@ const BaseButton: React.FC<ButtonProps> = ({
 }) => (
   <ReactAriaButton
     className={(values) =>
-      reactAriaPressableClassNames(values, className, variant, Icon, iconSide, size, children)
+      reactAriaPressableClassNames(
+        values,
+        className,
+        variant,
+        Icon,
+        iconSide,
+        size,
+        children
+      )
     }
     isDisabled={isDisabled || isPending}
     isPending={isPending}
@@ -73,7 +84,10 @@ type ButtonWithTooltipProps = ButtonProps & {
   tooltip?: TooltipProps['Content']
 }
 
-export const Button: React.FC<ButtonWithTooltipProps> = ({ tooltip, ...buttonRestProps }) => {
+export const Button: React.FC<ButtonWithTooltipProps> = ({
+  tooltip,
+  ...buttonRestProps
+}) => {
   if (tooltip == null) {
     return <BaseButton {...buttonRestProps} />
   }

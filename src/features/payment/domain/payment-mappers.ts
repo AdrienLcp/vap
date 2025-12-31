@@ -10,7 +10,9 @@ import {
 } from '@/features/payment/domain/payment-helpers'
 import { failure, type Result, success } from '@/helpers/result'
 
-export const toPaymentMethodDTO = (paymentMethod: PaymentMethod): Result<PaymentMethodDTO> => {
+export const toPaymentMethodDTO = (
+  paymentMethod: PaymentMethod
+): Result<PaymentMethodDTO> => {
   const baseDTO = {
     id: paymentMethod.id,
     isDefault: paymentMethod.isDefault,

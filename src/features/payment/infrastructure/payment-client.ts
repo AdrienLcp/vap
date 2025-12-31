@@ -9,16 +9,20 @@ import type {
   PaymentMethodUpdateDTO,
   PaymentMethodUpdateResponse
 } from '@/features/payment/domain/payment-entities'
-import { ApiClient, type ClientResponse, unknownError } from '@/infrastructure/api/api-client'
+import {
+  ApiClient,
+  type ClientResponse,
+  unknownError
+} from '@/infrastructure/api/api-client'
 
 const createUserPaymentMethod = async (
   paymentMethodCreationDTO: PaymentMethodCreationDTO
 ): Promise<ClientResponse<PaymentMethodCreationResponse>> => {
   try {
-    return await ApiClient.POST<PaymentMethodCreationResponse, PaymentMethodCreationDTO>(
-      PAYMENT_API_BASE_URL,
-      paymentMethodCreationDTO
-    )
+    return await ApiClient.POST<
+      PaymentMethodCreationResponse,
+      PaymentMethodCreationDTO
+    >(PAYMENT_API_BASE_URL, paymentMethodCreationDTO)
   } catch (error) {
     console.error('Create payment method error:', error)
     return unknownError()
@@ -30,7 +34,9 @@ const deleteUserPaymentMethod = async (
 ): Promise<ClientResponse<PaymentMethodDeletionResponse>> => {
   try {
     const paymentMethodDeletionApiUrl = `/${PAYMENT_API_BASE_URL}/${encodeURIComponent(paymentMethodId)}`
-    return await ApiClient.DELETE<PaymentMethodDeletionResponse>(paymentMethodDeletionApiUrl)
+    return await ApiClient.DELETE<PaymentMethodDeletionResponse>(
+      paymentMethodDeletionApiUrl
+    )
   } catch (error) {
     console.error('Delete payment method error:', error)
     return unknownError()
@@ -49,9 +55,13 @@ const findUserPaymentMethod = async (
   }
 }
 
-const findUserPaymentMethods = async (): Promise<ClientResponse<PaymentMethodsResponse>> => {
+const findUserPaymentMethods = async (): Promise<
+  ClientResponse<PaymentMethodsResponse>
+> => {
   try {
-    return await ApiClient.GET<PaymentMethodsResponse>(`/${PAYMENT_API_BASE_URL}`)
+    return await ApiClient.GET<PaymentMethodsResponse>(
+      `/${PAYMENT_API_BASE_URL}`
+    )
   } catch (error) {
     console.error('Find payment methods error:', error)
     return unknownError()
@@ -79,10 +89,10 @@ const updateUserPaymentMethod = async (
 ): Promise<ClientResponse<PaymentMethodUpdateResponse>> => {
   try {
     const paymentMethodApiUrl = `/${PAYMENT_API_BASE_URL}/${encodeURIComponent(paymentMethodId)}`
-    return await ApiClient.PATCH<PaymentMethodUpdateResponse, PaymentMethodUpdateDTO>(
-      paymentMethodApiUrl,
-      paymentMethodUpdateData
-    )
+    return await ApiClient.PATCH<
+      PaymentMethodUpdateResponse,
+      PaymentMethodUpdateDTO
+    >(paymentMethodApiUrl, paymentMethodUpdateData)
   } catch (error) {
     console.error('Update payment method error:', error)
     return unknownError()

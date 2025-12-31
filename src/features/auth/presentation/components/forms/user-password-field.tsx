@@ -1,9 +1,15 @@
 import { EyeIcon, EyeOffIcon, LockIcon } from 'lucide-react'
 import { useCallback, useMemo, useState } from 'react'
 
-import { AUTH_CONSTANTS, AUTH_FORM_FIELDS } from '@/features/auth/domain/auth-constants'
+import {
+  AUTH_CONSTANTS,
+  AUTH_FORM_FIELDS
+} from '@/features/auth/domain/auth-constants'
 import { t } from '@/infrastructure/i18n'
-import { TextField, type TextFieldProps } from '@/presentation/components/forms/text-field'
+import {
+  TextField,
+  type TextFieldProps
+} from '@/presentation/components/forms/text-field'
 import { Button } from '@/presentation/components/ui/pressables/button'
 import { reactAriaClassNames } from '@/presentation/utils/react-aria-utils'
 
@@ -14,7 +20,10 @@ type EyeIconButtonProps = {
   onPress: () => void
 }
 
-const EyeIconButton: React.FC<EyeIconButtonProps> = ({ isSlashed, onPress }) => (
+const EyeIconButton: React.FC<EyeIconButtonProps> = ({
+  isSlashed,
+  onPress
+}) => (
   <Button
     className='eye-icon-button'
     Icon={isSlashed ? <EyeOffIcon aria-hidden /> : <EyeIcon aria-hidden />}
@@ -38,16 +47,25 @@ export const UserPasswordField: React.FC<Partial<TextFieldProps>> = ({
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
   const togglePasswordVisibility = useCallback(() => {
-    setIsPasswordVisible((previousPasswordVisibilityState) => !previousPasswordVisibilityState)
+    setIsPasswordVisible(
+      (previousPasswordVisibilityState) => !previousPasswordVisibilityState
+    )
   }, [])
 
   const UserPasswordFieldEndContent = useMemo(() => {
-    return <EyeIconButton isSlashed={isPasswordVisible} onPress={togglePasswordVisibility} />
+    return (
+      <EyeIconButton
+        isSlashed={isPasswordVisible}
+        onPress={togglePasswordVisibility}
+      />
+    )
   }, [isPasswordVisible, togglePasswordVisibility])
 
   return (
     <TextField
-      className={(values) => reactAriaClassNames(values, className, 'user-password-field')}
+      className={(values) =>
+        reactAriaClassNames(values, className, 'user-password-field')
+      }
       description={description}
       EndContent={UserPasswordFieldEndContent}
       isRequired={isRequired}

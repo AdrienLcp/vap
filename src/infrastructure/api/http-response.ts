@@ -40,7 +40,9 @@ type CommonResponse<Status extends HttpStatus> = {
   status: Status
 }
 
-export type BaseResponse<Status extends HttpStatus, T = null> = T extends null | undefined
+export type BaseResponse<Status extends HttpStatus, T = null> = T extends
+  | null
+  | undefined
   ? CommonResponse<Status>
   : CommonResponse<Status> & T
 
@@ -48,12 +50,19 @@ export type OkResponse<Data> = BaseResponse<OkStatus, { data: Data }>
 export type CreatedResponse<Data> = BaseResponse<CreatedStatus, { data: Data }>
 export type NoContentResponse = BaseResponse<NoContentStatus>
 
-export type BadRequestResponse<Issues> = BaseResponse<BadRequestStatus, { issues: Issues }>
+export type BadRequestResponse<Issues> = BaseResponse<
+  BadRequestStatus,
+  { issues: Issues }
+>
 export type NotFoundResponse = BaseResponse<NotFoundStatus>
 export type UnauthorizedResponse = BaseResponse<UnauthorizedStatus>
 export type ForbiddenResponse = BaseResponse<ForbiddenStatus>
-export type ConflictResponse<Error> = BaseResponse<ConflictStatus, { error: Error }>
-export type InternalServerErrorResponse = BaseResponse<InternalServerErrorStatus>
+export type ConflictResponse<Error> = BaseResponse<
+  ConflictStatus,
+  { error: Error }
+>
+export type InternalServerErrorResponse =
+  BaseResponse<InternalServerErrorStatus>
 
 export type Response<T> = T | InternalServerErrorResponse
 
@@ -61,7 +70,10 @@ const ok = <Data>(data: Data, headers?: HeadersInit): OkResponse<Data> => {
   return { data, headers, status: OK_STATUS }
 }
 
-const created = <Data>(data: Data, headers?: HeadersInit): CreatedResponse<Data> => {
+const created = <Data>(
+  data: Data,
+  headers?: HeadersInit
+): CreatedResponse<Data> => {
   return { data, headers, status: CREATED_STATUS }
 }
 
@@ -69,7 +81,10 @@ const noContent = (headers?: HeadersInit): NoContentResponse => {
   return { headers, status: NO_CONTENT_STATUS }
 }
 
-const badRequest = <Issues>(issues: Issues, headers?: HeadersInit): BadRequestResponse<Issues> => {
+const badRequest = <Issues>(
+  issues: Issues,
+  headers?: HeadersInit
+): BadRequestResponse<Issues> => {
   return { headers, issues, status: BAD_REQUEST_STATUS }
 }
 
@@ -81,7 +96,10 @@ const forbidden = (headers?: HeadersInit): ForbiddenResponse => {
   return { headers, status: FORBIDDEN_STATUS }
 }
 
-const conflict = <Error>(error: Error, headers?: HeadersInit): ConflictResponse<Error> => {
+const conflict = <Error>(
+  error: Error,
+  headers?: HeadersInit
+): ConflictResponse<Error> => {
   return { error, headers, status: CONFLICT_STATUS }
 }
 
@@ -89,7 +107,9 @@ const notFound = (headers?: HeadersInit): NotFoundResponse => {
   return { headers, status: NOT_FOUND_STATUS }
 }
 
-const internalServerError = (headers?: HeadersInit): InternalServerErrorResponse => {
+const internalServerError = (
+  headers?: HeadersInit
+): InternalServerErrorResponse => {
   return { headers, status: INTERNAL_SERVER_ERROR_STATUS }
 }
 

@@ -34,7 +34,9 @@ export type AddressResponse = Response<
   | NotFoundResponse
 >
 
-export type AddressListResponse = Response<OkResponse<AddressDTO[]> | UnauthorizedResponse>
+export type AddressListResponse = Response<
+  OkResponse<AddressDTO[]> | UnauthorizedResponse
+>
 
 export type AddressCreationResponse = Response<
   | CreatedResponse<AddressDTO>
@@ -63,4 +65,6 @@ export type AddressDefaultResponse = Response<
   | NotFoundResponse
 >
 
-export type AddressFormErrors = ValidationErrors<ValueOf<typeof ADDRESS_FORM_FIELDS>>
+export type AddressFormErrors = ValidationErrors<
+  ValueOf<typeof ADDRESS_FORM_FIELDS>
+>

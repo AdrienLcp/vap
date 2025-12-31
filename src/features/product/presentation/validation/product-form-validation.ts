@@ -11,7 +11,9 @@ import { getUniqueStringsArray } from '@/helpers/array'
 import type { Issues } from '@/helpers/validation'
 import { t } from '@/infrastructure/i18n'
 
-export const getBadRequestProductFormErrors = (issues: Issues): ProductValidationErrors => {
+export const getBadRequestProductFormErrors = (
+  issues: Issues
+): ProductValidationErrors => {
   const formErrors: string[] = []
   const nameErrors: string[] = []
   const skuErrors: string[] = []
@@ -99,7 +101,9 @@ export const getBadRequestProductFormErrors = (issues: Issues): ProductValidatio
     [PRODUCT_FORM_FIELDS.NAME]: getUniqueStringsArray(nameErrors),
     [PRODUCT_FORM_FIELDS.SKU]: getUniqueStringsArray(skuErrors),
     [PRODUCT_FORM_FIELDS.PRICE]: getUniqueStringsArray(priceErrors),
-    [PRODUCT_FORM_FIELDS.DISCOUNTED_PRICE]: getUniqueStringsArray(discountedPriceErrors),
+    [PRODUCT_FORM_FIELDS.DISCOUNTED_PRICE]: getUniqueStringsArray(
+      discountedPriceErrors
+    ),
     [PRODUCT_FORM_FIELDS.STOCK]: getUniqueStringsArray(stockErrors),
     [PRODUCT_FORM_FIELDS.DESCRIPTION]: getUniqueStringsArray(descriptionErrors),
     [PRODUCT_FORM_FIELDS.IMAGE_URL]: getUniqueStringsArray(imageUrlErrors)
@@ -115,7 +119,10 @@ export const getConflictProductFormErrors = (
         [PRODUCT_FORM_FIELDS.SKU]: t('product.fields.sku.errors.alreadyExists')
       }
     default:
-      console.error('Unhandled conflict product validation error:', conflictError)
+      console.error(
+        'Unhandled conflict product validation error:',
+        conflictError
+      )
       return { form: t('errors.unknown') }
   }
 }

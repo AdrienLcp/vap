@@ -1,8 +1,14 @@
 import { PRODUCT_FORM_FIELDS } from '@/features/product/domain/product-constants'
 import { t } from '@/infrastructure/i18n'
-import { TextField, type TextFieldProps } from '@/presentation/components/forms/text-field'
+import {
+  TextField,
+  type TextFieldProps
+} from '@/presentation/components/forms/text-field'
 
-type ProductImageUrlFieldProps = Omit<Partial<TextFieldProps>, 'defaultValue' | 'value'> & {
+type ProductImageUrlFieldProps = Omit<
+  Partial<TextFieldProps>,
+  'defaultValue' | 'value'
+> & {
   defaultValue?: string | null
   value?: string | null
 }
