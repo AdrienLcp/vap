@@ -60,7 +60,7 @@ export const ProductCreationForm: React.FC<ProductCreationFormProps> = ({
       const createdProductRoute = getAdminProductRoute(createdProduct.id)
       router.push(createdProductRoute)
     },
-    [router.push]
+    [router]
   )
 
   const onProductCreationFormSubmit = useCallback(

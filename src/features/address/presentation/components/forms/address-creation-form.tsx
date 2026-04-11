@@ -129,7 +129,7 @@ export const AddressCreationForm: React.FC = () => {
 
       setIsAddressCreationLoading(false)
     },
-    [onAddressValidationError, router.push]
+    [onAddressValidationError, router]
   )
 
   return (

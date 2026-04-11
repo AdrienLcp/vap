@@ -104,7 +104,7 @@ export const CategoryCreationForm: React.FC = () => {
       const createdCategoryRoute = getAdminCategoryRoute(createdCategory.id)
       router.push(createdCategoryRoute)
     },
-    [router.push]
+    [router]
   )
 
   const onCategoryCreationFormSubmit = useCallback(

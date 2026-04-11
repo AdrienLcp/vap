@@ -34,7 +34,7 @@ export const ProductDeleteButton: React.FC<ProductDeleteButtonProps> = ({
 
     ToastService.success(t('product.delete.success'))
     router.push(ROUTES.adminProducts)
-  }, [productId, router.push])
+  }, [productId, router])
 
   return (
     <Button

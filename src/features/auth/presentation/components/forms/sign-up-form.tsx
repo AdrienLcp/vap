@@ -50,7 +50,7 @@ export const SignUpForm: React.FC = () => {
       setUser(createdUser)
       router.push(DEFAULT_ROUTE)
     },
-    [router.push, setUser]
+    [router, setUser]
   )
 
   const onSignUpBadRequest = useCallback(

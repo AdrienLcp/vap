@@ -136,7 +136,7 @@ export const AddressUpdateForm: React.FC<AddressUpdateFormProps> = ({
 
       setIsAddressUpdating(false)
     },
-    [address.id, onAddressValidationError, router.push]
+    [address.id, onAddressValidationError, router]
   )
 
   return (

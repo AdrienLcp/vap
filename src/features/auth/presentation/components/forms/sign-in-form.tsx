@@ -41,7 +41,7 @@ export const SignInForm: React.FC = () => {
       setUser(authenticatedUser)
       router.push(DEFAULT_ROUTE)
     },
-    [router.push, setUser]
+    [router, setUser]
   )
 
   const onSignInBadRequest = useCallback(() => {

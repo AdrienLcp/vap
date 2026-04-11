@@ -45,7 +45,7 @@ export const PersonaMenu: React.FC<PersonaMenuProps> = ({ user }) => {
       default:
         ToastService.error(t('auth.signOut.errors.unknown'))
     }
-  }, [router.push])
+  }, [router])
 
   const menuItems: MenuItem[] = useMemo(
     () => [

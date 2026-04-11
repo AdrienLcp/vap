@@ -39,7 +39,7 @@ export const AccountDeleteForm: React.FC<AccountDeleteFormProps> = ({
   const onDeleteAccountSuccess = useCallback(() => {
     ToastService.success(t('auth.deleteAccount.success'))
     router.push(DEFAULT_ROUTE)
-  }, [router.push])
+  }, [router])
 
   const onDeleteAccountBadRequest = useCallback(() => {
     setAccountDeletionFormErrors({

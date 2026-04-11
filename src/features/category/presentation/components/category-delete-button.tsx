@@ -35,7 +35,7 @@ export const CategoryDeleteButton: React.FC<CategoryDeleteButtonProps> = ({
 
     ToastService.success(t('category.delete.success'))
     router.push(ROUTES.adminCategories)
-  }, [categoryId, router.push])
+  }, [categoryId, router])
 
   return (
     <Button
