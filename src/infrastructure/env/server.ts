@@ -11,6 +11,7 @@ export const SERVER_ENV = createEnv({
     AUTH_GOOGLE_CLIENT_SECRET: process.env.AUTH_GOOGLE_CLIENT_SECRET,
     BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
     DATABASE_URL: process.env.DATABASE_URL,
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
     STRIPE_API_KEY: process.env.STRIPE_API_KEY,
     STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET
   },
@@ -21,6 +22,7 @@ export const SERVER_ENV = createEnv({
     ),
     BETTER_AUTH_SECRET: createRequiredEnvString('BETTER_AUTH_SECRET'),
     DATABASE_URL: createRequiredEnvString('DATABASE_URL'),
+    RESEND_API_KEY: createRequiredEnvString('RESEND_API_KEY'),
     STRIPE_API_KEY: createRequiredEnvString('STRIPE_API_KEY'),
     STRIPE_WEBHOOK_SECRET: createRequiredEnvString('STRIPE_WEBHOOK_SECRET')
   }

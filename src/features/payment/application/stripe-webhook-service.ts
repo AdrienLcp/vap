@@ -3,6 +3,7 @@ import 'server-only'
 import type Stripe from 'stripe'
 
 import { CartRepository } from '@/features/cart/infrastructure/cart-repository'
+import { PaymentEmailService } from '@/features/email/application/payment-email-service'
 import { OrderRepository } from '@/features/order/infrastructure/order-repository'
 import { stripe } from '@/features/payment/infrastructure/payment-lib'
 import { failure, type Result, success } from '@/helpers/result'
@@ -89,6 +90,14 @@ const handleCheckoutSessionCompleted = async (
 
     if (clearResult.status === 'ERROR') {
       console.error('Failed to clear cart after payment:', orderId)
+    }
+
+    const emailResult = await PaymentEmailService.sendPaymentConfirmationEmail(
+      orderResult.data
+    )
+
+    if (emailResult.status === 'ERROR') {
+      console.error('Failed to send payment confirmation email:', orderId)
     }
   }
 
