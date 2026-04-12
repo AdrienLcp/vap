@@ -60,6 +60,10 @@ export const OrderItemDTOSchema = z.object({
   unitPrice: PriceSchema
 })
 
+export const OrderStatusUpdateSchema = z.object({
+  status: OrderStatusSchema
+})
+
 export const OrderDTOSchema = z.object({
   createdAt: z.date(),
   id: OrderIdSchema,

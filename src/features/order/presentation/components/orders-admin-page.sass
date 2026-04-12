@@ -1,0 +1,16 @@
+@use '@/presentation/styles/sizes'
+@use '@/presentation/styles/typography'
+
+.orders-admin-page
+  @include sizes.responsive(m)
+
+  &
+    display: flex
+    flex: 1
+    flex-direction: column
+    gap: var(--size-200, 1.25rem)
+    margin-inline: auto
+    padding-block: var(--size-320, 2rem) calc(var(--size-320, 2rem) + 10%)
+
+  & h1
+    @include typography.headline-medium

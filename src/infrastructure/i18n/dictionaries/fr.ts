@@ -398,6 +398,34 @@ export const fr = {
   icons: {
     googleAltText: 'Logo Google'
   },
+  order: {
+    admin: {
+      customerEmail: 'Client',
+      date: 'Date',
+      empty: 'Aucune commande pour le moment.',
+      itemsTitle: 'Articles',
+      orderId: 'Commande',
+      productName: 'Produit',
+      quantity: 'Quantité',
+      statusLabel: 'Statut',
+      statusUpdateError:
+        'Une erreur est survenue lors de la mise à jour du statut.',
+      statusUpdateSuccess: 'Le statut a été mis à jour.',
+      stripePaymentIntentId: 'Payment Intent',
+      stripeSessionId: 'Session Stripe',
+      tableAriaLabel: 'Liste des commandes',
+      title: 'Commandes',
+      totalPrice: 'Total',
+      unitPrice: 'Prix unitaire'
+    },
+    status: {
+      CANCELLED: 'Annulée',
+      COMPLETED: 'Terminée',
+      PAID: 'Payée',
+      PENDING: 'En attente',
+      SHIPPED: 'Expédiée'
+    }
+  },
   product: {
     card: {
       delete: 'Supprimer',

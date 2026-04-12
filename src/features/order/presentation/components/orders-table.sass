@@ -1,0 +1,38 @@
+@use '@/presentation/styles/typography'
+
+.orders-table
+  & .status-badge
+    @include typography.label-medium
+
+    &
+      border-radius: var(--radius-s, 0.25rem)
+      display: inline-block
+      padding: var(--size-20, 0.125rem) var(--size-80, 0.5rem)
+
+    &.paid
+      background-color: var(--status-success-background)
+      color: var(--status-success-foreground)
+
+    &.pending
+      background-color: var(--status-warning-background)
+      color: var(--status-warning-foreground)
+
+    &.shipped
+      background-color: var(--status-info-background)
+      color: var(--status-info-foreground)
+
+    &.completed
+      background-color: var(--status-success-background)
+      color: var(--status-success-foreground)
+
+    &.cancelled
+      background-color: var(--status-error-background)
+      color: var(--status-error-foreground)
+
+  & .empty-message
+    @include typography.body-large
+
+    &
+      color: var(--neutral-foreground-soft)
+      padding: var(--size-320, 2rem)
+      text-align: center

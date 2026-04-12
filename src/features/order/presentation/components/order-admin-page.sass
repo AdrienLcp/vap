@@ -1,0 +1,60 @@
+@use '@/presentation/styles/forms'
+@use '@/presentation/styles/sizes'
+@use '@/presentation/styles/typography'
+
+.order-admin-page
+  @include sizes.responsive(m)
+
+  &
+    display: flex
+    flex: 1
+    flex-direction: column
+    gap: var(--size-200, 1.25rem)
+    margin-inline: auto
+    padding-block: var(--size-320, 2rem) calc(var(--size-320, 2rem) + 10%)
+
+  & h1
+    @include typography.headline-medium
+
+  & h2
+    @include typography.title-large
+
+  & .order-meta
+    display: flex
+    flex-direction: column
+    gap: var(--size-60, 0.375rem)
+
+    & p
+      @include typography.body-large
+
+    & code
+      @include typography.body-small
+
+      &
+        background-color: var(--neutral-background-muted)
+        border-radius: var(--radius-s, 0.25rem)
+        padding: var(--size-20, 0.125rem) var(--size-60, 0.375rem)
+
+  & .order-items
+    display: flex
+    flex-direction: column
+    gap: var(--size-120, 0.75rem)
+
+    & table
+      border-collapse: collapse
+      inline-size: 100%
+
+    & th
+      @include typography.label-large
+
+      &
+        border-block-end: var(--element-stroke, 0.125rem) solid var(--neutral-border)
+        padding: var(--size-80, 0.5rem)
+        text-align: start
+
+    & td
+      @include typography.body-large
+
+      &
+        border-block-end: var(--element-stroke, 0.125rem) solid var(--neutral-border-muted)
+        padding: var(--size-80, 0.5rem)

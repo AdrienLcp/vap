@@ -6,7 +6,8 @@ import type {
   OrderIdSchema,
   OrderItemDTOSchema,
   OrderItemProductDTOSchema,
-  OrderStatusSchema
+  OrderStatusSchema,
+  OrderStatusUpdateSchema
 } from '@/features/order/domain/order-schemas'
 
 export type OrderId = z.infer<typeof OrderIdSchema>
@@ -20,3 +21,5 @@ export type OrderItemDTO = z.infer<typeof OrderItemDTOSchema>
 export type OrderDTO = z.infer<typeof OrderDTOSchema>
 
 export type OrderCreationData = z.infer<typeof OrderCreationDataSchema>
+
+export type OrderStatusUpdate = z.infer<typeof OrderStatusUpdateSchema>

@@ -123,6 +123,31 @@ const createOrder = async (
   }
 }
 
+const findOrders = async (): Promise<Result<OrderDTO[]>> => {
+  try {
+    const orders = await OrderDatabase.findMany({
+      orderBy: { createdAt: 'desc' },
+      select: ORDER_WITH_RELATIONS_SELECTED_FIELDS
+    })
+
+    const ordersWithItems: OrderDTO[] = []
+
+    for (const order of orders) {
+      const items = await OrderItemDatabase.findMany({
+        select: ORDER_ITEM_WITH_RELATIONS_SELECTED_FIELDS,
+        where: { orderId: order.id }
+      })
+
+      ordersWithItems.push(toOrderDTO(order, items))
+    }
+
+    return success(ordersWithItems)
+  } catch (error) {
+    console.error('Unknown error in OrderRepository.findOrders:', error)
+    return failure()
+  }
+}
+
 const findOrder = async (
   orderId: OrderId
 ): Promise<Result<OrderDTO, NotFound>> => {
@@ -250,11 +275,42 @@ const markOrderCancelled = async (
   }
 }
 
+const updateOrderStatus = async (
+  orderId: OrderId,
+  status: OrderStatus
+): Promise<Result<OrderDTO, NotFound>> => {
+  try {
+    const updatedOrder = await OrderDatabase.update({
+      data: { status },
+      select: ORDER_WITH_RELATIONS_SELECTED_FIELDS,
+      where: { id: orderId }
+    })
+
+    const items = await OrderItemDatabase.findMany({
+      select: ORDER_ITEM_WITH_RELATIONS_SELECTED_FIELDS,
+      where: { orderId }
+    })
+
+    return success(toOrderDTO(updatedOrder, items))
+  } catch (error) {
+    const dbError = getDatabaseError(error)
+
+    if (dbError.code === 'NOT_FOUND') {
+      return failure('NOT_FOUND')
+    }
+
+    console.error('Unknown error in OrderRepository.updateOrderStatus:', error)
+    return failure()
+  }
+}
+
 export const OrderRepository = {
   createOrder,
   findOrder,
   findOrderByStripeCheckoutSessionId,
+  findOrders,
   markOrderCancelled,
   markOrderPaid,
+  updateOrderStatus,
   updateOrderStripeCheckoutSessionId
 }

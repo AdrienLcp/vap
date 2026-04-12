@@ -1,14 +1,25 @@
 import 'server-only'
 
-import type { BadRequest, NotFound, Unauthorized } from '@/domain/entities'
+import type {
+  BadRequest,
+  Forbidden,
+  NotFound,
+  Unauthorized
+} from '@/domain/entities'
 import { AddressRepository } from '@/features/address/infrastructure/address-repository'
 import { AuthService } from '@/features/auth/application/auth-service'
+import { getAuthUserPermissionsByRole } from '@/features/auth/domain/auth-permissions'
 import { CartRepository } from '@/features/cart/infrastructure/cart-repository'
-import type { OrderDTO, OrderId } from '@/features/order/domain/order-entities'
+import type {
+  OrderDTO,
+  OrderId,
+  OrderStatus
+} from '@/features/order/domain/order-entities'
 import { OrderRepository } from '@/features/order/infrastructure/order-repository'
 import { failure, type Result, success } from '@/helpers/result'
 
 type OrderError = BadRequest | NotFound | Unauthorized
+type AdminOrderError = Forbidden | NotFound | Unauthorized
 
 const createPendingOrderFromCart = async (
   shippingAddressId: string
@@ -87,7 +98,63 @@ const findOrder = async (
   return success(orderResult.data)
 }
 
+const findOrders = async (): Promise<Result<OrderDTO[], AdminOrderError>> => {
+  const userResult = await AuthService.findUser()
+
+  if (userResult.status === 'ERROR') {
+    return userResult
+  }
+
+  const permissions = getAuthUserPermissionsByRole(userResult.data.role)
+
+  if (!permissions.canAccessAdmin) {
+    return failure('FORBIDDEN')
+  }
+
+  return await OrderRepository.findOrders()
+}
+
+const findOrderAdmin = async (
+  orderId: OrderId
+): Promise<Result<OrderDTO, AdminOrderError>> => {
+  const userResult = await AuthService.findUser()
+
+  if (userResult.status === 'ERROR') {
+    return userResult
+  }
+
+  const permissions = getAuthUserPermissionsByRole(userResult.data.role)
+
+  if (!permissions.canAccessAdmin) {
+    return failure('FORBIDDEN')
+  }
+
+  return await OrderRepository.findOrder(orderId)
+}
+
+const updateOrderStatus = async (
+  orderId: OrderId,
+  status: OrderStatus
+): Promise<Result<OrderDTO, AdminOrderError>> => {
+  const userResult = await AuthService.findUser()
+
+  if (userResult.status === 'ERROR') {
+    return userResult
+  }
+
+  const permissions = getAuthUserPermissionsByRole(userResult.data.role)
+
+  if (!permissions.canAccessAdmin) {
+    return failure('FORBIDDEN')
+  }
+
+  return await OrderRepository.updateOrderStatus(orderId, status)
+}
+
 export const OrderService = {
   createPendingOrderFromCart,
-  findOrder
+  findOrder,
+  findOrderAdmin,
+  findOrders,
+  updateOrderStatus
 }
