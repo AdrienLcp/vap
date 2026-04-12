@@ -6,9 +6,13 @@ import {
   PrismaClient,
   type ProductStatus
 } from '@/infrastructure/database/generated'
-import { SERVER_ENV } from '@/infrastructure/env/server'
 
-const adapter = new PrismaPg({ connectionString: SERVER_ENV.DATABASE_URL })
+const connectionString = process.env.DATABASE_URL
+if (!connectionString) {
+  throw new Error('DATABASE_URL is not set')
+}
+
+const adapter = new PrismaPg({ connectionString })
 
 const prisma = new PrismaClient({ adapter })
 

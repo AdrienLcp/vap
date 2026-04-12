@@ -23,6 +23,10 @@ export const ROUTES = {
   adminUser: `/admin/users/:${PARAMS.userId}`,
   adminUsers: '/admin/users',
 
+  checkout: '/checkout',
+  checkoutCancel: '/checkout/cancel',
+  checkoutSuccess: '/checkout/success',
+
   forbidden: '/auth/forbidden',
   home: '/',
   notFound: '/not-found',

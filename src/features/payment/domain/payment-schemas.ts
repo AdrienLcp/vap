@@ -89,7 +89,7 @@ export const PaymentMethodUpdateSchema = z.object({
   expiryYear: PaymentMethodExpiryYearSchema.optional(),
   isDefault: z.boolean().nullish(),
   last4: PaymentMethodLast4Schema.optional(),
-  name: z.string().catch(''),
+  name: z.string().optional(),
   provider: PaymentMethodProviderSchema.optional(),
   type: CardPaymentMethodTypeSchema.optional()
 })

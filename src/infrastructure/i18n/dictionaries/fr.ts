@@ -268,6 +268,7 @@ export const fr = {
         'Une erreur est survenue lors du chargement des articles du panier.'
     },
     pay: 'Payer',
+    reviewTitle: 'Résumé et validation',
     title: dt('Votre panier ({itemCount:plural})', {
       plural: {
         itemCount: {
@@ -332,6 +333,30 @@ export const fr = {
       },
       success: 'La catégorie "{categoryName}" a été mise à jour avec succès.'
     }
+  },
+  checkout: {
+    addAddress: 'Ajouter une adresse',
+    addressLabel: 'Adresse de livraison',
+    cancel: {
+      backToCart: 'Retour au panier',
+      description:
+        'Votre paiement a été annulé. Votre panier est toujours disponible.',
+      title: 'Paiement annulé'
+    },
+    emptyCart: 'Votre panier est vide.',
+    error: 'Une erreur est survenue lors du paiement.',
+    itemsTitle: 'Articles',
+    noAddress: "Vous n'avez pas encore ajouté d'adresse de livraison.",
+    pay: 'Payer',
+    payAriaLabel: 'Procéder au paiement',
+    selectAddress: 'Sélectionnez une adresse',
+    success: {
+      backHome: "Retour à l'accueil",
+      description: 'Votre commande a bien été enregistrée. Merci !',
+      title: 'Paiement confirmé'
+    },
+    title: 'Résumé et validation',
+    totalLabel: 'Total'
   },
   components: {
     fallback: {

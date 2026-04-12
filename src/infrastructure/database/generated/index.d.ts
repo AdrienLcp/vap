@@ -146,7 +146,9 @@ export const OrderStatus: typeof $Enums.OrderStatus
  * Type-safe database client for TypeScript & Node.js
  * @example
  * ```
- * const prisma = new PrismaClient()
+ * const prisma = new PrismaClient({
+ *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
+ * })
  * // Fetch zero or more Sessions
  * const sessions = await prisma.session.findMany()
  * ```
@@ -167,7 +169,9 @@ export class PrismaClient<
    * Type-safe database client for TypeScript & Node.js
    * @example
    * ```
-   * const prisma = new PrismaClient()
+   * const prisma = new PrismaClient({
+   *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
+   * })
    * // Fetch zero or more Sessions
    * const sessions = await prisma.session.findMany()
    * ```
@@ -247,7 +251,7 @@ export class PrismaClient<
    * ])
    * ```
    * 
-   * Read more in our [docs](https://www.prisma.io/docs/concepts/components/prisma-client/transactions).
+   * Read more in our [docs](https://www.prisma.io/docs/orm/prisma-client/queries/transactions).
    */
   $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
 
@@ -416,8 +420,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 7.2.0
-   * Query Engine version: 0c8ef2ce45c83248ab3df073180d5eda9e8be7a3
+   * Prisma Client JS version: 7.7.0
+   * Query Engine version: 75cbdc1eb7150937890ad5465d861175c6624711
    */
   export type PrismaVersion = {
     client: string
@@ -2961,6 +2965,11 @@ export namespace Prisma {
      * Skip the first `n` Sessions.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Sessions.
+     */
     distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
   }
 
@@ -4123,6 +4132,11 @@ export namespace Prisma {
      * Skip the first `n` Accounts.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Accounts.
+     */
     distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
   }
 
@@ -5159,6 +5173,11 @@ export namespace Prisma {
      * Skip the first `n` Verifications.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Verifications.
+     */
     distinct?: VerificationScalarFieldEnum | VerificationScalarFieldEnum[]
   }
 
@@ -6198,6 +6217,11 @@ export namespace Prisma {
      * Skip the first `n` Categories.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Categories.
+     */
     distinct?: CategoryScalarFieldEnum | CategoryScalarFieldEnum[]
   }
 
@@ -7432,6 +7456,11 @@ export namespace Prisma {
      * Skip the first `n` Products.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Products.
+     */
     distinct?: ProductScalarFieldEnum | ProductScalarFieldEnum[]
   }
 
@@ -8599,6 +8628,11 @@ export namespace Prisma {
      * Skip the first `n` CartItems.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CartItems.
+     */
     distinct?: CartItemScalarFieldEnum | CartItemScalarFieldEnum[]
   }
 
@@ -9728,6 +9762,11 @@ export namespace Prisma {
      * Skip the first `n` Addresses.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Addresses.
+     */
     distinct?: AddressScalarFieldEnum | AddressScalarFieldEnum[]
   }
 
@@ -10932,6 +10971,11 @@ export namespace Prisma {
      * Skip the first `n` PaymentMethods.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PaymentMethods.
+     */
     distinct?: PaymentMethodScalarFieldEnum | PaymentMethodScalarFieldEnum[]
   }
 
@@ -12086,6 +12130,11 @@ export namespace Prisma {
      * Skip the first `n` OrderItems.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of OrderItems.
+     */
     distinct?: OrderItemScalarFieldEnum | OrderItemScalarFieldEnum[]
   }
 
@@ -12329,6 +12378,8 @@ export namespace Prisma {
     userId: string | null
     shippingAddressId: string | null
     paymentMethodId: string | null
+    stripeCheckoutSessionId: string | null
+    stripePaymentIntentId: string | null
     totalPrice: number | null
     status: $Enums.OrderStatus | null
     createdAt: Date | null
@@ -12340,6 +12391,8 @@ export namespace Prisma {
     userId: string | null
     shippingAddressId: string | null
     paymentMethodId: string | null
+    stripeCheckoutSessionId: string | null
+    stripePaymentIntentId: string | null
     totalPrice: number | null
     status: $Enums.OrderStatus | null
     createdAt: Date | null
@@ -12351,6 +12404,8 @@ export namespace Prisma {
     userId: number
     shippingAddressId: number
     paymentMethodId: number
+    stripeCheckoutSessionId: number
+    stripePaymentIntentId: number
     totalPrice: number
     status: number
     createdAt: number
@@ -12372,6 +12427,8 @@ export namespace Prisma {
     userId?: true
     shippingAddressId?: true
     paymentMethodId?: true
+    stripeCheckoutSessionId?: true
+    stripePaymentIntentId?: true
     totalPrice?: true
     status?: true
     createdAt?: true
@@ -12383,6 +12440,8 @@ export namespace Prisma {
     userId?: true
     shippingAddressId?: true
     paymentMethodId?: true
+    stripeCheckoutSessionId?: true
+    stripePaymentIntentId?: true
     totalPrice?: true
     status?: true
     createdAt?: true
@@ -12394,6 +12453,8 @@ export namespace Prisma {
     userId?: true
     shippingAddressId?: true
     paymentMethodId?: true
+    stripeCheckoutSessionId?: true
+    stripePaymentIntentId?: true
     totalPrice?: true
     status?: true
     createdAt?: true
@@ -12491,7 +12552,9 @@ export namespace Prisma {
     id: string
     userId: string
     shippingAddressId: string
-    paymentMethodId: string
+    paymentMethodId: string | null
+    stripeCheckoutSessionId: string | null
+    stripePaymentIntentId: string | null
     totalPrice: number
     status: $Enums.OrderStatus
     createdAt: Date
@@ -12522,13 +12585,15 @@ export namespace Prisma {
     userId?: boolean
     shippingAddressId?: boolean
     paymentMethodId?: boolean
+    stripeCheckoutSessionId?: boolean
+    stripePaymentIntentId?: boolean
     totalPrice?: boolean
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     shippingAddress?: boolean | AddressDefaultArgs<ExtArgs>
-    paymentMethod?: boolean | PaymentMethodDefaultArgs<ExtArgs>
+    paymentMethod?: boolean | Order$paymentMethodArgs<ExtArgs>
     items?: boolean | Order$itemsArgs<ExtArgs>
     _count?: boolean | OrderCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
@@ -12538,13 +12603,15 @@ export namespace Prisma {
     userId?: boolean
     shippingAddressId?: boolean
     paymentMethodId?: boolean
+    stripeCheckoutSessionId?: boolean
+    stripePaymentIntentId?: boolean
     totalPrice?: boolean
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     shippingAddress?: boolean | AddressDefaultArgs<ExtArgs>
-    paymentMethod?: boolean | PaymentMethodDefaultArgs<ExtArgs>
+    paymentMethod?: boolean | Order$paymentMethodArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
 
   export type OrderSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -12552,13 +12619,15 @@ export namespace Prisma {
     userId?: boolean
     shippingAddressId?: boolean
     paymentMethodId?: boolean
+    stripeCheckoutSessionId?: boolean
+    stripePaymentIntentId?: boolean
     totalPrice?: boolean
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     shippingAddress?: boolean | AddressDefaultArgs<ExtArgs>
-    paymentMethod?: boolean | PaymentMethodDefaultArgs<ExtArgs>
+    paymentMethod?: boolean | Order$paymentMethodArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
 
   export type OrderSelectScalar = {
@@ -12566,29 +12635,31 @@ export namespace Prisma {
     userId?: boolean
     shippingAddressId?: boolean
     paymentMethodId?: boolean
+    stripeCheckoutSessionId?: boolean
+    stripePaymentIntentId?: boolean
     totalPrice?: boolean
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "shippingAddressId" | "paymentMethodId" | "totalPrice" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
+  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "shippingAddressId" | "paymentMethodId" | "stripeCheckoutSessionId" | "stripePaymentIntentId" | "totalPrice" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
   export type OrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     shippingAddress?: boolean | AddressDefaultArgs<ExtArgs>
-    paymentMethod?: boolean | PaymentMethodDefaultArgs<ExtArgs>
+    paymentMethod?: boolean | Order$paymentMethodArgs<ExtArgs>
     items?: boolean | Order$itemsArgs<ExtArgs>
     _count?: boolean | OrderCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type OrderIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     shippingAddress?: boolean | AddressDefaultArgs<ExtArgs>
-    paymentMethod?: boolean | PaymentMethodDefaultArgs<ExtArgs>
+    paymentMethod?: boolean | Order$paymentMethodArgs<ExtArgs>
   }
   export type OrderIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     shippingAddress?: boolean | AddressDefaultArgs<ExtArgs>
-    paymentMethod?: boolean | PaymentMethodDefaultArgs<ExtArgs>
+    paymentMethod?: boolean | Order$paymentMethodArgs<ExtArgs>
   }
 
   export type $OrderPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -12596,14 +12667,16 @@ export namespace Prisma {
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
       shippingAddress: Prisma.$AddressPayload<ExtArgs>
-      paymentMethod: Prisma.$PaymentMethodPayload<ExtArgs>
+      paymentMethod: Prisma.$PaymentMethodPayload<ExtArgs> | null
       items: Prisma.$OrderItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       userId: string
       shippingAddressId: string
-      paymentMethodId: string
+      paymentMethodId: string | null
+      stripeCheckoutSessionId: string | null
+      stripePaymentIntentId: string | null
       totalPrice: number
       status: $Enums.OrderStatus
       createdAt: Date
@@ -13004,7 +13077,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     shippingAddress<T extends AddressDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AddressDefaultArgs<ExtArgs>>): Prisma__AddressClient<$Result.GetResult<Prisma.$AddressPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    paymentMethod<T extends PaymentMethodDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PaymentMethodDefaultArgs<ExtArgs>>): Prisma__PaymentMethodClient<$Result.GetResult<Prisma.$PaymentMethodPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    paymentMethod<T extends Order$paymentMethodArgs<ExtArgs> = {}>(args?: Subset<T, Order$paymentMethodArgs<ExtArgs>>): Prisma__PaymentMethodClient<$Result.GetResult<Prisma.$PaymentMethodPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     items<T extends Order$itemsArgs<ExtArgs> = {}>(args?: Subset<T, Order$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -13039,6 +13112,8 @@ export namespace Prisma {
     readonly userId: FieldRef<"Order", 'String'>
     readonly shippingAddressId: FieldRef<"Order", 'String'>
     readonly paymentMethodId: FieldRef<"Order", 'String'>
+    readonly stripeCheckoutSessionId: FieldRef<"Order", 'String'>
+    readonly stripePaymentIntentId: FieldRef<"Order", 'String'>
     readonly totalPrice: FieldRef<"Order", 'Float'>
     readonly status: FieldRef<"Order", 'OrderStatus'>
     readonly createdAt: FieldRef<"Order", 'DateTime'>
@@ -13239,6 +13314,11 @@ export namespace Prisma {
      * Skip the first `n` Orders.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Orders.
+     */
     distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
   }
 
@@ -13436,6 +13516,25 @@ export namespace Prisma {
      * Limit how many Orders to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Order.paymentMethod
+   */
+  export type Order$paymentMethodArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentMethod
+     */
+    select?: PaymentMethodSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentMethod
+     */
+    omit?: PaymentMethodOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentMethodInclude<ExtArgs> | null
+    where?: PaymentMethodWhereInput
   }
 
   /**
@@ -14376,6 +14475,11 @@ export namespace Prisma {
      * Skip the first `n` Users.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Users.
+     */
     distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
   }
 
@@ -14882,6 +14986,8 @@ export namespace Prisma {
     userId: 'userId',
     shippingAddressId: 'shippingAddressId',
     paymentMethodId: 'paymentMethodId',
+    stripeCheckoutSessionId: 'stripeCheckoutSessionId',
+    stripePaymentIntentId: 'stripePaymentIntentId',
     totalPrice: 'totalPrice',
     status: 'status',
     createdAt: 'createdAt',
@@ -15766,14 +15872,16 @@ export namespace Prisma {
     id?: StringFilter<"Order"> | string
     userId?: StringFilter<"Order"> | string
     shippingAddressId?: StringFilter<"Order"> | string
-    paymentMethodId?: StringFilter<"Order"> | string
+    paymentMethodId?: StringNullableFilter<"Order"> | string | null
+    stripeCheckoutSessionId?: StringNullableFilter<"Order"> | string | null
+    stripePaymentIntentId?: StringNullableFilter<"Order"> | string | null
     totalPrice?: FloatFilter<"Order"> | number
     status?: EnumOrderStatusFilter<"Order"> | $Enums.OrderStatus
     createdAt?: DateTimeFilter<"Order"> | Date | string
     updatedAt?: DateTimeFilter<"Order"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     shippingAddress?: XOR<AddressScalarRelationFilter, AddressWhereInput>
-    paymentMethod?: XOR<PaymentMethodScalarRelationFilter, PaymentMethodWhereInput>
+    paymentMethod?: XOR<PaymentMethodNullableScalarRelationFilter, PaymentMethodWhereInput> | null
     items?: OrderItemListRelationFilter
   }
 
@@ -15781,7 +15889,9 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     shippingAddressId?: SortOrder
-    paymentMethodId?: SortOrder
+    paymentMethodId?: SortOrderInput | SortOrder
+    stripeCheckoutSessionId?: SortOrderInput | SortOrder
+    stripePaymentIntentId?: SortOrderInput | SortOrder
     totalPrice?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
@@ -15794,27 +15904,31 @@ export namespace Prisma {
 
   export type OrderWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    stripeCheckoutSessionId?: string
+    stripePaymentIntentId?: string
     AND?: OrderWhereInput | OrderWhereInput[]
     OR?: OrderWhereInput[]
     NOT?: OrderWhereInput | OrderWhereInput[]
     userId?: StringFilter<"Order"> | string
     shippingAddressId?: StringFilter<"Order"> | string
-    paymentMethodId?: StringFilter<"Order"> | string
+    paymentMethodId?: StringNullableFilter<"Order"> | string | null
     totalPrice?: FloatFilter<"Order"> | number
     status?: EnumOrderStatusFilter<"Order"> | $Enums.OrderStatus
     createdAt?: DateTimeFilter<"Order"> | Date | string
     updatedAt?: DateTimeFilter<"Order"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     shippingAddress?: XOR<AddressScalarRelationFilter, AddressWhereInput>
-    paymentMethod?: XOR<PaymentMethodScalarRelationFilter, PaymentMethodWhereInput>
+    paymentMethod?: XOR<PaymentMethodNullableScalarRelationFilter, PaymentMethodWhereInput> | null
     items?: OrderItemListRelationFilter
-  }, "id">
+  }, "id" | "stripeCheckoutSessionId" | "stripePaymentIntentId">
 
   export type OrderOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrder
     shippingAddressId?: SortOrder
-    paymentMethodId?: SortOrder
+    paymentMethodId?: SortOrderInput | SortOrder
+    stripeCheckoutSessionId?: SortOrderInput | SortOrder
+    stripePaymentIntentId?: SortOrderInput | SortOrder
     totalPrice?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
@@ -15833,7 +15947,9 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Order"> | string
     userId?: StringWithAggregatesFilter<"Order"> | string
     shippingAddressId?: StringWithAggregatesFilter<"Order"> | string
-    paymentMethodId?: StringWithAggregatesFilter<"Order"> | string
+    paymentMethodId?: StringNullableWithAggregatesFilter<"Order"> | string | null
+    stripeCheckoutSessionId?: StringNullableWithAggregatesFilter<"Order"> | string | null
+    stripePaymentIntentId?: StringNullableWithAggregatesFilter<"Order"> | string | null
     totalPrice?: FloatWithAggregatesFilter<"Order"> | number
     status?: EnumOrderStatusWithAggregatesFilter<"Order"> | $Enums.OrderStatus
     createdAt?: DateTimeWithAggregatesFilter<"Order"> | Date | string
@@ -16680,13 +16796,15 @@ export namespace Prisma {
 
   export type OrderCreateInput = {
     id?: string
+    stripeCheckoutSessionId?: string | null
+    stripePaymentIntentId?: string | null
     totalPrice: number
     status?: $Enums.OrderStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutOrdersInput
     shippingAddress: AddressCreateNestedOneWithoutOrdersInput
-    paymentMethod: PaymentMethodCreateNestedOneWithoutOrdersInput
+    paymentMethod?: PaymentMethodCreateNestedOneWithoutOrdersInput
     items?: OrderItemCreateNestedManyWithoutOrderInput
   }
 
@@ -16694,7 +16812,9 @@ export namespace Prisma {
     id?: string
     userId: string
     shippingAddressId: string
-    paymentMethodId: string
+    paymentMethodId?: string | null
+    stripeCheckoutSessionId?: string | null
+    stripePaymentIntentId?: string | null
     totalPrice: number
     status?: $Enums.OrderStatus
     createdAt?: Date | string
@@ -16704,13 +16824,15 @@ export namespace Prisma {
 
   export type OrderUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    stripeCheckoutSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
     totalPrice?: FloatFieldUpdateOperationsInput | number
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutOrdersNestedInput
     shippingAddress?: AddressUpdateOneRequiredWithoutOrdersNestedInput
-    paymentMethod?: PaymentMethodUpdateOneRequiredWithoutOrdersNestedInput
+    paymentMethod?: PaymentMethodUpdateOneWithoutOrdersNestedInput
     items?: OrderItemUpdateManyWithoutOrderNestedInput
   }
 
@@ -16718,7 +16840,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     shippingAddressId?: StringFieldUpdateOperationsInput | string
-    paymentMethodId?: StringFieldUpdateOperationsInput | string
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCheckoutSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
     totalPrice?: FloatFieldUpdateOperationsInput | number
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16730,7 +16854,9 @@ export namespace Prisma {
     id?: string
     userId: string
     shippingAddressId: string
-    paymentMethodId: string
+    paymentMethodId?: string | null
+    stripeCheckoutSessionId?: string | null
+    stripePaymentIntentId?: string | null
     totalPrice: number
     status?: $Enums.OrderStatus
     createdAt?: Date | string
@@ -16739,6 +16865,8 @@ export namespace Prisma {
 
   export type OrderUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    stripeCheckoutSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
     totalPrice?: FloatFieldUpdateOperationsInput | number
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16749,7 +16877,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     shippingAddressId?: StringFieldUpdateOperationsInput | string
-    paymentMethodId?: StringFieldUpdateOperationsInput | string
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCheckoutSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
     totalPrice?: FloatFieldUpdateOperationsInput | number
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17587,9 +17717,9 @@ export namespace Prisma {
     isNot?: AddressWhereInput
   }
 
-  export type PaymentMethodScalarRelationFilter = {
-    is?: PaymentMethodWhereInput
-    isNot?: PaymentMethodWhereInput
+  export type PaymentMethodNullableScalarRelationFilter = {
+    is?: PaymentMethodWhereInput | null
+    isNot?: PaymentMethodWhereInput | null
   }
 
   export type OrderCountOrderByAggregateInput = {
@@ -17597,6 +17727,8 @@ export namespace Prisma {
     userId?: SortOrder
     shippingAddressId?: SortOrder
     paymentMethodId?: SortOrder
+    stripeCheckoutSessionId?: SortOrder
+    stripePaymentIntentId?: SortOrder
     totalPrice?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
@@ -17612,6 +17744,8 @@ export namespace Prisma {
     userId?: SortOrder
     shippingAddressId?: SortOrder
     paymentMethodId?: SortOrder
+    stripeCheckoutSessionId?: SortOrder
+    stripePaymentIntentId?: SortOrder
     totalPrice?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
@@ -17623,6 +17757,8 @@ export namespace Prisma {
     userId?: SortOrder
     shippingAddressId?: SortOrder
     paymentMethodId?: SortOrder
+    stripeCheckoutSessionId?: SortOrder
+    stripePaymentIntentId?: SortOrder
     totalPrice?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
@@ -18187,10 +18323,12 @@ export namespace Prisma {
     update?: XOR<XOR<AddressUpdateToOneWithWhereWithoutOrdersInput, AddressUpdateWithoutOrdersInput>, AddressUncheckedUpdateWithoutOrdersInput>
   }
 
-  export type PaymentMethodUpdateOneRequiredWithoutOrdersNestedInput = {
+  export type PaymentMethodUpdateOneWithoutOrdersNestedInput = {
     create?: XOR<PaymentMethodCreateWithoutOrdersInput, PaymentMethodUncheckedCreateWithoutOrdersInput>
     connectOrCreate?: PaymentMethodCreateOrConnectWithoutOrdersInput
     upsert?: PaymentMethodUpsertWithoutOrdersInput
+    disconnect?: PaymentMethodWhereInput | boolean
+    delete?: PaymentMethodWhereInput | boolean
     connect?: PaymentMethodWhereUniqueInput
     update?: XOR<XOR<PaymentMethodUpdateToOneWithWhereWithoutOrdersInput, PaymentMethodUpdateWithoutOrdersInput>, PaymentMethodUncheckedUpdateWithoutOrdersInput>
   }
@@ -19399,19 +19537,23 @@ export namespace Prisma {
 
   export type OrderCreateWithoutShippingAddressInput = {
     id?: string
+    stripeCheckoutSessionId?: string | null
+    stripePaymentIntentId?: string | null
     totalPrice: number
     status?: $Enums.OrderStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutOrdersInput
-    paymentMethod: PaymentMethodCreateNestedOneWithoutOrdersInput
+    paymentMethod?: PaymentMethodCreateNestedOneWithoutOrdersInput
     items?: OrderItemCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutShippingAddressInput = {
     id?: string
     userId: string
-    paymentMethodId: string
+    paymentMethodId?: string | null
+    stripeCheckoutSessionId?: string | null
+    stripePaymentIntentId?: string | null
     totalPrice: number
     status?: $Enums.OrderStatus
     createdAt?: Date | string
@@ -19495,7 +19637,9 @@ export namespace Prisma {
     id?: StringFilter<"Order"> | string
     userId?: StringFilter<"Order"> | string
     shippingAddressId?: StringFilter<"Order"> | string
-    paymentMethodId?: StringFilter<"Order"> | string
+    paymentMethodId?: StringNullableFilter<"Order"> | string | null
+    stripeCheckoutSessionId?: StringNullableFilter<"Order"> | string | null
+    stripePaymentIntentId?: StringNullableFilter<"Order"> | string | null
     totalPrice?: FloatFilter<"Order"> | number
     status?: EnumOrderStatusFilter<"Order"> | $Enums.OrderStatus
     createdAt?: DateTimeFilter<"Order"> | Date | string
@@ -19541,6 +19685,8 @@ export namespace Prisma {
 
   export type OrderCreateWithoutPaymentMethodInput = {
     id?: string
+    stripeCheckoutSessionId?: string | null
+    stripePaymentIntentId?: string | null
     totalPrice: number
     status?: $Enums.OrderStatus
     createdAt?: Date | string
@@ -19554,6 +19700,8 @@ export namespace Prisma {
     id?: string
     userId: string
     shippingAddressId: string
+    stripeCheckoutSessionId?: string | null
+    stripePaymentIntentId?: string | null
     totalPrice: number
     status?: $Enums.OrderStatus
     createdAt?: Date | string
@@ -19632,20 +19780,24 @@ export namespace Prisma {
 
   export type OrderCreateWithoutItemsInput = {
     id?: string
+    stripeCheckoutSessionId?: string | null
+    stripePaymentIntentId?: string | null
     totalPrice: number
     status?: $Enums.OrderStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutOrdersInput
     shippingAddress: AddressCreateNestedOneWithoutOrdersInput
-    paymentMethod: PaymentMethodCreateNestedOneWithoutOrdersInput
+    paymentMethod?: PaymentMethodCreateNestedOneWithoutOrdersInput
   }
 
   export type OrderUncheckedCreateWithoutItemsInput = {
     id?: string
     userId: string
     shippingAddressId: string
-    paymentMethodId: string
+    paymentMethodId?: string | null
+    stripeCheckoutSessionId?: string | null
+    stripePaymentIntentId?: string | null
     totalPrice: number
     status?: $Enums.OrderStatus
     createdAt?: Date | string
@@ -19709,20 +19861,24 @@ export namespace Prisma {
 
   export type OrderUpdateWithoutItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    stripeCheckoutSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
     totalPrice?: FloatFieldUpdateOperationsInput | number
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutOrdersNestedInput
     shippingAddress?: AddressUpdateOneRequiredWithoutOrdersNestedInput
-    paymentMethod?: PaymentMethodUpdateOneRequiredWithoutOrdersNestedInput
+    paymentMethod?: PaymentMethodUpdateOneWithoutOrdersNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     shippingAddressId?: StringFieldUpdateOperationsInput | string
-    paymentMethodId?: StringFieldUpdateOperationsInput | string
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCheckoutSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
     totalPrice?: FloatFieldUpdateOperationsInput | number
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20134,19 +20290,23 @@ export namespace Prisma {
 
   export type OrderCreateWithoutUserInput = {
     id?: string
+    stripeCheckoutSessionId?: string | null
+    stripePaymentIntentId?: string | null
     totalPrice: number
     status?: $Enums.OrderStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     shippingAddress: AddressCreateNestedOneWithoutOrdersInput
-    paymentMethod: PaymentMethodCreateNestedOneWithoutOrdersInput
+    paymentMethod?: PaymentMethodCreateNestedOneWithoutOrdersInput
     items?: OrderItemCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutUserInput = {
     id?: string
     shippingAddressId: string
-    paymentMethodId: string
+    paymentMethodId?: string | null
+    stripeCheckoutSessionId?: string | null
+    stripePaymentIntentId?: string | null
     totalPrice: number
     status?: $Enums.OrderStatus
     createdAt?: Date | string
@@ -20531,7 +20691,9 @@ export namespace Prisma {
   export type OrderCreateManyShippingAddressInput = {
     id?: string
     userId: string
-    paymentMethodId: string
+    paymentMethodId?: string | null
+    stripeCheckoutSessionId?: string | null
+    stripePaymentIntentId?: string | null
     totalPrice: number
     status?: $Enums.OrderStatus
     createdAt?: Date | string
@@ -20540,19 +20702,23 @@ export namespace Prisma {
 
   export type OrderUpdateWithoutShippingAddressInput = {
     id?: StringFieldUpdateOperationsInput | string
+    stripeCheckoutSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
     totalPrice?: FloatFieldUpdateOperationsInput | number
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutOrdersNestedInput
-    paymentMethod?: PaymentMethodUpdateOneRequiredWithoutOrdersNestedInput
+    paymentMethod?: PaymentMethodUpdateOneWithoutOrdersNestedInput
     items?: OrderItemUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutShippingAddressInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    paymentMethodId?: StringFieldUpdateOperationsInput | string
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCheckoutSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
     totalPrice?: FloatFieldUpdateOperationsInput | number
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20563,7 +20729,9 @@ export namespace Prisma {
   export type OrderUncheckedUpdateManyWithoutShippingAddressInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    paymentMethodId?: StringFieldUpdateOperationsInput | string
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCheckoutSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
     totalPrice?: FloatFieldUpdateOperationsInput | number
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20574,6 +20742,8 @@ export namespace Prisma {
     id?: string
     userId: string
     shippingAddressId: string
+    stripeCheckoutSessionId?: string | null
+    stripePaymentIntentId?: string | null
     totalPrice: number
     status?: $Enums.OrderStatus
     createdAt?: Date | string
@@ -20582,6 +20752,8 @@ export namespace Prisma {
 
   export type OrderUpdateWithoutPaymentMethodInput = {
     id?: StringFieldUpdateOperationsInput | string
+    stripeCheckoutSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
     totalPrice?: FloatFieldUpdateOperationsInput | number
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20595,6 +20767,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     shippingAddressId?: StringFieldUpdateOperationsInput | string
+    stripeCheckoutSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
     totalPrice?: FloatFieldUpdateOperationsInput | number
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20606,6 +20780,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     shippingAddressId?: StringFieldUpdateOperationsInput | string
+    stripeCheckoutSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
     totalPrice?: FloatFieldUpdateOperationsInput | number
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20683,7 +20859,9 @@ export namespace Prisma {
   export type OrderCreateManyUserInput = {
     id?: string
     shippingAddressId: string
-    paymentMethodId: string
+    paymentMethodId?: string | null
+    stripeCheckoutSessionId?: string | null
+    stripePaymentIntentId?: string | null
     totalPrice: number
     status?: $Enums.OrderStatus
     createdAt?: Date | string
@@ -20813,19 +20991,23 @@ export namespace Prisma {
 
   export type OrderUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    stripeCheckoutSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
     totalPrice?: FloatFieldUpdateOperationsInput | number
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shippingAddress?: AddressUpdateOneRequiredWithoutOrdersNestedInput
-    paymentMethod?: PaymentMethodUpdateOneRequiredWithoutOrdersNestedInput
+    paymentMethod?: PaymentMethodUpdateOneWithoutOrdersNestedInput
     items?: OrderItemUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     shippingAddressId?: StringFieldUpdateOperationsInput | string
-    paymentMethodId?: StringFieldUpdateOperationsInput | string
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCheckoutSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
     totalPrice?: FloatFieldUpdateOperationsInput | number
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20836,7 +21018,9 @@ export namespace Prisma {
   export type OrderUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     shippingAddressId?: StringFieldUpdateOperationsInput | string
-    paymentMethodId?: StringFieldUpdateOperationsInput | string
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCheckoutSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
     totalPrice?: FloatFieldUpdateOperationsInput | number
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

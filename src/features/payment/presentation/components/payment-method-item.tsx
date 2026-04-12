@@ -64,6 +64,8 @@ export const PaymentMethodItem: React.FC<PaymentMethodItemProps> = ({
           t('payment.method.card.updateDefaultPaymentMethodError')
         )
     }
+
+    setIsUpdatingPaymentMethods(false)
   }, [paymentMethod.id, setPaymentMethods, setIsUpdatingPaymentMethods])
 
   return (

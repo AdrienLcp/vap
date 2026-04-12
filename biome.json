@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.3.14/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.4.11/schema.json",
   "assist": {
     "actions": {
       "source": {
@@ -7,30 +7,17 @@
           "level": "on",
           "options": {
             "groups": [
-              [
-                "server-only",
-                "use client",
-                "use server"
-              ],
+              ["server-only", "use client", "use server"],
               ":BLANK_LINE:",
               ":URL:",
               ":BLANK_LINE:",
-              [
-                ":BUN:",
-                ":NODE:"
-              ],
+              [":BUN:", ":NODE:"],
               ":BLANK_LINE:",
-              [
-                ":PACKAGE:",
-                ":PACKAGE_WITH_PROTOCOL:"
-              ],
+              [":PACKAGE:", ":PACKAGE_WITH_PROTOCOL:"],
               ":BLANK_LINE:",
               "@Lib/**",
               ":BLANK_LINE:",
-              [
-                ":ALIAS:",
-                "@/**"
-              ],
+              [":ALIAS:", "@/**"],
               ":BLANK_LINE:",
               ":PATH:"
             ],
@@ -45,12 +32,7 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": [
-      "**",
-      "!**/*.css",
-      "!**/*.sass",
-      "!**/generated"
-    ]
+    "includes": ["**", "!**/*.css", "!**/*.sass", "!**/generated"]
   },
   "formatter": {
     "indentStyle": "space"
@@ -78,15 +60,30 @@
           }
         }
       },
+      "style": {
+        "useComponentExportOnlyModules": {
+          "level": "warn",
+          "options": {
+            "allowExportNames": [
+              "dynamic",
+              "dynamicParams",
+              "revalidate",
+              "fetchCache",
+              "runtime",
+              "metadata",
+              "generateMetadata",
+              "generateStaticParams",
+              "viewport",
+              "generateViewport"
+            ]
+          }
+        }
+      },
       "suspicious": {
         "noConsole": {
           "level": "error",
           "options": {
-            "allow": [
-              "error",
-              "info",
-              "warn"
-            ]
+            "allow": ["error", "info", "warn"]
           }
         }
       }

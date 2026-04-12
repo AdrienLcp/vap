@@ -191,21 +191,24 @@ model OrderItem {
 }
 
 model Order {
-  id                String         @id @default(cuid())
-  user              User           @relation(fields: [userId], references: [id])
-  userId            String
-  shippingAddress   Address        @relation(fields: [shippingAddressId], references: [id])
-  shippingAddressId String
-  paymentMethod     PaymentMethod  @relation(fields: [paymentMethodId], references: [id])
-  paymentMethodId   String
-  
+  id                     String         @id @default(cuid())
+  user                   User           @relation(fields: [userId], references: [id])
+  userId                 String
+  shippingAddress        Address        @relation(fields: [shippingAddressId], references: [id])
+  shippingAddressId      String
+  paymentMethod          PaymentMethod? @relation(fields: [paymentMethodId], references: [id])
+  paymentMethodId        String?
+
+  stripeCheckoutSessionId String?       @unique
+  stripePaymentIntentId   String?       @unique
+
   items             OrderItem[]
   totalPrice        Float
   status            OrderStatus    @default(PENDING)
-  
+
   createdAt         DateTime       @default(now())
   updatedAt         DateTime       @default(now()) @updatedAt
-  
+
   @@map("orders")
 }
 
