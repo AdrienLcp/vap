@@ -66,6 +66,7 @@ export const fr = {
     nav: {
       admin: 'Administration',
       categories: 'Catégories',
+      emails: 'Emails',
       listAriaLabel: "Liens d'administration",
       orders: 'Commandes',
       products: 'Produits',
@@ -390,6 +391,23 @@ export const fr = {
     },
     toaster: {
       closeButtonLabel: 'Fermer'
+    }
+  },
+  email: {
+    admin: {
+      bodyLabel: 'Contenu',
+      recipients: {
+        admins: 'Administrateurs',
+        all: 'Tous les utilisateurs',
+        superAdmins: 'Super administrateurs',
+        users: 'Utilisateurs'
+      },
+      recipientsLabel: 'Destinataires',
+      sendButton: 'Envoyer',
+      sendError: "Une erreur est survenue lors de l'envoi de l'email.",
+      sendSuccess: dt('Email envoyé à {count:number} destinataire(s).', {}),
+      subjectLabel: 'Objet',
+      title: 'Envoyer un email'
     }
   },
   errors: {

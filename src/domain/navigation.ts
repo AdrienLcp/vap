@@ -14,6 +14,7 @@ export const ROUTES = {
   adminCategories: '/admin/categories',
   adminCategory: `/admin/categories/:${PARAMS.categoryId}`,
   adminCategoryCreation: '/admin/categories/create',
+  adminEmails: '/admin/emails',
   adminOrder: `/admin/orders/:${PARAMS.orderId}`,
   adminOrders: '/admin/orders',
   adminProduct: `/admin/products/:${PARAMS.productId}`,

@@ -2,6 +2,7 @@ import {
   BoxIcon,
   CalendarArrowDownIcon,
   ListIcon,
+  MailIcon,
   UsersRoundIcon
 } from 'lucide-react'
 
@@ -39,5 +40,11 @@ export const adminNavItems: AdminNavItem[] = [
     Icon: <UsersRoundIcon aria-hidden />,
     id: 'users',
     textValue: t('admin.nav.users')
+  },
+  {
+    href: ROUTES.adminEmails,
+    Icon: <MailIcon aria-hidden />,
+    id: 'emails',
+    textValue: t('admin.nav.emails')
   }
 ]

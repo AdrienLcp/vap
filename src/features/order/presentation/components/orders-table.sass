@@ -1,6 +1,13 @@
+@use '@/presentation/styles/interactive'
 @use '@/presentation/styles/typography'
 
 .orders-table
+  & .table-row
+    @include interactive.transparent
+
+    &
+      cursor: pointer
+
   & .status-badge
     @include typography.label-medium
 
