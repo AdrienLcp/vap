@@ -10,15 +10,13 @@ import type {
 import { getAuthUserPermissionsByRole } from '@/features/auth/domain/auth-permissions'
 import { AuthRepository } from '@/features/auth/infrastructure/auth-repository'
 import { CartService } from '@/features/cart/application/cart-service'
-import { PaymentService } from '@/features/payment/application/payment-service'
 import { failure, type Result, success } from '@/helpers/result'
 
 const deleteUser = async (): Promise<Result<null, Unauthorized>> => {
   try {
     const deletionResults = await Promise.all([
       AddressService.deleteUserAddresses(),
-      CartService.clearUserCart(),
-      PaymentService.deleteUserPaymentMethods()
+      CartService.clearUserCart()
     ])
 
     for (const deletionResult of deletionResults) {

@@ -143,38 +143,6 @@ model Address {
   @@map("addresses")
 }
 
-enum PaymentType {
-  BANK_TRANSFER
-  CREDIT_CARD
-  DEBIT_CARD
-  PAYPAL
-}
-
-enum PaymentProvider {
-  STRIPE
-}
-
-model PaymentMethod {
-  id           String  @id @default(cuid())
-  userId       String
-  user         User    @relation(fields: [userId], references: [id])
-
-  name         String
-  type         PaymentType
-  provider     PaymentProvider @default(STRIPE)
-  last4        String?
-  expiryMonth  Int?
-  expiryYear   Int?
-  isDefault    Boolean @default(false)
-
-  orders       Order[]
-
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @default(now()) @updatedAt
-
-  @@map("payment_methods")
-}
-
 model OrderItem {
   id        String  @id @default(cuid())
   order     Order   @relation(fields: [orderId], references: [id])
@@ -196,8 +164,6 @@ model Order {
   userId                 String
   shippingAddress        Address        @relation(fields: [shippingAddressId], references: [id])
   shippingAddressId      String
-  paymentMethod          PaymentMethod? @relation(fields: [paymentMethodId], references: [id])
-  paymentMethodId        String?
 
   stripeCheckoutSessionId String?       @unique
   stripePaymentIntentId   String?       @unique
@@ -236,7 +202,6 @@ model User {
   cartItems       CartItem[]
   orders          Order[]
   addresses       Address[]
-  paymentMethods  PaymentMethod[]
 
   @@unique([email])
   @@map("users")

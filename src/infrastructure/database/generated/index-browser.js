@@ -202,20 +202,6 @@ exports.Prisma.AddressScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.PaymentMethodScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  name: 'name',
-  type: 'type',
-  provider: 'provider',
-  last4: 'last4',
-  expiryMonth: 'expiryMonth',
-  expiryYear: 'expiryYear',
-  isDefault: 'isDefault',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.OrderItemScalarFieldEnum = {
   id: 'id',
   orderId: 'orderId',
@@ -230,7 +216,6 @@ exports.Prisma.OrderScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   shippingAddressId: 'shippingAddressId',
-  paymentMethodId: 'paymentMethodId',
   stripeCheckoutSessionId: 'stripeCheckoutSessionId',
   stripePaymentIntentId: 'stripePaymentIntentId',
   totalPrice: 'totalPrice',
@@ -270,17 +255,6 @@ exports.ProductStatus = exports.$Enums.ProductStatus = {
   FEATURED: 'FEATURED'
 };
 
-exports.PaymentType = exports.$Enums.PaymentType = {
-  BANK_TRANSFER: 'BANK_TRANSFER',
-  CREDIT_CARD: 'CREDIT_CARD',
-  DEBIT_CARD: 'DEBIT_CARD',
-  PAYPAL: 'PAYPAL'
-};
-
-exports.PaymentProvider = exports.$Enums.PaymentProvider = {
-  STRIPE: 'STRIPE'
-};
-
 exports.OrderStatus = exports.$Enums.OrderStatus = {
   CANCELLED: 'CANCELLED',
   COMPLETED: 'COMPLETED',
@@ -303,7 +277,6 @@ exports.Prisma.ModelName = {
   Product: 'Product',
   CartItem: 'CartItem',
   Address: 'Address',
-  PaymentMethod: 'PaymentMethod',
   OrderItem: 'OrderItem',
   Order: 'Order',
   User: 'User'

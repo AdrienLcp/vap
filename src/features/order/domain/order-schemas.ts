@@ -64,7 +64,6 @@ export const OrderDTOSchema = z.object({
   createdAt: z.date(),
   id: OrderIdSchema,
   items: OrderItemDTOSchema.array(),
-  paymentMethodId: z.string().nullable(),
   shippingAddressId: z.string(),
   status: OrderStatusSchema,
   stripeCheckoutSessionId: z.string().nullable(),

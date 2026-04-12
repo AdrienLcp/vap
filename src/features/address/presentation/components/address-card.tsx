@@ -63,9 +63,9 @@ export const AddressCard: React.FC<AddressCardProps> = ({
 
       <DefaultSelector
         isDefault={address.isDefault}
-        isDefaultMessage={t('payment.method.card.isDefault')}
+        isDefaultMessage={t('address.card.isDefault')}
         isDisabled={isLoading}
-        makeDefaultMessage={t('payment.method.card.makeDefault')}
+        makeDefaultMessage={t('address.card.makeDefault')}
         onPress={setDefaultAddress}
       />
     </Card>

@@ -19,7 +19,6 @@ import { getDatabaseError } from '@/infrastructure/database/database-helpers'
 type OrderWithUserSelection = {
   createdAt: Date
   id: string
-  paymentMethodId: string | null
   shippingAddressId: string
   status: OrderStatus
   stripeCheckoutSessionId: string | null
@@ -45,7 +44,6 @@ const ORDER_USER_SELECTED_FIELDS = {
 const ORDER_WITH_RELATIONS_SELECTED_FIELDS = {
   createdAt: true,
   id: true,
-  paymentMethodId: true,
   shippingAddressId: true,
   status: true,
   stripeCheckoutSessionId: true,
@@ -86,7 +84,6 @@ const toOrderDTO = (
     quantity: item.quantity,
     unitPrice: item.price
   })),
-  paymentMethodId: order.paymentMethodId,
   shippingAddressId: order.shippingAddressId,
   status: order.status,
   stripeCheckoutSessionId: order.stripeCheckoutSessionId,

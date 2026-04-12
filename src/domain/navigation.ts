@@ -2,7 +2,6 @@ const PARAMS = {
   addressId: 'addressId',
   categoryId: 'categoryId',
   orderId: 'orderId',
-  paymentMethodId: 'paymentMethodId',
   productId: 'productId',
   userId: 'userId'
 } as const
@@ -35,9 +34,6 @@ export const ROUTES = {
   ordering: '/orders/ordering',
   orders: '/orders',
 
-  paymentMethod: `/auth/payment-methods/:${PARAMS.paymentMethodId}`,
-  paymentMethodCreation: '/auth/payment-methods/create',
-
   product: `/products/:${PARAMS.productId}`,
 
   profile: '/auth/profile',
@@ -62,13 +58,6 @@ export const getAdminProductRoute = (productId: string) => {
 
 export const getAdminUserRoute = (userId: string) => {
   return ROUTES.adminUser.replace(`:${PARAMS.userId}`, userId)
-}
-
-export const getPaymentMethodRoute = (paymentMethodId: string) => {
-  return ROUTES.paymentMethod.replace(
-    `:${PARAMS.paymentMethodId}`,
-    paymentMethodId
-  )
 }
 
 export const getProductRoute = (productId: string) => {
