@@ -4,14 +4,19 @@ import { AuthService } from '@/features/auth/application/auth-service'
 import type { CartItemCreationData } from '@/features/cart/domain/cart-entities'
 import { CartRepository } from '@/features/cart/infrastructure/cart-repository'
 
-const addItemToUserCart = async (cartItemCreationData: CartItemCreationData) => {
+const addItemToUserCart = async (
+  cartItemCreationData: CartItemCreationData
+) => {
   const authUserResult = await AuthService.findUser()
 
   if (authUserResult.status === 'ERROR') {
     return authUserResult
   }
 
-  return await CartRepository.addItemToUserCart(authUserResult.data.id, cartItemCreationData)
+  return await CartRepository.addItemToUserCart(
+    authUserResult.data.id,
+    cartItemCreationData
+  )
 }
 
 const clearUserCart = async () => {
@@ -41,10 +46,16 @@ const removeItemFromUserCart = async (productId: string) => {
     return authUserResult
   }
 
-  return await CartRepository.removeItemFromUserCart(authUserResult.data.id, productId)
+  return await CartRepository.removeItemFromUserCart(
+    authUserResult.data.id,
+    productId
+  )
 }
 
-const updateUserCartItemQuantity = async (productId: string, quantity: number) => {
+const updateUserCartItemQuantity = async (
+  productId: string,
+  quantity: number
+) => {
   const authUserResult = await AuthService.findUser()
 
   if (authUserResult.status === 'ERROR') {
@@ -52,7 +63,10 @@ const updateUserCartItemQuantity = async (productId: string, quantity: number) =
   }
 
   if (quantity === 0) {
-    return await CartRepository.removeItemFromUserCart(authUserResult.data.id, productId)
+    return await CartRepository.removeItemFromUserCart(
+      authUserResult.data.id,
+      productId
+    )
   }
 
   return await CartRepository.updateUserCartItemQuantity(

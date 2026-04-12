@@ -1,7 +1,7 @@
 'use client'
 
 import { SaveIcon } from 'lucide-react'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useCallback, useState } from 'react'
 
 import { getAdminProductRoute } from '@/domain/navigation'
@@ -43,15 +43,25 @@ type ProductCreationFormProps = {
   categories: CategoryDTO[]
 }
 
-export const ProductCreationForm: React.FC<ProductCreationFormProps> = ({ categories }) => {
-  const [isProductCreationLoading, setIsProductCreationLoading] = useState<boolean>(false)
+export const ProductCreationForm: React.FC<ProductCreationFormProps> = ({
+  categories
+}) => {
+  const [isProductCreationLoading, setIsProductCreationLoading] =
+    useState<boolean>(false)
   const [formErrors, setFormErrors] = useState<ProductValidationErrors>(null)
 
-  const onProductCreationSuccess = useCallback((createdProduct: ProductDTO) => {
-    ToastService.success(t('product.creation.success', { productName: createdProduct.name }))
-    const createdProductRoute = getAdminProductRoute(createdProduct.id)
-    redirect(createdProductRoute)
-  }, [])
+  const router = useRouter()
+
+  const onProductCreationSuccess = useCallback(
+    (createdProduct: ProductDTO) => {
+      ToastService.success(
+        t('product.creation.success', { productName: createdProduct.name })
+      )
+      const createdProductRoute = getAdminProductRoute(createdProduct.id)
+      router.push(createdProductRoute)
+    },
+    [router]
+  )
 
   const onProductCreationFormSubmit = useCallback(
     async (formData: FormData) => {
@@ -70,11 +80,14 @@ export const ProductCreationForm: React.FC<ProductCreationFormProps> = ({ catego
         stock: formData.get(PRODUCT_FORM_FIELDS.STOCK)
       }
 
-      const productCreationValidation = ProductCreationSchema.safeParse(productCreationData)
+      const productCreationValidation =
+        ProductCreationSchema.safeParse(productCreationData)
 
       if (!productCreationValidation.success) {
         setIsProductCreationLoading(false)
-        setFormErrors(getBadRequestProductFormErrors(productCreationValidation.error.issues))
+        setFormErrors(
+          getBadRequestProductFormErrors(productCreationValidation.error.issues)
+        )
         return
       }
 
@@ -88,13 +101,20 @@ export const ProductCreationForm: React.FC<ProductCreationFormProps> = ({ catego
           onProductCreationSuccess(productCreationResponse.data)
           break
         case BAD_REQUEST_STATUS:
-          setFormErrors(getBadRequestProductFormErrors(productCreationResponse.issues))
+          setFormErrors(
+            getBadRequestProductFormErrors(productCreationResponse.issues)
+          )
           break
         case CONFLICT_STATUS:
-          setFormErrors(getConflictProductFormErrors(productCreationResponse.error))
+          setFormErrors(
+            getConflictProductFormErrors(productCreationResponse.error)
+          )
           break
         default:
-          console.error('Unhandled product update response status:', productCreationResponse)
+          console.error(
+            'Unhandled product update response status:',
+            productCreationResponse
+          )
           ToastService.error(t('product.creation.unknownError'))
       }
     },
@@ -127,8 +147,13 @@ export const ProductCreationForm: React.FC<ProductCreationFormProps> = ({ catego
 
       <RequiredFieldsMessage />
 
-      <SubmitButton Icon={<SaveIcon aria-hidden />} isPending={isProductCreationLoading}>
-        {({ isPending }) => t(`product.creation.submit.${isPending ? 'creating' : 'label'}`)}
+      <SubmitButton
+        Icon={<SaveIcon aria-hidden />}
+        isPending={isProductCreationLoading}
+      >
+        {({ isPending }) =>
+          t(`product.creation.submit.${isPending ? 'creating' : 'label'}`)
+        }
       </SubmitButton>
     </Form>
   )

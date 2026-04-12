@@ -4,13 +4,14 @@ import { useCallback, useState } from 'react'
 
 import { AuthClient } from '@/features/auth/infrastructure/auth-client'
 import { t } from '@/infrastructure/i18n'
-import { GoogleIcon } from '@/presentation/assets/icons/GoogleIcon'
+import { GoogleIcon } from '@/presentation/assets/icons/google-icon'
 import { Button } from '@/presentation/components/ui/pressables/button'
 
 import './google-authentication.sass'
 
 export const GoogleAuthentication: React.FC = () => {
-  const [isLoginWithGoogleLoading, setIsLoginWithGoogleLoading] = useState(false)
+  const [isLoginWithGoogleLoading, setIsLoginWithGoogleLoading] =
+    useState(false)
 
   const loginWithGoogle = useCallback(async () => {
     setIsLoginWithGoogleLoading(true)

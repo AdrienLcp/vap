@@ -1,13 +1,23 @@
+import { useMemo } from 'react'
+
 import { useCartStore } from '@/features/cart/application/use-cart-store'
 import { CartClearButton } from '@/features/cart/presentation/components/cart-clear-button'
 import { CartOrderLink } from '@/features/cart/presentation/components/cart-order-link'
+import { formatPrice } from '@/infrastructure/format/price-formatter'
 import { t } from '@/infrastructure/i18n'
-import { formatPrice } from '@/utils/format-utils'
 
 import './cart-panel-footer.sass'
 
 export const CartPanelFooter: React.FC = () => {
-  const cartTotalPrice = useCartStore((state) => state.getTotalPrice())
+  const items = useCartStore((state) => state.items)
+  const cartTotalPrice = useMemo(
+    () =>
+      Array.from(items.values()).reduce(
+        (total, item) => total + item.product.price * item.quantity,
+        0
+      ),
+    [items]
+  )
 
   return (
     <div className='cart-panel-footer'>

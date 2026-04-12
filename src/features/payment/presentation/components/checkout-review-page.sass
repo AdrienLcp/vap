@@ -1,0 +1,74 @@
+@use '@/presentation/styles/sizes'
+@use '@/presentation/styles/typography'
+
+.checkout-review-page
+  @include sizes.responsive(s)
+
+  &
+    display: flex
+    flex: 1
+    flex-direction: column
+    gap: var(--size-200, 1.25rem)
+    margin-inline: auto
+    padding-block: var(--size-320, 2rem) calc(var(--size-320, 2rem) + 10%)
+
+  & h1
+    @include typography.headline-medium
+
+  & section
+    display: flex
+    flex-direction: column
+    gap: var(--size-120, 0.75rem)
+
+  & h2
+    @include typography.title-large
+
+  & .items-list
+    display: flex
+    flex-direction: column
+    gap: var(--size-40, 0.25rem)
+    list-style: none
+    padding: 0
+
+  & .item
+    @include typography.body-large
+
+    &
+      align-items: center
+      border-block-end: var(--element-stroke, 0.125rem) solid var(--neutral-border-muted)
+      display: flex
+      justify-content: space-between
+      padding-block: var(--size-80, 0.5rem)
+
+  & .item-name
+    @include typography.text-ellipsis
+
+    &
+      flex: 1
+
+  & .item-price
+    @include typography.label-large
+
+    &
+      flex-shrink: 0
+      padding-inline-start: var(--size-80, 0.5rem)
+
+  & .total
+    @include typography.title-medium
+
+    &
+      display: flex
+      justify-content: space-between
+      padding-block-start: var(--size-80, 0.5rem)
+
+  & .error
+    @include typography.body-medium
+
+    &
+      color: var(--status-error-foreground)
+
+  & .actions
+    display: flex
+    flex-direction: column
+    gap: var(--size-120, 0.75rem)
+    padding-block-start: var(--size-80, 0.5rem)

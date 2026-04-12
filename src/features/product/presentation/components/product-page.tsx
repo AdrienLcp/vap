@@ -5,7 +5,10 @@ import { CategoryController } from '@/features/category/presentation/controllers
 import { ProductUpdateForm } from '@/features/product/presentation/components/forms/product-update-form'
 import { ProductDeleteButton } from '@/features/product/presentation/components/product-delete-button'
 import { ProductController } from '@/features/product/presentation/controllers/product-controller'
-import { OK_STATUS, redirectByErrorStatus } from '@/infrastructure/api/http-response'
+import {
+  OK_STATUS,
+  redirectByErrorStatus
+} from '@/infrastructure/api/http-response'
 
 import './product-page.sass'
 
@@ -13,7 +16,9 @@ export type ProductPageProps = {
   productId: string
 }
 
-export const ProductPage: React.FC<ProductPageProps> = async ({ productId }) => {
+export const ProductPage: React.FC<ProductPageProps> = async ({
+  productId
+}) => {
   const [categoriesResponse, productResponse] = await Promise.all([
     CategoryController.findCategories(),
     ProductController.findProduct(productId)
@@ -35,7 +40,10 @@ export const ProductPage: React.FC<ProductPageProps> = async ({ productId }) => 
     <div className='product-page'>
       <h1>{product.name}</h1>
 
-      <ProductUpdateForm categories={categoriesResponse.data} product={product} />
+      <ProductUpdateForm
+        categories={categoriesResponse.data}
+        product={product}
+      />
 
       <ProductDeleteButton className='delete-button' productId={product.id} />
     </div>

@@ -23,10 +23,17 @@ export const Avatar: React.FC<AvatarProps> = ({
 
   return (
     <Image
-      alt={userName ? t('user.avatar.alt', { userName }) : t('user.avatar.defaultAlt')}
+      alt={
+        userName
+          ? t('user.avatar.alt', { userName })
+          : t('user.avatar.defaultAlt')
+      }
       className='avatar'
       height={imageSize}
-      src={userImageUrl ?? `https://www.gravatar.com/avatar/${hashedEmail}?s=${imageSize}&d=mp`}
+      src={
+        userImageUrl ??
+        `https://www.gravatar.com/avatar/${hashedEmail}?s=${imageSize}&d=mp`
+      }
       width={imageSize}
     />
   )

@@ -14,7 +14,10 @@ export type ImageProps = Omit<NextImageProps, 'src'> & {
   src?: NextImageProps['src'] | null
 }
 
-type ImageDefaultFallbackProps = Pick<ImageProps, 'className' | 'height' | 'width'>
+type ImageDefaultFallbackProps = Pick<
+  ImageProps,
+  'className' | 'height' | 'width'
+>
 
 const ImageDefaultFallback: React.FC<ImageDefaultFallbackProps> = ({
   className,
@@ -40,7 +43,6 @@ export const Image: React.FC<ImageProps> = ({
   className,
   Fallback,
   height,
-  priority = true,
   src,
   width,
   ...imageRestProps
@@ -48,7 +50,15 @@ export const Image: React.FC<ImageProps> = ({
   const [hasImageError, setHasImageError] = useState<boolean>(false)
 
   if (hasImageError || !src) {
-    return Fallback ?? <ImageDefaultFallback className={className} height={height} width={width} />
+    return (
+      Fallback ?? (
+        <ImageDefaultFallback
+          className={className}
+          height={height}
+          width={width}
+        />
+      )
+    )
   }
 
   return (
@@ -57,7 +67,6 @@ export const Image: React.FC<ImageProps> = ({
       className={className}
       height={height}
       onError={() => setHasImageError(true)}
-      priority={priority}
       src={src}
       width={width}
     />

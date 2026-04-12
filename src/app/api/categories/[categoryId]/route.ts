@@ -5,17 +5,26 @@ import { nextResponse } from '@/infrastructure/api/api-lib'
 
 type CategoryRouteContext = RouteContext<'/api/categories/[categoryId]'>
 
-export const DELETE = async (_request: NextRequest, context: CategoryRouteContext) => {
+export const DELETE = async (
+  _request: NextRequest,
+  context: CategoryRouteContext
+) => {
   const { categoryId } = await context.params
   return nextResponse(CategoryController.deleteCategory(categoryId))
 }
 
-export const GET = async (_request: NextRequest, context: CategoryRouteContext) => {
+export const GET = async (
+  _request: NextRequest,
+  context: CategoryRouteContext
+) => {
   const { categoryId } = await context.params
   return nextResponse(CategoryController.findCategory(categoryId))
 }
 
-export const PATCH = async (request: NextRequest, context: CategoryRouteContext) => {
+export const PATCH = async (
+  request: NextRequest,
+  context: CategoryRouteContext
+) => {
   const { categoryId } = await context.params
   return nextResponse(CategoryController.updateCategory(categoryId, request))
 }

@@ -1,7 +1,7 @@
 'use client'
 
 import { LogInIcon } from 'lucide-react'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useCallback, useState } from 'react'
 
 import { DEFAULT_ROUTE } from '@/domain/navigation'
@@ -21,6 +21,8 @@ import { AuthClient } from '@/features/auth/infrastructure/auth-client'
 import { UserEmailField } from '@/features/auth/presentation/components/forms/user-email-field'
 import { UserNameField } from '@/features/auth/presentation/components/forms/user-name-field'
 import { UserPasswordField } from '@/features/auth/presentation/components/forms/user-password-field'
+import type { ValueOf } from '@/helpers/object'
+import type { Issues, ValidationErrors } from '@/helpers/validation'
 import {
   BAD_REQUEST_STATUS,
   CONFLICT_STATUS,
@@ -32,45 +34,51 @@ import { Form } from '@/presentation/components/forms/form'
 import { FormError } from '@/presentation/components/forms/form-error'
 import { RequiredFieldsMessage } from '@/presentation/components/forms/required-fields-message'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
-import type { ValueOf } from '@/utils/object-utils'
-import type { Issues, ValidationErrors } from '@/utils/validation-utils'
 
 type SignUpFormErrors = ValidationErrors<ValueOf<typeof AUTH_FORM_FIELDS>>
 
 export const SignUpForm: React.FC = () => {
   const [isUserCreationLoading, setIsUserCreationLoading] = useState(false)
-  const [signUpFormErrors, setSignUpFormErrors] = useState<SignUpFormErrors>(null)
+  const [signUpFormErrors, setSignUpFormErrors] =
+    useState<SignUpFormErrors>(null)
 
   const { setUser } = useAuth()
+  const router = useRouter()
 
   const onSignUpSuccess = useCallback(
     (createdUser: AuthUserDTO) => {
       setUser(createdUser)
-      redirect(DEFAULT_ROUTE)
+      router.push(DEFAULT_ROUTE)
     },
-    [setUser]
+    [router, setUser]
   )
 
-  const onSignUpBadRequest = useCallback((signUpBadRequestError: SignUpBadRequestError) => {
-    switch (signUpBadRequestError) {
-      case 'INVALID_EMAIL':
-        setSignUpFormErrors({
-          [AUTH_FORM_FIELDS.EMAIL]: t('auth.signUp.errors.invalidEmail')
-        })
-        return
-      case 'PASSWORD_TOO_SHORT':
-        setSignUpFormErrors({
-          [AUTH_FORM_FIELDS.PASSWORD]: t('auth.signUp.errors.invalidPasswordLength', {
-            maxLength: AUTH_CONSTANTS.PASSWORD_MAX_LENGTH,
-            minLength: AUTH_CONSTANTS.PASSWORD_MIN_LENGTH
+  const onSignUpBadRequest = useCallback(
+    (signUpBadRequestError: SignUpBadRequestError) => {
+      switch (signUpBadRequestError) {
+        case 'INVALID_EMAIL':
+          setSignUpFormErrors({
+            [AUTH_FORM_FIELDS.EMAIL]: t('auth.signUp.errors.invalidEmail')
           })
-        })
-        break
-      default:
-        setSignUpFormErrors({ form: t('auth.signUp.errors.unknown') })
-        return
-    }
-  }, [])
+          return
+        case 'PASSWORD_TOO_SHORT':
+          setSignUpFormErrors({
+            [AUTH_FORM_FIELDS.PASSWORD]: t(
+              'auth.signUp.errors.invalidPasswordLength',
+              {
+                maxLength: AUTH_CONSTANTS.PASSWORD_MAX_LENGTH,
+                minLength: AUTH_CONSTANTS.PASSWORD_MIN_LENGTH
+              }
+            )
+          })
+          break
+        default:
+          setSignUpFormErrors({ form: t('auth.signUp.errors.unknown') })
+          return
+      }
+    },
+    []
+  )
 
   const onSignUpValidationError = useCallback((issues: Issues<SignUpInfo>) => {
     const emailErrors: string[] = []
@@ -127,7 +135,9 @@ export const SignUpForm: React.FC = () => {
         return
       }
 
-      const signUpResponse = await AuthClient.emailSignUp(credentialsValidation.data)
+      const signUpResponse = await AuthClient.emailSignUp(
+        credentialsValidation.data
+      )
 
       setIsUserCreationLoading(false)
 
@@ -165,8 +175,13 @@ export const SignUpForm: React.FC = () => {
 
       <FormError errors={signUpFormErrors?.form} />
 
-      <SubmitButton Icon={<LogInIcon aria-hidden />} isPending={isUserCreationLoading}>
-        {({ isPending }) => t(`auth.signUp.submit.${isPending ? 'creating' : 'label'}`)}
+      <SubmitButton
+        Icon={<LogInIcon aria-hidden />}
+        isPending={isUserCreationLoading}
+      >
+        {({ isPending }) =>
+          t(`auth.signUp.submit.${isPending ? 'creating' : 'label'}`)
+        }
       </SubmitButton>
     </Form>
   )

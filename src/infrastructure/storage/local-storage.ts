@@ -3,8 +3,8 @@
 import type { CartItemDTO } from '@/features/cart/domain/cart-entities'
 
 type LocalStorage = {
-  locale: string
   cart: CartItemDTO[]
+  locale: string
 }
 
 type LocaleStorageKey = keyof LocalStorage

@@ -5,9 +5,14 @@ import classNames from 'classnames'
 import type { ProductDTO } from '@/features/product/domain/product-entities'
 import { ProductImage } from '@/features/product/presentation/components/product-image'
 import { ProductMenu } from '@/features/product/presentation/components/product-menu'
+import { formatPrice } from '@/infrastructure/format/price-formatter'
 import { t } from '@/infrastructure/i18n'
-import { Card, CardBody, CardFooter, CardTitle } from '@/presentation/components/ui/card'
-import { formatPrice } from '@/utils/format-utils'
+import {
+  Card,
+  CardBody,
+  CardFooter,
+  CardTitle
+} from '@/presentation/components/ui/card'
 
 import './product-card.sass'
 

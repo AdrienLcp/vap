@@ -1,10 +1,72 @@
 import { dt, type LanguageMessages } from '@/infrastructure/i18n/lib'
 
 export const fr = {
+  address: {
+    backToProfile: 'Retour à mon profil',
+    card: {
+      deleteAddressError:
+        "Une erreur est survenue lors de la suppression de l'adresse",
+      deleteButtonAriaLabel: 'Supprimer cette adresse',
+      editLinkAriaLabel: 'Modifier cette adresse',
+      isDefault: 'Adresse par défaut',
+      makeDefault: 'Définir comme adresse par défaut',
+      updateDefaultAddressError:
+        "Une erreur est survenue lors de la définition de l'adresse par défaut."
+    },
+    create: {
+      error: "Une erreur est survenue lors de la création de l'adresse.",
+      link: 'Ajouter une adresse',
+      submit: 'Créer',
+      success: "L'adresse a été créée avec succès.",
+      title: 'Créer une adresse'
+    },
+    fields: {
+      city: {
+        invalid: "La ville fournie n'est pas valide.",
+        label: 'Ville',
+        placeholder: 'Entrez la ville'
+      },
+      country: {
+        invalid: "Le pays fourni n'est pas valide.",
+        label: 'Pays',
+        placeholder: 'Entrez le pays'
+      },
+      isDefault: {
+        label: 'Définir comme adresse par défaut'
+      },
+      name: {
+        invalid: "Le nom fourni n'est pas valide.",
+        label: 'Nom',
+        placeholder: 'Donnez un nom à votre adresse'
+      },
+      postalCode: {
+        invalid: "Le code postal fourni n'est pas valide.",
+        label: 'Code postal',
+        placeholder: 'Entrez le code postal'
+      },
+      street: {
+        invalid: "La rue fournie n'est pas valide.",
+        label: 'Adresse',
+        placeholder: 'Numéro et nom de la rue'
+      }
+    },
+    list: {
+      ariaLabel: 'Liste des adresses',
+      empty: "Vous n'avez pas encore ajouté d'adresse.",
+      error: 'Une erreur est survenue lors du chargement des adresses.'
+    },
+    update: {
+      error: "Une erreur est survenue lors de la mise à jour de l'adresse.",
+      submit: 'Mettre à jour',
+      success: "L'adresse a été mise à jour avec succès.",
+      title: 'Modifier mon adresse'
+    }
+  },
   admin: {
     nav: {
       admin: 'Administration',
       categories: 'Catégories',
+      emails: 'Emails',
       listAriaLabel: "Liens d'administration",
       orders: 'Commandes',
       products: 'Produits',
@@ -31,7 +93,11 @@ export const fr = {
           'Le mot de passe doit comporter entre {minLength:number} et {maxLength:plural}',
           {
             plural: {
-              maxLength: { one: '1 caractère', other: '{?} caractères', zero: '0 caractère' }
+              maxLength: {
+                one: '1 caractère',
+                other: '{?} caractères',
+                zero: '0 caractère'
+              }
             }
           }
         ),
@@ -87,7 +153,11 @@ export const fr = {
       password: {
         description: dt('Au moins {characterCount:plural}', {
           plural: {
-            characterCount: { one: '1 caractère', other: '{?} caractères', zero: '0 caractère' }
+            characterCount: {
+              one: '1 caractère',
+              other: '{?} caractères',
+              zero: '0 caractère'
+            }
           }
         }),
         label: 'Mot de passe',
@@ -105,6 +175,7 @@ export const fr = {
       signOut: 'Se déconnecter'
     },
     profile: {
+      addresses: 'Adresses',
       changeEmail: "Changer l'email",
       changePassword: 'Changer le mot de passe',
       deleteAccount: 'Supprimer le compte',
@@ -112,7 +183,8 @@ export const fr = {
     },
     signIn: {
       errors: {
-        invalidCredentials: "L'adresse mail et le mot de passe ne correspondent pas.",
+        invalidCredentials:
+          "L'adresse mail et le mot de passe ne correspondent pas.",
         unknown: 'Une erreur inconnue est survenue.'
       },
       label: 'Se connecter',
@@ -137,7 +209,11 @@ export const fr = {
           'Le mot de passe doit comporter entre {minLength:number} et {maxLength:plural}',
           {
             plural: {
-              maxLength: { one: '1 caractère', other: '{?} caractères', zero: '0 caractère' }
+              maxLength: {
+                one: '1 caractère',
+                other: '{?} caractères',
+                zero: '0 caractère'
+              }
             }
           }
         ),
@@ -166,7 +242,13 @@ export const fr = {
     button: {
       ariaLabel: 'Panier',
       itemCountTooltip: dt('{itemCount:plural} dans le panier', {
-        plural: { itemCount: { one: '1 article', other: '{?} articles', zero: 'Aucun article' } }
+        plural: {
+          itemCount: {
+            one: '1 article',
+            other: '{?} articles',
+            zero: 'Aucun article'
+          }
+        }
       })
     },
     clear: {
@@ -174,18 +256,27 @@ export const fr = {
       label: 'Vider le panier'
     },
     item: {
-      deleteError: "Une erreur est survenue lors de la suppression de l'article du panier.",
+      deleteError:
+        "Une erreur est survenue lors de la suppression de l'article du panier.",
       quantity: 'Quantité : {quantity:number}',
       totalPrice: 'Prix total : {totalPrice}',
       unitPrice: "Prix à l'unité : {unitPrice}"
     },
     list: {
       empty: 'Votre panier est vide.',
-      error: 'Une erreur est survenue lors du chargement des articles du panier.'
+      error:
+        'Une erreur est survenue lors du chargement des articles du panier.'
     },
     pay: 'Payer',
+    reviewTitle: 'Résumé et validation',
     title: dt('Votre panier ({itemCount:plural})', {
-      plural: { itemCount: { one: '1 article', other: '{?} articles', zero: 'Aucun article' } }
+      plural: {
+        itemCount: {
+          one: '1 article',
+          other: '{?} articles',
+          zero: 'Aucun article'
+        }
+      }
     }),
     totalPrice: 'Prix total : {totalPrice}'
   },
@@ -213,7 +304,8 @@ export const fr = {
     errors: {
       categoryNameAlreadyExists: 'Une catégorie avec ce nom existe déjà.',
       categoryNameRequired: 'Le nom de la catégorie est requis.',
-      categoryNameTooLong: 'Le nom de la catégorie ne doit pas dépasser {max:number} caractères.'
+      categoryNameTooLong:
+        'Le nom de la catégorie ne doit pas dépasser {max:number} caractères.'
     },
     fields: {
       description: {
@@ -242,19 +334,47 @@ export const fr = {
       success: 'La catégorie "{categoryName}" a été mise à jour avec succès.'
     }
   },
+  checkout: {
+    addAddress: 'Ajouter une adresse',
+    addressLabel: 'Adresse de livraison',
+    cancel: {
+      backToCart: 'Retour au panier',
+      description:
+        'Votre paiement a été annulé. Votre panier est toujours disponible.',
+      title: 'Paiement annulé'
+    },
+    emptyCart: 'Votre panier est vide.',
+    error: 'Une erreur est survenue lors du paiement.',
+    itemsTitle: 'Articles',
+    noAddress: "Vous n'avez pas encore ajouté d'adresse de livraison.",
+    pay: 'Payer',
+    payAriaLabel: 'Procéder au paiement',
+    selectAddress: 'Sélectionnez une adresse',
+    success: {
+      backHome: "Retour à l'accueil",
+      description: 'Votre commande a bien été enregistrée. Merci !',
+      title: 'Paiement confirmé'
+    },
+    title: 'Résumé et validation',
+    totalLabel: 'Total'
+  },
   components: {
     fallback: {
-      description: 'Veuillez réessayer plus tard ou contacter le support si le problème persiste.',
+      description:
+        'Veuillez réessayer plus tard ou contacter le support si le problème persiste.',
       resetButton: 'Réessayer',
       title: 'Une erreur est survenue'
     },
     forms: {
       fieldError: {
-        lengthValues: 'La valeur doit être comprise entre {min:number} et {max:number} caractères.',
+        lengthValues:
+          'La valeur doit être comprise entre {min:number} et {max:number} caractères.',
         tooLong: 'La valeur saisie est trop longue.',
-        tooLongValue: 'La valeur saisie doit faire moins de {max:number} caractères.',
+        tooLongValue:
+          'La valeur saisie doit faire moins de {max:number} caractères.',
         tooShort: 'La valeur saisie est trop courte.',
-        tooShortValue: 'La valeur saisie doit faire au moins {min:number} caractères.',
+        tooShortValue:
+          'La valeur saisie doit faire au moins {min:number} caractères.',
         valueMissing: 'Ce champ est requis.'
       },
       formValidationErrorDefaultMessage: 'Le formulaire contient des erreurs.',
@@ -273,11 +393,56 @@ export const fr = {
       closeButtonLabel: 'Fermer'
     }
   },
+  email: {
+    admin: {
+      bodyLabel: 'Contenu',
+      recipients: {
+        admins: 'Administrateurs',
+        all: 'Tous les utilisateurs',
+        superAdmins: 'Super administrateurs',
+        users: 'Utilisateurs'
+      },
+      recipientsLabel: 'Destinataires',
+      sendButton: 'Envoyer',
+      sendError: "Une erreur est survenue lors de l'envoi de l'email.",
+      sendSuccess: dt('Email envoyé à {count:number} destinataire(s).', {}),
+      subjectLabel: 'Objet',
+      title: 'Envoyer un email'
+    }
+  },
   errors: {
     unknown: 'Une erreur inconnue est survenue.'
   },
   icons: {
     googleAltText: 'Logo Google'
+  },
+  order: {
+    admin: {
+      customerEmail: 'Client',
+      date: 'Date',
+      empty: 'Aucune commande pour le moment.',
+      itemsTitle: 'Articles',
+      orderId: 'Commande',
+      productName: 'Produit',
+      quantity: 'Quantité',
+      statusLabel: 'Statut',
+      statusUpdateError:
+        'Une erreur est survenue lors de la mise à jour du statut.',
+      statusUpdateSuccess: 'Le statut a été mis à jour.',
+      stripePaymentIntentId: 'Payment Intent',
+      stripeSessionId: 'Session Stripe',
+      tableAriaLabel: 'Liste des commandes',
+      title: 'Commandes',
+      totalPrice: 'Total',
+      unitPrice: 'Prix unitaire'
+    },
+    status: {
+      CANCELLED: 'Annulée',
+      COMPLETED: 'Terminée',
+      PAID: 'Payée',
+      PENDING: 'En attente',
+      SHIPPED: 'Expédiée'
+    }
   },
   product: {
     card: {
@@ -294,7 +459,8 @@ export const fr = {
       },
       success: '"{productName}" a été créé avec succès.',
       title: 'Créer un produit',
-      unknownError: 'Une erreur inconnue est survenue durant la création du produit.'
+      unknownError:
+        'Une erreur inconnue est survenue durant la création du produit.'
     },
     delete: {
       error: 'Une erreur est survenue lors de la suppression du produit.',
@@ -308,7 +474,8 @@ export const fr = {
       },
       description: {
         errors: {
-          tooLong: 'La description du produit ne doit pas dépasser {max:number} caractères.'
+          tooLong:
+            'La description du produit ne doit pas dépasser {max:number} caractères.'
         },
         label: 'Description',
         placeholder: 'Décrivez le produit'
@@ -316,8 +483,10 @@ export const fr = {
       discountedPrice: {
         description: 'Ajouter un prix ici pour créer une réduction',
         errors: {
-          tooHigh: 'Le prix réduit du produit ne doit pas dépasser {max:number}.',
-          tooLow: 'Le prix réduit du produit doit être au moins de {min:number}.'
+          tooHigh:
+            'Le prix réduit du produit ne doit pas dépasser {max:number}.',
+          tooLow:
+            'Le prix réduit du produit doit être au moins de {min:number}.'
         },
         label: 'Prix réduit'
       },
@@ -330,7 +499,8 @@ export const fr = {
       name: {
         errors: {
           required: 'Le nom du produit est requis.',
-          tooLong: 'Le nom du produit ne doit pas dépasser {max:number} caractères.'
+          tooLong:
+            'Le nom du produit ne doit pas dépasser {max:number} caractères.'
         },
         label: 'Nom',
         placeholder: 'Nom du produit'
@@ -347,7 +517,8 @@ export const fr = {
         errors: {
           alreadyExists: 'Un produit avec ce SKU existe déjà.',
           required: 'Le SKU du produit est requis.',
-          tooLong: 'Le SKU du produit ne doit pas dépasser {max:number} caractères.'
+          tooLong:
+            'Le SKU du produit ne doit pas dépasser {max:number} caractères.'
         },
         label: 'SKU'
       },
@@ -400,7 +571,8 @@ export const fr = {
         updating: 'Mise à jour en cours...'
       },
       success: '"{productName}" a été mis à jour avec succès.',
-      unknownError: 'Une erreur inconnue est survenue durant la mise à jour du produit.'
+      unknownError:
+        'Une erreur inconnue est survenue durant la mise à jour du produit.'
     }
   },
   user: {

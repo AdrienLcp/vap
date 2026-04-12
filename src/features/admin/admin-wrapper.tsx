@@ -7,7 +7,9 @@ import { OK_STATUS } from '@/infrastructure/api/http-response'
 
 import './admin-wrapper.sass'
 
-export const AdminWrapper: React.FC<React.PropsWithChildren> = async ({ children }) => {
+export const AdminWrapper: React.FC<React.PropsWithChildren> = async ({
+  children
+}) => {
   const authUserResponse = await AuthController.findUser()
 
   if (authUserResponse.status !== OK_STATUS) {

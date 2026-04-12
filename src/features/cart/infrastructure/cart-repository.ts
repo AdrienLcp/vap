@@ -8,7 +8,11 @@ import type {
   CartProduct
 } from '@/features/cart/domain/cart-entities'
 import { failure, type Result, success } from '@/helpers/result'
-import { CartDatabase, type EntitySelectedFields } from '@/infrastructure/database'
+import {
+  CartDatabase,
+  type EntitySelectedFields
+} from '@/infrastructure/database'
+import { getDatabaseError } from '@/infrastructure/database/database-helpers'
 
 const CART_ITEM_SELECTED_FIELDS = {
   quantity: true
@@ -48,7 +52,9 @@ const addItemToUserCart = async (
 
     if (existingItem) {
       const updatedCartItem = await CartDatabase.update({
-        data: { quantity: existingItem.quantity + cartItemCreationData.quantity },
+        data: {
+          quantity: existingItem.quantity + cartItemCreationData.quantity
+        },
         select: cartItemSelectedFields,
         where: {
           productId_userId: {
@@ -87,7 +93,9 @@ const clearUserCart = async (userId: string): Promise<Result> => {
   }
 }
 
-const findUserCartItems = async (userId: string): Promise<Result<CartItemDTO[]>> => {
+const findUserCartItems = async (
+  userId: string
+): Promise<Result<CartItemDTO[]>> => {
   try {
     const userCartItems = await CartDatabase.findMany({
       select: cartItemSelectedFields,
@@ -117,8 +125,18 @@ const removeItemFromUserCart = async (
 
     return success()
   } catch (error) {
-    console.error('Unknown error in CartRepository.removeItemFromUserCart:', error)
-    return failure()
+    const databaseError = getDatabaseError(error)
+
+    switch (databaseError.code) {
+      case 'NOT_FOUND':
+        return failure('NOT_FOUND')
+      default:
+        console.error(
+          'Unknown error in CartRepository.removeItemFromUserCart:',
+          error
+        )
+        return failure()
+    }
   }
 }
 
@@ -141,8 +159,18 @@ const updateUserCartItemQuantity = async (
 
     return success(updatedCartItem)
   } catch (error) {
-    console.error('Unknown error in CartRepository.updateUserCartItemQuantity:', error)
-    return failure()
+    const databaseError = getDatabaseError(error)
+
+    switch (databaseError.code) {
+      case 'NOT_FOUND':
+        return failure('NOT_FOUND')
+      default:
+        console.error(
+          'Unknown error in CartRepository.updateUserCartItemQuantity:',
+          error
+        )
+        return failure()
+    }
   }
 }
 

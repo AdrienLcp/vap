@@ -1,4 +1,7 @@
-import type { ProductDTO, ProductPublicDTO } from '@/features/product/domain/product-entities'
+import type {
+  ProductDTO,
+  ProductPublicDTO
+} from '@/features/product/domain/product-entities'
 
 export const toProductPublicDTO = (product: ProductDTO): ProductPublicDTO => ({
   category: product.category

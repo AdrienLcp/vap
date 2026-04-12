@@ -7,8 +7,16 @@ import type {
   CategoryCreationData,
   CategoryUpdateData
 } from '@/features/category/domain/category-entities'
-import { type ErrorResult, failure, type Result, success } from '@/helpers/result'
-import { CategoryDatabase, type EntitySelectedFields } from '@/infrastructure/database'
+import {
+  type ErrorResult,
+  failure,
+  type Result,
+  success
+} from '@/helpers/result'
+import {
+  CategoryDatabase,
+  type EntitySelectedFields
+} from '@/infrastructure/database'
 import { getDatabaseError } from '@/infrastructure/database/database-helpers'
 
 const categorySelectedFields = {
@@ -18,7 +26,9 @@ const categorySelectedFields = {
   name: true
 } satisfies EntitySelectedFields<Category>
 
-const onCategoryDuplicateError = (duplicatedKeys: string[]): ErrorResult<CategoryConflictError> => {
+const onCategoryDuplicateError = (
+  duplicatedKeys: string[]
+): ErrorResult<CategoryConflictError> => {
   if (duplicatedKeys.includes('name')) {
     return failure('CATEGORY_NAME_ALREADY_EXISTS')
   }
@@ -48,7 +58,10 @@ const createCategory = async (
       case 'DUPLICATE':
         return onCategoryDuplicateError(databaseError.duplicatedKeys)
       default:
-        console.error('Unknown error in CategoryRepository.createCategory:', error)
+        console.error(
+          'Unknown error in CategoryRepository.createCategory:',
+          error
+        )
         return failure()
     }
   }
@@ -66,7 +79,9 @@ const deleteCategory = async (categoryId: string): Promise<Result> => {
 
 const findCategories = async (): Promise<Result<Category[]>> => {
   try {
-    const categories = await CategoryDatabase.findMany({ select: categorySelectedFields })
+    const categories = await CategoryDatabase.findMany({
+      select: categorySelectedFields
+    })
     return success(categories)
   } catch (error) {
     console.error('Unknown error in CategoryRepository.findCategories:', error)
@@ -74,7 +89,9 @@ const findCategories = async (): Promise<Result<Category[]>> => {
   }
 }
 
-const findCategory = async (categoryId: string): Promise<Result<Category, NotFound>> => {
+const findCategory = async (
+  categoryId: string
+): Promise<Result<Category, NotFound>> => {
   try {
     const category = await CategoryDatabase.findUnique({
       select: categorySelectedFields,
@@ -115,7 +132,10 @@ const updateCategory = async (
       case 'DUPLICATE':
         return onCategoryDuplicateError(databaseError.duplicatedKeys)
       default:
-        console.error('Unknown error in CategoryRepository.createCategory:', error)
+        console.error(
+          'Unknown error in CategoryRepository.createCategory:',
+          error
+        )
         return failure()
     }
   }

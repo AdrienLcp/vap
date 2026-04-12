@@ -17,10 +17,16 @@ import './grid.sass'
 
 export type GridItem<Data extends object> = GridListItemProps<Data> & Data
 
-type GridProps<Data extends object> = Omit<GridListProps<Data>, 'children' | 'items'> & {
+type GridProps<Data extends object> = Omit<
+  GridListProps<Data>,
+  'children' | 'items'
+> & {
   itemSize?: number
   items: GridItem<Data>[]
-  renderItem?: (item: GridItem<Data>, values?: GridListItemRenderProps) => React.ReactNode
+  renderItem?: (
+    item: GridItem<Data>,
+    values?: GridListItemRenderProps
+  ) => React.ReactNode
 }
 
 export function Grid<Data extends object>({
@@ -46,7 +52,11 @@ export function Grid<Data extends object>({
         return null
       }
 
-      return <div className='grid-empty-state'>{renderEmptyState(gridListRenderProps)}</div>
+      return (
+        <div className='grid-empty-state'>
+          {renderEmptyState(gridListRenderProps)}
+        </div>
+      )
     },
     [renderEmptyState]
   )
@@ -62,7 +72,9 @@ export function Grid<Data extends object>({
       {(gridItem) => (
         <GridListItem
           {...gridItem}
-          className={(values) => reactAriaClassNames(values, gridItem.className, 'grid-item')}
+          className={(values) =>
+            reactAriaClassNames(values, gridItem.className, 'grid-item')
+          }
         >
           {(values) => renderItem?.(gridItem, values)}
         </GridListItem>

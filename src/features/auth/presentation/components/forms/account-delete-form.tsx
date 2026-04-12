@@ -1,7 +1,7 @@
 'use client'
 
 import { Trash2Icon, XIcon } from 'lucide-react'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useCallback, useState } from 'react'
 
 import { DEFAULT_ROUTE } from '@/domain/navigation'
@@ -9,12 +9,17 @@ import { AUTH_FORM_FIELDS } from '@/features/auth/domain/auth-constants'
 import { DeleteAccountPasswordSchema } from '@/features/auth/domain/auth-schemas'
 import { AuthClient } from '@/features/auth/infrastructure/auth-client'
 import { UserPasswordField } from '@/features/auth/presentation/components/forms/user-password-field'
-import { BAD_REQUEST_STATUS, NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
+import type { ValidationErrors } from '@/helpers/validation'
+import {
+  BAD_REQUEST_STATUS,
+  NO_CONTENT_STATUS
+} from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { Form } from '@/presentation/components/forms/form'
 import { Button } from '@/presentation/components/ui/pressables/button'
 import { ToastService } from '@/presentation/services/toast-service'
-import type { ValidationErrors } from '@/utils/validation-utils'
+
+import './account-delete-form.sass'
 
 type SignInFormErrors = ValidationErrors<typeof AUTH_FORM_FIELDS.PASSWORD>
 
@@ -22,18 +27,25 @@ type AccountDeleteFormProps = {
   onCloseButtonPress: () => void
 }
 
-export const AccountDeleteForm: React.FC<AccountDeleteFormProps> = ({ onCloseButtonPress }) => {
+export const AccountDeleteForm: React.FC<AccountDeleteFormProps> = ({
+  onCloseButtonPress
+}) => {
   const [isDeletingUserAccount, setIsDeletingUserAccount] = useState(false)
-  const [accountDeletionFormErrors, setAccountDeletionFormErrors] = useState<SignInFormErrors>(null)
+  const [accountDeletionFormErrors, setAccountDeletionFormErrors] =
+    useState<SignInFormErrors>(null)
+
+  const router = useRouter()
 
   const onDeleteAccountSuccess = useCallback(() => {
     ToastService.success(t('auth.deleteAccount.success'))
-    redirect(DEFAULT_ROUTE)
-  }, [])
+    router.push(DEFAULT_ROUTE)
+  }, [router])
 
   const onDeleteAccountBadRequest = useCallback(() => {
     setAccountDeletionFormErrors({
-      [AUTH_FORM_FIELDS.PASSWORD]: t('auth.deleteAccount.errors.invalidPassword')
+      [AUTH_FORM_FIELDS.PASSWORD]: t(
+        'auth.deleteAccount.errors.invalidPassword'
+      )
     })
   }, [])
 
@@ -50,7 +62,9 @@ export const AccountDeleteForm: React.FC<AccountDeleteFormProps> = ({ onCloseBut
         return
       }
 
-      const accountDeletionResponse = await AuthClient.deleteUser(passwordValidation.data)
+      const accountDeletionResponse = await AuthClient.deleteUser(
+        passwordValidation.data
+      )
 
       setIsDeletingUserAccount(false)
 
@@ -62,7 +76,9 @@ export const AccountDeleteForm: React.FC<AccountDeleteFormProps> = ({ onCloseBut
           onDeleteAccountBadRequest()
           break
         default:
-          setAccountDeletionFormErrors({ form: t('auth.deleteAccount.errors.unknown') })
+          setAccountDeletionFormErrors({
+            form: t('auth.deleteAccount.errors.unknown')
+          })
           break
       }
     },
@@ -70,12 +86,16 @@ export const AccountDeleteForm: React.FC<AccountDeleteFormProps> = ({ onCloseBut
   )
 
   return (
-    <Form onSubmit={deleteAccount} validationErrors={accountDeletionFormErrors}>
+    <Form
+      className='account-delete-form'
+      onSubmit={deleteAccount}
+      validationErrors={accountDeletionFormErrors}
+    >
       <h3>{t('auth.deleteAccount.title')}</h3>
 
-      <p className='warning'>{t('auth.deleteAccount.warning')}</p>
+      <p className='warning-message'>{t('auth.deleteAccount.warning')}</p>
 
-      <UserPasswordField />
+      <UserPasswordField autoComplete='current-password' />
 
       <div className='actions'>
         <Button

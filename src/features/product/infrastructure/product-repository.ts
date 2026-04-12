@@ -10,9 +10,20 @@ import type {
   ProductFilters,
   ProductUpdateData
 } from '@/features/product/domain/product-entities'
-import { type ErrorResult, failure, type Result, success } from '@/helpers/result'
-import { type EntitySelectedFields, ProductDatabase } from '@/infrastructure/database'
-import { contains, getDatabaseError } from '@/infrastructure/database/database-helpers'
+import {
+  type ErrorResult,
+  failure,
+  type Result,
+  success
+} from '@/helpers/result'
+import {
+  type EntitySelectedFields,
+  ProductDatabase
+} from '@/infrastructure/database'
+import {
+  contains,
+  getDatabaseError
+} from '@/infrastructure/database/database-helpers'
 
 const PRODUCT_SELECTED_FIELDS = {
   description: true,
@@ -42,7 +53,9 @@ const productSelectedFields = {
   }
 }
 
-const onProductDuplicateError = (duplicatedKeys: string[]): ErrorResult<ProductConflictError> => {
+const onProductDuplicateError = (
+  duplicatedKeys: string[]
+): ErrorResult<ProductConflictError> => {
   if (duplicatedKeys.includes('sku')) {
     return failure('PRODUCT_SKU_ALREADY_EXISTS')
   }
@@ -78,7 +91,10 @@ const createProduct = async (
       case 'DUPLICATE':
         return onProductDuplicateError(databaseError.duplicatedKeys)
       default:
-        console.error('Unknown error in ProductRepository.createProduct:', error)
+        console.error(
+          'Unknown error in ProductRepository.createProduct:',
+          error
+        )
         return failure()
     }
   }
@@ -94,7 +110,9 @@ const deleteProduct = async (productId: string): Promise<Result> => {
   }
 }
 
-const findProduct = async (productId: string): Promise<Result<ProductDTO, NotFound>> => {
+const findProduct = async (
+  productId: string
+): Promise<Result<ProductDTO, NotFound>> => {
   try {
     const product = await ProductDatabase.findUnique({
       select: productSelectedFields,
@@ -112,12 +130,16 @@ const findProduct = async (productId: string): Promise<Result<ProductDTO, NotFou
   }
 }
 
-const findProducts = async (filters?: ProductFilters): Promise<Result<ProductDTO[]>> => {
+const findProducts = async (
+  filters?: ProductFilters
+): Promise<Result<ProductDTO[]>> => {
   try {
     const products = await ProductDatabase.findMany({
       select: productSelectedFields,
       where: {
-        categoryId: filters?.categoryIds ? { in: filters.categoryIds } : undefined,
+        categoryId: filters?.categoryIds
+          ? { in: filters.categoryIds }
+          : undefined,
         OR: filters?.search
           ? [
               { category: { name: contains(filters.search) } },
@@ -141,12 +163,19 @@ const findProducts = async (filters?: ProductFilters): Promise<Result<ProductDTO
   }
 }
 
-const getCategoryProductCount = async (categoryId: string): Promise<Result<number>> => {
+const getCategoryProductCount = async (
+  categoryId: string
+): Promise<Result<number>> => {
   try {
-    const categoryProductCount = await ProductDatabase.count({ where: { categoryId } })
+    const categoryProductCount = await ProductDatabase.count({
+      where: { categoryId }
+    })
     return success(categoryProductCount)
   } catch (error) {
-    console.error('Unknown error in ProductRepository.getCategoryProductCount:', error)
+    console.error(
+      'Unknown error in ProductRepository.getCategoryProductCount:',
+      error
+    )
     return failure()
   }
 }
@@ -160,7 +189,10 @@ const removeProductsCategory = async (categoryId: string): Promise<Result> => {
 
     return success()
   } catch (error) {
-    console.error('Unknown error in ProductRepository.removeProductsCategory:', error)
+    console.error(
+      'Unknown error in ProductRepository.removeProductsCategory:',
+      error
+    )
     return failure()
   }
 }
@@ -195,7 +227,10 @@ const updateProduct = async (
       case 'DUPLICATE':
         return onProductDuplicateError(databaseError.duplicatedKeys)
       default:
-        console.error('Unknown error in ProductRepository.updateProduct:', error)
+        console.error(
+          'Unknown error in ProductRepository.updateProduct:',
+          error
+        )
         return failure()
     }
   }

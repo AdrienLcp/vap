@@ -1,7 +1,7 @@
 'use client'
 
 import { LogInIcon } from 'lucide-react'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useCallback, useState } from 'react'
 
 import { DEFAULT_ROUTE } from '@/domain/navigation'
@@ -12,30 +12,36 @@ import { SignInInfoSchema } from '@/features/auth/domain/auth-schemas'
 import { AuthClient } from '@/features/auth/infrastructure/auth-client'
 import { UserEmailField } from '@/features/auth/presentation/components/forms/user-email-field'
 import { UserPasswordField } from '@/features/auth/presentation/components/forms/user-password-field'
-import { BAD_REQUEST_STATUS, OK_STATUS } from '@/infrastructure/api/http-response'
+import type { ValueOf } from '@/helpers/object'
+import type { ValidationErrors } from '@/helpers/validation'
+import {
+  BAD_REQUEST_STATUS,
+  OK_STATUS
+} from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
 import { Form } from '@/presentation/components/forms/form'
 import { FormError } from '@/presentation/components/forms/form-error'
 import { RequiredFieldsMessage } from '@/presentation/components/forms/required-fields-message'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
-import type { ValueOf } from '@/utils/object-utils'
-import type { ValidationErrors } from '@/utils/validation-utils'
 
 type SignInFormErrors = ValidationErrors<ValueOf<typeof AUTH_FORM_FIELDS>>
 
 export const SignInForm: React.FC = () => {
-  const [isUserAuthenticationLoading, setIsUserAuthenticationLoading] = useState(false)
-  const [signInFormErrors, setSignInFormErrors] = useState<SignInFormErrors>(null)
+  const [isUserAuthenticationLoading, setIsUserAuthenticationLoading] =
+    useState(false)
+  const [signInFormErrors, setSignInFormErrors] =
+    useState<SignInFormErrors>(null)
 
   const { setUser } = useAuth()
+  const router = useRouter()
 
   const onSignInSuccess = useCallback(
     (authenticatedUser: AuthUserDTO) => {
       setUser(authenticatedUser)
-      redirect(DEFAULT_ROUTE)
+      router.push(DEFAULT_ROUTE)
     },
-    [setUser]
+    [router, setUser]
   )
 
   const onSignInBadRequest = useCallback(() => {
@@ -60,7 +66,9 @@ export const SignInForm: React.FC = () => {
         return
       }
 
-      const signInResponse = await AuthClient.emailSignIn(credentialsValidation.data)
+      const signInResponse = await AuthClient.emailSignIn(
+        credentialsValidation.data
+      )
 
       setIsUserAuthenticationLoading(false)
 
@@ -91,8 +99,13 @@ export const SignInForm: React.FC = () => {
 
       <FormError errors={signInFormErrors?.form} />
 
-      <SubmitButton Icon={<LogInIcon aria-hidden />} isPending={isUserAuthenticationLoading}>
-        {({ isPending }) => t(`auth.signIn.submit.${isPending ? 'loading' : 'label'}`)}
+      <SubmitButton
+        Icon={<LogInIcon aria-hidden />}
+        isPending={isUserAuthenticationLoading}
+      >
+        {({ isPending }) =>
+          t(`auth.signIn.submit.${isPending ? 'loading' : 'label'}`)
+        }
       </SubmitButton>
     </Form>
   )

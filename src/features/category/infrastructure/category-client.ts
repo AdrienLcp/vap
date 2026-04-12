@@ -10,7 +10,11 @@ import type {
   CategoryUpdateData,
   CategoryUpdateResponse
 } from '@/features/category/domain/category-entities'
-import { ApiClient, type ClientResponse, unknownError } from '@/infrastructure/api/api-client'
+import {
+  ApiClient,
+  type ClientResponse,
+  unknownError
+} from '@/infrastructure/api/api-client'
 
 const createCategory = async (
   categoryCreationData: CategoryCreationData
@@ -31,26 +35,36 @@ const deleteCategory = async (
 ): Promise<ClientResponse<CategoryDeletionResponse>> => {
   try {
     const categoryDeletionApiUrl = `/${CATEGORY_API_BASE_URL}/${encodeURIComponent(categoryId)}`
-    return await ApiClient.DELETE<CategoryDeletionResponse>(categoryDeletionApiUrl)
+    return await ApiClient.DELETE<CategoryDeletionResponse>(
+      categoryDeletionApiUrl
+    )
   } catch (error) {
     console.error('Delete category error:', error)
     return unknownError()
   }
 }
 
-const findCategories = async (): Promise<ClientResponse<CategoryListResponse>> => {
+const findCategories = async (): Promise<
+  ClientResponse<CategoryListResponse>
+> => {
   try {
-    return await ApiClient.GET<CategoryListResponse>(`/${CATEGORY_API_BASE_URL}`)
+    return await ApiClient.GET<CategoryListResponse>(
+      `/${CATEGORY_API_BASE_URL}`
+    )
   } catch (error) {
     console.error('Find categories error:', error)
     return unknownError()
   }
 }
 
-const findCategory = async (categoryId: string): Promise<ClientResponse<CategoryResponse>> => {
+const findCategory = async (
+  categoryId: string
+): Promise<ClientResponse<CategoryResponse>> => {
   try {
     const encodedCategoryId = encodeURIComponent(categoryId)
-    return await ApiClient.GET<CategoryResponse>(`/${CATEGORY_API_BASE_URL}/${encodedCategoryId}`)
+    return await ApiClient.GET<CategoryResponse>(
+      `/${CATEGORY_API_BASE_URL}/${encodedCategoryId}`
+    )
   } catch (error) {
     console.error('Find category error:', error)
     return unknownError()

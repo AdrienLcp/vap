@@ -13,11 +13,16 @@ import { CategoryRepository } from '@/features/category/infrastructure/category-
 import { ProductService } from '@/features/product/application/product-service'
 import { failure, type Result, success } from '@/helpers/result'
 
-const enrichCategoryWithProductCount = async (category: Category): Promise<CategoryDTO> => {
-  const categoryProductCountResult = await ProductService.getCategoryProductCount(category.id)
+const enrichCategoryWithProductCount = async (
+  category: Category
+): Promise<CategoryDTO> => {
+  const categoryProductCountResult =
+    await ProductService.getCategoryProductCount(category.id)
 
   const productCount =
-    categoryProductCountResult.status === 'SUCCESS' ? categoryProductCountResult.data : 0
+    categoryProductCountResult.status === 'SUCCESS'
+      ? categoryProductCountResult.data
+      : 0
 
   return {
     description: category.description,
@@ -41,7 +46,8 @@ const createCategory = async (
     return failure('FORBIDDEN')
   }
 
-  const createdCategoryResult = await CategoryRepository.createCategory(categoryCreationData)
+  const createdCategoryResult =
+    await CategoryRepository.createCategory(categoryCreationData)
 
   if (createdCategoryResult.status === 'ERROR') {
     return createdCategoryResult
@@ -68,7 +74,8 @@ const deleteCategory = async (
     return failure('FORBIDDEN')
   }
 
-  const productCategoryDeletionResult = await ProductService.removeProductsCategory(categoryId)
+  const productCategoryDeletionResult =
+    await ProductService.removeProductsCategory(categoryId)
 
   if (productCategoryDeletionResult.status === 'ERROR') {
     return productCategoryDeletionResult
@@ -87,21 +94,26 @@ const findCategories = async (): Promise<Result<CategoryDTO[]>> => {
   const categoryListDTO: CategoryDTO[] = []
 
   for (const category of categoryListResult.data) {
-    const categoryDTO: CategoryDTO = await enrichCategoryWithProductCount(category)
+    const categoryDTO: CategoryDTO =
+      await enrichCategoryWithProductCount(category)
     categoryListDTO.push(categoryDTO)
   }
 
   return success(categoryListDTO)
 }
 
-const findCategory = async (categoryId: string): Promise<Result<CategoryDTO, NotFound>> => {
+const findCategory = async (
+  categoryId: string
+): Promise<Result<CategoryDTO, NotFound>> => {
   const categoryResult = await CategoryRepository.findCategory(categoryId)
 
   if (categoryResult.status === 'ERROR') {
     return categoryResult
   }
 
-  const categoryDTO: CategoryDTO = await enrichCategoryWithProductCount(categoryResult.data)
+  const categoryDTO: CategoryDTO = await enrichCategoryWithProductCount(
+    categoryResult.data
+  )
 
   return success(categoryDTO)
 }
@@ -129,7 +141,9 @@ const updateCategory = async (
     return updatedCategoryResult
   }
 
-  const categoryDTO: CategoryDTO = await enrichCategoryWithProductCount(updatedCategoryResult.data)
+  const categoryDTO: CategoryDTO = await enrichCategoryWithProductCount(
+    updatedCategoryResult.data
+  )
 
   return success(categoryDTO)
 }

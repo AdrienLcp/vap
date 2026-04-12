@@ -1,8 +1,8 @@
 import type { CartItemDTO } from '@/features/cart/domain/cart-entities'
 import { CartItemActions } from '@/features/cart/presentation/components/cart-item-actions'
 import { ProductImage } from '@/features/product/presentation/components/product-image'
+import { formatPrice } from '@/infrastructure/format/price-formatter'
 import { t } from '@/infrastructure/i18n'
-import { formatPrice } from '@/utils/format-utils'
 
 import './cart-item.sass'
 
@@ -18,7 +18,11 @@ export const CartItem: React.FC<CartItemProps> = ({ item }) => (
       <div>
         <div>{item.product.name}</div>
         <div>{t('cart.item.quantity', { quantity: item.quantity })}</div>
-        <div>{t('cart.item.unitPrice', { unitPrice: formatPrice(item.product.price) })}</div>
+        <div>
+          {t('cart.item.unitPrice', {
+            unitPrice: formatPrice(item.product.price)
+          })}
+        </div>
         <div>
           {t('cart.item.totalPrice', {
             totalPrice: formatPrice(item.product.price * item.quantity)

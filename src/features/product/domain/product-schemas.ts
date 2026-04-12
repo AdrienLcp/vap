@@ -1,7 +1,13 @@
 import { z } from 'zod'
 
-import { CategoryDTOSchema, CategoryIdSchema } from '@/features/category/domain/category-schemas'
-import { PRODUCT_CONSTANTS, PRODUCT_ERRORS } from '@/features/product/domain/product-constants'
+import {
+  CategoryDTOSchema,
+  CategoryIdSchema
+} from '@/features/category/domain/category-schemas'
+import {
+  PRODUCT_CONSTANTS,
+  PRODUCT_ERRORS
+} from '@/features/product/domain/product-constants'
 
 export const ProductIdSchema = z.cuid()
 
@@ -14,14 +20,19 @@ export const ProductCategoryDTOSchema = CategoryDTOSchema.pick({
 export const ProductDescriptionSchema = z
   .string()
   .trim()
-  .max(PRODUCT_CONSTANTS.DESCRIPTION_MAX_LENGTH, PRODUCT_ERRORS.DESCRIPTION_TOO_LONG)
+  .max(
+    PRODUCT_CONSTANTS.DESCRIPTION_MAX_LENGTH,
+    PRODUCT_ERRORS.DESCRIPTION_TOO_LONG
+  )
 
 export const ProductDiscountedPriceSchema = z.coerce
   .number()
   .min(PRODUCT_CONSTANTS.MIN_PRICE, PRODUCT_ERRORS.DISCOUNTED_PRICE_TOO_LOW)
   .max(PRODUCT_CONSTANTS.MAX_PRICE, PRODUCT_ERRORS.DISCOUNTED_PRICE_TOO_HIGH)
 
-export const ProductImageUrlSchema = z.url({ error: PRODUCT_ERRORS.INVALID_IMAGE_URL })
+export const ProductImageUrlSchema = z.url({
+  error: PRODUCT_ERRORS.INVALID_IMAGE_URL
+})
 
 export const ProductNameSchema = z
   .string()

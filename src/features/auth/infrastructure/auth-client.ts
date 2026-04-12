@@ -15,12 +15,18 @@ import type {
   SocialProvider,
   UserDeletionResponse
 } from '@/features/auth/domain/auth-entities'
-import { ApiClient, type ClientResponse, unknownError } from '@/infrastructure/api/api-client'
+import {
+  ApiClient,
+  type ClientResponse,
+  unknownError
+} from '@/infrastructure/api/api-client'
 import { HttpResponse, OK_STATUS } from '@/infrastructure/api/http-response'
 
 export const betterAuthClient = createAuthClient()
 
-const changeEmail = async (newEmail: string): Promise<ClientResponse<EmailUpdateResponse>> => {
+const changeEmail = async (
+  newEmail: string
+): Promise<ClientResponse<EmailUpdateResponse>> => {
   try {
     const changeEmailResponse = await betterAuthClient.changeEmail({ newEmail })
 
@@ -70,7 +76,9 @@ const changePassword = async (
   }
 }
 
-const deleteUser = async (password: string): Promise<ClientResponse<UserDeletionResponse>> => {
+const deleteUser = async (
+  password: string
+): Promise<ClientResponse<UserDeletionResponse>> => {
   try {
     const deleteUserResponse = await betterAuthClient.deleteUser({ password })
 
@@ -124,7 +132,9 @@ const emailSignIn = async (
   }
 }
 
-const emailSignUp = async (signUpInfo: SignUpInfo): Promise<ClientResponse<SignUpResponse>> => {
+const emailSignUp = async (
+  signUpInfo: SignUpInfo
+): Promise<ClientResponse<SignUpResponse>> => {
   try {
     const emailSignUpResponse = await betterAuthClient.signUp.email({
       email: signUpInfo.email,

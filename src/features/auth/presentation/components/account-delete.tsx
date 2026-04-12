@@ -1,7 +1,12 @@
 'use client'
 
 import { UserRoundXIcon } from 'lucide-react'
-import { Dialog, DialogTrigger, Modal, ModalOverlay } from 'react-aria-components'
+import {
+  Dialog,
+  DialogTrigger,
+  Modal,
+  ModalOverlay
+} from 'react-aria-components'
 
 import { AccountDeleteForm } from '@/features/auth/presentation/components/forms/account-delete-form'
 import { t } from '@/infrastructure/i18n'

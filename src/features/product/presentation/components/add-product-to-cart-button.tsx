@@ -21,8 +21,10 @@ type AddProductToCartButtonProps = {
 
 const CART_ITEM_CREATION_INITIAL_QUANTITY = 1
 
-export const AddProductToCartButton: React.FC<AddProductToCartButtonProps> = ({ product }) => {
-  const { auth } = useAuth()
+export const AddProductToCartButton: React.FC<AddProductToCartButtonProps> = ({
+  product
+}) => {
+  const { userAuthState } = useAuth()
 
   const [isAddingProductToCart, setIsAddingProductToCart] = useState(false)
 
@@ -36,7 +38,8 @@ export const AddProductToCartButton: React.FC<AddProductToCartButtonProps> = ({ 
       quantity: CART_ITEM_CREATION_INITIAL_QUANTITY
     }
 
-    const createdItemResponse = await CartClient.addItemToUserCart(cartItemCreationData)
+    const createdItemResponse =
+      await CartClient.addItemToUserCart(cartItemCreationData)
 
     setIsAddingProductToCart(false)
 
@@ -45,20 +48,25 @@ export const AddProductToCartButton: React.FC<AddProductToCartButtonProps> = ({ 
       return
     }
 
-    addProductToCartStore(createdItemResponse.data.product, CART_ITEM_CREATION_INITIAL_QUANTITY)
+    addProductToCartStore(
+      createdItemResponse.data.product,
+      CART_ITEM_CREATION_INITIAL_QUANTITY
+    )
   }, [product.id, addProductToCartStore])
 
   const addProductToCart = useCallback(async () => {
-    if (auth.status === 'authenticated') {
+    if (userAuthState.status === 'authenticated') {
       await addProductToRemoteCart()
       return
     }
 
-    addProductToCartStore(
-      product,
-      CART_ITEM_CREATION_INITIAL_QUANTITY
-    )
-  }, [addProductToCartStore, addProductToRemoteCart, auth.status, product])
+    addProductToCartStore(product, CART_ITEM_CREATION_INITIAL_QUANTITY)
+  }, [
+    addProductToCartStore,
+    addProductToRemoteCart,
+    product,
+    userAuthState.status
+  ])
 
   return (
     <Button

@@ -1,7 +1,10 @@
 import type { z } from 'zod'
 
 import type { Forbidden, Unauthorized } from '@/domain/entities'
-import type { AUTH_CONSTANTS, AUTH_ERRORS } from '@/features/auth/domain/auth-constants'
+import type {
+  AUTH_CONSTANTS,
+  AUTH_ERRORS
+} from '@/features/auth/domain/auth-constants'
 import type {
   AuthPermissionsSchema,
   AuthUserDTOSchema,
@@ -24,11 +27,8 @@ export type AuthPermissions = z.infer<typeof AuthPermissionsSchema>
 
 export type AuthUserDTO = z.infer<typeof AuthUserDTOSchema>
 
-export type AuthUser = AuthUserDTO & {
+export type User = Omit<AuthUserDTO, 'permissions'> & {
   id: string
-}
-
-export type User = Omit<AuthUser, 'permissions'> & {
   role: UserRole
 }
 
@@ -36,7 +36,9 @@ export type AuthUserError = Unauthorized
 
 export type AuthUserPermissionError = AuthUserError | Forbidden
 
-export type AuthUserResponse = Response<OkResponse<AuthUserDTO> | UnauthorizedResponse>
+export type AuthUserResponse = Response<
+  OkResponse<AuthUserDTO> | UnauthorizedResponse
+>
 
 export type InvalidCredentials = 'INVALID_CREDENTIALS'
 export type InvalidEmail = typeof AUTH_ERRORS.INVALID_EMAIL
@@ -48,7 +50,9 @@ export type SignInInfo = z.infer<typeof SignInInfoSchema>
 
 export type SignUpInfo = z.infer<typeof SignUpInfoSchema>
 
-type EmailSignInResult = OkResponse<AuthUserDTO> | BadRequestResponse<InvalidCredentials>
+type EmailSignInResult =
+  | OkResponse<AuthUserDTO>
+  | BadRequestResponse<InvalidCredentials>
 
 export type EmailSignInResponse = Response<EmailSignInResult>
 
@@ -76,7 +80,9 @@ export type ChangePasswordInfo = z.infer<typeof ChangePasswordSchema>
 
 export type ChangePasswordError = PasswordTooShort | InvalidPassword
 
-type PasswordUpdateResult = NoContentResponse | BadRequestResponse<ChangePasswordError>
+type PasswordUpdateResult =
+  | NoContentResponse
+  | BadRequestResponse<ChangePasswordError>
 
 export type PasswordUpdateResponse = Response<PasswordUpdateResult>
 

@@ -1,9 +1,29 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.3.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.4.11/schema.json",
   "assist": {
     "actions": {
       "source": {
-        "organizeImports": "on",
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [
+              ["server-only", "use client", "use server"],
+              ":BLANK_LINE:",
+              ":URL:",
+              ":BLANK_LINE:",
+              [":BUN:", ":NODE:"],
+              ":BLANK_LINE:",
+              [":PACKAGE:", ":PACKAGE_WITH_PROTOCOL:"],
+              ":BLANK_LINE:",
+              "@Lib/**",
+              ":BLANK_LINE:",
+              [":ALIAS:", "@/**"],
+              ":BLANK_LINE:",
+              ":PATH:"
+            ],
+            "identifierOrder": "natural"
+          }
+        },
         "useSortedAttributes": "on",
         "useSortedKeys": "on",
         "useSortedProperties": "on"
@@ -12,14 +32,10 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!build", "!**/*.css", "!dist", "!.next", "!node_modules", "!**/*.sass"]
+    "includes": ["**", "!**/*.css", "!**/*.sass", "!**/generated"]
   },
   "formatter": {
-    "enabled": true,
-    "indentStyle": "space",
-    "indentWidth": 2,
-    "lineEnding": "lf",
-    "lineWidth": 100
+    "indentStyle": "space"
   },
   "javascript": {
     "formatter": {
@@ -31,10 +47,9 @@
   },
   "linter": {
     "domains": {
-      "next": "recommended",
-      "react": "recommended"
+      "next": "all",
+      "react": "all"
     },
-    "enabled": true,
     "rules": {
       "complexity": {
         "noExcessiveLinesPerFunction": {
@@ -45,12 +60,30 @@
           }
         }
       },
-      "recommended": true,
+      "style": {
+        "useComponentExportOnlyModules": {
+          "level": "warn",
+          "options": {
+            "allowExportNames": [
+              "dynamic",
+              "dynamicParams",
+              "revalidate",
+              "fetchCache",
+              "runtime",
+              "metadata",
+              "generateMetadata",
+              "generateStaticParams",
+              "viewport",
+              "generateViewport"
+            ]
+          }
+        }
+      },
       "suspicious": {
         "noConsole": {
           "level": "error",
           "options": {
-            "allow": ["assert", "error", "info", "warn"]
+            "allow": ["error", "info", "warn"]
           }
         }
       }

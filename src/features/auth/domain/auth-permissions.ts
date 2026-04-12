@@ -1,29 +1,46 @@
 import type { AuthPermissions } from '@/features/auth/domain/auth-entities'
 import type { UserRole } from '@/features/user/domain/user-entities'
+import type { ValueOf } from '@/helpers/object'
 
-const USER_RIGHTS = [] as const
+const RIGHTS = {
+  ADMIN_READ: 'admin:read',
 
-const ADMIN_RIGHTS = [
+  CATEGORY_CREATE: 'category:create',
+  CATEGORY_DELETE: 'category:delete',
+  CATEGORY_UPDATE: 'category:update',
+
+  PRODUCT_CREATE: 'product:create',
+  PRODUCT_DELETE: 'product:delete',
+  PRODUCT_READ: 'product:read',
+  PRODUCT_UPDATE: 'product:update',
+
+  USER_READ: 'user:read',
+  USER_UPDATE: 'user:update'
+} as const
+
+type Right = ValueOf<typeof RIGHTS>
+
+const USER_RIGHTS: Readonly<Right[]> = []
+
+const ADMIN_RIGHTS: Readonly<Right[]> = [
   ...USER_RIGHTS,
 
-  'admin:read',
+  RIGHTS.ADMIN_READ,
 
-  'category:create',
-  'category:update',
-  'category:delete',
+  RIGHTS.CATEGORY_CREATE,
+  RIGHTS.CATEGORY_UPDATE,
+  RIGHTS.CATEGORY_DELETE,
 
-  'product:create',
-  'product:read',
-  'product:update',
-  'product:delete',
+  RIGHTS.PRODUCT_CREATE,
+  RIGHTS.PRODUCT_READ,
+  RIGHTS.PRODUCT_UPDATE,
+  RIGHTS.PRODUCT_DELETE,
 
-  'user:read',
-  'user:update'
-] as const
+  RIGHTS.USER_READ,
+  RIGHTS.USER_UPDATE
+]
 
-const SUPER_ADMIN_RIGHTS = [...ADMIN_RIGHTS] as const
-
-type Right = (typeof SUPER_ADMIN_RIGHTS)[number]
+const SUPER_ADMIN_RIGHTS: Readonly<Right[]> = [...ADMIN_RIGHTS]
 
 const ROLE_RIGHTS: Record<UserRole, Readonly<Right[]>> = {
   ADMIN: ADMIN_RIGHTS,
@@ -31,7 +48,9 @@ const ROLE_RIGHTS: Record<UserRole, Readonly<Right[]>> = {
   USER: USER_RIGHTS
 }
 
-export const getAuthUserPermissionsByRole = (role: UserRole): AuthPermissions => {
+export const getAuthUserPermissionsByRole = (
+  role: UserRole
+): AuthPermissions => {
   const rights = ROLE_RIGHTS[role] ?? ROLE_RIGHTS.USER
 
   const permissions: AuthPermissions = {

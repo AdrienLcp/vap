@@ -19,14 +19,15 @@ import {
   CategoryUpdateSchema
 } from '@/features/category/domain/category-schemas'
 import { HttpResponse } from '@/infrastructure/api/http-response'
-import { buildLocationUrl } from '@/infrastructure/env/client'
+import { buildLocationUrl } from '@/infrastructure/url/url-builder'
 
 const createCategory = async (
   categoryCreationRequest: Request
 ): Promise<CategoryCreationResponse> => {
   try {
     const categoryCreationData = await categoryCreationRequest.json()
-    const categoryCreationValidation = CategoryCreationSchema.safeParse(categoryCreationData)
+    const categoryCreationValidation =
+      CategoryCreationSchema.safeParse(categoryCreationData)
 
     if (!categoryCreationValidation.success) {
       return HttpResponse.badRequest(categoryCreationValidation.error.issues)
@@ -53,7 +54,9 @@ const createCategory = async (
       }
     }
 
-    const categoryDTOValidation = CategoryDTOSchema.safeParse(categoryCreationResult.data)
+    const categoryDTOValidation = CategoryDTOSchema.safeParse(
+      categoryCreationResult.data
+    )
 
     if (!categoryDTOValidation.success) {
       console.error(
@@ -64,16 +67,23 @@ const createCategory = async (
     }
 
     const categoryDTO = categoryDTOValidation.data
-    const createdCategoryLocationUrl = buildLocationUrl(CATEGORY_API_BASE_URL, categoryDTO.id)
+    const createdCategoryLocationUrl = buildLocationUrl(
+      CATEGORY_API_BASE_URL,
+      categoryDTO.id
+    )
 
-    return HttpResponse.created(categoryDTO, { Location: createdCategoryLocationUrl })
+    return HttpResponse.created(categoryDTO, {
+      Location: createdCategoryLocationUrl
+    })
   } catch (error) {
     console.error('Unknown error in CategoryController.createCategory:', error)
     return HttpResponse.internalServerError()
   }
 }
 
-const deleteCategory = async (categoryId: unknown): Promise<CategoryDeletionResponse> => {
+const deleteCategory = async (
+  categoryId: unknown
+): Promise<CategoryDeletionResponse> => {
   try {
     const categoryIdValidation = CategoryIdSchema.safeParse(categoryId)
 
@@ -81,7 +91,9 @@ const deleteCategory = async (categoryId: unknown): Promise<CategoryDeletionResp
       return HttpResponse.badRequest(categoryIdValidation.error.issues)
     }
 
-    const categoryDeletionResult = await CategoryService.deleteCategory(categoryIdValidation.data)
+    const categoryDeletionResult = await CategoryService.deleteCategory(
+      categoryIdValidation.data
+    )
 
     if (categoryDeletionResult.status === 'ERROR') {
       switch (categoryDeletionResult.error) {
@@ -110,11 +122,16 @@ const findCategories = async (): Promise<CategoryListResponse> => {
     const categoriesResult = await CategoryService.findCategories()
 
     if (categoriesResult.status === 'ERROR') {
-      console.error('Unknown error in CategoryController.findCategories:', categoriesResult.error)
+      console.error(
+        'Unknown error in CategoryController.findCategories:',
+        categoriesResult.error
+      )
       return HttpResponse.internalServerError()
     }
 
-    const categoriesDTOValidation = CategoryDTOSchema.array().safeParse(categoriesResult.data)
+    const categoriesDTOValidation = CategoryDTOSchema.array().safeParse(
+      categoriesResult.data
+    )
 
     if (!categoriesDTOValidation.success) {
       console.error(
@@ -139,17 +156,24 @@ const findCategory = async (categoryId: unknown): Promise<CategoryResponse> => {
       return HttpResponse.badRequest(categoryIdValidation.error.issues)
     }
 
-    const categoryResult = await CategoryService.findCategory(categoryIdValidation.data)
+    const categoryResult = await CategoryService.findCategory(
+      categoryIdValidation.data
+    )
 
     if (categoryResult.status === 'ERROR') {
       if (categoryResult.error === 'NOT_FOUND') {
         return HttpResponse.notFound()
       }
-      console.error('Unknown error in CategoryController.findCategory:', categoryResult.error)
+      console.error(
+        'Unknown error in CategoryController.findCategory:',
+        categoryResult.error
+      )
       return HttpResponse.internalServerError()
     }
 
-    const categoryDTOValidation = CategoryDTOSchema.safeParse(categoryResult.data)
+    const categoryDTOValidation = CategoryDTOSchema.safeParse(
+      categoryResult.data
+    )
 
     if (!categoryDTOValidation.success) {
       console.error(
@@ -178,7 +202,8 @@ const updateCategory = async (
     }
 
     const categoryUpdateData = await categoryUpdateRequest.json()
-    const categoryUpdateValidation = CategoryUpdateSchema.safeParse(categoryUpdateData)
+    const categoryUpdateValidation =
+      CategoryUpdateSchema.safeParse(categoryUpdateData)
 
     if (!categoryUpdateValidation.success) {
       return HttpResponse.badRequest(categoryUpdateValidation.error.issues)
@@ -206,7 +231,9 @@ const updateCategory = async (
       }
     }
 
-    const categoryDTOValidation = CategoryDTOSchema.safeParse(categoryUpdateResult.data)
+    const categoryDTOValidation = CategoryDTOSchema.safeParse(
+      categoryUpdateResult.data
+    )
 
     if (!categoryDTOValidation.success) {
       console.error(

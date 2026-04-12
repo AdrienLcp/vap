@@ -1,6 +1,8 @@
+'use client'
+
 import { LogOutIcon, ShieldIcon, UserIcon } from 'lucide-react'
-import { redirect } from 'next/navigation'
-import { useMemo } from 'react'
+import { useRouter } from 'next/navigation'
+import { useCallback, useMemo } from 'react'
 
 import { DEFAULT_ROUTE, ROUTES } from '@/domain/navigation'
 import type { AuthUserDTO } from '@/features/auth/domain/auth-entities'
@@ -18,56 +20,67 @@ type PersonaMenuProps = {
   user: AuthUserDTO
 }
 
-const signOut = async () => {
-  const signOutResponse = await AuthClient.signOut()
-
-  switch (signOutResponse.status) {
-    case NO_CONTENT_STATUS:
-      redirect(DEFAULT_ROUTE)
-      break
-    default:
-      ToastService.error(t('auth.signOut.errors.unknown'))
-  }
-}
-
 const MENU_ITEM_ADMIN_ID = 'admin'
 
-const menuItems: MenuItem[] = [
-  {
-    href: ROUTES.profile,
-    Icon: <UserIcon aria-hidden />,
-    id: 'profile',
-    textValue: t('auth.persona.profile')
-  },
-  {
-    href: ROUTES.admin,
-    Icon: <ShieldIcon aria-hidden />,
-    id: MENU_ITEM_ADMIN_ID,
-    textValue: t('auth.persona.admin')
-  },
-  {
-    Icon: <LogOutIcon aria-hidden />,
-    id: 'sign-out',
-    onAction: signOut,
-    textValue: t('auth.persona.signOut')
-  }
-]
+const PersonaMenuTrigger: React.FC<PersonaMenuProps> = ({ user }) => (
+  <Button className='persona-menu-trigger'>
+    <Avatar
+      userEmail={user.email}
+      userImageUrl={user.image}
+      userName={user.name}
+    />
+  </Button>
+)
 
 export const PersonaMenu: React.FC<PersonaMenuProps> = ({ user }) => {
-  const MenuTrigger = useMemo(
-    () => (
-      <Button className='persona-menu-trigger'>
-        <Avatar userEmail={user.email} userImageUrl={user.image} userName={user.name} />
-      </Button>
-    ),
-    [user.email, user.image, user.name]
+  const router = useRouter()
+
+  const signOut = useCallback(async () => {
+    const signOutResponse = await AuthClient.signOut()
+
+    switch (signOutResponse.status) {
+      case NO_CONTENT_STATUS:
+        router.push(DEFAULT_ROUTE)
+        break
+      default:
+        ToastService.error(t('auth.signOut.errors.unknown'))
+    }
+  }, [router])
+
+  const menuItems: MenuItem[] = useMemo(
+    () => [
+      {
+        href: ROUTES.profile,
+        Icon: <UserIcon aria-hidden />,
+        id: 'profile',
+        textValue: t('auth.persona.profile')
+      },
+      {
+        href: ROUTES.admin,
+        Icon: <ShieldIcon aria-hidden />,
+        id: MENU_ITEM_ADMIN_ID,
+        textValue: t('auth.persona.admin')
+      },
+      {
+        Icon: <LogOutIcon aria-hidden />,
+        id: 'sign-out',
+        onAction: signOut,
+        textValue: t('auth.persona.signOut')
+      }
+    ],
+    [signOut]
   )
 
   const filteredMenuItems = useMemo(() => {
     return user.permissions.canAccessAdmin
       ? menuItems
       : menuItems.filter((item) => item.id !== MENU_ITEM_ADMIN_ID)
-  }, [user.permissions.canAccessAdmin])
+  }, [menuItems, user.permissions.canAccessAdmin])
 
-  return <Menu items={filteredMenuItems} Trigger={MenuTrigger} />
+  return (
+    <Menu
+      items={filteredMenuItems}
+      Trigger={<PersonaMenuTrigger user={user} />}
+    />
+  )
 }

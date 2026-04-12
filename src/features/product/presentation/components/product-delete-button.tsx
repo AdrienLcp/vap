@@ -1,14 +1,17 @@
 'use client'
 
 import { Trash2Icon } from 'lucide-react'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useCallback } from 'react'
 
 import { ROUTES } from '@/domain/navigation'
 import { ProductClient } from '@/features/product/infrastructure/product-client'
 import { NO_CONTENT_STATUS } from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
-import { Button, type ButtonProps } from '@/presentation/components/ui/pressables/button'
+import {
+  Button,
+  type ButtonProps
+} from '@/presentation/components/ui/pressables/button'
 import { ToastService } from '@/presentation/services/toast-service'
 
 type ProductDeleteButtonProps = Partial<ButtonProps> & {
@@ -19,6 +22,8 @@ export const ProductDeleteButton: React.FC<ProductDeleteButtonProps> = ({
   productId,
   ...productDeleteButtonRestProps
 }) => {
+  const router = useRouter()
+
   const deleteProduct = useCallback(async () => {
     const deletedProductResponse = await ProductClient.deleteProduct(productId)
 
@@ -28,8 +33,8 @@ export const ProductDeleteButton: React.FC<ProductDeleteButtonProps> = ({
     }
 
     ToastService.success(t('product.delete.success'))
-    redirect(ROUTES.adminProducts)
-  }, [productId])
+    router.push(ROUTES.adminProducts)
+  }, [productId, router])
 
   return (
     <Button

@@ -7,6 +7,7 @@ import type {
   UserRoleSchema,
   UserUpdateSchema
 } from '@/features/user/domain/user-schemas'
+import type { Issues } from '@/helpers/validation'
 import type {
   BadRequestResponse,
   ForbiddenResponse,
@@ -14,7 +15,6 @@ import type {
   Response,
   UnauthorizedResponse
 } from '@/infrastructure/api/http-response'
-import type { Issues } from '@/utils/validation-utils'
 
 export type UserId = z.infer<typeof UserIdSchema>
 
@@ -24,7 +24,10 @@ export type UserDTO = z.infer<typeof UserDTOSchema>
 
 export type UserUpdateData = z.infer<typeof UserUpdateSchema>
 
-type UserListResult = OkResponse<UserDTO[]> | ForbiddenResponse | UnauthorizedResponse
+type UserListResult =
+  | OkResponse<UserDTO[]>
+  | ForbiddenResponse
+  | UnauthorizedResponse
 
 export type UserListResponse = Response<UserListResult>
 

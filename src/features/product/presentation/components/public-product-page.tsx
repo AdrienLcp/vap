@@ -1,12 +1,17 @@
 import { PublicProduct } from '@/features/product/presentation/components/public-product'
 import { ProductController } from '@/features/product/presentation/controllers/product-controller'
-import { OK_STATUS, redirectByErrorStatus } from '@/infrastructure/api/http-response'
+import {
+  OK_STATUS,
+  redirectByErrorStatus
+} from '@/infrastructure/api/http-response'
 
 type PublicProductPageProps = {
   productId: string
 }
 
-export const PublicProductPage: React.FC<PublicProductPageProps> = async ({ productId }) => {
+export const PublicProductPage: React.FC<PublicProductPageProps> = async ({
+  productId
+}) => {
   const productResponse = await ProductController.findPublicProduct(productId)
 
   if (productResponse.status !== OK_STATUS) {

@@ -2,7 +2,7 @@ import { PublicProductsDashboard } from '@/features/product/presentation/compone
 
 import './home-page.sass'
 
-export const HomePage: React.FC = async () => (
+export const HomePage: React.FC = () => (
   <main className='home-main'>
     <PublicProductsDashboard />
   </main>

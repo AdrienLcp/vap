@@ -1,4 +1,7 @@
-import { USER_API_BASE_URL, USER_SEARCH_PARAMS } from '@/features/user/domain/user-constants'
+import {
+  USER_API_BASE_URL,
+  USER_SEARCH_PARAMS
+} from '@/features/user/domain/user-constants'
 import type {
   UserFilters,
   UserListResponse,
@@ -6,7 +9,11 @@ import type {
   UserUpdateData,
   UserUpdateResponse
 } from '@/features/user/domain/user-entities'
-import { ApiClient, type ClientResponse, unknownError } from '@/infrastructure/api/api-client'
+import {
+  ApiClient,
+  type ClientResponse,
+  unknownError
+} from '@/infrastructure/api/api-client'
 
 const buildUsersFiltersQueryString = (filters?: UserFilters): string => {
   if (!filters) {
@@ -29,11 +36,15 @@ const buildUsersFiltersQueryString = (filters?: UserFilters): string => {
   return `?${userFiltersQueryParams.toString()}`
 }
 
-const findUsers = async (filters?: UserFilters): Promise<ClientResponse<UserListResponse>> => {
+const findUsers = async (
+  filters?: UserFilters
+): Promise<ClientResponse<UserListResponse>> => {
   try {
     const productFilterQueryString = buildUsersFiltersQueryString(filters)
 
-    return await ApiClient.GET<UserListResponse>(`/${USER_API_BASE_URL}${productFilterQueryString}`)
+    return await ApiClient.GET<UserListResponse>(
+      `/${USER_API_BASE_URL}${productFilterQueryString}`
+    )
   } catch (error) {
     console.error('Find users by email error:', error)
     return unknownError()

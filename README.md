@@ -245,34 +245,34 @@ This project prioritizes accessibility using **React Aria Components** and follo
 ## 🛠️ Tech Stack
 
 ### 🔧 **Core Framework**
-- **Next.js 15.5.4** - React framework with App Router
-- **React 19.1.1** - UI library with Server Components
-- **TypeScript 5.9.2** - Type safety and developer experience
+- **TypeScript** - Type safety and developer experience
+- **React** - UI library with Server Components
+- **Next.js** - React framework with App Router
 
 ### 🎨 **Styling & UI**
-- **SASS 1.93.2** - CSS preprocessor with modular architecture
-- **React Aria Components 1.12.2** - Accessible UI primitives
-- **Lucide React 0.544.0** - Beautiful icons
-- **Classnames 2.5.1** - Conditional CSS classes
+- **SASS** - CSS preprocessor with modular architecture
+- **React Aria Components** - Accessible UI primitives
+- **Lucide React** - Beautiful icons
+- **Classnames** - Conditional CSS classes
 
 ### 🔐 **Authentication & Security**
-- **Better Auth 1.3.17** - Modern authentication library
-- **js-sha256 0.11.1** - Cryptographic hashing
-- **Zod 4.1.11** - Runtime type validation
+- **Better Auth** - Modern authentication library
+- **js-sha256** - Cryptographic hashing
+- **Zod** - Runtime type validation
 
 ### 🗄️ **Database & Backend**
-- **Prisma 6.16.2** - Type-safe database ORM
+- **Prisma** - Type-safe database ORM
 - **PostgreSQL** - Primary database
-- **Server-only 0.0.1** - Server-side code protection
+- **Server-only** - Server-side code protection
 
 ### �️ **Development Tools**
-- **Biome 2.3.0** - Unified formatter, linter, import organizer
-- **TypeScript 5.9.3** - Type safety and developer experience
-- **Prisma 6.18.0** - Database toolkit
+- **Biome** - Unified formatter, linter, import organizer
+- **TypeScript** - Type safety and developer experience
+- **Prisma** - Database toolkit
 - **Turbopack** - Fast development bundler
 
 ### 🌐 **Infrastructure**
-- **T3 Env 0.13.8** - Environment variable validation
+- **T3 Env** - Environment variable validation
 - **Custom i18n** - Internationalization system
 
 ---

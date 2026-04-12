@@ -3,7 +3,11 @@ import { useMemo } from 'react'
 import type { CategoryDTO } from '@/features/category/domain/category-entities'
 import { PRODUCT_FORM_FIELDS } from '@/features/product/domain/product-constants'
 import { t } from '@/infrastructure/i18n'
-import { Select, type SelectItem, type SelectProps } from '@/presentation/components/forms/select'
+import {
+  Select,
+  type SelectItem,
+  type SelectProps
+} from '@/presentation/components/forms/select'
 
 type ProductCategorySelectProps = Partial<SelectProps> & {
   categories: CategoryDTO[]

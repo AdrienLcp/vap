@@ -1,12 +1,18 @@
 import 'server-only'
 
-import type { User } from '@prisma/client'
-
 import type { NotFound } from '@/domain/entities'
-import type { UserDTO, UserFilters, UserRole } from '@/features/user/domain/user-entities'
+import type {
+  UserDTO,
+  UserFilters,
+  UserRole
+} from '@/features/user/domain/user-entities'
 import { failure, type Result, success } from '@/helpers/result'
-import { type EntitySelectedFields, UserDatabase } from '@/infrastructure/database'
+import {
+  type EntitySelectedFields,
+  UserDatabase
+} from '@/infrastructure/database'
 import { contains } from '@/infrastructure/database/database-helpers'
+import type { User } from '@/infrastructure/database/generated'
 
 const USER_SELECTED_FIELDS = {
   email: true,
@@ -36,7 +42,9 @@ const findUser = async (userId: string): Promise<Result<UserDTO, NotFound>> => {
 const findUsers = async (filters?: UserFilters): Promise<Result<UserDTO[]>> => {
   try {
     if (!filters) {
-      const users = await UserDatabase.findMany({ select: USER_SELECTED_FIELDS })
+      const users = await UserDatabase.findMany({
+        select: USER_SELECTED_FIELDS
+      })
       return success(users)
     }
 
@@ -55,7 +63,10 @@ const findUsers = async (filters?: UserFilters): Promise<Result<UserDTO[]>> => {
   }
 }
 
-const updateUserRole = async (userId: string, role: UserRole): Promise<Result<UserDTO>> => {
+const updateUserRole = async (
+  userId: string,
+  role: UserRole
+): Promise<Result<UserDTO>> => {
   try {
     const updatedUser = await UserDatabase.update({
       data: { role },

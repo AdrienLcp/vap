@@ -3,7 +3,11 @@ import 'server-only'
 import type { NotFound } from '@/domain/entities'
 import { AuthService } from '@/features/auth/application/auth-service'
 import type { AuthUserPermissionError } from '@/features/auth/domain/auth-entities'
-import type { UserDTO, UserFilters, UserRole } from '@/features/user/domain/user-entities'
+import type {
+  UserDTO,
+  UserFilters,
+  UserRole
+} from '@/features/user/domain/user-entities'
 import { UserRepository } from '@/features/user/infrastructure/user-repository'
 import { failure, type Result } from '@/helpers/result'
 

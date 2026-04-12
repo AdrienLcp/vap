@@ -1,6 +1,9 @@
 import { useCallback } from 'react'
 
-import type { UserFilters, UserRole } from '@/features/user/domain/user-entities'
+import type {
+  UserFilters,
+  UserRole
+} from '@/features/user/domain/user-entities'
 import { UserRoleSelect } from '@/features/user/presentation/components/user-role-select'
 import { UserSearch } from '@/features/user/presentation/components/user-search'
 

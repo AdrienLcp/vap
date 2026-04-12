@@ -11,12 +11,17 @@ type CartItemActionsProps = {
   productId: string
 }
 
-export const CartItemActions: React.FC<CartItemActionsProps> = ({ productId }) => {
+export const CartItemActions: React.FC<CartItemActionsProps> = ({
+  productId
+}) => {
   const [isCartItemLoading, setIsCartItemLoading] = useState(false)
 
   return (
     <fieldset className='cart-item-actions' disabled={isCartItemLoading}>
-      <ProductQuantitySelector productId={productId} setIsLoading={setIsCartItemLoading} />
+      <ProductQuantitySelector
+        productId={productId}
+        setIsLoading={setIsCartItemLoading}
+      />
 
       <CartItemDeleteButton
         isLoading={isCartItemLoading}

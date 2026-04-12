@@ -33,7 +33,8 @@ const hasData = <Response extends ApiResponse>(
   response: Response
 ): response is Response & { data: object } => {
   return (
-    (response.status === OK_STATUS || response.status === CREATED_STATUS) && response.data != null
+    (response.status === OK_STATUS || response.status === CREATED_STATUS) &&
+    response.data != null
   )
 }
 
@@ -49,7 +50,9 @@ const hasIssues = <Response extends ApiResponse>(
   return response.status === BAD_REQUEST_STATUS && response.issues != null
 }
 
-export const nextResponse = async <Response extends ApiResponse>(promise: Promise<Response>) => {
+export const nextResponse = async <Response extends ApiResponse>(
+  promise: Promise<Response>
+) => {
   try {
     const response = await promise
 

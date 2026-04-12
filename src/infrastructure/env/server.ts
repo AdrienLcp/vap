@@ -1,7 +1,8 @@
 import 'server-only'
 
 import { createEnv } from '@t3-oss/env-nextjs'
-import { z } from 'zod'
+
+import { createRequiredEnvString } from '@/infrastructure/env/env-schemas'
 
 export const SERVER_ENV = createEnv({
   emptyStringAsUndefined: true,
@@ -9,12 +10,20 @@ export const SERVER_ENV = createEnv({
     AUTH_GOOGLE_CLIENT_ID: process.env.AUTH_GOOGLE_CLIENT_ID,
     AUTH_GOOGLE_CLIENT_SECRET: process.env.AUTH_GOOGLE_CLIENT_SECRET,
     BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
-    DATABASE_URL: process.env.DATABASE_URL
+    DATABASE_URL: process.env.DATABASE_URL,
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
+    STRIPE_API_KEY: process.env.STRIPE_API_KEY,
+    STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET
   },
   server: {
-    AUTH_GOOGLE_CLIENT_ID: z.string().min(1, 'AUTH_GOOGLE_CLIENT_ID is required'),
-    AUTH_GOOGLE_CLIENT_SECRET: z.string().min(1, 'AUTH_GOOGLE_CLIENT_SECRET is required'),
-    BETTER_AUTH_SECRET: z.string().min(1, 'BETTER_AUTH_SECRET is required'),
-    DATABASE_URL: z.string().min(1, 'DATABASE_URL is required')
+    AUTH_GOOGLE_CLIENT_ID: createRequiredEnvString('AUTH_GOOGLE_CLIENT_ID'),
+    AUTH_GOOGLE_CLIENT_SECRET: createRequiredEnvString(
+      'AUTH_GOOGLE_CLIENT_SECRET'
+    ),
+    BETTER_AUTH_SECRET: createRequiredEnvString('BETTER_AUTH_SECRET'),
+    DATABASE_URL: createRequiredEnvString('DATABASE_URL'),
+    RESEND_API_KEY: createRequiredEnvString('RESEND_API_KEY'),
+    STRIPE_API_KEY: createRequiredEnvString('STRIPE_API_KEY'),
+    STRIPE_WEBHOOK_SECRET: createRequiredEnvString('STRIPE_WEBHOOK_SECRET')
   }
 })

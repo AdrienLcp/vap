@@ -19,7 +19,13 @@ import { CategoryClient } from '@/features/category/infrastructure/category-clie
 import { CategoryDescriptionField } from '@/features/category/presentation/components/forms/category-description-field'
 import { CategoryImagePreviewField } from '@/features/category/presentation/components/forms/category-image-preview-field'
 import { CategoryNameField } from '@/features/category/presentation/components/forms/category-name-field'
-import { BAD_REQUEST_STATUS, CONFLICT_STATUS, OK_STATUS } from '@/infrastructure/api/http-response'
+import { getUniqueStringsArray } from '@/helpers/array'
+import type { Issues } from '@/helpers/validation'
+import {
+  BAD_REQUEST_STATUS,
+  CONFLICT_STATUS,
+  OK_STATUS
+} from '@/infrastructure/api/http-response'
 import { t } from '@/infrastructure/i18n'
 import { FieldSet } from '@/presentation/components/forms/field-set'
 import { Form } from '@/presentation/components/forms/form'
@@ -27,61 +33,78 @@ import { FormError } from '@/presentation/components/forms/form-error'
 import { RequiredFieldsMessage } from '@/presentation/components/forms/required-fields-message'
 import { SubmitButton } from '@/presentation/components/ui/pressables/submit-button'
 import { ToastService } from '@/presentation/services/toast-service'
-import { getUniqueStringsArray } from '@/utils/array-utils'
-import type { Issues } from '@/utils/validation-utils'
 
 type CategoryUpdateFormProps = {
   category: CategoryDTO
 }
 
-export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = ({ category }) => {
+export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = ({
+  category
+}) => {
   const [isCategoryUpdateLoading, setIsCategoryUpdateLoading] = useState(false)
   const [formErrors, setFormErrors] = useState<CategoryValidationErrors>()
 
-  const onCategoryUpdateBadRequestError = useCallback((issues: Issues<CategoryUpdateData>) => {
-    const nameErrors: string[] = []
-    const formErrors: string[] = []
+  const onCategoryUpdateBadRequestError = useCallback(
+    (issues: Issues<CategoryUpdateData>) => {
+      const nameErrors: string[] = []
+      const formErrors: string[] = []
 
-    for (const issue of issues) {
-      switch (issue.message) {
-        case CATEGORY_ERRORS.NAME_REQUIRED:
-          nameErrors.push(t('category.errors.categoryNameRequired'))
-          break
-        case CATEGORY_ERRORS.NAME_TOO_LONG:
-          nameErrors.push(
-            t('category.errors.categoryNameTooLong', { max: CATEGORY_CONSTANTS.NAME_MAX_LENGTH })
-          )
+      for (const issue of issues) {
+        switch (issue.message) {
+          case CATEGORY_ERRORS.NAME_REQUIRED:
+            nameErrors.push(t('category.errors.categoryNameRequired'))
+            break
+          case CATEGORY_ERRORS.NAME_TOO_LONG:
+            nameErrors.push(
+              t('category.errors.categoryNameTooLong', {
+                max: CATEGORY_CONSTANTS.NAME_MAX_LENGTH
+              })
+            )
+            break
+          default:
+            formErrors.push(
+              t('components.forms.formValidationErrorDefaultMessage')
+            )
+            break
+        }
+      }
+
+      setFormErrors({
+        form: getUniqueStringsArray(formErrors),
+        [CATEGORY_FORM_FIELDS.NAME]: getUniqueStringsArray(nameErrors)
+      })
+    },
+    []
+  )
+
+  const onCategoryUpdateConflictError = useCallback(
+    (error: CategoryConflictError) => {
+      switch (error) {
+        case CATEGORY_ERRORS.NAME_ALREADY_EXISTS:
+          setFormErrors({
+            [CATEGORY_FORM_FIELDS.NAME]: t(
+              'category.errors.categoryNameAlreadyExists'
+            )
+          })
           break
         default:
-          formErrors.push(t('components.forms.formValidationErrorDefaultMessage'))
+          setFormErrors({
+            form: t('components.forms.formValidationErrorDefaultMessage')
+          })
           break
       }
-    }
+    },
+    []
+  )
 
-    setFormErrors({
-      form: getUniqueStringsArray(formErrors),
-      [CATEGORY_FORM_FIELDS.NAME]: getUniqueStringsArray(nameErrors)
-    })
-  }, [])
-
-  const onCategoryUpdateConflictError = useCallback((error: CategoryConflictError) => {
-    switch (error) {
-      case CATEGORY_ERRORS.NAME_ALREADY_EXISTS:
-        setFormErrors({
-          [CATEGORY_FORM_FIELDS.NAME]: t('category.errors.categoryNameAlreadyExists')
-        })
-        break
-      default:
-        setFormErrors({
-          form: t('components.forms.formValidationErrorDefaultMessage')
-        })
-        break
-    }
-  }, [])
-
-  const onCategoryUpdateSuccess = useCallback((updatedCategory: CategoryDTO) => {
-    ToastService.success(t('category.update.success', { categoryName: updatedCategory.name }))
-  }, [])
+  const onCategoryUpdateSuccess = useCallback(
+    (updatedCategory: CategoryDTO) => {
+      ToastService.success(
+        t('category.update.success', { categoryName: updatedCategory.name })
+      )
+    },
+    []
+  )
 
   const onCategoryUpdateFormSubmit = useCallback(
     async (formData: FormData) => {
@@ -94,7 +117,8 @@ export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = ({ category
         name: formData.get(CATEGORY_FORM_FIELDS.NAME)
       }
 
-      const categoryUpdateValidation = CategoryUpdateSchema.safeParse(categoryUpdateData)
+      const categoryUpdateValidation =
+        CategoryUpdateSchema.safeParse(categoryUpdateData)
 
       if (!categoryUpdateValidation.success) {
         setIsCategoryUpdateLoading(false)
@@ -143,8 +167,13 @@ export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = ({ category
 
       <RequiredFieldsMessage />
 
-      <SubmitButton Icon={<SaveIcon aria-hidden />} isPending={isCategoryUpdateLoading}>
-        {({ isPending }) => t(`category.update.submit.${isPending ? 'updating' : 'label'}`)}
+      <SubmitButton
+        Icon={<SaveIcon aria-hidden />}
+        isPending={isCategoryUpdateLoading}
+      >
+        {({ isPending }) =>
+          t(`category.update.submit.${isPending ? 'updating' : 'label'}`)
+        }
       </SubmitButton>
     </Form>
   )

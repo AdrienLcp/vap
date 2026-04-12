@@ -3,20 +3,24 @@ import type z from 'zod'
 import type {
   CartItemCreationDataSchema,
   CartItemDTOSchema,
+  CartItemIdSchema,
   CartItemProduct,
   CartItemSchema,
   CartItemUpdateDataSchema
 } from '@/features/cart/domain/cart-schemas'
+import type { Issues } from '@/helpers/validation'
 import type {
   BadRequestResponse,
   CreatedResponse,
   ForbiddenResponse,
   NoContentResponse,
+  NotFoundResponse,
   OkResponse,
   Response,
   UnauthorizedResponse
 } from '@/infrastructure/api/http-response'
-import type { Issues } from '@/utils/validation-utils'
+
+export type CartItemId = z.infer<typeof CartItemIdSchema>
 
 export type CartItem = z.infer<typeof CartItemSchema>
 
@@ -41,17 +45,19 @@ export type CartItemCreationResponse = Response<CartItemCreationResult>
 
 type CartItemUpdateResult =
   | OkResponse<CartItemDTO>
-  | BadRequestResponse<Issues<CartItemUpdateData>>
+  | BadRequestResponse<Issues<CartItemUpdateData | CartItemId>>
   | UnauthorizedResponse
   | ForbiddenResponse
+  | NotFoundResponse
 
 export type CartItemUpdateResponse = Response<CartItemUpdateResult>
 
 type CartItemDeletionResult =
   | NoContentResponse
-  | BadRequestResponse<Issues<string>>
+  | BadRequestResponse<Issues<CartItemId>>
   | UnauthorizedResponse
   | ForbiddenResponse
+  | NotFoundResponse
 
 export type CartItemDeletionResponse = Response<CartItemDeletionResult>
 
@@ -60,8 +66,10 @@ type CartItemQuantityUpdateResult =
   | BadRequestResponse<Issues<CartItemUpdateData>>
   | UnauthorizedResponse
   | ForbiddenResponse
+  | NotFoundResponse
 
-export type CartItemQuantityUpdateResponse = Response<CartItemQuantityUpdateResult>
+export type CartItemQuantityUpdateResponse =
+  Response<CartItemQuantityUpdateResult>
 
 type CartClearResult = NoContentResponse | UnauthorizedResponse
 

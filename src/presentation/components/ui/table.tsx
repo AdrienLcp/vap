@@ -21,12 +21,18 @@ export type TableRow<RowData extends object> = Omit<
   'children' | 'columns' | 'id'
 > & { id: string; item: RowData }
 
-export type TableColumn<ColumnKey extends Key = string> = Omit<ColumnProps, 'className' | 'id'> & {
+export type TableColumn<ColumnKey extends Key = string> = Omit<
+  ColumnProps,
+  'className' | 'id'
+> & {
   className?: string
   id: ColumnKey
 }
 
-type TableProps<RowData extends object, ColumnKey extends Key = string> = ReactAriaTableProps & {
+type TableProps<
+  RowData extends object,
+  ColumnKey extends Key = string
+> = ReactAriaTableProps & {
   columns: TableColumn<ColumnKey>[]
   renderCell: (row: RowData, column: TableColumn<ColumnKey>) => React.ReactNode
   renderEmptyState?: TableBodyProps<RowData>['renderEmptyState']
@@ -42,16 +48,24 @@ export function Table<RowData extends object, ColumnKey extends Key = string>({
 }: TableProps<RowData, ColumnKey>) {
   return (
     <ReactAriaTable {...tableRestProps}>
-      <TableHeader columns={columns}>{(column) => <Column {...column} />}</TableHeader>
+      <TableHeader columns={columns}>
+        {(column) => <Column {...column} />}
+      </TableHeader>
 
       <TableBody items={rows} renderEmptyState={renderEmptyState}>
         {({ item, value: _value, ...row }) => (
           <Row
             {...row}
-            className={(values) => reactAriaClassNames(values, row.className, 'table-row')}
+            className={(values) =>
+              reactAriaClassNames(values, row.className, 'table-row')
+            }
             columns={columns}
           >
-            {(column) => <Cell className={column.className}>{renderCell(item, column)}</Cell>}
+            {(column) => (
+              <Cell className={column.className}>
+                {renderCell(item, column)}
+              </Cell>
+            )}
           </Row>
         )}
       </TableBody>

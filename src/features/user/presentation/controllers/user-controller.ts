@@ -58,7 +58,10 @@ const findUser = async (userId: string): Promise<UserResponse> => {
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
         default:
-          console.error('Unknown error in UserController.findUser:', userResult.error)
+          console.error(
+            'Unknown error in UserController.findUser:',
+            userResult.error
+          )
           return HttpResponse.internalServerError()
       }
     }
@@ -66,7 +69,10 @@ const findUser = async (userId: string): Promise<UserResponse> => {
     const userDTOValidation = UserDTOSchema.safeParse(userResult.data)
 
     if (!userDTOValidation.success) {
-      console.error('Validation error in UserController.findUser:', userDTOValidation.error)
+      console.error(
+        'Validation error in UserController.findUser:',
+        userDTOValidation.error
+      )
       return HttpResponse.internalServerError()
     }
 
@@ -92,7 +98,10 @@ const findUsers = async (request?: Request): Promise<UserListResponse> => {
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
         default:
-          console.error('Unknown error in UserController.findUsers:', userResult.error)
+          console.error(
+            'Unknown error in UserController.findUsers:',
+            userResult.error
+          )
           return HttpResponse.internalServerError()
       }
     }
@@ -100,7 +109,10 @@ const findUsers = async (request?: Request): Promise<UserListResponse> => {
     const usersDTOValidation = UserDTOSchema.array().safeParse(userResult.data)
 
     if (!usersDTOValidation.success) {
-      console.error('Validation error in UserController.findUsers:', usersDTOValidation.error)
+      console.error(
+        'Validation error in UserController.findUsers:',
+        usersDTOValidation.error
+      )
       return HttpResponse.internalServerError()
     }
 
@@ -111,7 +123,10 @@ const findUsers = async (request?: Request): Promise<UserListResponse> => {
   }
 }
 
-const updateUserRole = async (userId: string, request: Request): Promise<UserUpdateResponse> => {
+const updateUserRole = async (
+  userId: string,
+  request: Request
+): Promise<UserUpdateResponse> => {
   try {
     const userIdValidation = UserIdSchema.safeParse(userId)
 
@@ -138,7 +153,10 @@ const updateUserRole = async (userId: string, request: Request): Promise<UserUpd
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
         default:
-          console.error('Unknown error in UserController.updateUserRole:', userResult.error)
+          console.error(
+            'Unknown error in UserController.updateUserRole:',
+            userResult.error
+          )
           return HttpResponse.internalServerError()
       }
     }
@@ -146,7 +164,10 @@ const updateUserRole = async (userId: string, request: Request): Promise<UserUpd
     const userDTOValidation = UserDTOSchema.safeParse(userResult.data)
 
     if (!userDTOValidation.success) {
-      console.error('Validation error in UserController.updateUserRole:', userDTOValidation.error)
+      console.error(
+        'Validation error in UserController.updateUserRole:',
+        userDTOValidation.error
+      )
       return HttpResponse.internalServerError()
     }
 

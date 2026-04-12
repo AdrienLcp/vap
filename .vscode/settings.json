@@ -10,6 +10,7 @@
     "Cantarell",
     "cuid",
     "dismissable",
+    "esbuild",
     "grayscale",
     "Lacourpaille",
     "minmax",
@@ -21,6 +22,7 @@
     "Roboto",
     "Segoe",
     "turbopack",
+    "vercel",
     "WCAG"
   ],
   "editor.codeActionsOnSave": {

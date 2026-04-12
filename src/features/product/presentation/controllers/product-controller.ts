@@ -24,7 +24,7 @@ import {
   ProductUpdateSchema
 } from '@/features/product/domain/product-schemas'
 import { HttpResponse } from '@/infrastructure/api/http-response'
-import { buildLocationUrl } from '@/infrastructure/env/client'
+import { buildLocationUrl } from '@/infrastructure/url/url-builder'
 
 const extractSearchParams = (request?: Request): ProductFilters | null => {
   if (!request?.url) {
@@ -33,13 +33,21 @@ const extractSearchParams = (request?: Request): ProductFilters | null => {
 
   const { searchParams } = new URL(request.url)
 
-  const maxPriceParam = parseInt(searchParams.get(PRODUCT_SEARCH_PARAMS.MAX_PRICE) ?? '', 10)
-  const minPriceParam = parseInt(searchParams.get(PRODUCT_SEARCH_PARAMS.MIN_PRICE) ?? '', 10)
+  const maxPriceParam = parseInt(
+    searchParams.get(PRODUCT_SEARCH_PARAMS.MAX_PRICE) ?? '',
+    10
+  )
+  const minPriceParam = parseInt(
+    searchParams.get(PRODUCT_SEARCH_PARAMS.MIN_PRICE) ?? '',
+    10
+  )
   const categoryIdsRaw = searchParams.get(PRODUCT_SEARCH_PARAMS.CATEGORY_IDS)
 
   return {
     categoryIds: categoryIdsRaw
-      ? categoryIdsRaw.split(PRODUCT_SEARCH_PARAMS.CATEGORY_IDS_SEPARATOR).filter(Boolean)
+      ? categoryIdsRaw
+          .split(PRODUCT_SEARCH_PARAMS.CATEGORY_IDS_SEPARATOR)
+          .filter(Boolean)
       : undefined,
     maxPrice: Number.isNaN(maxPriceParam) ? undefined : maxPriceParam,
     minPrice: Number.isNaN(minPriceParam) ? undefined : minPriceParam,
@@ -47,16 +55,21 @@ const extractSearchParams = (request?: Request): ProductFilters | null => {
   }
 }
 
-const createProduct = async (productCreationRequest: Request): Promise<ProductCreationResponse> => {
+const createProduct = async (
+  productCreationRequest: Request
+): Promise<ProductCreationResponse> => {
   try {
     const productCreationData = await productCreationRequest.json()
-    const productCreationValidation = ProductCreationSchema.safeParse(productCreationData)
+    const productCreationValidation =
+      ProductCreationSchema.safeParse(productCreationData)
 
     if (!productCreationValidation.success) {
       return HttpResponse.badRequest(productCreationValidation.error.issues)
     }
 
-    const createdProductResult = await ProductService.createProduct(productCreationValidation.data)
+    const createdProductResult = await ProductService.createProduct(
+      productCreationValidation.data
+    )
 
     if (createdProductResult.status === 'ERROR') {
       switch (createdProductResult.error) {
@@ -75,7 +88,9 @@ const createProduct = async (productCreationRequest: Request): Promise<ProductCr
       }
     }
 
-    const productDTOValidation = ProductDTOSchema.safeParse(createdProductResult.data)
+    const productDTOValidation = ProductDTOSchema.safeParse(
+      createdProductResult.data
+    )
 
     if (!productDTOValidation.success) {
       console.error(
@@ -86,16 +101,23 @@ const createProduct = async (productCreationRequest: Request): Promise<ProductCr
     }
 
     const productDTO = productDTOValidation.data
-    const createdProductLocationUrl = buildLocationUrl(PRODUCT_API_BASE_URL, productDTO.id)
+    const createdProductLocationUrl = buildLocationUrl(
+      PRODUCT_API_BASE_URL,
+      productDTO.id
+    )
 
-    return HttpResponse.created(productDTO, { Location: createdProductLocationUrl })
+    return HttpResponse.created(productDTO, {
+      Location: createdProductLocationUrl
+    })
   } catch (error) {
     console.error('Unknown error in ProductController.createProduct:', error)
     return HttpResponse.internalServerError()
   }
 }
 
-const deleteProduct = async (productId: string): Promise<ProductDeletionResponse> => {
+const deleteProduct = async (
+  productId: string
+): Promise<ProductDeletionResponse> => {
   try {
     const productIdValidation = ProductIdSchema.safeParse(productId)
 
@@ -103,7 +125,9 @@ const deleteProduct = async (productId: string): Promise<ProductDeletionResponse
       return HttpResponse.badRequest(productIdValidation.error.issues)
     }
 
-    const deleteResult = await ProductService.deleteProduct(productIdValidation.data)
+    const deleteResult = await ProductService.deleteProduct(
+      productIdValidation.data
+    )
 
     if (deleteResult.status === 'ERROR') {
       switch (deleteResult.error) {
@@ -112,7 +136,10 @@ const deleteProduct = async (productId: string): Promise<ProductDeletionResponse
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
         default:
-          console.error('Unknown error in ProductController.deleteProduct:', deleteResult.error)
+          console.error(
+            'Unknown error in ProductController.deleteProduct:',
+            deleteResult.error
+          )
           return HttpResponse.internalServerError()
       }
     }
@@ -132,7 +159,9 @@ const findProduct = async (productId: string): Promise<ProductResponse> => {
       return HttpResponse.badRequest(productIdValidation.error.issues)
     }
 
-    const productResult = await ProductService.findProduct(productIdValidation.data)
+    const productResult = await ProductService.findProduct(
+      productIdValidation.data
+    )
 
     if (productResult.status === 'ERROR') {
       switch (productResult.error) {
@@ -143,7 +172,10 @@ const findProduct = async (productId: string): Promise<ProductResponse> => {
         case 'NOT_FOUND':
           return HttpResponse.notFound()
         default:
-          console.error('Unknown error in ProductController.findProduct:', productResult.error)
+          console.error(
+            'Unknown error in ProductController.findProduct:',
+            productResult.error
+          )
           return HttpResponse.internalServerError()
       }
     }
@@ -184,7 +216,9 @@ const findProducts = async (): Promise<ProductListResponse> => {
       }
     }
 
-    const productsDTOValidation = ProductDTOSchema.array().safeParse(productsResult.data)
+    const productsDTOValidation = ProductDTOSchema.array().safeParse(
+      productsResult.data
+    )
 
     if (!productsDTOValidation.success) {
       console.error(
@@ -201,7 +235,9 @@ const findProducts = async (): Promise<ProductListResponse> => {
   }
 }
 
-const findPublicProduct = async (productId: string): Promise<ProductPublicResponse> => {
+const findPublicProduct = async (
+  productId: string
+): Promise<ProductPublicResponse> => {
   try {
     const productIdValidation = ProductIdSchema.safeParse(productId)
 
@@ -209,7 +245,9 @@ const findPublicProduct = async (productId: string): Promise<ProductPublicRespon
       return HttpResponse.badRequest(productIdValidation.error.issues)
     }
 
-    const productResult = await ProductService.findPublicProduct(productIdValidation.data)
+    const productResult = await ProductService.findPublicProduct(
+      productIdValidation.data
+    )
 
     if (productResult.status === 'ERROR') {
       switch (productResult.error) {
@@ -224,7 +262,9 @@ const findPublicProduct = async (productId: string): Promise<ProductPublicRespon
       }
     }
 
-    const productPublicDTOValidation = ProductPublicDTOSchema.safeParse(productResult.data)
+    const productPublicDTOValidation = ProductPublicDTOSchema.safeParse(
+      productResult.data
+    )
 
     if (!productPublicDTOValidation.success) {
       console.error(
@@ -236,25 +276,38 @@ const findPublicProduct = async (productId: string): Promise<ProductPublicRespon
 
     return HttpResponse.ok(productPublicDTOValidation.data)
   } catch (error) {
-    console.error('Unknown error in ProductController.findPublicProduct:', error)
+    console.error(
+      'Unknown error in ProductController.findPublicProduct:',
+      error
+    )
     return HttpResponse.internalServerError()
   }
 }
 
-const findPublicProducts = async (request?: Request): Promise<ProductPublicListResponse> => {
+const findPublicProducts = async (
+  request?: Request
+): Promise<ProductPublicListResponse> => {
   try {
     const productFilters = extractSearchParams(request)
 
-    const productFiltersValidation = ProductFiltersSchema.safeParse(productFilters)
+    const productFiltersValidation =
+      ProductFiltersSchema.safeParse(productFilters)
 
-    const productsResult = await ProductService.findPublicProducts(productFiltersValidation.data)
+    const productsResult = await ProductService.findPublicProducts(
+      productFiltersValidation.data
+    )
 
     if (productsResult.status === 'ERROR') {
-      console.error('Unknown error in ProductController.findPublicProducts:', productsResult.error)
+      console.error(
+        'Unknown error in ProductController.findPublicProducts:',
+        productsResult.error
+      )
       return HttpResponse.internalServerError()
     }
 
-    const productsDTOValidation = ProductPublicDTOSchema.array().safeParse(productsResult.data)
+    const productsDTOValidation = ProductPublicDTOSchema.array().safeParse(
+      productsResult.data
+    )
 
     if (!productsDTOValidation.success) {
       console.error(
@@ -266,7 +319,10 @@ const findPublicProducts = async (request?: Request): Promise<ProductPublicListR
 
     return HttpResponse.ok(productsDTOValidation.data)
   } catch (error) {
-    console.error('Unknown error in ProductController.findPublicProducts:', error)
+    console.error(
+      'Unknown error in ProductController.findPublicProducts:',
+      error
+    )
     return HttpResponse.internalServerError()
   }
 }
@@ -284,7 +340,8 @@ const updateProduct = async (
 
     const productUpdateData = await productUpdateRequest.json()
 
-    const productUpdateValidation = ProductUpdateSchema.safeParse(productUpdateData)
+    const productUpdateValidation =
+      ProductUpdateSchema.safeParse(productUpdateData)
 
     if (!productUpdateValidation.success) {
       return HttpResponse.badRequest(productUpdateValidation.error.issues)
@@ -312,7 +369,9 @@ const updateProduct = async (
       }
     }
 
-    const productDTOValidation = ProductDTOSchema.safeParse(productUpdateResult.data)
+    const productDTOValidation = ProductDTOSchema.safeParse(
+      productUpdateResult.data
+    )
 
     if (!productDTOValidation.success) {
       console.error(

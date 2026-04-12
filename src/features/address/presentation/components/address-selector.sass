@@ -1,0 +1,12 @@
+@use '@/presentation/styles/typography'
+
+.address-selector
+  display: flex
+  flex-direction: column
+  gap: var(--size-120, 0.75rem)
+
+  & .no-address
+    @include typography.body-large
+
+    &
+      color: var(--neutral-foreground-soft)

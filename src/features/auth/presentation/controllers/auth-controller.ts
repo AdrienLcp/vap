@@ -14,7 +14,10 @@ const findUser = async (): Promise<AuthUserResponse> => {
         case 'UNAUTHORIZED':
           return HttpResponse.unauthorized()
         default:
-          console.error('Unknown error in AuthController.findUser:', userResult.error)
+          console.error(
+            'Unknown error in AuthController.findUser:',
+            userResult.error
+          )
           return HttpResponse.internalServerError()
       }
     }

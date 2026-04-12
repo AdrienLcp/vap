@@ -1,0 +1,15 @@
+@use '@/presentation/styles/sizes'
+
+.address-page
+  @include sizes.responsive(s)
+
+  &
+    display: flex
+    flex: 1
+    flex-direction: column
+    gap: var(--size-160, 1rem)
+    margin-inline: auto
+    padding-block: var(--size-320, 2rem) calc(var(--size-320, 2rem) + 10%)
+
+  & a
+    margin-inline: auto

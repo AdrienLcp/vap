@@ -16,14 +16,17 @@ type ProductQuantitySelectorProps = {
   setIsLoading?: (isLoading: boolean) => void
 }
 
-export const ProductQuantitySelector: React.FC<ProductQuantitySelectorProps> = ({
-  productId,
-  setIsLoading
-}) => {
-  const { auth } = useAuth()
+export const ProductQuantitySelector: React.FC<
+  ProductQuantitySelectorProps
+> = ({ productId, setIsLoading }) => {
+  const { userAuthState } = useAuth()
 
-  const cartProductQuantity = useCartStore((state) => state.getProductQuantity(productId))
-  const updateProductCartStoreQuantity = useCartStore((state) => state.updateQuantity)
+  const cartProductQuantity = useCartStore((state) =>
+    state.getProductQuantity(productId)
+  )
+  const updateProductCartStoreQuantity = useCartStore(
+    (state) => state.updateQuantity
+  )
 
   const [isUpdatingCartProduct, setIsUpdatingCartProduct] = useState(false)
 
@@ -38,10 +41,8 @@ export const ProductQuantitySelector: React.FC<ProductQuantitySelectorProps> = (
   const updateProductRemoteCartQuantity = useCallback(
     async (newQuantity: number) => {
       setIsProductQuantitySelectorLoading(true)
-      const cartProductUpdateResponse = await CartClient.updateUserCartItemQuantity(
-        productId,
-        newQuantity
-      )
+      const cartProductUpdateResponse =
+        await CartClient.updateUserCartItemQuantity(productId, newQuantity)
       setIsProductQuantitySelectorLoading(false)
 
       if (cartProductUpdateResponse.status === NO_CONTENT_STATUS) {
@@ -51,24 +52,33 @@ export const ProductQuantitySelector: React.FC<ProductQuantitySelectorProps> = (
 
       ToastService.error(t('product.quantitySelector.error'))
     },
-    [productId, setIsProductQuantitySelectorLoading, updateProductCartStoreQuantity]
+    [
+      productId,
+      setIsProductQuantitySelectorLoading,
+      updateProductCartStoreQuantity
+    ]
   )
 
   const onProductQuantityChange = useCallback(
     async (newQuantity: number) => {
-      if (auth.status === 'authenticated') {
+      if (userAuthState.status === 'authenticated') {
         await updateProductRemoteCartQuantity(newQuantity)
         return
       }
 
       updateProductCartStoreQuantity(productId, newQuantity)
     },
-    [auth.status, productId, updateProductRemoteCartQuantity, updateProductCartStoreQuantity]
+    [
+      productId,
+      updateProductRemoteCartQuantity,
+      updateProductCartStoreQuantity,
+      userAuthState.status
+    ]
   )
 
   return (
     <QuantitySelector
-      isDisabled={auth.status === 'loading' || isUpdatingCartProduct}
+      isDisabled={isUpdatingCartProduct || userAuthState.status === 'loading'}
       max={CART_CONSTANTS.MAX_ITEM_QUANTITY}
       onQuantityChange={onProductQuantityChange}
       quantity={cartProductQuantity}

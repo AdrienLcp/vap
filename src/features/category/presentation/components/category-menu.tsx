@@ -26,9 +26,13 @@ const CategoryMenuTrigger: React.FC = () => (
   />
 )
 
-export const CategoryMenu: React.FC<CategoryMenuProps> = ({ categoryId, setCategoryList }) => {
+export const CategoryMenu: React.FC<CategoryMenuProps> = ({
+  categoryId,
+  setCategoryList
+}) => {
   const deleteCategory = useCallback(async () => {
-    const categoryDeletionResponse = await CategoryClient.deleteCategory(categoryId)
+    const categoryDeletionResponse =
+      await CategoryClient.deleteCategory(categoryId)
 
     if (categoryDeletionResponse.status !== NO_CONTENT_STATUS) {
       ToastService.error(t('category.delete.error'))

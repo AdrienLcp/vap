@@ -8,9 +8,12 @@ import type {
 import type {
   CategoryCreationSchema,
   CategoryDTOSchema,
+  CategoryIdSchema,
   CategorySchema,
   CategoryUpdateSchema
 } from '@/features/category/domain/category-schemas'
+import type { ValueOf } from '@/helpers/object'
+import type { Issues, ValidationErrors } from '@/helpers/validation'
 import type {
   BadRequestResponse,
   ConflictResponse,
@@ -22,8 +25,8 @@ import type {
   Response,
   UnauthorizedResponse
 } from '@/infrastructure/api/http-response'
-import type { ValueOf } from '@/utils/object-utils'
-import type { Issues, ValidationErrors } from '@/utils/validation-utils'
+
+export type CategoryId = z.infer<typeof CategoryIdSchema>
 
 export type Category = z.infer<typeof CategorySchema>
 
@@ -33,16 +36,20 @@ export type CategoryUpdateData = z.infer<typeof CategoryUpdateSchema>
 
 export type CategoryDTO = z.infer<typeof CategoryDTOSchema>
 
-export type CategoryNameAlreadyExists = typeof CATEGORY_ERRORS.NAME_ALREADY_EXISTS
+export type CategoryNameAlreadyExists =
+  typeof CATEGORY_ERRORS.NAME_ALREADY_EXISTS
 export type CategoryConflictError = CategoryNameAlreadyExists
 
-export type CategoryEditError = CategoryNameAlreadyExists | Forbidden | Unauthorized
+export type CategoryEditError =
+  | CategoryNameAlreadyExists
+  | Forbidden
+  | Unauthorized
 
 export type CategoryListResponse = Response<OkResponse<CategoryDTO[]>>
 
 type CategoryResult =
   | OkResponse<CategoryDTO>
-  | BadRequestResponse<Issues<string>>
+  | BadRequestResponse<Issues<CategoryId>>
   | NotFoundResponse
 
 export type CategoryResponse = Response<CategoryResult>
@@ -58,7 +65,7 @@ export type CategoryCreationResponse = Response<CategoryCreationResult>
 
 type CategoryDeletionResult =
   | NoContentResponse
-  | BadRequestResponse<Issues<string>>
+  | BadRequestResponse<Issues<CategoryId>>
   | UnauthorizedResponse
   | ForbiddenResponse
 
@@ -66,11 +73,13 @@ export type CategoryDeletionResponse = Response<CategoryDeletionResult>
 
 type CategoryUpdateResult =
   | OkResponse<CategoryDTO>
-  | BadRequestResponse<Issues<CategoryUpdateData | string>>
+  | BadRequestResponse<Issues<CategoryUpdateData | CategoryId>>
   | ConflictResponse<CategoryNameAlreadyExists>
   | UnauthorizedResponse
   | ForbiddenResponse
 
 export type CategoryUpdateResponse = Response<CategoryUpdateResult>
 
-export type CategoryValidationErrors = ValidationErrors<ValueOf<typeof CATEGORY_FORM_FIELDS>>
+export type CategoryValidationErrors = ValidationErrors<
+  ValueOf<typeof CATEGORY_FORM_FIELDS>
+>

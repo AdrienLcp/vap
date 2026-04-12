@@ -1,7 +1,7 @@
 import type { ProductPublicDTO } from '@/features/product/domain/product-entities'
 import { ProductImage } from '@/features/product/presentation/components/product-image'
 import { PublicProductActions } from '@/features/product/presentation/components/public-product-actions'
-import { formatPrice } from '@/utils/format-utils'
+import { formatPrice } from '@/infrastructure/format/price-formatter'
 
 import './public-product.sass'
 

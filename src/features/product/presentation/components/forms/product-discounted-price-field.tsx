@@ -11,7 +11,9 @@ type ProductDiscountedPriceFieldProps = Omit<
   value?: number | null
 }
 
-export const ProductDiscountedPriceField: React.FC<ProductDiscountedPriceFieldProps> = ({
+export const ProductDiscountedPriceField: React.FC<
+  ProductDiscountedPriceFieldProps
+> = ({
   defaultValue,
   description = t('product.fields.discountedPrice.description'),
   label = t('product.fields.discountedPrice.label'),

@@ -4,7 +4,11 @@ import { getAdminUserRoute } from '@/domain/navigation'
 import type { UserDTO } from '@/features/user/domain/user-entities'
 import { translateUserRole } from '@/features/user/presentation/utils/role-utils'
 import { t } from '@/infrastructure/i18n'
-import { Table, type TableColumn, type TableRow } from '@/presentation/components/ui/table'
+import {
+  Table,
+  type TableColumn,
+  type TableRow
+} from '@/presentation/components/ui/table'
 
 import './users-table.sass'
 
@@ -17,7 +21,11 @@ type UserTableColumn = TableColumn<TableColumnKey>
 
 const userTableColumns: UserTableColumn[] = [
   { children: t('user.list.table.columns.name'), id: 'name' },
-  { children: t('user.list.table.columns.email'), id: 'email', isRowHeader: true },
+  {
+    children: t('user.list.table.columns.email'),
+    id: 'email',
+    isRowHeader: true
+  },
   { children: t('user.list.table.columns.role'), id: 'role' }
 ]
 
@@ -35,7 +43,7 @@ const renderUserTableCell = (user: UserDTO, column: UserTableColumn) => {
 }
 
 const renderUserTableEmptyState = () => (
-  <p className='users-table empty-message'>{t('user.list.table.empty')}</p>
+  <p className='empty-message'>{t('user.list.table.empty')}</p>
 )
 
 export const UsersTable: React.FC<UsersTableProps> = ({ users }) => {

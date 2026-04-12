@@ -6,7 +6,10 @@ import {
   type LinkProps as ReactAriaLinkProps
 } from 'react-aria-components'
 
-import { Tooltip, type TooltipProps } from '@/presentation/components/ui/tooltip'
+import {
+  Tooltip,
+  type TooltipProps
+} from '@/presentation/components/ui/tooltip'
 
 import {
   type DefaultChildrenProps,
@@ -34,7 +37,15 @@ export const BaseLink: React.FC<LinkProps> = ({
 }) => (
   <ReactAriaLink
     className={(values) =>
-      reactAriaPressableClassNames(values, className, variant, Icon, iconSide, size, children)
+      reactAriaPressableClassNames(
+        values,
+        className,
+        variant,
+        Icon,
+        iconSide,
+        size,
+        children
+      )
     }
     {...linkRestProps}
   >
@@ -46,7 +57,9 @@ export const BaseLink: React.FC<LinkProps> = ({
           {Icon && <div className='icon'>{Icon}</div>}
 
           {children != null && (
-            <div className='content'>{renderLinkChildren(children, values)}</div>
+            <div className='content'>
+              {renderLinkChildren(children, values)}
+            </div>
           )}
         </>
       )
@@ -58,10 +71,17 @@ type LinkWithTooltipProps = LinkProps & {
   tooltip?: TooltipProps['children']
 }
 
-export const Link: React.FC<LinkWithTooltipProps> = ({ tooltip, ...linkRestProps }) => {
+export const Link: React.FC<LinkWithTooltipProps> = ({
+  tooltip,
+  ...linkRestProps
+}) => {
   if (tooltip == null) {
     return <BaseLink {...linkRestProps} />
   }
 
-  return <Tooltip Trigger={<BaseLink {...linkRestProps} />}>{tooltip}</Tooltip>
+  return (
+    <Tooltip Content={tooltip}>
+      <BaseLink {...linkRestProps} />
+    </Tooltip>
+  )
 }

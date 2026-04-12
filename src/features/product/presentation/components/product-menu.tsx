@@ -26,7 +26,10 @@ const ProductMenuTrigger: React.FC = () => (
   />
 )
 
-export const ProductMenu: React.FC<ProductMenuProps> = ({ productId, setProductList }) => {
+export const ProductMenu: React.FC<ProductMenuProps> = ({
+  productId,
+  setProductList
+}) => {
   const deleteProduct = useCallback(async () => {
     const productDeletionResponse = await ProductClient.deleteProduct(productId)
 

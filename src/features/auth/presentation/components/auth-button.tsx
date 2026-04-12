@@ -13,19 +13,19 @@ import { Link } from '@/presentation/components/ui/pressables/link'
 import './auth-button.sass'
 
 export const AuthButton: React.FC = () => {
-  const { auth } = useAuth()
+  const { userAuthState } = useAuth()
   const pathname = usePathname()
 
   if (pathname === ROUTES.signIn) {
     return null
   }
 
-  if (auth.status === 'loading') {
+  if (userAuthState.status === 'loading') {
     return <Spinner />
   }
 
-  if (auth.status === 'authenticated') {
-    return <PersonaMenu user={auth.user} />
+  if (userAuthState.status === 'authenticated') {
+    return <PersonaMenu user={userAuthState.user} />
   }
 
   return (

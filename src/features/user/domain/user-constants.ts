@@ -1,4 +1,4 @@
-import type { Role } from '@prisma/client'
+import type { Role } from '@/infrastructure/database/generated'
 
 export const USER_CONSTANTS = {
   DEFAULT_ROLE: 'USER' satisfies Role,

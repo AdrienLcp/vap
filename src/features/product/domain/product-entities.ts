@@ -7,11 +7,14 @@ import type {
   ProductCreationSchema,
   ProductDTOSchema,
   ProductFiltersSchema,
+  ProductIdSchema,
   ProductPublicDTOSchema,
   ProductSchema,
   ProductStatusSchema,
   ProductUpdateSchema
 } from '@/features/product/domain/product-schemas'
+import type { ValueOf } from '@/helpers/object'
+import type { Issues, ValidationErrors } from '@/helpers/validation'
 import type {
   BadRequestResponse,
   ConflictResponse,
@@ -23,8 +26,8 @@ import type {
   Response,
   UnauthorizedResponse
 } from '@/infrastructure/api/http-response'
-import type { ValueOf } from '@/utils/object-utils'
-import type { Issues, ValidationErrors } from '@/utils/validation-utils'
+
+export type ProductId = z.infer<typeof ProductIdSchema>
 
 export type ProductStatus = z.infer<typeof ProductStatusSchema>
 
@@ -50,13 +53,16 @@ export type ProductEditError = ProductError | ProductConflictError
 
 export type ProductFilters = z.infer<typeof ProductFiltersSchema>
 
-type ProductListResult = OkResponse<ProductDTO[]> | UnauthorizedResponse | ForbiddenResponse
+type ProductListResult =
+  | OkResponse<ProductDTO[]>
+  | UnauthorizedResponse
+  | ForbiddenResponse
 
 export type ProductListResponse = Response<ProductListResult>
 
 type ProductResult =
   | OkResponse<ProductDTO>
-  | BadRequestResponse<Issues<string>>
+  | BadRequestResponse<Issues<ProductId>>
   | UnauthorizedResponse
   | ForbiddenResponse
   | NotFoundResponse
@@ -67,7 +73,7 @@ export type ProductPublicListResponse = Response<OkResponse<ProductPublicDTO[]>>
 
 type ProductPublicResult =
   | OkResponse<ProductPublicDTO>
-  | BadRequestResponse<Issues<string | ProductFilters>>
+  | BadRequestResponse<Issues<ProductId | ProductFilters>>
   | NotFoundResponse
 
 export type ProductPublicResponse = Response<ProductPublicResult>
@@ -83,7 +89,7 @@ export type ProductCreationResponse = Response<ProductCreationResult>
 
 type ProductUpdateResult =
   | OkResponse<ProductDTO>
-  | BadRequestResponse<Issues<ProductUpdateData | string>>
+  | BadRequestResponse<Issues<ProductUpdateData | ProductId>>
   | UnauthorizedResponse
   | ForbiddenResponse
   | ConflictResponse<ProductConflictError>
@@ -92,13 +98,15 @@ export type ProductUpdateResponse = Response<ProductUpdateResult>
 
 type ProductDeletionResult =
   | NoContentResponse
-  | BadRequestResponse<Issues<string>>
+  | BadRequestResponse<Issues<ProductId>>
   | UnauthorizedResponse
   | ForbiddenResponse
 
 export type ProductDeletionResponse = Response<ProductDeletionResult>
 
-export type ProductValidationErrors = ValidationErrors<ValueOf<typeof PRODUCT_FORM_FIELDS>>
+export type ProductValidationErrors = ValidationErrors<
+  ValueOf<typeof PRODUCT_FORM_FIELDS>
+>
 
 export type ProductPriceFilters = {
   maxPrice?: number
