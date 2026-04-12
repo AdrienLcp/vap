@@ -19,6 +19,7 @@ export type FormProps = Omit<
 
 export const Form: React.FC<FormProps> = ({
   children,
+  hasResetAfterSubmit,
   onSubmit,
   validationErrors,
   ...formRestProps
@@ -35,8 +36,12 @@ export const Form: React.FC<FormProps> = ({
       const formData = new FormData(currentTarget)
 
       onSubmit(formData, currentTarget)
+
+      if (hasResetAfterSubmit) {
+        currentTarget.reset()
+      }
     },
-    [onSubmit]
+    [hasResetAfterSubmit, onSubmit]
   )
 
   return (
