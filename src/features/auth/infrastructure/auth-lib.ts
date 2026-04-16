@@ -1,18 +1,30 @@
 import { betterAuth } from 'better-auth'
-import { prismaAdapter } from 'better-auth/adapters/prisma'
+import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { createElement } from 'react'
 
+import {
+  accounts,
+  sessions,
+  users,
+  verifications
+} from '@/features/auth/infrastructure/auth-schema'
 import { WelcomeEmailService } from '@/features/email/application/welcome-email-service'
 import { EmailSender } from '@/features/email/infrastructure/email-sender'
 import { ResetPasswordEmail } from '@/features/email/presentation/templates/reset-password-email'
 import { VerificationEmail } from '@/features/email/presentation/templates/verification-email'
 import { USER_CONSTANTS } from '@/features/user/domain/user-constants'
-import { prisma } from '@/infrastructure/database'
+import { db } from '@/infrastructure/database'
 import { SERVER_ENV } from '@/infrastructure/env/server'
 
 export const auth = betterAuth({
-  database: prismaAdapter(prisma, {
-    provider: 'postgresql'
+  database: drizzleAdapter(db, {
+    provider: 'pg',
+    schema: {
+      account: accounts,
+      session: sessions,
+      user: users,
+      verification: verifications
+    }
   }),
   databaseHooks: {
     user: {

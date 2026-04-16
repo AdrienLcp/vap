@@ -30,13 +30,12 @@ src/
 │
 ├── infrastructure/              # Shared technical services
 │   ├── api/                     # Fetch helper, HTTP status codes
-│   ├── database/                # Prisma client + generated + migrations + seed
+│   ├── database/                # Drizzle client + schema barrel + migrations + seed + migrate runner
 │   ├── env/                     # T3 Env validation
 │   ├── format/                  # Formatting helpers
 │   ├── i18n/                    # Dictionaries + t() function
 │   ├── storage/                 # LocalStorage wrapper
-│   ├── url/                     # URL helpers
-│   └── src/
+│   └── url/                     # URL helpers
 │
 ├── domain/                      # Shared business entities (cross-feature)
 ├── presentation/                # Shared global UI components
@@ -60,7 +59,8 @@ features/product/
 │   └── product-service.ts       # Business logic (use cases)
 │
 ├── infrastructure/
-│   ├── product-repository.ts    # Prisma access
+│   ├── product-schema.ts        # Drizzle table definition
+│   ├── product-repository.ts    # Drizzle access
 │   └── product-client.ts        # API client (called from client components)
 │
 └── presentation/
@@ -106,15 +106,15 @@ export default async function ProductsPage() {
 }
 ```
 
-No HTTP fetch. No network boundary. The controller is a server module that reads from Prisma via the repository directly.
+No HTTP fetch. No network boundary. The controller is a server module that reads from the database via the repository (Drizzle) directly.
 
 ### 2. Client Component → API Route → Controller
 
-Interactive components (`'use client'`) cannot access Prisma. They go through:
+Interactive components (`'use client'`) cannot access the DB. They go through:
 
 1. An **API client** (`product-client.ts`) that calls `fetch('/api/products')`.
 2. An **API route** (`src/app/api/products/route.ts`) that calls the same controller.
-3. The **controller** calls the **service** → **repository** → Prisma.
+3. The **controller** calls the **service** → **repository** → Drizzle.
 
 ```tsx
 'use client'
@@ -238,8 +238,15 @@ export const cartService = {
 ### Repository (features/cart/infrastructure/cart-repository.ts)
 
 ```ts
+import { and, eq } from 'drizzle-orm'
+import { db } from '@/infrastructure/database'
+import { cartItems } from '@/features/cart/infrastructure/cart-schema'
+
 export const cartRepository = {
-  upsert: (input) => prisma.cartItem.upsert({ ... })
+  upsert: async (input) => {
+    // find-then-insert-or-update; see the actual repository for the full pattern
+    await db.insert(cartItems).values({ ... })
+  }
 }
 ```
 
@@ -247,7 +254,7 @@ Each layer owns a single responsibility. Each layer can be replaced without touc
 
 ## Shared features and layers
 
-- **`src/infrastructure/`**: cross-feature technical services (Prisma client, env validation, i18n, storage, fetch helper).
+- **`src/infrastructure/`**: cross-feature technical services (Drizzle client + schema barrel, env validation, i18n, storage, fetch helper).
 - **`src/domain/`**: transverse entities (`entities.ts`, `navigation.ts`).
 - **`src/presentation/`**: generic UI components (Avatar, Button, Card, Menu…), hooks, toast service, global styles, UI utils.
 - **`src/helpers/result.ts`**: Result pattern.
@@ -262,7 +269,8 @@ Each layer owns a single responsibility. Each layer can be replaced without touc
 | `*-constants.ts` | domain | Constants, enums |
 | `*-mappers.ts` | domain | DB ↔ domain ↔ DTO conversions |
 | `*-service.ts` | application | Business logic (use cases) |
-| `*-repository.ts` | infrastructure | Prisma access |
+| `*-repository.ts` | infrastructure | Drizzle DB access |
+| `*-schema.ts` | infrastructure | Drizzle table definition |
 | `*-client.ts` | infrastructure | API client (fetch) |
 | `*-controller.ts` | presentation | Server-side controller |
 | `*-lib.ts` | infrastructure | External lib wrapper (Stripe, Better Auth) |

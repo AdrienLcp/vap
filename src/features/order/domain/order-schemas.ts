@@ -11,7 +11,7 @@ import {
   UserIdSchema
 } from '@/features/user/domain/user-schemas'
 
-export const OrderIdSchema = z.cuid()
+export const OrderIdSchema = z.uuid()
 
 export const OrderItemIdSchema = z.string()
 

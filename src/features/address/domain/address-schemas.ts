@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 import { ADDRESS_ERRORS } from './address-constants'
 
-export const AddressIdSchema = z.cuid()
+export const AddressIdSchema = z.uuid()
 export const AddressCitySchema = z.string(ADDRESS_ERRORS.INVALID_CITY).trim()
 export const AddressCountrySchema = z
   .string(ADDRESS_ERRORS.INVALID_COUNTRY)

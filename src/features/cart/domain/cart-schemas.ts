@@ -9,7 +9,7 @@ import {
   ProductPublicDTOSchema
 } from '@/features/product/domain/product-schemas'
 
-export const CartItemIdSchema = z.cuid()
+export const CartItemIdSchema = z.uuid()
 
 export const CartItemQuantitySchema = z
   .int()

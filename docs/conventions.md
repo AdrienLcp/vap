@@ -62,7 +62,7 @@ Biome does this for you on save / on `pnpm format`.
 - No `any`. No `as unknown as`. No `@ts-ignore` or `@ts-expect-error` without a comment explaining why.
 - No casts (`as Foo`) unless it is the only way to interop with a library that returns `unknown`, and then leave a comment.
 - Prefer `type` over `interface` unless you need declaration merging.
-- Prefer `const` assertions and union types over enums for non-database types. (Database-side, Prisma enums are mandatory.)
+- Prefer `const` assertions and union types over enums for non-database types. (Database-side, Drizzle `pgEnum` definitions are the source of truth.)
 
 ## Result pattern
 
@@ -110,7 +110,8 @@ if (result.status === 'ERROR') {
 | `*-constants.ts` | domain | Constants, enums |
 | `*-mappers.ts` | domain | DB ↔ domain ↔ DTO conversions |
 | `*-service.ts` | application | Business logic (use cases) |
-| `*-repository.ts` | infrastructure | Prisma access |
+| `*-repository.ts` | infrastructure | Drizzle DB access |
+| `*-schema.ts` | infrastructure | Drizzle table definition |
 | `*-client.ts` | infrastructure | API client (fetch) |
 | `*-controller.ts` | presentation | Server-side controller |
 | `*-lib.ts` | infrastructure | External lib wrapper |
@@ -137,7 +138,7 @@ import { Button } from '../../../presentation/components/ui/Button'
 
 ```ts
 export const addCartItemSchema = z.object({
-  productId: z.string().cuid(),
+  productId: z.uuid(),
   quantity: z.number().int().positive()
 })
 
@@ -181,4 +182,4 @@ export type AddCartItemInput = z.infer<typeof addCartItemSchema>
 - [ ] New UI is keyboard-accessible
 - [ ] No `console.log`, no `any`, no `@ts-ignore`
 - [ ] French text only in `dictionaries/fr.ts`
-- [ ] No file touches `src/infrastructure/database/generated/`
+- [ ] Schema changes have a matching migration file under `src/infrastructure/database/migrations/`

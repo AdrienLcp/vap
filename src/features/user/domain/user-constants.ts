@@ -1,4 +1,4 @@
-import type { Role } from '@/infrastructure/database/generated'
+import type { Role } from '@/features/auth/infrastructure/auth-schema'
 
 export const USER_CONSTANTS = {
   DEFAULT_ROLE: 'USER' satisfies Role,

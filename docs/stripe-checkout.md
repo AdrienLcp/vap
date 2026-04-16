@@ -5,8 +5,8 @@ Branch: `stripe`. Goal: integrate Stripe Checkout Session (hosted flow) as the p
 ## What is done
 
 ### Schema / DB
-- Migration `stripe_checkout`: `Order.paymentMethodId` is now optional, added `stripeCheckoutSessionId` and `stripePaymentIntentId` (both unique).
-- Prisma client regenerated.
+- Added `stripeCheckoutSessionId` and `stripePaymentIntentId` on `orders` (both unique, nullable).
+- Drizzle schema in `src/features/order/infrastructure/order-schema.ts`, migration applied.
 
 ### Env
 - `STRIPE_WEBHOOK_SECRET` added to `src/infrastructure/env/server.ts` and `.env.example`.
@@ -55,7 +55,7 @@ This was already broken before the Stripe work and is out of scope here.
 ## How to resume
 
 ### Prerequisites
-- PostgreSQL running locally (connection string in `.env`).
+- Docker running (`pnpm dev` will boot the Postgres container).
 - `STRIPE_API_KEY` (sk_test_…) and `STRIPE_WEBHOOK_SECRET` (whsec_…) set in `.env`.
 - Stripe CLI installed (already in `~/bin/stripe.exe`, `stripe --version` should work).
 - Stripe CLI is authenticated. If `stripe listen --print-secret` returns "You have not configured API keys", re-run `stripe login`.
@@ -102,8 +102,8 @@ stripe events resend <evt_id>
 ## Files touched (for quick diff review)
 
 ```
-src/infrastructure/database/schema.prisma
-src/infrastructure/database/migrations/<new>_stripe_checkout/
+src/features/order/infrastructure/order-schema.ts
+src/infrastructure/database/migrations/<new>_stripe_checkout.sql
 src/infrastructure/database/database-seed.ts  (earlier fix: use process.env.DATABASE_URL)
 src/infrastructure/env/server.ts
 .env.example

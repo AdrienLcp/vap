@@ -1,22 +1,24 @@
 import 'server-only'
 
+import { desc, eq } from 'drizzle-orm'
+
 import type { NotFound } from '@/domain/entities'
+import { users } from '@/features/auth/infrastructure/auth-schema'
 import type {
   OrderCreationData,
   OrderDTO,
   OrderId,
-  OrderItemDTO,
   OrderStatus
 } from '@/features/order/domain/order-entities'
-import { failure, type Result, success } from '@/helpers/result'
 import {
-  type EntitySelectedFields,
-  OrderDatabase,
-  OrderItemDatabase
-} from '@/infrastructure/database'
-import { getDatabaseError } from '@/infrastructure/database/database-helpers'
+  orderItems,
+  orders
+} from '@/features/order/infrastructure/order-schema'
+import { products } from '@/features/product/infrastructure/product-schema'
+import { failure, type Result, success } from '@/helpers/result'
+import { db } from '@/infrastructure/database'
 
-type OrderWithUserSelection = {
+type OrderRow = {
   createdAt: Date
   id: string
   shippingAddressId: string
@@ -29,53 +31,40 @@ type OrderWithUserSelection = {
 
 type OrderItemProduct = OrderDTO['items'][number]['product']
 
-type OrderItemWithProductSelection = {
+type OrderItemRow = {
   id: string
   price: number
   product: OrderItemProduct
   quantity: number
 }
 
-const ORDER_USER_SELECTED_FIELDS = {
-  email: true,
-  id: true
-} satisfies EntitySelectedFields<OrderDTO['user']>
-
-const ORDER_WITH_RELATIONS_SELECTED_FIELDS = {
-  createdAt: true,
-  id: true,
-  shippingAddressId: true,
-  status: true,
-  stripeCheckoutSessionId: true,
-  stripePaymentIntentId: true,
-  totalPrice: true,
-  user: { select: ORDER_USER_SELECTED_FIELDS }
-} as const
-
-const ORDER_ITEM_PRODUCT_SELECTED_FIELDS = {
-  description: true,
-  id: true,
-  imageUrl: true,
-  name: true
-} satisfies EntitySelectedFields<OrderItemProduct>
-
-const ORDER_ITEM_SELECTED_FIELDS = {
-  id: true,
-  quantity: true
-} satisfies Partial<Record<keyof OrderItemDTO, true>>
-
-const ORDER_ITEM_WITH_RELATIONS_SELECTED_FIELDS = {
-  ...ORDER_ITEM_SELECTED_FIELDS,
-  price: true,
-  product: {
-    select: ORDER_ITEM_PRODUCT_SELECTED_FIELDS
+const orderSelectedFields = {
+  createdAt: orders.createdAt,
+  id: orders.id,
+  shippingAddressId: orders.shippingAddressId,
+  status: orders.status,
+  stripeCheckoutSessionId: orders.stripeCheckoutSessionId,
+  stripePaymentIntentId: orders.stripePaymentIntentId,
+  totalPrice: orders.totalPrice,
+  user: {
+    email: users.email,
+    id: users.id
   }
 } as const
 
-const toOrderDTO = (
-  order: OrderWithUserSelection,
-  items: OrderItemWithProductSelection[]
-): OrderDTO => ({
+const orderItemSelectedFields = {
+  id: orderItems.id,
+  price: orderItems.price,
+  product: {
+    description: products.description,
+    id: products.id,
+    imageUrl: products.imageUrl,
+    name: products.name
+  },
+  quantity: orderItems.quantity
+} as const
+
+const toOrderDTO = (order: OrderRow, items: OrderItemRow[]): OrderDTO => ({
   createdAt: order.createdAt,
   id: order.id,
   items: items.map((item) => ({
@@ -92,31 +81,54 @@ const toOrderDTO = (
   user: order.user
 })
 
+const findOrderItems = async (orderId: OrderId): Promise<OrderItemRow[]> =>
+  await db
+    .select(orderItemSelectedFields)
+    .from(orderItems)
+    .innerJoin(products, eq(orderItems.productId, products.id))
+    .where(eq(orderItems.orderId, orderId))
+
 const createOrder = async (
   orderCreationData: OrderCreationData
 ): Promise<Result<OrderDTO>> => {
   try {
-    const createdOrder = await OrderDatabase.create({
-      data: {
+    const [inserted] = await db
+      .insert(orders)
+      .values({
         shippingAddressId: orderCreationData.shippingAddressId,
         status: 'PENDING',
         totalPrice: orderCreationData.totalPrice,
         userId: orderCreationData.userId
-      },
-      select: ORDER_WITH_RELATIONS_SELECTED_FIELDS
-    })
+      })
+      .returning({ id: orders.id })
 
-    const createdOrderItems = await OrderItemDatabase.createManyAndReturn({
-      data: orderCreationData.items.map((item) => ({
-        orderId: createdOrder.id,
+    if (!inserted) {
+      return failure()
+    }
+
+    await db.insert(orderItems).values(
+      orderCreationData.items.map((item) => ({
+        orderId: inserted.id,
         price: item.unitPrice,
         productId: item.productId,
         quantity: item.quantity
-      })),
-      select: ORDER_ITEM_WITH_RELATIONS_SELECTED_FIELDS
-    })
+      }))
+    )
 
-    return success(toOrderDTO(createdOrder, createdOrderItems))
+    const [createdOrder] = await db
+      .select(orderSelectedFields)
+      .from(orders)
+      .innerJoin(users, eq(orders.userId, users.id))
+      .where(eq(orders.id, inserted.id))
+      .limit(1)
+
+    if (!createdOrder) {
+      return failure()
+    }
+
+    const items = await findOrderItems(inserted.id)
+
+    return success(toOrderDTO(createdOrder, items))
   } catch (error) {
     console.error('Unknown error in OrderRepository.createOrder:', error)
     return failure()
@@ -125,19 +137,16 @@ const createOrder = async (
 
 const findOrders = async (): Promise<Result<OrderDTO[]>> => {
   try {
-    const orders = await OrderDatabase.findMany({
-      orderBy: { createdAt: 'desc' },
-      select: ORDER_WITH_RELATIONS_SELECTED_FIELDS
-    })
+    const rows = await db
+      .select(orderSelectedFields)
+      .from(orders)
+      .innerJoin(users, eq(orders.userId, users.id))
+      .orderBy(desc(orders.createdAt))
 
     const ordersWithItems: OrderDTO[] = []
 
-    for (const order of orders) {
-      const items = await OrderItemDatabase.findMany({
-        select: ORDER_ITEM_WITH_RELATIONS_SELECTED_FIELDS,
-        where: { orderId: order.id }
-      })
-
+    for (const order of rows) {
+      const items = await findOrderItems(order.id)
       ordersWithItems.push(toOrderDTO(order, items))
     }
 
@@ -152,19 +161,18 @@ const findOrder = async (
   orderId: OrderId
 ): Promise<Result<OrderDTO, NotFound>> => {
   try {
-    const order = await OrderDatabase.findUnique({
-      select: ORDER_WITH_RELATIONS_SELECTED_FIELDS,
-      where: { id: orderId }
-    })
+    const [order] = await db
+      .select(orderSelectedFields)
+      .from(orders)
+      .innerJoin(users, eq(orders.userId, users.id))
+      .where(eq(orders.id, orderId))
+      .limit(1)
 
     if (!order) {
       return failure('NOT_FOUND')
     }
 
-    const items = await OrderItemDatabase.findMany({
-      select: ORDER_ITEM_WITH_RELATIONS_SELECTED_FIELDS,
-      where: { orderId }
-    })
+    const items = await findOrderItems(orderId)
 
     return success(toOrderDTO(order, items))
   } catch (error) {
@@ -177,19 +185,18 @@ const findOrderByStripeCheckoutSessionId = async (
   stripeCheckoutSessionId: string
 ): Promise<Result<OrderDTO, NotFound>> => {
   try {
-    const order = await OrderDatabase.findUnique({
-      select: ORDER_WITH_RELATIONS_SELECTED_FIELDS,
-      where: { stripeCheckoutSessionId }
-    })
+    const [order] = await db
+      .select(orderSelectedFields)
+      .from(orders)
+      .innerJoin(users, eq(orders.userId, users.id))
+      .where(eq(orders.stripeCheckoutSessionId, stripeCheckoutSessionId))
+      .limit(1)
 
     if (!order) {
       return failure('NOT_FOUND')
     }
 
-    const items = await OrderItemDatabase.findMany({
-      select: ORDER_ITEM_WITH_RELATIONS_SELECTED_FIELDS,
-      where: { orderId: order.id }
-    })
+    const items = await findOrderItems(order.id)
 
     return success(toOrderDTO(order, items))
   } catch (error) {
@@ -206,19 +213,18 @@ const updateOrderStripeCheckoutSessionId = async (
   stripeCheckoutSessionId: string
 ): Promise<Result<null, NotFound>> => {
   try {
-    await OrderDatabase.update({
-      data: { stripeCheckoutSessionId },
-      where: { id: orderId }
-    })
+    const updated = await db
+      .update(orders)
+      .set({ stripeCheckoutSessionId })
+      .where(eq(orders.id, orderId))
+      .returning({ id: orders.id })
 
-    return success()
-  } catch (error) {
-    const dbError = getDatabaseError(error)
-
-    if (dbError.code === 'NOT_FOUND') {
+    if (updated.length === 0) {
       return failure('NOT_FOUND')
     }
 
+    return success()
+  } catch (error) {
     console.error(
       'Unknown error in OrderRepository.updateOrderStripeCheckoutSessionId:',
       error
@@ -232,22 +238,18 @@ const markOrderPaid = async (
   stripePaymentIntentId: string
 ): Promise<Result<null, NotFound>> => {
   try {
-    await OrderDatabase.update({
-      data: {
-        status: 'PAID',
-        stripePaymentIntentId
-      },
-      where: { id: orderId }
-    })
+    const updated = await db
+      .update(orders)
+      .set({ status: 'PAID', stripePaymentIntentId })
+      .where(eq(orders.id, orderId))
+      .returning({ id: orders.id })
 
-    return success()
-  } catch (error) {
-    const dbError = getDatabaseError(error)
-
-    if (dbError.code === 'NOT_FOUND') {
+    if (updated.length === 0) {
       return failure('NOT_FOUND')
     }
 
+    return success()
+  } catch (error) {
     console.error('Unknown error in OrderRepository.markOrderPaid:', error)
     return failure()
   }
@@ -257,19 +259,18 @@ const markOrderCancelled = async (
   orderId: OrderId
 ): Promise<Result<null, NotFound>> => {
   try {
-    await OrderDatabase.update({
-      data: { status: 'CANCELLED' },
-      where: { id: orderId }
-    })
+    const updated = await db
+      .update(orders)
+      .set({ status: 'CANCELLED' })
+      .where(eq(orders.id, orderId))
+      .returning({ id: orders.id })
 
-    return success()
-  } catch (error) {
-    const dbError = getDatabaseError(error)
-
-    if (dbError.code === 'NOT_FOUND') {
+    if (updated.length === 0) {
       return failure('NOT_FOUND')
     }
 
+    return success()
+  } catch (error) {
     console.error('Unknown error in OrderRepository.markOrderCancelled:', error)
     return failure()
   }
@@ -280,25 +281,18 @@ const updateOrderStatus = async (
   status: OrderStatus
 ): Promise<Result<OrderDTO, NotFound>> => {
   try {
-    const updatedOrder = await OrderDatabase.update({
-      data: { status },
-      select: ORDER_WITH_RELATIONS_SELECTED_FIELDS,
-      where: { id: orderId }
-    })
+    const updated = await db
+      .update(orders)
+      .set({ status })
+      .where(eq(orders.id, orderId))
+      .returning({ id: orders.id })
 
-    const items = await OrderItemDatabase.findMany({
-      select: ORDER_ITEM_WITH_RELATIONS_SELECTED_FIELDS,
-      where: { orderId }
-    })
-
-    return success(toOrderDTO(updatedOrder, items))
-  } catch (error) {
-    const dbError = getDatabaseError(error)
-
-    if (dbError.code === 'NOT_FOUND') {
+    if (updated.length === 0) {
       return failure('NOT_FOUND')
     }
 
+    return await findOrder(orderId)
+  } catch (error) {
     console.error('Unknown error in OrderRepository.updateOrderStatus:', error)
     return failure()
   }

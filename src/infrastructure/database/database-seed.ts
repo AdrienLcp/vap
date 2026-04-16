@@ -1,43 +1,34 @@
-import 'dotenv/config'
-
-import { PrismaPg } from '@prisma/adapter-pg'
-
+import { categories } from '@/features/category/infrastructure/category-schema'
 import {
-  PrismaClient,
-  type ProductStatus
-} from '@/infrastructure/database/generated'
+  type ProductStatus,
+  products
+} from '@/features/product/infrastructure/product-schema'
+import { createScriptClient } from '@/infrastructure/database/database-script-client'
 
-const connectionString = process.env.DATABASE_URL
-if (!connectionString) {
-  throw new Error('DATABASE_URL is not set')
-}
+const { client, db } = createScriptClient()
 
-const adapter = new PrismaPg({ connectionString })
-
-const prisma = new PrismaClient({ adapter })
-
-const categories = [
-  { name: 'Category 1' },
-  { name: 'Category 2' },
-  { name: 'Category 3' },
-  { name: 'Category 4' },
-  { name: 'Category 5' },
-  { name: 'Category 6' },
-  { name: 'Category 7' },
-  { name: 'Category 8' },
-  { name: 'Category 9' },
-  { name: 'Category 10' }
+const categoryNames = [
+  'Category 1',
+  'Category 2',
+  'Category 3',
+  'Category 4',
+  'Category 5',
+  'Category 6',
+  'Category 7',
+  'Category 8',
+  'Category 9',
+  'Category 10'
 ]
 
-type Product = {
+type SeedProduct = {
   name: string
   price: number
   sku: string
-  stock: number
   status: ProductStatus
+  stock: number
 }
 
-const products: Product[] = [
+const seedProducts: SeedProduct[] = [
   { name: 'Product 1', price: 10, sku: '0', status: 'ACTIVE', stock: 10 },
   { name: 'Product 2', price: 10, sku: '1', status: 'ACTIVE', stock: 10 },
   { name: 'Product 3', price: 10, sku: '2', status: 'ACTIVE', stock: 10 },
@@ -51,25 +42,28 @@ const products: Product[] = [
 ]
 
 const seed = async () => {
-  for (const category of categories) {
-    await prisma.category.create({ data: category })
+  const insertedCategories = await db
+    .insert(categories)
+    .values(categoryNames.map((name) => ({ name })))
+    .returning({ id: categories.id })
+
+  if (insertedCategories.length === 0) {
+    throw new Error('No categories were inserted')
   }
 
-  const createdCategories = await prisma.category.findMany()
-
-  for (const product of products) {
+  for (const product of seedProducts) {
     const randomCategory =
-      createdCategories[Math.floor(Math.random() * createdCategories.length)]
+      insertedCategories[Math.floor(Math.random() * insertedCategories.length)]
 
-    await prisma.product.create({
-      data: {
-        categoryId: randomCategory.id,
-        name: product.name,
-        price: product.price,
-        sku: product.sku,
-        status: product.status,
-        stock: product.stock
-      }
+    if (!randomCategory) continue
+
+    await db.insert(products).values({
+      categoryId: randomCategory.id,
+      name: product.name,
+      price: product.price,
+      sku: product.sku,
+      status: product.status,
+      stock: product.stock
     })
   }
 }
@@ -77,8 +71,12 @@ const seed = async () => {
 const executeSeed = async () => {
   try {
     await seed()
+    console.info('Seed completed successfully')
   } catch (error) {
     console.error('Error during seeding:', error)
+    process.exitCode = 1
+  } finally {
+    await client.end()
   }
 }
 

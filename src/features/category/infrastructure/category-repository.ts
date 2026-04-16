@@ -1,5 +1,7 @@
 import 'server-only'
 
+import { eq } from 'drizzle-orm'
+
 import type { NotFound } from '@/domain/entities'
 import type {
   Category,
@@ -7,24 +9,22 @@ import type {
   CategoryCreationData,
   CategoryUpdateData
 } from '@/features/category/domain/category-entities'
+import { categories } from '@/features/category/infrastructure/category-schema'
 import {
   type ErrorResult,
   failure,
   type Result,
   success
 } from '@/helpers/result'
-import {
-  CategoryDatabase,
-  type EntitySelectedFields
-} from '@/infrastructure/database'
+import { db } from '@/infrastructure/database'
 import { getDatabaseError } from '@/infrastructure/database/database-helpers'
 
 const categorySelectedFields = {
-  description: true,
-  id: true,
-  imageUrl: true,
-  name: true
-} satisfies EntitySelectedFields<Category>
+  description: categories.description,
+  id: categories.id,
+  imageUrl: categories.imageUrl,
+  name: categories.name
+} as const
 
 const onCategoryDuplicateError = (
   duplicatedKeys: string[]
@@ -41,14 +41,18 @@ const createCategory = async (
   categoryCreationData: CategoryCreationData
 ): Promise<Result<Category, CategoryConflictError>> => {
   try {
-    const createdCategory = await CategoryDatabase.create({
-      data: {
+    const [createdCategory] = await db
+      .insert(categories)
+      .values({
         description: categoryCreationData.description,
         imageUrl: categoryCreationData.imageUrl,
         name: categoryCreationData.name
-      },
-      select: categorySelectedFields
-    })
+      })
+      .returning(categorySelectedFields)
+
+    if (!createdCategory) {
+      return failure()
+    }
 
     return success(createdCategory)
   } catch (error) {
@@ -69,7 +73,7 @@ const createCategory = async (
 
 const deleteCategory = async (categoryId: string): Promise<Result> => {
   try {
-    await CategoryDatabase.delete({ where: { id: categoryId } })
+    await db.delete(categories).where(eq(categories.id, categoryId))
     return success()
   } catch (error) {
     console.error('Unknown error in CategoryRepository.deleteCategory:', error)
@@ -79,10 +83,8 @@ const deleteCategory = async (categoryId: string): Promise<Result> => {
 
 const findCategories = async (): Promise<Result<Category[]>> => {
   try {
-    const categories = await CategoryDatabase.findMany({
-      select: categorySelectedFields
-    })
-    return success(categories)
+    const rows = await db.select(categorySelectedFields).from(categories)
+    return success(rows)
   } catch (error) {
     console.error('Unknown error in CategoryRepository.findCategories:', error)
     return failure()
@@ -93,10 +95,11 @@ const findCategory = async (
   categoryId: string
 ): Promise<Result<Category, NotFound>> => {
   try {
-    const category = await CategoryDatabase.findUnique({
-      select: categorySelectedFields,
-      where: { id: categoryId }
-    })
+    const [category] = await db
+      .select(categorySelectedFields)
+      .from(categories)
+      .where(eq(categories.id, categoryId))
+      .limit(1)
 
     if (!category) {
       return failure('NOT_FOUND')
@@ -114,15 +117,19 @@ const updateCategory = async (
   categoryData: CategoryUpdateData
 ): Promise<Result<Category, CategoryConflictError>> => {
   try {
-    const updatedCategory = await CategoryDatabase.update({
-      data: {
+    const [updatedCategory] = await db
+      .update(categories)
+      .set({
         description: categoryData.description,
         imageUrl: categoryData.imageUrl,
         name: categoryData.name
-      },
-      select: categorySelectedFields,
-      where: { id: categoryId }
-    })
+      })
+      .where(eq(categories.id, categoryId))
+      .returning(categorySelectedFields)
+
+    if (!updatedCategory) {
+      return failure()
+    }
 
     return success(updatedCategory)
   } catch (error) {

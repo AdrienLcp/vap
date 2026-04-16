@@ -1,16 +1,16 @@
 # 🚀 VAP - Vaping E-commerce Platform
 
-> A modern, accessible e-commerce solution for selling vape devices and accessories, built with Next.js 15 and clean architecture principles.
+> A modern, accessible e-commerce solution for selling vape devices and accessories, built with Next.js 16 and clean architecture principles.
 
 <div align="center">
 
-![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-3178C6?style=for-the-badge&logo=typescript&logoColor=blue)
-![Next.js](https://img.shields.io/badge/Next.js-15.5.4-000000?style=for-the-badge&logo=next.js&logoColor=white)
-![React](https://img.shields.io/badge/React-19.1.1-61DAFB?style=for-the-badge&logo=react&logoColor=lightblue)
-![Prisma](https://img.shields.io/badge/Prisma-6.16.2-2D3748?style=for-the-badge&logo=prisma&logoColor=white)
-![Better Auth](https://img.shields.io/badge/Better_Auth-1.3.17-FF6B6B?style=for-the-badge)
-![React Aria Components](https://img.shields.io/badge/React_Aria-1.12.2-E056FD?style=for-the-badge&logo=adobe&logoColor=white)
-![Biome](https://img.shields.io/badge/Biome-2.3.0-4B8BF5?style=for-the-badge&logo=biome)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?style=for-the-badge&logo=typescript&logoColor=blue)
+![Next.js](https://img.shields.io/badge/Next.js-16.1.6-000000?style=for-the-badge&logo=next.js&logoColor=white)
+![React](https://img.shields.io/badge/React-19.2.4-61DAFB?style=for-the-badge&logo=react&logoColor=lightblue)
+![Drizzle](https://img.shields.io/badge/Drizzle-0.45-C5F74F?style=for-the-badge&logo=drizzle&logoColor=black)
+![Better Auth](https://img.shields.io/badge/Better_Auth-1.6-FF6B6B?style=for-the-badge)
+![React Aria Components](https://img.shields.io/badge/React_Aria-1.16-E056FD?style=for-the-badge&logo=adobe&logoColor=white)
+![Biome](https://img.shields.io/badge/Biome-2.4-4B8BF5?style=for-the-badge&logo=biome)
 
 </div>
 
@@ -134,9 +134,9 @@ export const ProductsClientComponent: React.FC = () => {
 ## 🚀 Getting Started
 
 ### 📋 **Prerequisites**
-- **Node.js** ≥ 18.17.0
-- **pnpm** ≥ 8.0.0
-- **PostgreSQL** ≥ 14
+- **Node.js** ≥ 20 LTS
+- **pnpm** ≥ 10
+- **Docker Desktop** (Postgres runs in a container)
 
 ### ⚡ **Quick Setup**
 
@@ -153,37 +153,39 @@ export const ProductsClientComponent: React.FC = () => {
 
 3. **Environment setup**
    ```bash
-   cp .env.example .env.local
-   # Edit .env.local with your configuration
+   cp .env.example .env
+   # Edit .env with your configuration (BETTER_AUTH_SECRET, Google OAuth, etc.)
    ```
 
-4. **Database setup**
-   ```bash
-   # Run migrations
-   pnpm db:migrate
-
-   # Populate database with dev data
-   pnpm db:seed
-
-   # View and edit database data with Prisma Studio
-   pnpm db:studio
-   ```
-
-5. **Start development server**
+4. **Start the dev server**
    ```bash
    pnpm dev
    ```
 
+   This single command:
+   - boots the Postgres container (`docker compose up -d --wait`)
+   - applies pending migrations (`pnpm db:migrate`)
+   - starts Next.js with Turbopack
+
    Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+5. **(Optional) Seed the database**
+   ```bash
+   pnpm db:seed
+   ```
 
 ### 🔧 **Available Scripts**
 
 | Command | Description |
 |---------|-------------|
-| `pnpm dev` | Start development server with Turbopack |
+| `pnpm dev` | Boot Postgres + migrate + Next.js dev server |
 | `pnpm build` | Build for production |
 | `pnpm format` | Format code with Biome |
-| `pnpm lint` | Run Biome (lint + format suggestions) |
+| `pnpm lint` | Run Biome (lint + format) |
+| `pnpm db:generate` | Write a new Drizzle migration from the TS schema |
+| `pnpm db:migrate` | Apply pending migrations |
+| `pnpm db:seed` | Insert dev fixtures |
+| `pnpm db:studio` | Drizzle Studio UI |
 
 ---
 
@@ -261,14 +263,17 @@ This project prioritizes accessibility using **React Aria Components** and follo
 - **Zod** - Runtime type validation
 
 ### 🗄️ **Database & Backend**
-- **Prisma** - Type-safe database ORM
-- **PostgreSQL** - Primary database
+- **Drizzle ORM** - Type-safe SQL builder, schemas dispatched per feature
+- **postgres** - Lightweight PostgreSQL driver
+- **PostgreSQL 16** - Primary database (runs in Docker)
+- **UUID v7** - Time-ordered application-generated IDs
 - **Server-only** - Server-side code protection
 
-### �️ **Development Tools**
+### 🛠️ **Development Tools**
 - **Biome** - Unified formatter, linter, import organizer
 - **TypeScript** - Type safety and developer experience
-- **Prisma** - Database toolkit
+- **Drizzle Kit** - Migration generator + Studio
+- **tsx** - TypeScript runner for seed/migrate scripts
 - **Turbopack** - Fast development bundler
 
 ### 🌐 **Infrastructure**
@@ -281,9 +286,8 @@ This project prioritizes accessibility using **React Aria Components** and follo
 
 ```
 vap/
-├── 📁 prisma/                    # Database schema & migrations
-│   ├── schema.prisma
-│   └── migrations/
+├── 📄 docker-compose.yml         # Postgres container (used by pnpm dev)
+├── 📄 drizzle.config.ts          # Drizzle Kit config
 ├── 📁 src/
 │   ├── 📁 app/                   # Next.js App Router
 │   │   ├── layout.tsx
@@ -311,7 +315,7 @@ vap/
 │   │
 │   ├── 📁 infrastructure/        # Technical services
 │   │   ├── 📁 api/               # HTTP client & utilities
-│   │   ├── 📁 database/          # Database helpers
+│   │   ├── 📁 database/          # Drizzle client, schema barrel, migrations, seed, migrate runner
 │   │   ├── 📁 env/               # Environment validation
 │   │   ├── 📁 i18n/              # Internationalization
 │   │   └── 📁 storage/           # Local storage utilities
@@ -355,7 +359,8 @@ features/product/
 │   ├── hooks/                    # Client-side React hooks
 │   └── product-service.ts        # Core business logic
 ├── 📁 infrastructure/
-│   ├── product-repository.ts     # Database layer (Prisma)
+│   ├── product-schema.ts         # 🗄️ Drizzle table definition
+│   ├── product-repository.ts     # Database layer (Drizzle)
 │   └── product-client.ts         # 🌐 Client API service
 └── 📁 presentation/
     ├── components/               # React UI components

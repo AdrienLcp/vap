@@ -6,7 +6,7 @@ import { CheckoutService } from '@/features/payment/application/checkout-service
 import { HttpResponse } from '@/infrastructure/api/http-response'
 
 const CheckoutSessionCreationDTOSchema = z.object({
-  shippingAddressId: z.cuid()
+  shippingAddressId: z.uuid()
 })
 
 const createCheckoutSession = async (request: Request) => {

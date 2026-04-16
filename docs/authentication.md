@@ -1,6 +1,6 @@
 # Authentication
 
-Authentication is handled by **Better Auth 1.4.18** with a Prisma adapter. Configuration lives in `src/features/auth/infrastructure/auth-lib.ts`.
+Authentication is handled by **Better Auth 1.6** with a Drizzle adapter. Configuration lives in `src/features/auth/infrastructure/auth-lib.ts`.
 
 ## Providers enabled
 
@@ -15,7 +15,16 @@ Additional features enabled in the config:
 
 ## Storage
 
-Better Auth persists sessions, accounts, and users in PostgreSQL via the Prisma adapter. The relevant tables are:
+Better Auth persists sessions, accounts, and users in PostgreSQL via the Drizzle adapter (`better-auth/adapters/drizzle`, provider `'pg'`). The Drizzle tables come from `src/features/auth/infrastructure/auth-schema.ts` and are wired in `auth-lib.ts`:
+
+```ts
+database: drizzleAdapter(db, {
+  provider: 'pg',
+  schema: { user: users, session: sessions, account: accounts, verification: verifications }
+})
+```
+
+Relevant tables:
 
 - `users` — user accounts (merged with the app's own user fields).
 - `sessions` — active sessions, indexed by a unique `token`.
@@ -71,7 +80,7 @@ Client components should rely on hooks exposed by `@/features/auth/application/`
 
 - **Roles** are the primary authorization mechanism. Never trust the client to decide permissions.
 - Every admin route and API handler must verify the role server-side before doing anything.
-- The `Role` enum is declared in `schema.prisma`: `USER`, `ADMIN`, `SUPER_ADMIN`.
+- The `Role` enum is declared in `src/features/auth/infrastructure/auth-schema.ts` as a Drizzle `pgEnum`: `USER`, `ADMIN`, `SUPER_ADMIN`.
 - Reserve `SUPER_ADMIN` for destructive or sensitive operations (user deletion, role changes).
 
 Example guard inside an API route:
@@ -94,4 +103,4 @@ if (!session || session.user.role === 'USER') {
 - **`pnpm dev` crashes at boot**: usually a missing env variable (`BETTER_AUTH_SECRET` or `DATABASE_URL`). Check `src/infrastructure/env/` for the T3 Env schema.
 - **Session is always null after login**: cookies blocked by the browser or `NEXT_PUBLIC_APP_URL` mismatching the actual URL. Make sure both the server and the OAuth config agree on the host/port.
 - **Google login redirects then fails**: the redirect URI in the Google Cloud Console does not match the one the app sends. Copy it exactly.
-- **Type errors after config changes**: run `pnpm auth:generate`.
+- **Type errors after config changes**: run `pnpm auth:generate`. Note: the CLI may complain about the `import 'server-only'` chain reached via `@/infrastructure/database` — if so, temporarily remove that directive from `auth-lib.ts`, run the command, then put it back. Runtime is unaffected.

@@ -1,0 +1,895 @@
+{
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  },
+  "dialect": "postgresql",
+  "enums": {
+    "public.OrderStatus": {
+      "name": "OrderStatus",
+      "schema": "public",
+      "values": ["CANCELLED", "COMPLETED", "PAID", "PENDING", "SHIPPED"]
+    },
+    "public.ProductStatus": {
+      "name": "ProductStatus",
+      "schema": "public",
+      "values": ["ACTIVE", "INACTIVE", "FEATURED"]
+    },
+    "public.Role": {
+      "name": "Role",
+      "schema": "public",
+      "values": ["USER", "ADMIN", "SUPER_ADMIN"]
+    }
+  },
+  "id": "14f4122d-550b-4ae1-ba58-b54a5d0faf3d",
+  "policies": {},
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "roles": {},
+  "schemas": {},
+  "sequences": {},
+  "tables": {
+    "public.accounts": {
+      "checkConstraints": {},
+      "columns": {
+        "accessToken": {
+          "name": "accessToken",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "accessTokenExpiresAt": {
+          "name": "accessTokenExpiresAt",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "timestamp"
+        },
+        "accountId": {
+          "name": "accountId",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "timestamp"
+        },
+        "id": {
+          "name": "id",
+          "notNull": true,
+          "primaryKey": true,
+          "type": "text"
+        },
+        "idToken": {
+          "name": "idToken",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "password": {
+          "name": "password",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "providerId": {
+          "name": "providerId",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "refreshToken": {
+          "name": "refreshToken",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "refreshTokenExpiresAt": {
+          "name": "refreshTokenExpiresAt",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "timestamp"
+        },
+        "scope": {
+          "name": "scope",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "timestamp"
+        },
+        "userId": {
+          "name": "userId",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "foreignKeys": {
+        "accounts_userId_users_id_fk": {
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "name": "accounts_userId_users_id_fk",
+          "onDelete": "cascade",
+          "onUpdate": "no action",
+          "tableFrom": "accounts",
+          "tableTo": "users"
+        }
+      },
+      "indexes": {},
+      "isRLSEnabled": false,
+      "name": "accounts",
+      "policies": {},
+      "schema": "",
+      "uniqueConstraints": {}
+    },
+    "public.addresses": {
+      "checkConstraints": {},
+      "columns": {
+        "city": {
+          "name": "city",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "country": {
+          "name": "country",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "createdAt": {
+          "default": "now()",
+          "name": "createdAt",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "timestamp"
+        },
+        "id": {
+          "name": "id",
+          "notNull": true,
+          "primaryKey": true,
+          "type": "uuid"
+        },
+        "isDefault": {
+          "default": false,
+          "name": "isDefault",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "boolean"
+        },
+        "name": {
+          "name": "name",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "postalCode": {
+          "name": "postalCode",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "street": {
+          "name": "street",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "updatedAt": {
+          "default": "now()",
+          "name": "updatedAt",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "timestamp"
+        },
+        "userId": {
+          "name": "userId",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "foreignKeys": {
+        "addresses_userId_users_id_fk": {
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "name": "addresses_userId_users_id_fk",
+          "onDelete": "no action",
+          "onUpdate": "no action",
+          "tableFrom": "addresses",
+          "tableTo": "users"
+        }
+      },
+      "indexes": {},
+      "isRLSEnabled": false,
+      "name": "addresses",
+      "policies": {},
+      "schema": "",
+      "uniqueConstraints": {}
+    },
+    "public.cart_items": {
+      "checkConstraints": {},
+      "columns": {
+        "createdAt": {
+          "default": "now()",
+          "name": "createdAt",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "timestamp"
+        },
+        "productId": {
+          "name": "productId",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "uuid"
+        },
+        "quantity": {
+          "default": 1,
+          "name": "quantity",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "integer"
+        },
+        "updatedAt": {
+          "default": "now()",
+          "name": "updatedAt",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "timestamp"
+        },
+        "userId": {
+          "name": "userId",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        }
+      },
+      "compositePrimaryKeys": {
+        "cart_items_productId_userId_pk": {
+          "columns": ["productId", "userId"],
+          "name": "cart_items_productId_userId_pk"
+        }
+      },
+      "foreignKeys": {
+        "cart_items_productId_products_id_fk": {
+          "columnsFrom": ["productId"],
+          "columnsTo": ["id"],
+          "name": "cart_items_productId_products_id_fk",
+          "onDelete": "no action",
+          "onUpdate": "no action",
+          "tableFrom": "cart_items",
+          "tableTo": "products"
+        },
+        "cart_items_userId_users_id_fk": {
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "name": "cart_items_userId_users_id_fk",
+          "onDelete": "no action",
+          "onUpdate": "no action",
+          "tableFrom": "cart_items",
+          "tableTo": "users"
+        }
+      },
+      "indexes": {},
+      "isRLSEnabled": false,
+      "name": "cart_items",
+      "policies": {},
+      "schema": "",
+      "uniqueConstraints": {}
+    },
+    "public.categories": {
+      "checkConstraints": {},
+      "columns": {
+        "createdAt": {
+          "default": "now()",
+          "name": "createdAt",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "timestamp"
+        },
+        "description": {
+          "name": "description",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "id": {
+          "name": "id",
+          "notNull": true,
+          "primaryKey": true,
+          "type": "uuid"
+        },
+        "imageUrl": {
+          "name": "imageUrl",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "name": {
+          "name": "name",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "updatedAt": {
+          "default": "now()",
+          "name": "updatedAt",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "timestamp"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "foreignKeys": {},
+      "indexes": {
+        "categories_name_key": {
+          "columns": [
+            {
+              "asc": true,
+              "expression": "name",
+              "isExpression": false,
+              "nulls": "last"
+            }
+          ],
+          "concurrently": false,
+          "isUnique": true,
+          "method": "btree",
+          "name": "categories_name_key",
+          "with": {}
+        }
+      },
+      "isRLSEnabled": false,
+      "name": "categories",
+      "policies": {},
+      "schema": "",
+      "uniqueConstraints": {}
+    },
+    "public.order_items": {
+      "checkConstraints": {},
+      "columns": {
+        "createdAt": {
+          "default": "now()",
+          "name": "createdAt",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "timestamp"
+        },
+        "id": {
+          "name": "id",
+          "notNull": true,
+          "primaryKey": true,
+          "type": "uuid"
+        },
+        "orderId": {
+          "name": "orderId",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "uuid"
+        },
+        "price": {
+          "name": "price",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "double precision"
+        },
+        "productId": {
+          "name": "productId",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "uuid"
+        },
+        "quantity": {
+          "default": 1,
+          "name": "quantity",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "integer"
+        },
+        "updatedAt": {
+          "default": "now()",
+          "name": "updatedAt",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "timestamp"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "foreignKeys": {
+        "order_items_orderId_orders_id_fk": {
+          "columnsFrom": ["orderId"],
+          "columnsTo": ["id"],
+          "name": "order_items_orderId_orders_id_fk",
+          "onDelete": "no action",
+          "onUpdate": "no action",
+          "tableFrom": "order_items",
+          "tableTo": "orders"
+        },
+        "order_items_productId_products_id_fk": {
+          "columnsFrom": ["productId"],
+          "columnsTo": ["id"],
+          "name": "order_items_productId_products_id_fk",
+          "onDelete": "no action",
+          "onUpdate": "no action",
+          "tableFrom": "order_items",
+          "tableTo": "products"
+        }
+      },
+      "indexes": {},
+      "isRLSEnabled": false,
+      "name": "order_items",
+      "policies": {},
+      "schema": "",
+      "uniqueConstraints": {}
+    },
+    "public.orders": {
+      "checkConstraints": {},
+      "columns": {
+        "createdAt": {
+          "default": "now()",
+          "name": "createdAt",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "timestamp"
+        },
+        "id": {
+          "name": "id",
+          "notNull": true,
+          "primaryKey": true,
+          "type": "uuid"
+        },
+        "shippingAddressId": {
+          "name": "shippingAddressId",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "uuid"
+        },
+        "status": {
+          "default": "'PENDING'",
+          "name": "status",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "OrderStatus",
+          "typeSchema": "public"
+        },
+        "stripeCheckoutSessionId": {
+          "name": "stripeCheckoutSessionId",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "stripePaymentIntentId": {
+          "name": "stripePaymentIntentId",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "totalPrice": {
+          "name": "totalPrice",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "double precision"
+        },
+        "updatedAt": {
+          "default": "now()",
+          "name": "updatedAt",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "timestamp"
+        },
+        "userId": {
+          "name": "userId",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "foreignKeys": {
+        "orders_shippingAddressId_addresses_id_fk": {
+          "columnsFrom": ["shippingAddressId"],
+          "columnsTo": ["id"],
+          "name": "orders_shippingAddressId_addresses_id_fk",
+          "onDelete": "no action",
+          "onUpdate": "no action",
+          "tableFrom": "orders",
+          "tableTo": "addresses"
+        },
+        "orders_userId_users_id_fk": {
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "name": "orders_userId_users_id_fk",
+          "onDelete": "no action",
+          "onUpdate": "no action",
+          "tableFrom": "orders",
+          "tableTo": "users"
+        }
+      },
+      "indexes": {
+        "orders_stripeCheckoutSessionId_key": {
+          "columns": [
+            {
+              "asc": true,
+              "expression": "stripeCheckoutSessionId",
+              "isExpression": false,
+              "nulls": "last"
+            }
+          ],
+          "concurrently": false,
+          "isUnique": true,
+          "method": "btree",
+          "name": "orders_stripeCheckoutSessionId_key",
+          "with": {}
+        },
+        "orders_stripePaymentIntentId_key": {
+          "columns": [
+            {
+              "asc": true,
+              "expression": "stripePaymentIntentId",
+              "isExpression": false,
+              "nulls": "last"
+            }
+          ],
+          "concurrently": false,
+          "isUnique": true,
+          "method": "btree",
+          "name": "orders_stripePaymentIntentId_key",
+          "with": {}
+        }
+      },
+      "isRLSEnabled": false,
+      "name": "orders",
+      "policies": {},
+      "schema": "",
+      "uniqueConstraints": {}
+    },
+    "public.products": {
+      "checkConstraints": {},
+      "columns": {
+        "categoryId": {
+          "name": "categoryId",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "uuid"
+        },
+        "createdAt": {
+          "default": "now()",
+          "name": "createdAt",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "timestamp"
+        },
+        "description": {
+          "name": "description",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "discountedPrice": {
+          "name": "discountedPrice",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "double precision"
+        },
+        "id": {
+          "name": "id",
+          "notNull": true,
+          "primaryKey": true,
+          "type": "uuid"
+        },
+        "imageUrl": {
+          "name": "imageUrl",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "name": {
+          "name": "name",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "price": {
+          "name": "price",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "double precision"
+        },
+        "salesCount": {
+          "default": 0,
+          "name": "salesCount",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "integer"
+        },
+        "sku": {
+          "name": "sku",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "status": {
+          "default": "'ACTIVE'",
+          "name": "status",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "ProductStatus",
+          "typeSchema": "public"
+        },
+        "stock": {
+          "default": 0,
+          "name": "stock",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "integer"
+        },
+        "updatedAt": {
+          "default": "now()",
+          "name": "updatedAt",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "timestamp"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "foreignKeys": {
+        "products_categoryId_categories_id_fk": {
+          "columnsFrom": ["categoryId"],
+          "columnsTo": ["id"],
+          "name": "products_categoryId_categories_id_fk",
+          "onDelete": "no action",
+          "onUpdate": "no action",
+          "tableFrom": "products",
+          "tableTo": "categories"
+        }
+      },
+      "indexes": {
+        "products_sku_key": {
+          "columns": [
+            {
+              "asc": true,
+              "expression": "sku",
+              "isExpression": false,
+              "nulls": "last"
+            }
+          ],
+          "concurrently": false,
+          "isUnique": true,
+          "method": "btree",
+          "name": "products_sku_key",
+          "with": {}
+        }
+      },
+      "isRLSEnabled": false,
+      "name": "products",
+      "policies": {},
+      "schema": "",
+      "uniqueConstraints": {}
+    },
+    "public.sessions": {
+      "checkConstraints": {},
+      "columns": {
+        "createdAt": {
+          "name": "createdAt",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "timestamp"
+        },
+        "expiresAt": {
+          "name": "expiresAt",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "timestamp"
+        },
+        "id": {
+          "name": "id",
+          "notNull": true,
+          "primaryKey": true,
+          "type": "text"
+        },
+        "ipAddress": {
+          "name": "ipAddress",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "token": {
+          "name": "token",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "timestamp"
+        },
+        "userAgent": {
+          "name": "userAgent",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "userId": {
+          "name": "userId",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "foreignKeys": {
+        "sessions_userId_users_id_fk": {
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "name": "sessions_userId_users_id_fk",
+          "onDelete": "cascade",
+          "onUpdate": "no action",
+          "tableFrom": "sessions",
+          "tableTo": "users"
+        }
+      },
+      "indexes": {
+        "sessions_token_key": {
+          "columns": [
+            {
+              "asc": true,
+              "expression": "token",
+              "isExpression": false,
+              "nulls": "last"
+            }
+          ],
+          "concurrently": false,
+          "isUnique": true,
+          "method": "btree",
+          "name": "sessions_token_key",
+          "with": {}
+        }
+      },
+      "isRLSEnabled": false,
+      "name": "sessions",
+      "policies": {},
+      "schema": "",
+      "uniqueConstraints": {}
+    },
+    "public.users": {
+      "checkConstraints": {},
+      "columns": {
+        "createdAt": {
+          "name": "createdAt",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "timestamp"
+        },
+        "email": {
+          "name": "email",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "emailVerified": {
+          "name": "emailVerified",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "boolean"
+        },
+        "id": {
+          "name": "id",
+          "notNull": true,
+          "primaryKey": true,
+          "type": "text"
+        },
+        "image": {
+          "name": "image",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "name": {
+          "name": "name",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "role": {
+          "default": "'USER'",
+          "name": "role",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "Role",
+          "typeSchema": "public"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "timestamp"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "foreignKeys": {},
+      "indexes": {
+        "users_email_key": {
+          "columns": [
+            {
+              "asc": true,
+              "expression": "email",
+              "isExpression": false,
+              "nulls": "last"
+            }
+          ],
+          "concurrently": false,
+          "isUnique": true,
+          "method": "btree",
+          "name": "users_email_key",
+          "with": {}
+        }
+      },
+      "isRLSEnabled": false,
+      "name": "users",
+      "policies": {},
+      "schema": "",
+      "uniqueConstraints": {}
+    },
+    "public.verifications": {
+      "checkConstraints": {},
+      "columns": {
+        "createdAt": {
+          "name": "createdAt",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "timestamp"
+        },
+        "expiresAt": {
+          "name": "expiresAt",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "timestamp"
+        },
+        "id": {
+          "name": "id",
+          "notNull": true,
+          "primaryKey": true,
+          "type": "text"
+        },
+        "identifier": {
+          "name": "identifier",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "timestamp"
+        },
+        "value": {
+          "name": "value",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "foreignKeys": {},
+      "indexes": {},
+      "isRLSEnabled": false,
+      "name": "verifications",
+      "policies": {},
+      "schema": "",
+      "uniqueConstraints": {}
+    }
+  },
+  "version": "7",
+  "views": {}
+}

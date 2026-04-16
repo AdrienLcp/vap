@@ -94,7 +94,8 @@ export const ProductListClient = () => {
 - `*-constants.ts`: constants and enums
 - `*-mappers.ts`: DB ↔ domain ↔ DTO conversions
 - `*-service.ts`: business logic (application layer)
-- `*-repository.ts`: Prisma DB access (infrastructure)
+- `*-repository.ts`: Drizzle DB access (infrastructure)
+- `*-schema.ts`: Drizzle table definition (infrastructure)
 - `*-client.ts`: API client used from client components (infrastructure)
 - `*-controller.ts`: server-side controller (presentation)
 - `*-lib.ts`: wrapper around an external lib (Stripe, Better Auth…)
@@ -147,10 +148,13 @@ import { localHelper } from './helper'    // relatives last
 
 ## 10. Database
 
-- Never touch `src/infrastructure/database/generated/` (auto-generated).
-- To change the schema: `pnpm db:migrate --name <clear_name>` then `pnpm db:generate`.
+- Schemas are per-feature: `src/features/<name>/infrastructure/<name>-schema.ts`, re-exported from `src/infrastructure/database/schema.ts` (barrel).
+- To change the schema: edit the feature's `*-schema.ts`, then `pnpm db:generate` (writes SQL) and `pnpm db:migrate` (applies). `pnpm dev` also runs `db:migrate`.
+- Never edit a migration SQL file that has been committed and applied to shared environments — create a new migration.
 - Destructive migrations (drop column, rename): warn the user before running.
-- Seed script: `src/infrastructure/database/database-seed.ts`.
+- Seed script: `src/infrastructure/database/database-seed.ts`. Migrate runner: `src/infrastructure/database/database-migrate.ts`.
+- Business tables use native `uuid` columns + `createId()` (UUID v7). Auth tables (`users`, `sessions`, `accounts`, `verifications`) use `text` because Better Auth generates nanoid-style IDs.
+- Prefer `pnpm db:migrate` over `drizzle-kit migrate` — the CLI spinner hangs on Git Bash.
 
 ## 11. Authentication
 

@@ -1,4 +1,4 @@
-import type { ProductStatus } from '@/infrastructure/database/generated'
+import type { ProductStatus } from '@/features/product/infrastructure/product-schema'
 
 export const PRODUCT_API_BASE_URL = 'products'
 

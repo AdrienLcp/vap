@@ -1,38 +1,44 @@
 import 'server-only'
 
+import { and, eq } from 'drizzle-orm'
+
 import type { NotFound } from '@/domain/entities'
 import type {
-  CartItem,
   CartItemCreationData,
-  CartItemDTO,
-  CartProduct
+  CartItemDTO
 } from '@/features/cart/domain/cart-entities'
+import { cartItems } from '@/features/cart/infrastructure/cart-schema'
+import { products } from '@/features/product/infrastructure/product-schema'
 import { failure, type Result, success } from '@/helpers/result'
-import {
-  CartDatabase,
-  type EntitySelectedFields
-} from '@/infrastructure/database'
-import { getDatabaseError } from '@/infrastructure/database/database-helpers'
-
-const CART_ITEM_SELECTED_FIELDS = {
-  quantity: true
-} satisfies EntitySelectedFields<CartItem>
-
-const CART_PRODUCT_SELECTED_FIELDS = {
-  discountedPrice: true,
-  id: true,
-  imageUrl: true,
-  name: true,
-  price: true,
-  status: true,
-  stock: true
-} satisfies EntitySelectedFields<CartProduct>
+import { db } from '@/infrastructure/database'
 
 const cartItemSelectedFields = {
-  ...CART_ITEM_SELECTED_FIELDS,
   product: {
-    select: CART_PRODUCT_SELECTED_FIELDS
-  }
+    discountedPrice: products.discountedPrice,
+    id: products.id,
+    imageUrl: products.imageUrl,
+    name: products.name,
+    price: products.price,
+    status: products.status,
+    stock: products.stock
+  },
+  quantity: cartItems.quantity
+} as const
+
+const findCartItem = async (
+  userId: string,
+  productId: string
+): Promise<CartItemDTO | undefined> => {
+  const [row] = await db
+    .select(cartItemSelectedFields)
+    .from(cartItems)
+    .innerJoin(products, eq(cartItems.productId, products.id))
+    .where(
+      and(eq(cartItems.productId, productId), eq(cartItems.userId, userId))
+    )
+    .limit(1)
+
+  return row
 }
 
 const addItemToUserCart = async (
@@ -40,43 +46,44 @@ const addItemToUserCart = async (
   cartItemCreationData: CartItemCreationData
 ): Promise<Result<CartItemDTO>> => {
   try {
-    const existingItem = await CartDatabase.findUnique({
-      select: { quantity: true },
-      where: {
-        productId_userId: {
-          productId: cartItemCreationData.productId,
-          userId
-        }
-      }
-    })
+    const [existingItem] = await db
+      .select({ quantity: cartItems.quantity })
+      .from(cartItems)
+      .where(
+        and(
+          eq(cartItems.productId, cartItemCreationData.productId),
+          eq(cartItems.userId, userId)
+        )
+      )
+      .limit(1)
 
     if (existingItem) {
-      const updatedCartItem = await CartDatabase.update({
-        data: {
+      await db
+        .update(cartItems)
+        .set({
           quantity: existingItem.quantity + cartItemCreationData.quantity
-        },
-        select: cartItemSelectedFields,
-        where: {
-          productId_userId: {
-            productId: cartItemCreationData.productId,
-            userId
-          }
-        }
+        })
+        .where(
+          and(
+            eq(cartItems.productId, cartItemCreationData.productId),
+            eq(cartItems.userId, userId)
+          )
+        )
+    } else {
+      await db.insert(cartItems).values({
+        productId: cartItemCreationData.productId,
+        quantity: cartItemCreationData.quantity,
+        userId
       })
-
-      return success(updatedCartItem)
     }
 
-    const createdCartItem = await CartDatabase.create({
-      data: {
-        product: { connect: { id: cartItemCreationData.productId } },
-        quantity: cartItemCreationData.quantity,
-        user: { connect: { id: userId } }
-      },
-      select: cartItemSelectedFields
-    })
+    const cartItem = await findCartItem(userId, cartItemCreationData.productId)
 
-    return success(createdCartItem)
+    if (!cartItem) {
+      return failure()
+    }
+
+    return success(cartItem)
   } catch (error) {
     console.error('Unknown error in CartRepository.addItemToUserCart:', error)
     return failure()
@@ -85,7 +92,7 @@ const addItemToUserCart = async (
 
 const clearUserCart = async (userId: string): Promise<Result> => {
   try {
-    await CartDatabase.deleteMany({ where: { userId } })
+    await db.delete(cartItems).where(eq(cartItems.userId, userId))
     return success()
   } catch (error) {
     console.error('Unknown error in CartRepository.clearUserCart:', error)
@@ -97,12 +104,13 @@ const findUserCartItems = async (
   userId: string
 ): Promise<Result<CartItemDTO[]>> => {
   try {
-    const userCartItems = await CartDatabase.findMany({
-      select: cartItemSelectedFields,
-      where: { userId }
-    })
+    const rows = await db
+      .select(cartItemSelectedFields)
+      .from(cartItems)
+      .innerJoin(products, eq(cartItems.productId, products.id))
+      .where(eq(cartItems.userId, userId))
 
-    return success(userCartItems)
+    return success(rows)
   } catch (error) {
     console.error('Unknown error in CartRepository.findCartByUserId:', error)
     return failure()
@@ -114,29 +122,24 @@ const removeItemFromUserCart = async (
   productId: string
 ): Promise<Result<null, NotFound>> => {
   try {
-    await CartDatabase.delete({
-      where: {
-        productId_userId: {
-          productId,
-          userId
-        }
-      }
-    })
+    const deleted = await db
+      .delete(cartItems)
+      .where(
+        and(eq(cartItems.productId, productId), eq(cartItems.userId, userId))
+      )
+      .returning({ productId: cartItems.productId })
+
+    if (deleted.length === 0) {
+      return failure('NOT_FOUND')
+    }
 
     return success()
   } catch (error) {
-    const databaseError = getDatabaseError(error)
-
-    switch (databaseError.code) {
-      case 'NOT_FOUND':
-        return failure('NOT_FOUND')
-      default:
-        console.error(
-          'Unknown error in CartRepository.removeItemFromUserCart:',
-          error
-        )
-        return failure()
-    }
+    console.error(
+      'Unknown error in CartRepository.removeItemFromUserCart:',
+      error
+    )
+    return failure()
   }
 }
 
@@ -146,31 +149,31 @@ const updateUserCartItemQuantity = async (
   quantity: number
 ): Promise<Result<CartItemDTO, NotFound>> => {
   try {
-    const updatedCartItem = await CartDatabase.update({
-      data: { quantity },
-      select: cartItemSelectedFields,
-      where: {
-        productId_userId: {
-          productId,
-          userId
-        }
-      }
-    })
+    const updated = await db
+      .update(cartItems)
+      .set({ quantity })
+      .where(
+        and(eq(cartItems.productId, productId), eq(cartItems.userId, userId))
+      )
+      .returning({ productId: cartItems.productId })
 
-    return success(updatedCartItem)
-  } catch (error) {
-    const databaseError = getDatabaseError(error)
-
-    switch (databaseError.code) {
-      case 'NOT_FOUND':
-        return failure('NOT_FOUND')
-      default:
-        console.error(
-          'Unknown error in CartRepository.updateUserCartItemQuantity:',
-          error
-        )
-        return failure()
+    if (updated.length === 0) {
+      return failure('NOT_FOUND')
     }
+
+    const cartItem = await findCartItem(userId, productId)
+
+    if (!cartItem) {
+      return failure('NOT_FOUND')
+    }
+
+    return success(cartItem)
+  } catch (error) {
+    console.error(
+      'Unknown error in CartRepository.updateUserCartItemQuantity:',
+      error
+    )
+    return failure()
   }
 }
 

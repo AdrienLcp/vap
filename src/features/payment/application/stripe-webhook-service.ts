@@ -1,13 +1,19 @@
 import 'server-only'
 
+import { eq } from 'drizzle-orm'
 import type Stripe from 'stripe'
 
 import { CartRepository } from '@/features/cart/infrastructure/cart-repository'
 import { PaymentEmailService } from '@/features/email/application/payment-email-service'
 import { OrderRepository } from '@/features/order/infrastructure/order-repository'
 import { stripe } from '@/features/payment/infrastructure/payment-lib'
+import { products } from '@/features/product/infrastructure/product-schema'
 import { failure, type Result, success } from '@/helpers/result'
-import { ProductDatabase } from '@/infrastructure/database'
+import { db } from '@/infrastructure/database'
+import {
+  decrementColumn,
+  incrementColumn
+} from '@/infrastructure/database/database-helpers'
 import { SERVER_ENV } from '@/infrastructure/env/server'
 
 type WebhookError = 'INVALID_SIGNATURE' | 'NOT_FOUND'
@@ -68,13 +74,13 @@ const handleCheckoutSessionCompleted = async (
   if (orderResult.status === 'SUCCESS') {
     for (const item of orderResult.data.items) {
       try {
-        await ProductDatabase.update({
-          data: {
-            salesCount: { increment: item.quantity },
-            stock: { decrement: item.quantity }
-          },
-          where: { id: item.product.id }
-        })
+        await db
+          .update(products)
+          .set({
+            salesCount: incrementColumn(products.salesCount, item.quantity),
+            stock: decrementColumn(products.stock, item.quantity)
+          })
+          .where(eq(products.id, item.product.id))
       } catch (error) {
         console.error(
           'Failed to decrement stock for product',

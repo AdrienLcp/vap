@@ -93,10 +93,7 @@ export const EmailAdminPage: React.FC = () => {
           <TextArea isRequired label={t('email.admin.bodyLabel')} name='body' />
         </FieldSet>
 
-        <SubmitButton
-          Icon={<SendIcon aria-hidden />}
-          isPending={isSending}
-        >
+        <SubmitButton Icon={<SendIcon aria-hidden />} isPending={isSending}>
           {t('email.admin.sendButton')}
         </SubmitButton>
       </Form>

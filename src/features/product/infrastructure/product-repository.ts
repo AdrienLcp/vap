@@ -1,57 +1,75 @@
 import 'server-only'
 
+import { and, eq, gte, ilike, inArray, lte, or, type SQL } from 'drizzle-orm'
+
 import type { NotFound } from '@/domain/entities'
+import { categories } from '@/features/category/infrastructure/category-schema'
 import type {
-  Product,
-  ProductCategoryDTO,
   ProductConflictError,
   ProductCreationData,
   ProductDTO,
   ProductFilters,
   ProductUpdateData
 } from '@/features/product/domain/product-entities'
+import { products } from '@/features/product/infrastructure/product-schema'
 import {
   type ErrorResult,
   failure,
   type Result,
   success
 } from '@/helpers/result'
-import {
-  type EntitySelectedFields,
-  ProductDatabase
-} from '@/infrastructure/database'
-import {
-  contains,
-  getDatabaseError
-} from '@/infrastructure/database/database-helpers'
-
-const PRODUCT_SELECTED_FIELDS = {
-  description: true,
-  discountedPrice: true,
-  id: true,
-  imageUrl: true,
-  name: true,
-  price: true,
-  salesCount: true,
-  sku: true,
-  status: true,
-  stock: true
-} satisfies EntitySelectedFields<Product>
-
-const PRODUCT_CATEGORY_SELECTED_FIELDS = {
-  id: true,
-  imageUrl: true,
-  name: true
-} satisfies EntitySelectedFields<ProductCategoryDTO>
+import { db } from '@/infrastructure/database'
+import { getDatabaseError } from '@/infrastructure/database/database-helpers'
 
 const productSelectedFields = {
-  ...PRODUCT_SELECTED_FIELDS,
   category: {
-    select: {
-      ...PRODUCT_CATEGORY_SELECTED_FIELDS
-    }
-  }
+    id: categories.id,
+    imageUrl: categories.imageUrl,
+    name: categories.name
+  },
+  description: products.description,
+  discountedPrice: products.discountedPrice,
+  id: products.id,
+  imageUrl: products.imageUrl,
+  name: products.name,
+  price: products.price,
+  salesCount: products.salesCount,
+  sku: products.sku,
+  status: products.status,
+  stock: products.stock
+} as const
+
+type ProductJoinedRow = {
+  description: string | null
+  discountedPrice: number | null
+  id: string
+  imageUrl: string | null
+  name: string
+  price: number
+  salesCount: number
+  sku: string
+  status: ProductDTO['status']
+  stock: number
+  category: {
+    id: string
+    imageUrl: string | null
+    name: string
+  } | null
 }
+
+const toProductDTO = (row: ProductJoinedRow): ProductDTO => ({
+  category: row.category,
+  description: row.description,
+  discountedPrice: row.discountedPrice,
+  id: row.id,
+  imageUrl: row.imageUrl,
+  name: row.name,
+  price: row.price,
+  salesCount: row.salesCount,
+  sku: row.sku,
+  status: row.status,
+  stock: row.stock
+})
 
 const onProductDuplicateError = (
   duplicatedKeys: string[]
@@ -60,16 +78,30 @@ const onProductDuplicateError = (
     return failure('PRODUCT_SKU_ALREADY_EXISTS')
   }
 
-  console.error('Duplicate key error in CategoryRepository:', duplicatedKeys)
+  console.error('Duplicate key error in ProductRepository:', duplicatedKeys)
   return failure()
+}
+
+const findProductById = async (
+  productId: string
+): Promise<ProductDTO | undefined> => {
+  const [row] = await db
+    .select(productSelectedFields)
+    .from(products)
+    .leftJoin(categories, eq(products.categoryId, categories.id))
+    .where(eq(products.id, productId))
+    .limit(1)
+
+  return row ? toProductDTO(row) : undefined
 }
 
 const createProduct = async (
   productCreationData: ProductCreationData
 ): Promise<Result<ProductDTO, ProductConflictError>> => {
   try {
-    const createdProduct = await ProductDatabase.create({
-      data: {
+    const [inserted] = await db
+      .insert(products)
+      .values({
         categoryId: productCreationData.categoryId,
         description: productCreationData.description,
         discountedPrice: productCreationData.discountedPrice,
@@ -79,9 +111,18 @@ const createProduct = async (
         sku: productCreationData.sku,
         status: productCreationData.status,
         stock: productCreationData.stock
-      },
-      select: productSelectedFields
-    })
+      })
+      .returning({ id: products.id })
+
+    if (!inserted) {
+      return failure()
+    }
+
+    const createdProduct = await findProductById(inserted.id)
+
+    if (!createdProduct) {
+      return failure()
+    }
 
     return success(createdProduct)
   } catch (error) {
@@ -102,7 +143,7 @@ const createProduct = async (
 
 const deleteProduct = async (productId: string): Promise<Result> => {
   try {
-    await ProductDatabase.delete({ where: { id: productId } })
+    await db.delete(products).where(eq(products.id, productId))
     return success()
   } catch (error) {
     console.error('Unknown error in ProductRepository.deleteProduct:', error)
@@ -114,10 +155,7 @@ const findProduct = async (
   productId: string
 ): Promise<Result<ProductDTO, NotFound>> => {
   try {
-    const product = await ProductDatabase.findUnique({
-      select: productSelectedFields,
-      where: { id: productId }
-    })
+    const product = await findProductById(productId)
 
     if (!product) {
       return failure('NOT_FOUND')
@@ -130,33 +168,60 @@ const findProduct = async (
   }
 }
 
+const buildProductFilters = (filters?: ProductFilters): SQL | undefined => {
+  if (!filters) return undefined
+
+  const conditions: Array<SQL | undefined> = []
+
+  if (filters.categoryIds && filters.categoryIds.length > 0) {
+    conditions.push(inArray(products.categoryId, filters.categoryIds))
+  }
+
+  if (filters.search) {
+    const pattern = `%${filters.search}%`
+    conditions.push(
+      or(
+        ilike(categories.name, pattern),
+        ilike(products.description, pattern),
+        ilike(products.name, pattern),
+        ilike(products.sku, pattern)
+      )
+    )
+  }
+
+  if (filters.minPrice !== undefined) {
+    conditions.push(gte(products.price, filters.minPrice))
+  }
+
+  if (filters.maxPrice !== undefined) {
+    conditions.push(lte(products.price, filters.maxPrice))
+  }
+
+  if (filters.status) {
+    conditions.push(eq(products.status, filters.status))
+  }
+
+  return conditions.length > 0 ? and(...conditions) : undefined
+}
+
 const findProducts = async (
   filters?: ProductFilters
 ): Promise<Result<ProductDTO[]>> => {
   try {
-    const products = await ProductDatabase.findMany({
-      select: productSelectedFields,
-      where: {
-        categoryId: filters?.categoryIds
-          ? { in: filters.categoryIds }
-          : undefined,
-        OR: filters?.search
-          ? [
-              { category: { name: contains(filters.search) } },
-              { description: contains(filters.search) },
-              { name: contains(filters.search) },
-              { sku: contains(filters.search) }
-            ]
-          : undefined,
-        price: {
-          gte: filters?.minPrice,
-          lte: filters?.maxPrice
-        },
-        status: filters?.status
-      }
-    })
+    const whereClause = buildProductFilters(filters)
 
-    return success(products)
+    const rows = whereClause
+      ? await db
+          .select(productSelectedFields)
+          .from(products)
+          .leftJoin(categories, eq(products.categoryId, categories.id))
+          .where(whereClause)
+      : await db
+          .select(productSelectedFields)
+          .from(products)
+          .leftJoin(categories, eq(products.categoryId, categories.id))
+
+    return success(rows.map(toProductDTO))
   } catch (error) {
     console.error('Unknown error in ProductRepository.findProducts:', error)
     return failure()
@@ -167,10 +232,12 @@ const getCategoryProductCount = async (
   categoryId: string
 ): Promise<Result<number>> => {
   try {
-    const categoryProductCount = await ProductDatabase.count({
-      where: { categoryId }
-    })
-    return success(categoryProductCount)
+    const rows = await db
+      .select({ id: products.id })
+      .from(products)
+      .where(eq(products.categoryId, categoryId))
+
+    return success(rows.length)
   } catch (error) {
     console.error(
       'Unknown error in ProductRepository.getCategoryProductCount:',
@@ -182,10 +249,10 @@ const getCategoryProductCount = async (
 
 const removeProductsCategory = async (categoryId: string): Promise<Result> => {
   try {
-    await ProductDatabase.updateMany({
-      data: { categoryId: null },
-      where: { categoryId }
-    })
+    await db
+      .update(products)
+      .set({ categoryId: null })
+      .where(eq(products.categoryId, categoryId))
 
     return success()
   } catch (error) {
@@ -202,8 +269,9 @@ const updateProduct = async (
   productData: ProductUpdateData
 ): Promise<Result<ProductDTO, ProductConflictError>> => {
   try {
-    const updatedProduct = await ProductDatabase.update({
-      data: {
+    const [updated] = await db
+      .update(products)
+      .set({
         categoryId: productData.categoryId,
         description: productData.description,
         discountedPrice: productData.discountedPrice,
@@ -214,10 +282,19 @@ const updateProduct = async (
         sku: productData.sku,
         status: productData.status,
         stock: productData.stock
-      },
-      select: productSelectedFields,
-      where: { id: productId }
-    })
+      })
+      .where(eq(products.id, productId))
+      .returning({ id: products.id })
+
+    if (!updated) {
+      return failure()
+    }
+
+    const updatedProduct = await findProductById(updated.id)
+
+    if (!updatedProduct) {
+      return failure()
+    }
 
     return success(updatedProduct)
   } catch (error) {

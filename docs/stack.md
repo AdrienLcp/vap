@@ -6,7 +6,7 @@ All versions are pinned in `package.json`. This doc describes what each dependen
 
 | Tool | Version | Role |
 |---|---|---|
-| **Node.js** | ≥ 18.17.0 | JS runtime |
+| **Node.js** | ≥ 20 LTS | JS runtime |
 | **pnpm** | 10.27.0 | Package manager (mandatory) |
 | **TypeScript** | 5.9.3 | Strict typing, no `any` tolerated |
 
@@ -27,30 +27,30 @@ The dev server uses **Turbopack** (`next dev --turbopack`), which is noticeably 
 
 | Package | Version | Role |
 |---|---|---|
-| **prisma** | 7.3.0 | ORM, migration tool, Prisma Studio |
-| **@prisma/client** | 7.3.0 | Generated type-safe client |
-| **@prisma/adapter-pg** | ^7.3.0 | Prisma adapter for `pg` (serverless-friendly) |
-| **@prisma/client-runtime-utils** | ^7.3.0 | Prisma runtime helpers |
-| **pg** | ^8.18.0 | PostgreSQL driver |
+| **drizzle-orm** | ^0.45 | Type-safe SQL builder / ORM |
+| **postgres** | ^3.4 | PostgreSQL driver (used at runtime) |
+| **drizzle-kit** | ^0.31 | CLI for generating migrations and opening Drizzle Studio |
+| **uuidv7** | ^1.2 | Time-ordered UUID generator for app-side IDs |
 
-Schema lives at `src/infrastructure/database/schema.prisma`. The generated client goes to `src/infrastructure/database/generated/` (ignored by Biome and **must never be edited manually**).
+PostgreSQL 16 runs in a Docker container defined in `docker-compose.yml`. Schemas are **dispatched per feature** under `src/features/<name>/infrastructure/<name>-schema.ts` and aggregated in the barrel `src/infrastructure/database/schema.ts`.
 
-Configuration: `prisma.config.ts` points Prisma at the schema, migrations folder, and seed script.
+Drizzle's config lives at `drizzle.config.ts` (repo root), pointing at the barrel for schema discovery and at `src/infrastructure/database/migrations/` for generated SQL files.
+
+Migration runner: `src/infrastructure/database/database-migrate.ts` (programmatic wrapper around `drizzle-orm/postgres-js/migrator`, invoked via `tsx`). Preferred over `drizzle-kit migrate` because the CLI spinner hangs on Git Bash / non-TTY terminals.
 
 ## Authentication
 
 | Package | Version | Role |
 |---|---|---|
-| **better-auth** | ^1.4.18 | Modern auth library (sessions, OAuth, email/password) |
-| **js-sha256** | ^0.11.1 | Cryptographic hashing |
+| **better-auth** | ^1.6 | Modern auth library (sessions, OAuth, email/password) |
+| **js-sha256** | ^0.11 | Cryptographic hashing |
 
-Better Auth is set up in `src/features/auth/infrastructure/auth-lib.ts`, with:
+Better Auth is set up in `src/features/auth/infrastructure/auth-lib.ts`, using the **Drizzle adapter** (`better-auth/adapters/drizzle`, provider `'pg'`) with:
 
 - Email + password login
 - Google OAuth
 - User deletion & email change enabled
 - An additive `role` field (`USER` / `ADMIN` / `SUPER_ADMIN`)
-- A Prisma adapter backed by PostgreSQL
 
 After any auth config change, run `pnpm auth:generate` to regenerate types.
 
@@ -58,18 +58,27 @@ After any auth config change, run `pnpm auth:generate` to regenerate types.
 
 | Package | Version | Role |
 |---|---|---|
-| **stripe** | ^20.3.1 | Stripe server SDK |
+| **stripe** | ^22 | Stripe server SDK |
 
-Instantiated in `src/features/payment/infrastructure/payment-lib.ts`. Integration is currently in progress on the `stripe` branch. The `payment` feature already holds its domain entities, schemas, mappers, service, repository and client.
+Instantiated in `src/features/payment/infrastructure/payment-lib.ts`. The `payment` feature holds its domain entities, schemas, service, repository and client. Stripe webhooks land at `/api/webhooks/stripe` and are verified with `STRIPE_WEBHOOK_SECRET`.
+
+## Email
+
+| Package | Version | Role |
+|---|---|---|
+| **resend** | ^6 | Transactional email delivery |
+| **@react-email/components** | ^1 | React-based email templates |
+
+Email sender in `src/features/email/infrastructure/email-sender.ts`. Templates live under `src/features/email/presentation/templates/`.
 
 ## UI & accessibility
 
 | Package | Version | Role |
 |---|---|---|
-| **react-aria-components** | ^1.15.1 | Adobe-backed accessible UI primitives (WCAG 2.1 AA) |
-| **lucide-react** | ^0.563.0 | Icon set |
-| **classnames** | ^2.5.1 | Conditional class composition |
-| **sass** | ^1.97.3 | SASS modules for styling |
+| **react-aria-components** | ^1.16 | Adobe-backed accessible UI primitives (WCAG 2.1 AA) |
+| **lucide-react** | ^1.8 | Icon set |
+| **classnames** | ^2.5 | Conditional class composition |
+| **sass** | ^1.99 | SASS modules for styling |
 
 No Tailwind, no styled-components, no CSS-in-JS. Every component ships with a `Component.module.sass` file next to it.
 
@@ -77,8 +86,8 @@ No Tailwind, no styled-components, no CSS-in-JS. Every component ships with a `C
 
 | Package | Version | Role |
 |---|---|---|
-| **zustand** | ^5.0.11 | Client-side state (cart, UI state) |
-| **nuqs** | ^2.8.8 | Type-safe state in the URL query string |
+| **zustand** | ^5 | Client-side state (cart, UI state) |
+| **nuqs** | ^2.8 | Type-safe state in the URL query string |
 
 Server data lives in server components; client components use Zustand for UI state and call API clients for data.
 
@@ -86,9 +95,9 @@ Server data lives in server components; client components use Zustand for UI sta
 
 | Package | Version | Role |
 |---|---|---|
-| **zod** | ^4.3.6 | Runtime schemas and validation |
-| **@t3-oss/env-nextjs** | ^0.13.10 | Validate environment variables at boot |
-| **dotenv** | ^17.2.4 | Load `.env` during scripts (seed, Prisma) |
+| **zod** | ^4 | Runtime schemas and validation |
+| **@t3-oss/env-nextjs** | ^0.13 | Validate environment variables at boot |
+| **dotenv** | ^17 | Load `.env` during scripts (seed, migrate) |
 
 Every external input (API route body, query params, form data) is validated with a Zod schema before reaching a service.
 
@@ -96,12 +105,11 @@ Every external input (API route body, query params, form data) is validated with
 
 | Package | Version | Role |
 |---|---|---|
-| **@biomejs/biome** | 2.3.14 | Unified linter + formatter + import sorter |
-| **tsx** | ^4.21.0 | Run TS files directly (used by the seed) |
-| **@types/node** | ^25.2.1 | Node type definitions |
-| **@types/pg** | ^8.16.0 | `pg` type definitions |
-| **@types/react** | 19.2.13 | React type definitions |
-| **@types/react-dom** | 19.2.3 | React DOM type definitions |
+| **@biomejs/biome** | 2.4 | Unified linter + formatter + import sorter |
+| **tsx** | ^4 | Run TS files directly (used by seed and migrate) |
+| **@types/node** | ^25 | Node type definitions |
+| **@types/react** | 19.2 | React type definitions |
+| **@types/react-dom** | 19.2 | React DOM type definitions |
 
 No ESLint, no Prettier. Biome handles lint + format + import sorting in a single fast pass. Config in `biome.json`.
 
@@ -109,24 +117,24 @@ No ESLint, no Prettier. Biome handles lint + format + import sorting in a single
 
 | Script | Command | Purpose |
 |---|---|---|
-| `dev` | `next dev --turbopack` | Dev server with Turbopack |
+| `dev` | `docker compose up -d --wait && pnpm db:migrate && next dev --turbopack` | Boot Postgres, migrate, start Next |
 | `build` | `next build` | Production build |
 | `start` | `next start` | Serve the production build |
-| `lint` | `biome check` | Lint + format check |
+| `lint` | `biome check --write` | Lint + format |
 | `format` | `biome format --write` | Apply formatting |
-| `db:migrate` | `prisma migrate dev` | Create & apply a migration |
-| `db:generate` | `prisma generate` | Regenerate the Prisma client |
-| `db:seed` | `prisma db seed` | Run the seed script |
-| `db:studio` | `prisma studio` | Prisma Studio UI |
+| `db:generate` | `drizzle-kit generate` | Write a new SQL migration file from the TS schema |
+| `db:migrate` | `tsx src/infrastructure/database/database-migrate.ts` | Apply pending migrations |
+| `db:seed` | `tsx src/infrastructure/database/database-seed.ts` | Run the seed script |
+| `db:studio` | `drizzle-kit studio` | Drizzle Studio UI |
 | `auth:generate` | `pnpx @better-auth/cli generate --config ./src/features/auth/infrastructure/auth-lib.ts` | Regenerate Better Auth types |
-| `deps:upgrade` | `pnpm -r up -L` | Upgrade every dependency to latest (handle with care) |
-| `postinstall` | `prisma generate` | Auto-generate Prisma client after install |
 
 ## Why this stack?
 
 - **Next 16 + React 19 + Turbopack**: modern SSR, Server Components, fast dev.
-- **Prisma + PostgreSQL**: type-safe ORM, excellent migration workflow, mature ecosystem.
-- **Better Auth**: lighter and more explicit than NextAuth, first-class TypeScript support.
+- **Drizzle ORM + PostgreSQL**: SQL-first, fully typed, minimal runtime overhead. Schema-as-TS fits the feature-first layout and keeps ORM state out of a single monolithic file.
+- **`postgres` driver**: light, fast, native to JS (no C bindings like `pg`).
+- **UUID v7 IDs**: standard UUID format, time-ordered → better B-tree insert patterns than v4 while staying `z.uuid()`-compatible.
+- **Better Auth**: lighter and more explicit than NextAuth, first-class TypeScript support, swappable adapter (Drizzle here).
 - **React Aria Components**: accessibility baked in, backed by Adobe, used at scale.
 - **Biome**: one tool instead of ESLint + Prettier + plugins; dramatically faster.
 - **Zod + T3 Env**: runtime validation and typed env variables in a single pipeline.
@@ -135,9 +143,11 @@ No ESLint, no Prettier. Biome handles lint + format + import sorting in a single
 
 ## What we deliberately do NOT use
 
+- **Prisma** — replaced by Drizzle (smaller runtime, no code-generation step, schemas closer to SQL, per-feature dispatch).
 - **Tailwind** — SASS modules provide enough structure and avoid class soup.
 - **ESLint / Prettier** — replaced by Biome.
 - **Redux / MobX / Jotai** — Zustand is enough.
 - **axios** — the native `fetch` API is fine.
-- **NextAuth** — Better Auth is preferred for its explicit API and Prisma integration.
+- **NextAuth** — Better Auth is preferred for its explicit API and first-class Drizzle adapter.
 - **styled-components / emotion** — SASS modules keep styles static and predictable.
+- **`pg` driver** — replaced by `postgres` for its lighter footprint and simpler API.

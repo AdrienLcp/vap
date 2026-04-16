@@ -1,32 +1,45 @@
 import 'server-only'
 
+import { and, eq, ilike, inArray, type SQL } from 'drizzle-orm'
+
 import type { NotFound } from '@/domain/entities'
+import { users } from '@/features/auth/infrastructure/auth-schema'
 import type {
   UserDTO,
   UserFilters,
   UserRole
 } from '@/features/user/domain/user-entities'
 import { failure, type Result, success } from '@/helpers/result'
-import {
-  type EntitySelectedFields,
-  UserDatabase
-} from '@/infrastructure/database'
-import { contains } from '@/infrastructure/database/database-helpers'
-import type { User } from '@/infrastructure/database/generated'
+import { db } from '@/infrastructure/database'
 
-const USER_SELECTED_FIELDS = {
-  email: true,
-  id: true,
-  name: true,
-  role: true
-} satisfies EntitySelectedFields<User>
+const userSelectedFields = {
+  email: users.email,
+  id: users.id,
+  name: users.name,
+  role: users.role
+} as const
+
+const buildUserFilters = (filters: UserFilters): SQL | undefined => {
+  const conditions: Array<SQL | undefined> = []
+
+  if (filters.email) {
+    conditions.push(ilike(users.email, `%${filters.email}%`))
+  }
+
+  if (filters.roles && filters.roles.length > 0) {
+    conditions.push(inArray(users.role, filters.roles))
+  }
+
+  return conditions.length > 0 ? and(...conditions) : undefined
+}
 
 const findUser = async (userId: string): Promise<Result<UserDTO, NotFound>> => {
   try {
-    const user = await UserDatabase.findUnique({
-      select: USER_SELECTED_FIELDS,
-      where: { id: userId }
-    })
+    const [user] = await db
+      .select(userSelectedFields)
+      .from(users)
+      .where(eq(users.id, userId))
+      .limit(1)
 
     if (!user) {
       return failure('NOT_FOUND')
@@ -42,21 +55,17 @@ const findUser = async (userId: string): Promise<Result<UserDTO, NotFound>> => {
 const findUsers = async (filters?: UserFilters): Promise<Result<UserDTO[]>> => {
   try {
     if (!filters) {
-      const users = await UserDatabase.findMany({
-        select: USER_SELECTED_FIELDS
-      })
-      return success(users)
+      const rows = await db.select(userSelectedFields).from(users)
+      return success(rows)
     }
 
-    const users = await UserDatabase.findMany({
-      select: USER_SELECTED_FIELDS,
-      where: {
-        email: contains(filters.email ?? ''),
-        role: filters?.roles ? { in: filters.roles } : undefined
-      }
-    })
+    const whereClause = buildUserFilters(filters)
 
-    return success(users)
+    const rows = whereClause
+      ? await db.select(userSelectedFields).from(users).where(whereClause)
+      : await db.select(userSelectedFields).from(users)
+
+    return success(rows)
   } catch (error) {
     console.error('Unknown error in UserRepository.findUsers:', error)
     return failure()
@@ -68,11 +77,15 @@ const updateUserRole = async (
   role: UserRole
 ): Promise<Result<UserDTO>> => {
   try {
-    const updatedUser = await UserDatabase.update({
-      data: { role },
-      select: USER_SELECTED_FIELDS,
-      where: { id: userId }
-    })
+    const [updatedUser] = await db
+      .update(users)
+      .set({ role })
+      .where(eq(users.id, userId))
+      .returning(userSelectedFields)
+
+    if (!updatedUser) {
+      return failure()
+    }
 
     return success(updatedUser)
   } catch (error) {

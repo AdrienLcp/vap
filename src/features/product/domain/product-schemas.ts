@@ -9,7 +9,7 @@ import {
   PRODUCT_ERRORS
 } from '@/features/product/domain/product-constants'
 
-export const ProductIdSchema = z.cuid()
+export const ProductIdSchema = z.uuid()
 
 export const ProductCategoryDTOSchema = CategoryDTOSchema.pick({
   id: true,

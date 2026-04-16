@@ -5,7 +5,7 @@ import {
   CATEGORY_ERRORS
 } from '@/features/category/domain/category-constants'
 
-export const CategoryIdSchema = z.cuid()
+export const CategoryIdSchema = z.uuid()
 
 export const CategoryImageUrlSchema = z
   .url()

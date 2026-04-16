@@ -1,4 +1,4 @@
-import type { OrderStatus } from '@/infrastructure/database/generated'
+import type { OrderStatus } from '@/features/order/infrastructure/order-schema'
 
 export const ORDER_CONSTANTS = {
   STATUS: [

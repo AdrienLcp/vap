@@ -1,5 +1,7 @@
 import 'server-only'
 
+import { and, desc, eq } from 'drizzle-orm'
+
 import type { NotFound } from '@/domain/entities'
 import type {
   AddressCreationData,
@@ -7,35 +9,27 @@ import type {
   AddressId,
   AddressUpdateData
 } from '@/features/address/domain/address-entities'
+import { addresses } from '@/features/address/infrastructure/address-schema'
 import type { UserId } from '@/features/user/domain/user-entities'
 import { failure, type Result, success } from '@/helpers/result'
-import {
-  AddressDatabase,
-  type EntitySelectedFields
-} from '@/infrastructure/database'
-import { getDatabaseError } from '@/infrastructure/database/database-helpers'
+import { db } from '@/infrastructure/database'
 
-const ADDRESS_SELECTED_FIELDS = {
-  city: true,
-  country: true,
-  id: true,
-  isDefault: true,
-  name: true,
-  postalCode: true,
-  street: true
-} satisfies EntitySelectedFields<AddressDTO>
+const addressSelectedFields = {
+  city: addresses.city,
+  country: addresses.country,
+  id: addresses.id,
+  isDefault: addresses.isDefault,
+  name: addresses.name,
+  postalCode: addresses.postalCode,
+  street: addresses.street
+} as const
 
 const clearUserDefaultAddresses = async (userId: UserId): Promise<Result> => {
   try {
-    await AddressDatabase.updateMany({
-      data: {
-        isDefault: false
-      },
-      where: {
-        isDefault: true,
-        userId
-      }
-    })
+    await db
+      .update(addresses)
+      .set({ isDefault: false })
+      .where(and(eq(addresses.userId, userId), eq(addresses.isDefault, true)))
 
     return success()
   } catch (error) {
@@ -52,8 +46,9 @@ const createUserAddress = async (
   addressCreationData: AddressCreationData
 ): Promise<Result<AddressDTO>> => {
   try {
-    const createdAddress = await AddressDatabase.create({
-      data: {
+    const [createdAddress] = await db
+      .insert(addresses)
+      .values({
         city: addressCreationData.city,
         country: addressCreationData.country,
         isDefault: addressCreationData.isDefault,
@@ -61,9 +56,12 @@ const createUserAddress = async (
         postalCode: addressCreationData.postalCode,
         street: addressCreationData.street,
         userId
-      },
-      select: ADDRESS_SELECTED_FIELDS
-    })
+      })
+      .returning(addressSelectedFields)
+
+    if (!createdAddress) {
+      return failure()
+    }
 
     return success(createdAddress)
   } catch (error) {
@@ -80,33 +78,28 @@ const deleteUserAddress = async (
   addressId: AddressId
 ): Promise<Result<null, NotFound>> => {
   try {
-    await AddressDatabase.delete({
-      where: {
-        id: addressId,
-        userId
-      }
-    })
+    const deleted = await db
+      .delete(addresses)
+      .where(and(eq(addresses.id, addressId), eq(addresses.userId, userId)))
+      .returning({ id: addresses.id })
+
+    if (deleted.length === 0) {
+      return failure('NOT_FOUND')
+    }
 
     return success()
   } catch (error) {
-    const databaseError = getDatabaseError(error)
-
-    switch (databaseError.code) {
-      case 'NOT_FOUND':
-        return failure('NOT_FOUND')
-      default:
-        console.error(
-          'Unknown error in AddressRepository.deleteUserAddress:',
-          error
-        )
-        return failure()
-    }
+    console.error(
+      'Unknown error in AddressRepository.deleteUserAddress:',
+      error
+    )
+    return failure()
   }
 }
 
 const deleteUserAddresses = async (userId: UserId): Promise<Result> => {
   try {
-    await AddressDatabase.deleteMany({ where: { userId } })
+    await db.delete(addresses).where(eq(addresses.userId, userId))
 
     return success()
   } catch (error) {
@@ -123,10 +116,11 @@ const findUserAddress = async (
   addressId: AddressId
 ): Promise<Result<AddressDTO, NotFound>> => {
   try {
-    const userAddress = await AddressDatabase.findUnique({
-      select: ADDRESS_SELECTED_FIELDS,
-      where: { id: addressId, userId }
-    })
+    const [userAddress] = await db
+      .select(addressSelectedFields)
+      .from(addresses)
+      .where(and(eq(addresses.id, addressId), eq(addresses.userId, userId)))
+      .limit(1)
 
     if (!userAddress) {
       return failure('NOT_FOUND')
@@ -134,18 +128,11 @@ const findUserAddress = async (
 
     return success(userAddress)
   } catch (error) {
-    const databaseError = getDatabaseError(error)
-
-    switch (databaseError.code) {
-      case 'NOT_FOUND':
-        return failure('NOT_FOUND')
-      default:
-        console.error(
-          'Unknown error in AddressRepository.findUserAddresses:',
-          error
-        )
-        return failure()
-    }
+    console.error(
+      'Unknown error in AddressRepository.findUserAddresses:',
+      error
+    )
+    return failure()
   }
 }
 
@@ -153,11 +140,11 @@ const findUserAddresses = async (
   userId: UserId
 ): Promise<Result<AddressDTO[]>> => {
   try {
-    const userAddresses = await AddressDatabase.findMany({
-      orderBy: { isDefault: 'desc' },
-      select: ADDRESS_SELECTED_FIELDS,
-      where: { userId }
-    })
+    const userAddresses = await db
+      .select(addressSelectedFields)
+      .from(addresses)
+      .where(eq(addresses.userId, userId))
+      .orderBy(desc(addresses.isDefault))
 
     return success(userAddresses)
   } catch (error) {
@@ -175,35 +162,29 @@ const updateUserAddress = async (
   addressData: AddressUpdateData
 ): Promise<Result<AddressDTO, NotFound>> => {
   try {
-    const updatedAddress = await AddressDatabase.update({
-      data: {
+    const [updatedAddress] = await db
+      .update(addresses)
+      .set({
         city: addressData.city,
         country: addressData.country,
         isDefault: addressData.isDefault,
         postalCode: addressData.postalCode,
         street: addressData.street
-      },
-      select: ADDRESS_SELECTED_FIELDS,
-      where: {
-        id: addressId,
-        userId
-      }
-    })
+      })
+      .where(and(eq(addresses.id, addressId), eq(addresses.userId, userId)))
+      .returning(addressSelectedFields)
+
+    if (!updatedAddress) {
+      return failure('NOT_FOUND')
+    }
 
     return success(updatedAddress)
   } catch (error) {
-    const databaseError = getDatabaseError(error)
-
-    switch (databaseError.code) {
-      case 'NOT_FOUND':
-        return failure('NOT_FOUND')
-      default:
-        console.error(
-          'Unknown error in AddressRepository.updateUserAddress:',
-          error
-        )
-        return failure()
-    }
+    console.error(
+      'Unknown error in AddressRepository.updateUserAddress:',
+      error
+    )
+    return failure()
   }
 }
 

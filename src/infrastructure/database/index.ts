@@ -1,26 +1,22 @@
 import 'server-only'
 
-import { PrismaPg } from '@prisma/adapter-pg'
+import { drizzle } from 'drizzle-orm/postgres-js'
+import postgres from 'postgres'
 
-import { PrismaClient } from '@/infrastructure/database/generated'
+import * as schema from '@/infrastructure/database/schema'
 import { SERVER_ENV } from '@/infrastructure/env/server'
 
-const globalForPrisma = global as unknown as { prisma: PrismaClient }
-
-const adapter = new PrismaPg({ connectionString: SERVER_ENV.DATABASE_URL })
-
-export const prisma = globalForPrisma.prisma || new PrismaClient({ adapter })
-
-if (process.env.NODE_ENV !== 'production') {
-  globalForPrisma.prisma = prisma
+const globalForDb = global as unknown as {
+  pgClient?: ReturnType<typeof postgres>
 }
 
-export const AddressDatabase = prisma.address
-export const CartDatabase = prisma.cartItem
-export const CategoryDatabase = prisma.category
-export const OrderDatabase = prisma.order
-export const OrderItemDatabase = prisma.orderItem
-export const ProductDatabase = prisma.product
-export const UserDatabase = prisma.user
+const pgClient =
+  globalForDb.pgClient ?? postgres(SERVER_ENV.DATABASE_URL, { prepare: false })
 
-export type EntitySelectedFields<T> = Partial<Record<keyof T, true>>
+if (process.env.NODE_ENV !== 'production') {
+  globalForDb.pgClient = pgClient
+}
+
+export const db = drizzle(pgClient, { schema })
+
+export type Database = typeof db
