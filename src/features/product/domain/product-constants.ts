@@ -1,9 +1,9 @@
-import type { ProductStatus } from '@/features/product/infrastructure/product-schema'
+import { productStatusEnum } from '@/features/product/infrastructure/product-schema'
 
 export const PRODUCT_API_BASE_URL = 'products'
 
 export const PRODUCT_CONSTANTS = {
-  DEFAULT_STATUS: 'INACTIVE' satisfies ProductStatus,
+  DEFAULT_STATUS: 'INACTIVE',
   DESCRIPTION_MAX_LENGTH: 500,
   IMAGE_SIZE_IN_PX: 220,
   IMAGE_SMALL_SIZE_IN_PX: 80,
@@ -13,7 +13,7 @@ export const PRODUCT_CONSTANTS = {
   NAME_MAX_LENGTH: 100,
   SKU_MAX_LENGTH: 50,
   SKU_MIN_LENGTH: 1,
-  STATUS: ['ACTIVE', 'FEATURED', 'INACTIVE'] satisfies ProductStatus[]
+  STATUS: productStatusEnum.enumValues
 } as const
 
 export const PRODUCT_ERRORS = {

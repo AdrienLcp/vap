@@ -39,23 +39,13 @@ const productSelectedFields = {
   stock: products.stock
 } as const
 
-type ProductJoinedRow = {
-  description: string | null
-  discountedPrice: number | null
-  id: string
-  imageUrl: string | null
-  name: string
-  price: number
-  salesCount: number
-  sku: string
-  status: ProductDTO['status']
-  stock: number
-  category: {
-    id: string
-    imageUrl: string | null
-    name: string
-  } | null
-}
+const buildProductQuery = () =>
+  db
+    .select(productSelectedFields)
+    .from(products)
+    .leftJoin(categories, eq(products.categoryId, categories.id))
+
+type ProductJoinedRow = Awaited<ReturnType<typeof buildProductQuery>>[number]
 
 const toProductDTO = (row: ProductJoinedRow): ProductDTO => ({
   category: row.category,
@@ -85,10 +75,7 @@ const onProductDuplicateError = (
 const findProductById = async (
   productId: string
 ): Promise<ProductDTO | undefined> => {
-  const [row] = await db
-    .select(productSelectedFields)
-    .from(products)
-    .leftJoin(categories, eq(products.categoryId, categories.id))
+  const [row] = await buildProductQuery()
     .where(eq(products.id, productId))
     .limit(1)
 
@@ -211,15 +198,8 @@ const findProducts = async (
     const whereClause = buildProductFilters(filters)
 
     const rows = whereClause
-      ? await db
-          .select(productSelectedFields)
-          .from(products)
-          .leftJoin(categories, eq(products.categoryId, categories.id))
-          .where(whereClause)
-      : await db
-          .select(productSelectedFields)
-          .from(products)
-          .leftJoin(categories, eq(products.categoryId, categories.id))
+      ? await buildProductQuery().where(whereClause)
+      : await buildProductQuery()
 
     return success(rows.map(toProductDTO))
   } catch (error) {

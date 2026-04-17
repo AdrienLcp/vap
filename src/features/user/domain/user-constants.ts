@@ -1,8 +1,8 @@
-import type { Role } from '@/features/auth/infrastructure/auth-schema'
+import { roleEnum } from '@/features/auth/infrastructure/auth-schema'
 
 export const USER_CONSTANTS = {
-  DEFAULT_ROLE: 'USER' satisfies Role,
-  ROLES: ['USER', 'ADMIN', 'SUPER_ADMIN'] satisfies Role[]
+  DEFAULT_ROLE: 'USER',
+  ROLES: roleEnum.enumValues
 } as const
 
 export const USER_API_BASE_URL = 'users'

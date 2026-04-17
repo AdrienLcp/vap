@@ -18,26 +18,6 @@ import { products } from '@/features/product/infrastructure/product-schema'
 import { failure, type Result, success } from '@/helpers/result'
 import { db } from '@/infrastructure/database'
 
-type OrderRow = {
-  createdAt: Date
-  id: string
-  shippingAddressId: string
-  status: OrderStatus
-  stripeCheckoutSessionId: string | null
-  stripePaymentIntentId: string | null
-  totalPrice: number
-  user: { email: string; id: string }
-}
-
-type OrderItemProduct = OrderDTO['items'][number]['product']
-
-type OrderItemRow = {
-  id: string
-  price: number
-  product: OrderItemProduct
-  quantity: number
-}
-
 const orderSelectedFields = {
   createdAt: orders.createdAt,
   id: orders.id,
@@ -64,6 +44,21 @@ const orderItemSelectedFields = {
   quantity: orderItems.quantity
 } as const
 
+const buildOrderQuery = () =>
+  db
+    .select(orderSelectedFields)
+    .from(orders)
+    .innerJoin(users, eq(orders.userId, users.id))
+
+const buildOrderItemsQuery = () =>
+  db
+    .select(orderItemSelectedFields)
+    .from(orderItems)
+    .innerJoin(products, eq(orderItems.productId, products.id))
+
+type OrderRow = Awaited<ReturnType<typeof buildOrderQuery>>[number]
+type OrderItemRow = Awaited<ReturnType<typeof buildOrderItemsQuery>>[number]
+
 const toOrderDTO = (order: OrderRow, items: OrderItemRow[]): OrderDTO => ({
   createdAt: order.createdAt,
   id: order.id,
@@ -82,11 +77,7 @@ const toOrderDTO = (order: OrderRow, items: OrderItemRow[]): OrderDTO => ({
 })
 
 const findOrderItems = async (orderId: OrderId): Promise<OrderItemRow[]> =>
-  await db
-    .select(orderItemSelectedFields)
-    .from(orderItems)
-    .innerJoin(products, eq(orderItems.productId, products.id))
-    .where(eq(orderItems.orderId, orderId))
+  buildOrderItemsQuery().where(eq(orderItems.orderId, orderId))
 
 const createOrder = async (
   orderCreationData: OrderCreationData
@@ -115,10 +106,7 @@ const createOrder = async (
       }))
     )
 
-    const [createdOrder] = await db
-      .select(orderSelectedFields)
-      .from(orders)
-      .innerJoin(users, eq(orders.userId, users.id))
+    const [createdOrder] = await buildOrderQuery()
       .where(eq(orders.id, inserted.id))
       .limit(1)
 
@@ -137,11 +125,7 @@ const createOrder = async (
 
 const findOrders = async (): Promise<Result<OrderDTO[]>> => {
   try {
-    const rows = await db
-      .select(orderSelectedFields)
-      .from(orders)
-      .innerJoin(users, eq(orders.userId, users.id))
-      .orderBy(desc(orders.createdAt))
+    const rows = await buildOrderQuery().orderBy(desc(orders.createdAt))
 
     const ordersWithItems: OrderDTO[] = []
 
@@ -161,10 +145,7 @@ const findOrder = async (
   orderId: OrderId
 ): Promise<Result<OrderDTO, NotFound>> => {
   try {
-    const [order] = await db
-      .select(orderSelectedFields)
-      .from(orders)
-      .innerJoin(users, eq(orders.userId, users.id))
+    const [order] = await buildOrderQuery()
       .where(eq(orders.id, orderId))
       .limit(1)
 
@@ -185,10 +166,7 @@ const findOrderByStripeCheckoutSessionId = async (
   stripeCheckoutSessionId: string
 ): Promise<Result<OrderDTO, NotFound>> => {
   try {
-    const [order] = await db
-      .select(orderSelectedFields)
-      .from(orders)
-      .innerJoin(users, eq(orders.userId, users.id))
+    const [order] = await buildOrderQuery()
       .where(eq(orders.stripeCheckoutSessionId, stripeCheckoutSessionId))
       .limit(1)
 
