@@ -175,7 +175,28 @@ import { localHelper } from './helper'    // relatives last
 - Commit messages in English.
 - Before every commit: `pnpm lint` must pass.
 
-## 14. What NOT to do
+## 14. Abstraction boundaries — abstract capabilities, not libraries
+
+**The repository IS the boundary.** Do not stack a generic wrapper (`database.create()`, unified "email client", neutral "payment SDK") underneath an adapter. This is a textbook Ports-and-Adapters / Hexagonal Architecture anti-pattern and fails on three fronts:
+
+- **Leakage** — ORMs and SDKs ship rich vocabulary (transactions, upserts, relations, webhooks, idempotency, retries). A generic wrapper either exposes those primitives (isolating nothing) or flattens to the lowest common denominator (forcing the caller to reimplement the rest).
+- **No migration payoff** — swapping an ORM rewrites the *shape* of the model (schema DSL, transaction semantics, inferred types), not the call sites. The Prisma → Drizzle migration that just happened on this repo is direct proof: the rewrite happens at the adapter, and nothing thinner underneath would have reduced it.
+- **Permanent cost** — indirection, lost library idioms, duplicated maintenance, drag on every new feature — for a benefit that materialises once every few years, if ever. Classic YAGNI.
+
+**Do / Don't:**
+
+| Anti-pattern | Correct port |
+|---|---|
+| `database.create(table, row)` | `productRepository.create(product)` |
+| `emailClient.send(options)` | `welcomeEmailService.send(user)` |
+| `paymentSdk.charge(params)` | `paymentGateway.chargeOrder(order)` |
+| `httpClient.request(cfg)` | `ProductClient.findProducts(query)` |
+
+**Enforceable rule:** external libraries (`drizzle-orm`, `stripe`, `resend`, `better-auth`, `@react-email/*`…) may only be imported from `infrastructure/` (repositories, `*-lib.ts` wrappers, `*-sender.ts` adapters). Any such import in `application/`, `domain/` or `presentation/` is a design bug — fix it by moving the call behind an existing port, or introduce the missing one. This rule also applies to `*-client.ts` (HTTP client boundary) and `*-storage.ts` (local storage boundary).
+
+Full rationale in `docs/abstraction-boundaries.md`.
+
+## 15. What NOT to do
 
 - Do not create new `README.md` files inside every folder.
 - Do not add ESLint/Prettier (Biome handles both).
