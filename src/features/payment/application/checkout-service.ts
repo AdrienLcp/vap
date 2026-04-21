@@ -1,6 +1,7 @@
 import 'server-only'
 
 import type { BadRequest, NotFound, Unauthorized } from '@/domain/entities'
+import { AuthService } from '@/features/auth/application/auth-service'
 import { CartRepository } from '@/features/cart/infrastructure/cart-repository'
 import { OrderService } from '@/features/order/application/order-service'
 import { OrderRepository } from '@/features/order/infrastructure/order-repository'
@@ -54,9 +55,40 @@ const buildLineItems = async (
   return success(lineItems)
 }
 
+const cleanupUserPendingOrders = async (userId: string): Promise<void> => {
+  const pendingResult = await OrderRepository.findUserPendingOrders(userId)
+
+  if (pendingResult.status === 'ERROR') {
+    return
+  }
+
+  for (const pending of pendingResult.data) {
+    if (pending.stripeCheckoutSessionId) {
+      try {
+        await stripe.checkout.sessions.expire(pending.stripeCheckoutSessionId)
+      } catch (error) {
+        console.error(
+          'Failed to expire Stripe session',
+          pending.stripeCheckoutSessionId,
+          error
+        )
+      }
+    }
+    await OrderRepository.markOrderCancelled(pending.id)
+  }
+}
+
 const createCheckoutSession = async (
   shippingAddressId: string
 ): Promise<Result<{ url: string }, CheckoutError>> => {
+  const userResult = await AuthService.findUser()
+
+  if (userResult.status === 'ERROR') {
+    return userResult
+  }
+
+  await cleanupUserPendingOrders(userResult.data.id)
+
   const orderResult =
     await OrderService.createPendingOrderFromCart(shippingAddressId)
 
@@ -80,17 +112,20 @@ const createCheckoutSession = async (
   const cancelUrl = new URL('/checkout/cancel', CLIENT_ENV.NEXT_PUBLIC_APP_URL)
 
   try {
-    const session = await stripe.checkout.sessions.create({
-      cancel_url: cancelUrl.toString(),
-      client_reference_id: order.user.id,
-      line_items: lineItemsResult.data,
-      metadata: { orderId: order.id },
-      mode: 'payment',
-      payment_intent_data: {
-        metadata: { orderId: order.id }
+    const session = await stripe.checkout.sessions.create(
+      {
+        cancel_url: cancelUrl.toString(),
+        client_reference_id: order.user.id,
+        line_items: lineItemsResult.data,
+        metadata: { orderId: order.id },
+        mode: 'payment',
+        payment_intent_data: {
+          metadata: { orderId: order.id }
+        },
+        success_url: successUrl.toString()
       },
-      success_url: successUrl.toString()
-    })
+      { idempotencyKey: `checkout-session:${order.id}` }
+    )
 
     if (!session.url) {
       console.error('Stripe checkout session created without url:', session.id)

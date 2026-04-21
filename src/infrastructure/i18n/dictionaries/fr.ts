@@ -357,6 +357,9 @@ export const fr = {
     success: {
       backHome: "Retour à l'accueil",
       description: 'Votre commande a bien été enregistrée. Merci !',
+      orderNumber: 'Commande #{orderSuffix}',
+      pending:
+        'Votre paiement est en cours de validation. Cela ne prend généralement que quelques secondes.',
       title: 'Paiement confirmé'
     },
     title: 'Résumé et validation',

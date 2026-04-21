@@ -98,6 +98,30 @@ const findOrder = async (
   return success(orderResult.data)
 }
 
+const findUserOrderByCheckoutSessionId = async (
+  stripeCheckoutSessionId: string
+): Promise<Result<OrderDTO, NotFound | Unauthorized>> => {
+  const userResult = await AuthService.findUser()
+
+  if (userResult.status === 'ERROR') {
+    return userResult
+  }
+
+  const orderResult = await OrderRepository.findOrderByStripeCheckoutSessionId(
+    stripeCheckoutSessionId
+  )
+
+  if (orderResult.status === 'ERROR') {
+    return orderResult
+  }
+
+  if (orderResult.data.user.id !== userResult.data.id) {
+    return failure('NOT_FOUND')
+  }
+
+  return success(orderResult.data)
+}
+
 const findOrders = async (): Promise<Result<OrderDTO[], AdminOrderError>> => {
   const userResult = await AuthService.findUser()
 
@@ -156,5 +180,6 @@ export const OrderService = {
   findOrder,
   findOrderAdmin,
   findOrders,
+  findUserOrderByCheckoutSessionId,
   updateOrderStatus
 }

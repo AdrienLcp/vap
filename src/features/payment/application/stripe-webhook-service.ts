@@ -60,13 +60,17 @@ const handleCheckoutSessionCompleted = async (
     return failure('NOT_FOUND')
   }
 
-  const markResult = await OrderRepository.markOrderPaid(
+  const markResult = await OrderRepository.markOrderPaidIfPending(
     orderId,
     paymentIntentId
   )
 
   if (markResult.status === 'ERROR') {
     return markResult.error === 'NOT_FOUND' ? failure('NOT_FOUND') : failure()
+  }
+
+  if (markResult.data === 'ALREADY_HANDLED') {
+    return success()
   }
 
   const orderResult = await OrderRepository.findOrder(orderId)

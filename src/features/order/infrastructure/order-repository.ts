@@ -1,6 +1,6 @@
 import 'server-only'
 
-import { desc, eq } from 'drizzle-orm'
+import { and, desc, eq } from 'drizzle-orm'
 
 import type { NotFound } from '@/domain/entities'
 import { users } from '@/features/auth/infrastructure/auth-schema'
@@ -211,24 +211,63 @@ const updateOrderStripeCheckoutSessionId = async (
   }
 }
 
-const markOrderPaid = async (
+type PaidTransition = 'TRANSITIONED' | 'ALREADY_HANDLED'
+
+const markOrderPaidIfPending = async (
   orderId: OrderId,
   stripePaymentIntentId: string
-): Promise<Result<null, NotFound>> => {
+): Promise<Result<PaidTransition, NotFound>> => {
   try {
     const updated = await db
       .update(orders)
       .set({ status: 'PAID', stripePaymentIntentId })
-      .where(eq(orders.id, orderId))
+      .where(and(eq(orders.id, orderId), eq(orders.status, 'PENDING')))
       .returning({ id: orders.id })
 
-    if (updated.length === 0) {
+    if (updated.length > 0) {
+      return success('TRANSITIONED')
+    }
+
+    const [existing] = await db
+      .select({ id: orders.id })
+      .from(orders)
+      .where(eq(orders.id, orderId))
+      .limit(1)
+
+    if (!existing) {
       return failure('NOT_FOUND')
     }
 
-    return success()
+    return success('ALREADY_HANDLED')
   } catch (error) {
-    console.error('Unknown error in OrderRepository.markOrderPaid:', error)
+    console.error(
+      'Unknown error in OrderRepository.markOrderPaidIfPending:',
+      error
+    )
+    return failure()
+  }
+}
+
+const findUserPendingOrders = async (
+  userId: string
+): Promise<
+  Result<Array<{ id: OrderId; stripeCheckoutSessionId: string | null }>>
+> => {
+  try {
+    const rows = await db
+      .select({
+        id: orders.id,
+        stripeCheckoutSessionId: orders.stripeCheckoutSessionId
+      })
+      .from(orders)
+      .where(and(eq(orders.userId, userId), eq(orders.status, 'PENDING')))
+
+    return success(rows)
+  } catch (error) {
+    console.error(
+      'Unknown error in OrderRepository.findUserPendingOrders:',
+      error
+    )
     return failure()
   }
 }
@@ -281,8 +320,9 @@ export const OrderRepository = {
   findOrder,
   findOrderByStripeCheckoutSessionId,
   findOrders,
+  findUserPendingOrders,
   markOrderCancelled,
-  markOrderPaid,
+  markOrderPaidIfPending,
   updateOrderStatus,
   updateOrderStripeCheckoutSessionId
 }
