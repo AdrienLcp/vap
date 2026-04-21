@@ -51,8 +51,6 @@ export const SignUpInfoSchema = SignInInfoSchema.extend({
 
 const RequiredPasswordSchema = z.string().min(1, AUTH_ERRORS.PASSWORD_REQUIRED)
 
-export const DeleteAccountPasswordSchema = RequiredPasswordSchema
-
 export const ChangePasswordSchema = z.object({
   currentPassword: RequiredPasswordSchema,
   newPassword: UserPasswordSchema

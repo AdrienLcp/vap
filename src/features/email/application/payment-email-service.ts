@@ -1,11 +1,10 @@
 import 'server-only'
 
-import { createElement } from 'react'
-
 import { EmailSender } from '@/features/email/infrastructure/email-sender'
 import { PaymentConfirmationEmail } from '@/features/email/presentation/templates/payment-confirmation-email'
 import type { OrderDTO } from '@/features/order/domain/order-entities'
 import type { Result } from '@/helpers/result'
+import { t } from '@/infrastructure/i18n'
 
 const sendPaymentConfirmationEmail = async (
   order: OrderDTO
@@ -17,13 +16,16 @@ const sendPaymentConfirmationEmail = async (
   }))
 
   return await EmailSender.sendEmail({
-    react: createElement(PaymentConfirmationEmail, {
+    props: {
       items,
       orderId: order.id,
       totalPrice: order.totalPrice,
       userName: order.user.email
+    },
+    subject: t('email.templates.paymentConfirmation.subject', {
+      orderSuffix: order.id.slice(-8)
     }),
-    subject: `Confirmation de commande #${order.id.slice(-8)}`,
+    template: PaymentConfirmationEmail,
     to: order.user.email
   })
 }

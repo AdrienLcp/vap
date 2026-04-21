@@ -1,6 +1,8 @@
-import { Text } from '@react-email/components'
-
 import { EmailLayout } from '@/features/email/presentation/templates/email-layout'
+import {
+  EmailText,
+  EmailTitle
+} from '@/features/email/presentation/templates/email-primitives'
 
 type BroadcastEmailProps = {
   body: string
@@ -12,25 +14,9 @@ export const BroadcastEmail: React.FC<BroadcastEmailProps> = ({
   subject
 }) => (
   <EmailLayout preview={subject}>
-    <Text style={titleStyle}>{subject}</Text>
+    <EmailTitle>{subject}</EmailTitle>
     {body.split('\n').map((paragraph) => (
-      <Text key={paragraph} style={textStyle}>
-        {paragraph || '\u00A0'}
-      </Text>
+      <EmailText key={paragraph}>{paragraph || '\u00A0'}</EmailText>
     ))}
   </EmailLayout>
 )
-
-const titleStyle: React.CSSProperties = {
-  fontSize: '20px',
-  fontWeight: 600,
-  lineHeight: '1.4',
-  margin: '0 0 16px'
-}
-
-const textStyle: React.CSSProperties = {
-  color: '#525f7f',
-  fontSize: '16px',
-  lineHeight: '1.6',
-  margin: '0 0 4px'
-}

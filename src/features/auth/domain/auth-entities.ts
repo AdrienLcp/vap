@@ -40,6 +40,7 @@ export type AuthUserResponse = Response<
   OkResponse<AuthUserDTO> | UnauthorizedResponse
 >
 
+export type EmailNotVerified = typeof AUTH_ERRORS.EMAIL_NOT_VERIFIED
 export type InvalidCredentials = 'INVALID_CREDENTIALS'
 export type InvalidEmail = typeof AUTH_ERRORS.INVALID_EMAIL
 export type InvalidPassword = 'INVALID_PASSWORD'
@@ -50,11 +51,19 @@ export type SignInInfo = z.infer<typeof SignInInfoSchema>
 
 export type SignUpInfo = z.infer<typeof SignUpInfoSchema>
 
+export type EmailSignInBadRequestError = InvalidCredentials | EmailNotVerified
+
 type EmailSignInResult =
   | OkResponse<AuthUserDTO>
-  | BadRequestResponse<InvalidCredentials>
+  | BadRequestResponse<EmailSignInBadRequestError>
 
 export type EmailSignInResponse = Response<EmailSignInResult>
+
+type VerificationEmailResult =
+  | NoContentResponse
+  | BadRequestResponse<InvalidEmail>
+
+export type VerificationEmailResponse = Response<VerificationEmailResult>
 
 export type SignUpBadRequestError = InvalidEmail | PasswordTooShort
 
@@ -69,10 +78,7 @@ type SignOuResult = NoContentResponse | UnauthorizedResponse
 
 export type SignOutResponse = Response<SignOuResult>
 
-type UserDeletionResult =
-  | NoContentResponse
-  | BadRequestResponse<InvalidPassword>
-  | UnauthorizedResponse
+type UserDeletionResult = NoContentResponse | UnauthorizedResponse
 
 export type UserDeletionResponse = Response<UserDeletionResult>
 

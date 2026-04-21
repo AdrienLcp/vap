@@ -1,7 +1,5 @@
 import 'server-only'
 
-import { createElement } from 'react'
-
 import type { Forbidden, Unauthorized } from '@/domain/entities'
 import { AuthService } from '@/features/auth/application/auth-service'
 import { getAuthUserPermissionsByRole } from '@/features/auth/domain/auth-permissions'
@@ -47,11 +45,12 @@ const sendBroadcastEmail = async (
 
   for (const email of emails) {
     const result = await EmailSender.sendEmail({
-      react: createElement(BroadcastEmail, {
+      props: {
         body: data.body,
         subject: data.subject
-      }),
+      },
       subject: data.subject,
+      template: BroadcastEmail,
       to: email
     })
 

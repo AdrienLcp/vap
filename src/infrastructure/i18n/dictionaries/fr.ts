@@ -121,25 +121,23 @@ export const fr = {
       success: 'Votre mot de passe a été changé avec succès.'
     },
     deleteAccount: {
+      emailHint:
+        "Un email de confirmation va être envoyé à votre adresse. Cliquez sur le lien qu'il contient pour supprimer définitivement votre compte.",
+      emailSent:
+        'Un email de confirmation vous a été envoyé. Cliquez sur le lien pour finaliser la suppression.',
       errors: {
-        invalidPassword: 'Le mot de passe est incorrect.',
         unknown: 'Une erreur inconnue est survenue.'
       },
       form: {
         cancel: 'Annuler',
-        password: {
-          label: 'Mot de passe',
-          placeholder: 'Entrez votre mot de passe'
-        },
         submit: {
-          label: 'Supprimer le compte',
-          loading: 'Suppression en cours...'
+          label: 'Envoyer le mail de confirmation',
+          loading: 'Envoi en cours...'
         }
       },
-      success: 'Votre compte a été supprimé avec succès.',
       title: 'Supprimer le compte',
       warning:
-        'Cette action est irréversible. Toutes vos données seront définitivement supprimées. Veuillez confirmer votre mot de passe pour continuer.'
+        'Cette action est irréversible. Toutes vos données seront définitivement supprimées.'
     },
     fields: {
       email: {
@@ -183,12 +181,18 @@ export const fr = {
     },
     signIn: {
       errors: {
+        emailNotVerified:
+          "Votre adresse email n'est pas vérifiée. Consultez votre boîte mail pour valider votre compte.",
         invalidCredentials:
           "L'adresse mail et le mot de passe ne correspondent pas.",
         unknown: 'Une erreur inconnue est survenue.'
       },
       label: 'Se connecter',
       noAccount: "Vous n'avez pas de compte ?",
+      resendVerification: {
+        label: 'Renvoyer le mail de vérification',
+        success: 'Email de vérification renvoyé. Vérifiez votre boîte mail.'
+      },
       signUpHere: 'Inscrivez-vous ici',
       submit: {
         label: 'Se connecter',
@@ -408,6 +412,69 @@ export const fr = {
       sendSuccess: dt('Email envoyé à {count:number} destinataire(s).', {}),
       subjectLabel: 'Objet',
       title: 'Envoyer un email'
+    },
+    layout: {
+      footer: 'VAP — Votre boutique en ligne'
+    },
+    templates: {
+      accountDeletion: {
+        cta: 'Supprimer mon compte',
+        greeting: 'Bonjour {userName},',
+        hint: "Cette action est irréversible. Toutes vos données seront effacées. Si vous n'avez pas fait cette demande, ignorez cet email — votre compte restera intact.",
+        intro:
+          'Vous avez demandé la suppression définitive de votre compte. Pour confirmer cette action, cliquez sur le lien ci-dessous.',
+        preview: 'Confirmez la suppression de votre compte',
+        subject: 'Confirmez la suppression de votre compte',
+        title: 'Suppression de votre compte'
+      },
+      paymentConfirmation: {
+        greeting: 'Bonjour {userName},',
+        intro:
+          'Votre paiement pour la commande #{orderSuffix} a bien été reçu. Merci pour votre achat !',
+        item: dt('{name} × {quantity:number} — {price:number}', {
+          number: {
+            price: { currency: 'EUR', style: 'currency' }
+          }
+        }),
+        preview: 'Confirmation de commande #{orderSuffix}',
+        subject: 'Confirmation de commande #{orderSuffix}',
+        summary: 'Récapitulatif',
+        title: 'Paiement confirmé',
+        total: dt('Total : {total:number}', {
+          number: {
+            total: { currency: 'EUR', style: 'currency' }
+          }
+        })
+      },
+      resetPassword: {
+        cta: 'Réinitialiser mon mot de passe',
+        greeting: 'Bonjour {userName},',
+        hint: "Si vous n'avez pas fait cette demande, vous pouvez ignorer cet email.",
+        intro:
+          'Vous avez demandé la réinitialisation de votre mot de passe. Cliquez sur le lien ci-dessous pour en choisir un nouveau.',
+        preview: 'Réinitialisation de votre mot de passe',
+        subject: 'Réinitialisation de votre mot de passe',
+        title: 'Réinitialisation du mot de passe'
+      },
+      verification: {
+        cta: 'Vérifier mon email',
+        greeting: 'Bonjour {userName},',
+        hint: "Si vous n'avez pas créé de compte, vous pouvez ignorer cet email.",
+        intro:
+          'Cliquez sur le lien ci-dessous pour vérifier votre adresse email.',
+        preview: 'Vérifiez votre adresse email',
+        subject: 'Vérifiez votre adresse email',
+        title: 'Vérification de votre email'
+      },
+      welcome: {
+        cta: 'Parcourir la boutique',
+        intro: 'Merci de vous être inscrit sur VAP. Votre compte est prêt.',
+        preview: 'Bienvenue sur VAP, {userName} !',
+        secondary:
+          'Découvrez nos produits et commencez vos achats dès maintenant.',
+        subject: 'Bienvenue sur VAP !',
+        title: 'Bienvenue, {userName} !'
+      }
     }
   },
   errors: {

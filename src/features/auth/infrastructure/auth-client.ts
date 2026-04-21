@@ -13,7 +13,8 @@ import type {
   SignUpInfo,
   SignUpResponse,
   SocialProvider,
-  UserDeletionResponse
+  UserDeletionResponse,
+  VerificationEmailResponse
 } from '@/features/auth/domain/auth-entities'
 import {
   ApiClient,
@@ -76,20 +77,15 @@ const changePassword = async (
   }
 }
 
-const deleteUser = async (
-  password: string
-): Promise<ClientResponse<UserDeletionResponse>> => {
+const deleteUser = async (): Promise<ClientResponse<UserDeletionResponse>> => {
   try {
-    const deleteUserResponse = await betterAuthClient.deleteUser({ password })
+    const deleteUserResponse = await betterAuthClient.deleteUser({
+      callbackURL: '/auth/sign-in'
+    })
 
     if (deleteUserResponse.error) {
-      switch (deleteUserResponse.error.code) {
-        case 'INVALID_PASSWORD':
-          return HttpResponse.badRequest('INVALID_PASSWORD')
-        default:
-          console.error('Delete user error:', deleteUserResponse.error)
-          return unknownError()
-      }
+      console.error('Delete user error:', deleteUserResponse.error)
+      return unknownError()
     }
 
     return HttpResponse.noContent()
@@ -112,6 +108,8 @@ const emailSignIn = async (
       switch (emailSignInResponse.error.code) {
         case 'INVALID_EMAIL_OR_PASSWORD':
           return HttpResponse.badRequest('INVALID_CREDENTIALS')
+        case 'EMAIL_NOT_VERIFIED':
+          return HttpResponse.badRequest('EMAIL_NOT_VERIFIED')
         default:
           console.error('Email sign-in error:', emailSignInResponse.error)
           return unknownError()
@@ -213,6 +211,29 @@ const socialSignIn = async (
   }
 }
 
+const sendVerificationEmail = async (
+  email: string
+): Promise<ClientResponse<VerificationEmailResponse>> => {
+  try {
+    const response = await betterAuthClient.sendVerificationEmail({ email })
+
+    if (response.error) {
+      switch (response.error.code) {
+        case 'INVALID_EMAIL':
+          return HttpResponse.badRequest('INVALID_EMAIL')
+        default:
+          console.error('Send verification email error:', response.error)
+          return unknownError()
+      }
+    }
+
+    return HttpResponse.noContent()
+  } catch (error) {
+    console.error('Send verification email error:', error)
+    return unknownError()
+  }
+}
+
 export const AuthClient = {
   changeEmail,
   changePassword,
@@ -220,6 +241,7 @@ export const AuthClient = {
   emailSignIn,
   emailSignUp,
   findUser,
+  sendVerificationEmail,
   signOut,
   socialSignIn
 }

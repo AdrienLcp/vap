@@ -1,7 +1,5 @@
 import 'server-only'
 
-import type { Unauthorized } from '@/domain/entities'
-import { AddressService } from '@/features/address/application/address-service'
 import type {
   AuthUserDTO,
   AuthUserError,
@@ -9,28 +7,7 @@ import type {
 } from '@/features/auth/domain/auth-entities'
 import { getAuthUserPermissionsByRole } from '@/features/auth/domain/auth-permissions'
 import { AuthRepository } from '@/features/auth/infrastructure/auth-repository'
-import { CartService } from '@/features/cart/application/cart-service'
-import { failure, type Result, success } from '@/helpers/result'
-
-const deleteUser = async (): Promise<Result<null, Unauthorized>> => {
-  try {
-    const deletionResults = await Promise.all([
-      AddressService.deleteUserAddresses(),
-      CartService.clearUserCart()
-    ])
-
-    for (const deletionResult of deletionResults) {
-      if (deletionResult.status === 'ERROR') {
-        return deletionResult
-      }
-    }
-
-    return success()
-  } catch (error) {
-    console.error('Unknown error in AuthService.deleteUser:', error)
-    return failure()
-  }
-}
+import { type Result, success } from '@/helpers/result'
 
 const findUser = async (): Promise<Result<User, AuthUserError>> => {
   const authUserResult = await AuthRepository.findUser()
@@ -74,7 +51,6 @@ const findUserDTO = async (): Promise<Result<AuthUserDTO, AuthUserError>> => {
 }
 
 export const AuthService = {
-  deleteUser,
   findUser,
   findUserDTO
 }

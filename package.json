@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "@react-email/components": "^1.0.12",
     "@t3-oss/env-nextjs": "^0.13.11",
     "better-auth": "^1.6.5",
     "classnames": "^2.5.1",
@@ -14,6 +13,7 @@
     "react": "19.2.5",
     "react-aria-components": "^1.17.0",
     "react-dom": "19.2.5",
+    "react-email": "^6.0.0",
     "resend": "^6.12.0",
     "server-only": "^0.0.1",
     "stripe": "^22.0.2",
