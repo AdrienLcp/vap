@@ -15,6 +15,7 @@ import type {
   OrderId,
   OrderStatus
 } from '@/features/order/domain/order-entities'
+import { calculateShippingCost } from '@/features/order/domain/order-shipping'
 import { OrderRepository } from '@/features/order/infrastructure/order-repository'
 import { failure, type Result, success } from '@/helpers/result'
 
@@ -57,10 +58,13 @@ const createPendingOrderFromCart = async (
     unitPrice: item.product.discountedPrice ?? item.product.price
   }))
 
-  const totalPrice = items.reduce(
+  const subtotal = items.reduce(
     (acc, item) => acc + item.unitPrice * item.quantity,
     0
   )
+
+  const shippingCost = calculateShippingCost(subtotal)
+  const totalPrice = subtotal + shippingCost
 
   const [firstItem, ...restItems] = items
 
@@ -71,6 +75,7 @@ const createPendingOrderFromCart = async (
   return await OrderRepository.createOrder({
     items: [firstItem, ...restItems],
     shippingAddressId,
+    shippingCost,
     totalPrice,
     userId
   })

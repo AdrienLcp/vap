@@ -19,6 +19,7 @@ const sendPaymentConfirmationEmail = async (
     props: {
       items,
       orderId: order.id,
+      shippingCost: order.shippingCost,
       totalPrice: order.totalPrice,
       userName: order.user.email
     },

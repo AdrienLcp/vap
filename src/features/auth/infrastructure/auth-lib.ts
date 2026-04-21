@@ -98,6 +98,11 @@ export const auth = betterAuth({
         defaultValue: USER_CONSTANTS.DEFAULT_ROLE,
         input: false,
         type: USER_CONSTANTS.ROLES
+      },
+      stripeCustomerId: {
+        input: false,
+        required: false,
+        type: 'string'
       }
     },
     changeEmail: {

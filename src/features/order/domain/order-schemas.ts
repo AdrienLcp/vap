@@ -28,6 +28,7 @@ export const OrderItemCreationDataSchema = z.object({
 export const OrderCreationDataSchema = z.object({
   items: OrderItemCreationDataSchema.array().nonempty(),
   shippingAddressId: z.string(),
+  shippingCost: PriceSchema,
   totalPrice: PriceSchema,
   userId: UserIdSchema
 })
@@ -69,6 +70,7 @@ export const OrderDTOSchema = z.object({
   id: OrderIdSchema,
   items: OrderItemDTOSchema.array(),
   shippingAddressId: z.string(),
+  shippingCost: PriceSchema,
   status: OrderStatusSchema,
   stripeCheckoutSessionId: z.string().nullable(),
   stripePaymentIntentId: z.string().nullable(),

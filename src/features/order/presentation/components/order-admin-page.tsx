@@ -55,6 +55,12 @@ export const OrderAdminPage: React.FC<OrderAdminPageProps> = async ({
           {formatDate(order.createdAt)}
         </p>
         <p>
+          <strong>{t('order.admin.shippingCost')} :</strong>{' '}
+          {order.shippingCost === 0
+            ? t('checkout.shippingFree')
+            : formatPrice(order.shippingCost)}
+        </p>
+        <p>
           <strong>{t('order.admin.totalPrice')} :</strong>{' '}
           {formatPrice(order.totalPrice)}
         </p>

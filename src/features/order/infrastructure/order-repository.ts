@@ -22,6 +22,7 @@ const orderSelectedFields = {
   createdAt: orders.createdAt,
   id: orders.id,
   shippingAddressId: orders.shippingAddressId,
+  shippingCost: orders.shippingCost,
   status: orders.status,
   stripeCheckoutSessionId: orders.stripeCheckoutSessionId,
   stripePaymentIntentId: orders.stripePaymentIntentId,
@@ -69,6 +70,7 @@ const toOrderDTO = (order: OrderRow, items: OrderItemRow[]): OrderDTO => ({
     unitPrice: item.price
   })),
   shippingAddressId: order.shippingAddressId,
+  shippingCost: order.shippingCost,
   status: order.status,
   stripeCheckoutSessionId: order.stripeCheckoutSessionId,
   stripePaymentIntentId: order.stripePaymentIntentId,
@@ -87,6 +89,7 @@ const createOrder = async (
       .insert(orders)
       .values({
         shippingAddressId: orderCreationData.shippingAddressId,
+        shippingCost: orderCreationData.shippingCost,
         status: 'PENDING',
         totalPrice: orderCreationData.totalPrice,
         userId: orderCreationData.userId

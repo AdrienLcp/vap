@@ -17,13 +17,14 @@ type OrderItem = {
 type PaymentConfirmationEmailProps = {
   items: OrderItem[]
   orderId: string
+  shippingCost: number
   totalPrice: number
   userName: string
 }
 
 export const PaymentConfirmationEmail: React.FC<
   PaymentConfirmationEmailProps
-> = ({ items, orderId, totalPrice, userName }) => {
+> = ({ items, orderId, shippingCost, totalPrice, userName }) => {
   const orderSuffix = orderId.slice(-8)
 
   return (
@@ -53,6 +54,13 @@ export const PaymentConfirmationEmail: React.FC<
             })}
           </Text>
         ))}
+        <Text style={itemStyle}>
+          {shippingCost === 0
+            ? t('email.templates.paymentConfirmation.shippingFree')
+            : t('email.templates.paymentConfirmation.shipping', {
+                shipping: shippingCost
+              })}
+        </Text>
         <Hr style={innerHrStyle} />
         <Text style={totalStyle}>
           {t('email.templates.paymentConfirmation.total', {

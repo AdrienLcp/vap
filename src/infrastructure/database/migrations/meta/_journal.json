@@ -7,6 +7,13 @@
       "tag": "0000_fair_giant_girl",
       "version": "7",
       "when": 1776373458104
+    },
+    {
+      "breakpoints": true,
+      "idx": 1,
+      "tag": "0001_burly_dorian_gray",
+      "version": "7",
+      "when": 1776797770818
     }
   ],
   "version": "7"

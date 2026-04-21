@@ -6,6 +6,7 @@ import { useMemo, useState } from 'react'
 import { ROUTES } from '@/domain/navigation'
 import { AddressSelector } from '@/features/address/presentation/components/address-selector'
 import { useCartStore } from '@/features/cart/application/use-cart-store'
+import { calculateShippingCost } from '@/features/order/domain/order-shipping'
 import { CheckoutClient } from '@/features/payment/infrastructure/checkout-client'
 import { CheckoutItemList } from '@/features/payment/presentation/components/checkout-item-list'
 import { OK_STATUS } from '@/infrastructure/api/http-response'
@@ -18,7 +19,7 @@ import './checkout-review-page.sass'
 export const CheckoutReviewPage: React.FC = () => {
   const items = useCartStore((state) => state.items)
   const cartItems = useMemo(() => Array.from(items.values()), [items])
-  const cartTotal = useMemo(
+  const subtotal = useMemo(
     () =>
       cartItems.reduce(
         (total, item) =>
@@ -27,6 +28,10 @@ export const CheckoutReviewPage: React.FC = () => {
         0
       ),
     [cartItems]
+  )
+  const shippingCost = useMemo(
+    () => calculateShippingCost(subtotal),
+    [subtotal]
   )
 
   const [selectedAddressId, setSelectedAddressId] = useState('')
@@ -70,7 +75,11 @@ export const CheckoutReviewPage: React.FC = () => {
     <main className='checkout-review-page'>
       <h1>{t('checkout.title')}</h1>
 
-      <CheckoutItemList cartItems={cartItems} cartTotal={cartTotal} />
+      <CheckoutItemList
+        cartItems={cartItems}
+        shippingCost={shippingCost}
+        subtotal={subtotal}
+      />
 
       <section>
         <h2>{t('checkout.addressLabel')}</h2>

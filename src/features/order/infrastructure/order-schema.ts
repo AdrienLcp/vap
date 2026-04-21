@@ -32,6 +32,7 @@ export const orders = pgTable(
     shippingAddressId: uuid('shippingAddressId')
       .notNull()
       .references(() => addresses.id),
+    shippingCost: doublePrecision('shippingCost').notNull().default(0),
     status: orderStatusEnum('status').notNull().default('PENDING'),
     stripeCheckoutSessionId: text('stripeCheckoutSessionId'),
     stripePaymentIntentId: text('stripePaymentIntentId'),

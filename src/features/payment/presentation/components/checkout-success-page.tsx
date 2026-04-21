@@ -57,6 +57,15 @@ export const CheckoutSuccessPage: React.FC<CheckoutSuccessPageProps> = async ({
             ))}
           </ul>
 
+          <p className='line'>
+            <span>{t('checkout.shippingLabel')}</span>
+            <span>
+              {order.shippingCost === 0
+                ? t('checkout.shippingFree')
+                : formatPrice(order.shippingCost)}
+            </span>
+          </p>
+
           <p className='total'>
             <strong>{t('checkout.totalLabel')} :</strong>{' '}
             {formatPrice(order.totalPrice)}

@@ -6,8 +6,10 @@ import { CartRepository } from '@/features/cart/infrastructure/cart-repository'
 import { OrderService } from '@/features/order/application/order-service'
 import { OrderRepository } from '@/features/order/infrastructure/order-repository'
 import { stripe } from '@/features/payment/infrastructure/payment-lib'
+import { StripeCustomerRepository } from '@/features/payment/infrastructure/stripe-customer-repository'
 import { failure, type Result, success } from '@/helpers/result'
 import { CLIENT_ENV } from '@/infrastructure/env/client'
+import { t } from '@/infrastructure/i18n'
 
 type CheckoutError = BadRequest | NotFound | Unauthorized
 
@@ -87,6 +89,15 @@ const createCheckoutSession = async (
     return userResult
   }
 
+  const customerResult =
+    await StripeCustomerRepository.findOrCreateStripeCustomer(
+      userResult.data.id,
+      userResult.data.email,
+      userResult.data.name
+    )
+  const stripeCustomerId =
+    customerResult.status === 'SUCCESS' ? customerResult.data : undefined
+
   await cleanupUserPendingOrders(userResult.data.id)
 
   const orderResult =
@@ -104,6 +115,19 @@ const createCheckoutSession = async (
     return lineItemsResult
   }
 
+  const lineItems: CheckoutLineItem[] = [...lineItemsResult.data]
+
+  if (order.shippingCost > 0) {
+    lineItems.push({
+      price_data: {
+        currency: STRIPE_CURRENCY,
+        product_data: { name: t('checkout.shippingLineItem') },
+        unit_amount: toStripeAmount(order.shippingCost)
+      },
+      quantity: 1
+    })
+  }
+
   const successUrl = new URL(
     '/checkout/success',
     CLIENT_ENV.NEXT_PUBLIC_APP_URL
@@ -116,12 +140,16 @@ const createCheckoutSession = async (
       {
         cancel_url: cancelUrl.toString(),
         client_reference_id: order.user.id,
-        line_items: lineItemsResult.data,
+        customer: stripeCustomerId,
+        line_items: lineItems,
         metadata: { orderId: order.id },
         mode: 'payment',
         payment_intent_data: {
           metadata: { orderId: order.id }
         },
+        saved_payment_method_options: stripeCustomerId
+          ? { payment_method_save: 'enabled' }
+          : undefined,
         success_url: successUrl.toString()
       },
       { idempotencyKey: `checkout-session:${order.id}` }

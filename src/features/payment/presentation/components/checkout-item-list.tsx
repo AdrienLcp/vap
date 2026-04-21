@@ -4,12 +4,14 @@ import { t } from '@/infrastructure/i18n'
 
 type CheckoutItemListProps = {
   cartItems: CartItemDTO[]
-  cartTotal: number
+  shippingCost: number
+  subtotal: number
 }
 
 export const CheckoutItemList: React.FC<CheckoutItemListProps> = ({
   cartItems,
-  cartTotal
+  shippingCost,
+  subtotal
 }) => (
   <section>
     <h2>{t('checkout.itemsTitle')}</h2>
@@ -28,9 +30,21 @@ export const CheckoutItemList: React.FC<CheckoutItemListProps> = ({
         </li>
       ))}
     </ul>
+    <p className='line'>
+      <span>{t('checkout.subtotalLabel')}</span>
+      <span>{formatPrice(subtotal)}</span>
+    </p>
+    <p className='line'>
+      <span>{t('checkout.shippingLabel')}</span>
+      <span>
+        {shippingCost === 0
+          ? t('checkout.shippingFree')
+          : formatPrice(shippingCost)}
+      </span>
+    </p>
     <p className='total'>
       <span>{t('checkout.totalLabel')}</span>
-      <span>{formatPrice(cartTotal)}</span>
+      <span>{formatPrice(subtotal + shippingCost)}</span>
     </p>
   </section>
 )

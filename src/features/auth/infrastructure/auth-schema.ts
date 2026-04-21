@@ -19,9 +19,13 @@ export const users = pgTable(
     image: text('image'),
     name: text('name').notNull(),
     role: roleEnum('role').notNull().default('USER'),
+    stripeCustomerId: text('stripeCustomerId'),
     updatedAt: timestamp('updatedAt', { withTimezone: false }).notNull()
   },
-  (table) => [uniqueIndex('users_email_key').on(table.email)]
+  (table) => [
+    uniqueIndex('users_email_key').on(table.email),
+    uniqueIndex('users_stripeCustomerId_key').on(table.stripeCustomerId)
+  ]
 )
 
 export const sessions = pgTable(

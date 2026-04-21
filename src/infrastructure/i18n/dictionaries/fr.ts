@@ -354,6 +354,10 @@ export const fr = {
     pay: 'Payer',
     payAriaLabel: 'Procéder au paiement',
     selectAddress: 'Sélectionnez une adresse',
+    shippingFree: 'Offerte',
+    shippingLabel: 'Livraison',
+    shippingLineItem: 'Frais de livraison',
+    subtotalLabel: 'Sous-total',
     success: {
       backHome: "Retour à l'accueil",
       description: 'Votre commande a bien été enregistrée. Merci !',
@@ -440,6 +444,12 @@ export const fr = {
           }
         }),
         preview: 'Confirmation de commande #{orderSuffix}',
+        shipping: dt('Livraison : {shipping:number}', {
+          number: {
+            shipping: { currency: 'EUR', style: 'currency' }
+          }
+        }),
+        shippingFree: 'Livraison : offerte',
         subject: 'Confirmation de commande #{orderSuffix}',
         summary: 'Récapitulatif',
         title: 'Paiement confirmé',
@@ -495,6 +505,7 @@ export const fr = {
       orderId: 'Commande',
       productName: 'Produit',
       quantity: 'Quantité',
+      shippingCost: 'Livraison',
       statusLabel: 'Statut',
       statusUpdateError:
         'Une erreur est survenue lors de la mise à jour du statut.',
