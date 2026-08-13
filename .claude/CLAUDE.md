@@ -1,129 +1,93 @@
-# VAP — Project Instructions
+# VAP
 
-E-commerce platform built with Next.js 16 + React 19 + strict TypeScript, following a feature-first / clean architecture approach.
+E-commerce platform on Next.js 16 (App Router, Turbopack) + React 19 + strict
+TypeScript, feature-first and layered. Drizzle ORM over PostgreSQL 16, Better
+Auth, Stripe, React Aria Components, SASS modules, Biome. Versions and the
+reasoning behind each choice: [`docs/stack.md`](../docs/stack.md).
 
-## Language rule
+**Everything committed is English.** The single exception is the French i18n
+dictionary at `src/infrastructure/i18n/dictionaries/fr.ts`, which is user-facing
+copy.
 
-**All code, docs, comments and files committed to this repo must be in English.** The only exception is the French i18n dictionary at `src/infrastructure/i18n/dictionaries/fr.ts`, which contains user-facing copy.
-
-## Essential commands
+## Commands
 
 ```bash
-pnpm dev              # Start Postgres (Docker), run migrations, start dev server
-pnpm build            # Production build
-pnpm lint             # Biome check (lint + format)
-pnpm format           # Biome format --write
-pnpm db:generate      # Write a new Drizzle migration from the TS schema
-pnpm db:migrate       # Apply pending migrations (via tsx + drizzle-orm migrator)
-pnpm db:seed          # Seed DB (tsx)
-pnpm db:studio        # Drizzle Studio UI
-pnpm auth:generate    # Regenerate Better Auth types
+pnpm dev            # Postgres (Docker) up + migrations + dev server
+pnpm build          # production build
+pnpm lint           # Biome, lint + format — must pass before every commit
+pnpm db:generate    # write a new Drizzle migration from the TS schema
+pnpm db:migrate     # apply pending migrations
+pnpm db:seed        # seed the database
+pnpm db:studio      # Drizzle Studio
+pnpm auth:generate  # regenerate Better Auth types
 ```
 
-Package manager is **mandatory**: `pnpm` (10.27.0). Never use `npm` or `yarn`.
+**`pnpm` (10.27.0) is mandatory** — never `npm`, never `yarn`. Postgres runs in
+Docker (`docker-compose.yml`); `pnpm dev` boots the container, waits for it to
+be healthy, migrates, then starts Next.
 
-Postgres runs in Docker (see `docker-compose.yml`). `pnpm dev` boots the container, waits for it to be healthy, applies pending migrations, then starts Next.
-
-## Stack
-
-- Next.js 16.1.6 (App Router, Turbopack), React 19.2.4, TypeScript 5.9.3 strict
-- Drizzle ORM 0.45 + `postgres` driver + PostgreSQL 16 (schemas dispatched per feature)
-- Better Auth 1.6 (Google OAuth + email/password, via `drizzleAdapter`)
-- Stripe 22 (integration in progress on the `stripe` branch)
-- React Aria Components 1.16 (accessible UI, WCAG 2.1 AA)
-- Zustand 5 (client state), Zod 4 (runtime validation), nuqs (URL state)
-- SASS modules (no Tailwind)
-- Biome 2.4 (unified lint + format, no ESLint/Prettier)
-- UUID v7 (`uuidv7`) for application-generated IDs on business tables
-
-## Feature-first architecture
+## Structure
 
 ```
 src/
-  app/               # Next.js App Router (pages, layouts, API routes)
-  features/<name>/   # One folder per business domain
-    domain/          # Entities, Zod schemas, constants, mappers
-    application/     # Services (business logic), React hooks
-    infrastructure/  # Drizzle schema + repository, API clients, external libs
-    presentation/    # UI components, controllers (server-side)
-  infrastructure/    # Shared technical services (db, auth, env, i18n)
-  domain/            # Shared business entities
-  presentation/      # Shared global UI components
-  helpers/           # Result pattern
-  utils/             # Generic helpers
+├── app/               Next.js App Router — pages, layouts, API routes
+├── features/<name>/   one folder per business domain
+│   ├── domain/          entities, Zod schemas, constants, mappers
+│   ├── application/     services, React hooks
+│   ├── infrastructure/  Drizzle schema + repository, API clients, lib wrappers
+│   └── presentation/    UI components, server-side controllers
+├── infrastructure/    shared technical services — db, auth, env, i18n
+├── domain/            shared business entities
+├── presentation/      shared global UI
+├── helpers/           the Result pattern
+└── utils/             generic helpers
 ```
 
-Existing features: `address`, `admin`, `auth`, `cart`, `category`, `email`, `home`, `order`, `payment`, `product`, `user`.
+Features: `address`, `admin`, `auth`, `cart`, `category`, `email`, `home`,
+`order`, `payment`, `product`, `user`.
 
 ## Absolute rules
 
-1. **Result pattern, no exceptions.** Return `success(data)` / `failure(error)` from `@/helpers/result`. Never `throw` inside business logic.
-2. **Strict TypeScript, zero `any`, zero casts.** If the type does not pass, fix the type.
-3. **Server vs Client components:**
-   - Server Components (async): call controllers directly (`await ProductController.findProducts()`).
-   - Client Components (`'use client'`): call API clients (`ProductClient.findProducts()`) that fetch `/api/*` routes.
-4. **`t()` i18n is client-only.** Import: `import { t } from '@/infrastructure/i18n'`. Do not use it inside server components (preparation for a future context).
-5. **Accessibility is mandatory:** use React Aria Components, no `<div onClick>`, keyboard navigation, ARIA labels.
-6. **Runtime Zod validation** for every external input (API body, query params, form data).
-7. **No `console.log`:** only `console.error`, `console.warn`, `console.info` are allowed (Biome rule).
-8. **Max 100 lines per function** (Biome rule `noExcessiveLinesPerFunction`).
-9. **Path alias:** always `@/*` for internal imports (never `../../../`).
-10. **Drizzle schemas live per feature** at `src/features/<name>/infrastructure/<name>-schema.ts`, re-exported from `src/infrastructure/database/schema.ts`.
+1. **Result pattern, no exceptions.** `success(data)` / `failure(error)` from
+   `@/helpers/result`. Business logic never `throw`s.
+2. **Strict TypeScript, zero `any`, zero casts.** If the type does not pass, fix
+   the type.
+3. **A server component calls a controller directly; a client component calls an
+   API client.** Never import a controller or a repository from `'use client'`.
+4. **`t()` is client-only.**
+5. **React Aria for anything interactive** — no `<div onClick>`, keyboard paths
+   work, AA contrast.
+6. **Zod at every external boundary** — API body, query params, form data.
+7. **External libraries are imported from `infrastructure/` only.**
+8. **Never edit an applied migration**; write a new one, and announce a
+   destructive one before running it.
+9. **`@/*` for every internal import** — never `../../../`.
+10. **`pnpm lint` passes before every commit.** Biome owns semicolons, quotes,
+    indentation, trailing commas and import order — do not hand-format, and do
+    not add ESLint or Prettier.
 
-## Biome conventions (enforced)
+The reasoning behind 1, 3, 7 and 9 loads on its own from `.claude/rules/` when a
+source file is opened.
 
-- No semicolons
-- Single quotes (including JSX)
-- 2-space indentation
-- Trailing commas: none
-- Arrow functions: no parentheses around a single parameter
-- Imports auto-sorted (server-only/use client at the top, then packages, then `@/`, then relatives)
-- `pnpm lint` must pass before every commit
+## Read before
 
-## Database
+- [`docs/feature-guide.md`](../docs/feature-guide.md) — **before creating or
+  reshaping a feature.** `product` is the most complete template.
+- [`docs/architecture.md`](../docs/architecture.md) — **before moving anything
+  across a layer.** Data flow, clean-architecture boundaries.
+- [`docs/abstraction-boundaries.md`](../docs/abstraction-boundaries.md) —
+  **before adding a wrapper, a client or a "service" over a library.**
+- [`docs/database.md`](../docs/database.md) — **before a schema change.** Tables,
+  relations, enums, the two kinds of primary key.
+- [`docs/authentication.md`](../docs/authentication.md) — Better Auth, OAuth,
+  roles. [`docs/stripe-checkout.md`](../docs/stripe-checkout.md) — the checkout
+  flow.
+- [`docs/getting-started.md`](../docs/getting-started.md) — onboarding, and the
+  `.env` walkthrough.
 
-Schemas are dispatched per feature under `src/features/<name>/infrastructure/<name>-schema.ts` and aggregated in `src/infrastructure/database/schema.ts`.
+## When you learn something about this project
 
-Tables:
-- **auth** (owned by Better Auth): `users`, `sessions`, `accounts`, `verifications` — `text` primary keys (Better Auth-generated nanoid strings). Enum `Role` (USER/ADMIN/SUPER_ADMIN).
-- **business** (application-generated UUID v7 primary keys via `createId()`): `categories`, `products`, `addresses`, `orders`, `order_items`.
-- **cart_items**: composite primary key `(productId, userId)` where `productId` is `uuid` and `userId` is `text`.
-
-Enums: `Role`, `ProductStatus` (ACTIVE/INACTIVE/FEATURED), `OrderStatus` (CANCELLED/COMPLETED/PAID/PENDING/SHIPPED).
-
-After any schema change: `pnpm db:generate` (writes the SQL migration file), then `pnpm db:migrate` (applies it). `pnpm dev` runs `db:migrate` automatically.
-
-## Environment
-
-`.env` file (copy from `.env.example`):
-
-```
-AUTH_GOOGLE_CLIENT_ID=""
-AUTH_GOOGLE_CLIENT_SECRET=""
-BETTER_AUTH_SECRET=""
-DATABASE_URL="postgres://vap:vap@localhost:5432/vap"
-NEXT_PUBLIC_APP_URL="http://localhost:3000"
-RESEND_API_KEY=""
-STRIPE_API_KEY=""
-STRIPE_WEBHOOK_SECRET=""
-```
-
-Validated via `@t3-oss/env-nextjs` in `src/infrastructure/env/`.
-
-## Resources for Claude
-
-Detailed docs live in `docs/`:
-
-- `docs/getting-started.md` — onboarding for new developers
-- `docs/architecture.md` — feature-first, clean architecture, data flow
-- `docs/stack.md` — tech stack with versions
-- `docs/database.md` — Drizzle schemas, tables, relations, enums
-- `docs/authentication.md` — Better Auth, OAuth, roles
-- `docs/conventions.md` — Biome, TypeScript, Result pattern
-- `docs/feature-guide.md` — how to create or modify a feature
-
-Detailed rules: `.claude/rules.md`.
-
-## Current branch
-
-Branch `drizzle-migration`: migration from Prisma to Drizzle. Business tables use native `uuid` column type + application-generated UUID v7. Postgres runs in Docker. Prisma has been fully removed.
+Write it where it will be read: triggered by a **file** → `.claude/rules/*.md`
+with a `paths:` frontmatter; triggered by a **moment** → a doc, named by a
+pointer above; a hard constraint that must never be forgotten → one line in this
+file, reasoning elsewhere.

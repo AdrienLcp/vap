@@ -34,8 +34,8 @@ E-commerce platform built with Next.js 16 + React 19 + strict TypeScript, follow
 
 ## Files worth knowing
 
-- `CLAUDE.md` (root) — short instructions for AI assistants.
-- `.claude/rules.md` — detailed project rules.
+- `.claude/CLAUDE.md` — short instructions for AI assistants, loaded on every session.
+- `.claude/rules/*.md` — detailed rules, each scoped to the files it applies to.
 - `README.md` (root) — project showcase with badges, features, architecture.
 - `biome.json` — lint/format config.
 - `tsconfig.json` — TypeScript config (strict, `@/*` path alias).
